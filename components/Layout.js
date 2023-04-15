@@ -206,7 +206,22 @@ const Layout = ({ children = null }) => {
         <main className="w-full mx-auto bg-[#F0F3F4] bg-opacity-95 s min-h-full relative z-10">
           {typeof children === "function" ? children(openModal) : children}
         </main>
-
+        <footer className="py-6 mt-20 bg-[#222939]">
+          <div className="container mx-auto px-5 flex items-center justify-between">
+            <p className="text-white text-sm font-bold">Anno Stamps</p>
+            <Link
+              href="https://github.com/reallyMilo/AnnoStamps"
+              target="_blank"
+            >
+              <Image
+                src="/github-mark.svg"
+                width="24"
+                height="24"
+                alt="Github"
+              />
+            </Link>
+          </div>
+        </footer>
         <AuthModal show={showModal} onClose={closeModal} />
       </div>
     </>
