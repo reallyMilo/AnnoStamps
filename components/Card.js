@@ -4,6 +4,7 @@ import {
   HomeIcon,
   SparklesIcon,
   TagIcon,
+  UserCircleIcon,
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +16,7 @@ const Card = ({
   category = "",
   region = "",
   favorite = false,
+  user = "",
   onClickFavorite = () => null,
 }) => {
   let icon;
@@ -58,7 +60,7 @@ const Card = ({
   return (
     <Link
       href={`/stamps/${id}`}
-      className="block w-full bg-white rounded-lg shadow-md"
+      className=" w-full bg-white rounded-lg shadow-md grid grid-flow-row grid-rows-2"
     >
       <div className="relative">
         <div className="bg-gray-200 rounded-tl-lg rounded-tr-lg overflow-hidden aspect-w-16 aspect-h-9">
@@ -94,12 +96,18 @@ const Card = ({
           />
         </button> */}
       </div>
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-nowrap">
         <p className="text-[#B11E47] text-sm pb-2">{region}</p>
         <div className="mt-2 w-full text-gray-700 font-semibold leading-tight text-lg">
           {title ?? ""}
         </div>
-        <ol className="mt-4 flex flex-col sapce-y-1 text-gray-500">
+        {user.nickname && (
+          <p className="text-xs py-2 flex items-center gap-1 text-slate-500">
+            <UserCircleIcon className="w-4 h-4" />
+            {`${user.nickname}`}
+          </p>
+        )}
+        <ol className="mt-auto pt-4 flex flex-col sapce-y-1 text-gray-500  relative bottom-0">
           <li
             className={`flex gap-1 items-center rounded-full ${categoryColour} w-fit pl-2  pr-3 py-1 text-white text-xs`}
           >
