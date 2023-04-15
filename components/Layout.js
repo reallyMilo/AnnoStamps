@@ -203,10 +203,10 @@ const Layout = ({ children = null }) => {
           </div>
         </header>
 
-        <main className="w-full mx-auto bg-[#F0F3F4] bg-opacity-95 s min-h-full relative z-10">
+        <main className="w-full mx-auto bg-[#F0F3F4] bg-opacity-95 s min-h-full relative z-10 mb-20">
           {typeof children === "function" ? children(openModal) : children}
         </main>
-        <footer className="py-6 mt-20 bg-[#222939]">
+        <footer className="py-6  bg-[#222939] mt-auto">
           <div className="container mx-auto px-5 flex items-center justify-between">
             <p className="text-white text-sm font-bold">Anno Stamps</p>
             <Link
