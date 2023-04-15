@@ -11,16 +11,23 @@ export async function getServerSideProps() {
         createdAt: "desc",
       },
     ],
+    include: {
+      user: {
+        select: {
+          nickname: true,
+        },
+      },
+    },
   });
   // Pass the data to the Home page
   return {
     props: {
-      stamp: JSON.parse(JSON.stringify(stamps)),
+      stamps: JSON.parse(JSON.stringify(stamps)),
     },
   };
 }
 
-export default function Home({ stamp = [] }) {
+export default function Home({ stamps = [] }) {
   return (
     <Layout>
       <div className="bg-[#606221]">
@@ -46,7 +53,7 @@ export default function Home({ stamp = [] }) {
         </div>
       </div>
       <div className="container mx-auto max-w-7xl py-12 px-5">
-        <Grid stamps={stamp} />
+        <Grid stamps={stamps} />
       </div>
     </Layout>
   );
