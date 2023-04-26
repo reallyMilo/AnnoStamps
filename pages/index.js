@@ -1,8 +1,8 @@
 import Grid from "@/components/Grid";
 import Layout from "@/components/Layout";
-import { prisma } from "@/lib/prisma";
+import { PrismaClient } from "@prisma/client";
 import Image from "next/image";
-
+const prisma = new PrismaClient();
 export async function getServerSideProps() {
   // Get all stamps
   const stamps = await prisma.stamp.findMany({

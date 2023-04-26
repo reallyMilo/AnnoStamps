@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import { prisma } from "@/lib/prisma";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -17,6 +18,7 @@ const Listedstamp = (stamp = null) => {
   const [isOwner, setIsOwner] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [stampFile, setStampFile] = useState();
+  const [downloadCount, setDownloadCount] = useState(stamp.downloads);
 
   useEffect(() => {
     (async () => {
@@ -47,14 +49,13 @@ const Listedstamp = (stamp = null) => {
     }
   };
 
-  const downloadStamp = async () => {
-    const file = await axios.post("/api/stamp-download", "1");
-    console.log(file);
+  const incrementDownladsCount = () => {
+    axios.post("/api/downloads", { stamp: stamp.id });
+    setDownloadCount((prevDownloadCount) => prevDownloadCount + 1);
   };
 
   return (
     <Layout>
-      {console.log(stamp)}
       <div className="max-w-screen-lg mx-auto py-12 px-5">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:space-x-4 space-y-4 mx-5">
           {isOwner ? (
@@ -110,23 +111,17 @@ const Listedstamp = (stamp = null) => {
             <a
               href={`${stamp?.stamp}?download=${stamp?.title}`}
               className="bg-[#6DD3C0] py-2 px-4 rounded-md mt-5 inline-block font-bold"
+              onClick={incrementDownladsCount}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6 inline mr-2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-                />
-              </svg>
+              <ArrowDownTrayIcon className="w-6 h-6 inline-block mr-2" />
               Download Stamp
             </a>
+            <p className="text-sm flex gap-1 items-center cursor-default pt-3">
+              Total Downloads:
+              <span className="text-sm flex gap-1 items-center cursor-default">
+                {downloadCount}
+              </span>
+            </p>
           </div>
           <div>
             <p className="text-lg break-words">{stamp.description ?? ""}</p>

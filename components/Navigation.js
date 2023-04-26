@@ -62,13 +62,14 @@ const Navigation = () => {
             priority
             as="svg"
             style={{
-              width: "auto",
+              width: "100%",
               maxWidth: "160px",
               height: "auto",
             }}
+            className="w-[100px] md:w-[160px]"
           />
         </Link>
-        <nav className="flex items-center space-x-4 text-sm font-bold">
+        <nav className="flex items-center text-center space-x-4 text-xs md:text-left md:text-sm font-bold">
           <Link
             href="/"
             className="text-white block hover:bg-amber-800 transition px-3 py-1 rounded-md"

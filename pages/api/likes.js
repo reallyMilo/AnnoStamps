@@ -3,29 +3,25 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "./auth/[...nextauth]";
 
 export default async function handler(req, res) {
-  // Check if user is authenticated
   const session = await getServerSession(req, res, authOptions);
+
   if (!session) {
     return res.status(401).json({ message: "Unauthorized." });
   }
 
-  // update nickname
   if (req.method === "POST") {
     try {
-      const nickName = req.body.values.userName;
-      const updateUser = await prisma.user.update({
-        where: { email: session.user.email },
+      const usersArary = req.body.users;
+      const id = req.body.stampId;
+      const updateStampVotes = await prisma.stamp.update({
+        where: { id: id },
         data: {
-          nickname: nickName,
+          likes: { users: usersArary },
         },
       });
-      res.status(200).json(updateUser);
+      res.status(200).json(updateStampVotes);
     } catch (e) {
-      if (e.code === "P2002") {
-        res.status(500).json({ message: "P2002" });
-      } else {
-        res.status(500).json({ message: "An error occured" });
-      }
+      res.status(500).json({ message: "An error occured" });
     }
   }
   // HTTP method not supported!
