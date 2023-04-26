@@ -30,7 +30,6 @@ export async function getServerSideProps() {
 export default function Home({ stamps = [] }) {
   return (
     <Layout>
-      {console.log(stamps)}
       <div className="bg-[#606221]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-20 container mx-auto">
           <div className="text-white py-12 md:py-24 px-5">
