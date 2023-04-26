@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 
 const Listedstamp = (stamp = null) => {
   const router = useRouter();
-  console.log(stamp);
   const { data: session } = useSession();
 
   const button = useRef();
