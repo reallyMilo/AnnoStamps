@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 const Listedstamp = (stamp = null) => {
   const router = useRouter();
-
+  console.log(stamp);
   const { data: session } = useSession();
 
   const button = useRef();
@@ -18,7 +18,7 @@ const Listedstamp = (stamp = null) => {
   const [isOwner, setIsOwner] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [stampFile, setStampFile] = useState();
-  const [downloadCount, setDownloadCount] = useState(stamp.downloads);
+  const [downloadCount, setDownloadCount] = useState();
 
   useEffect(() => {
     (async () => {
@@ -31,7 +31,8 @@ const Listedstamp = (stamp = null) => {
         }
       }
     })();
-  }, [session?.user, stamp.id]);
+    setDownloadCount(stamp?.downloads);
+  }, [session?.user, stamp.id, stamp.downloads]);
 
   const deletestamp = async () => {
     let toastId;
