@@ -31,7 +31,7 @@ const Card = ({
   onClickFavorite = () => null,
 }) => {
   const [showModal, setShowModal] = useState(false);
-  const [usersVoted, setUsersVoted] = useState(new Set(likes.users));
+  const [usersVoted, setUsersVoted] = useState(new Set(likes?.users));
   const [likesCount, setLikesCount] = useState(usersVoted.size);
   const sessionUser = userSession?.user;
 
