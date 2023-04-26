@@ -1,26 +1,29 @@
 import ImageUpload from "@/components/ImageUpload";
 import Input from "@/components/Input";
 import StampUpload from "@/components/StampUpload";
+import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import * as Yup from "yup";
 import SelectField from "./Select";
-
 const ListingSchema = Yup.object().shape({
   stampTitle: Yup.string().max(50).trim().required("Required"),
   stampDescription: Yup.string().max(300).trim().required("Required"),
   stampCategory: Yup.string().trim().required("Required"),
   stampRegion: Yup.string().trim().required("Required"),
+  stampModded: Yup.string().trim().required("Required"),
 });
 
 const ListingForm = ({
   initialValues = null,
   redirectPath = "",
   buttonText = "Submit",
+  session,
   onSubmit = () => null,
 }) => {
   const router = useRouter();
@@ -100,6 +103,7 @@ const ListingForm = ({
       stampDescription: "",
       stampCategory: "",
       stampRegion: "",
+      stampModded: "",
     };
 
   return (
@@ -154,6 +158,40 @@ const ListingForm = ({
                   <option value="Arctic">Arctic</option>
                   <option value="Enbesa">Enbesa</option>
                 </SelectField>
+              </div>
+              <div>
+                <label htmlFor="stampModded">Uses Mods</label>
+                <br />
+                <SelectField lable="Mods" as="select" name="stampModded">
+                  <option value="">-Select-</option>
+                  <option value="TRUE">Yes</option>
+                  <option value="FALSE">No</option>
+                </SelectField>
+              </div>
+              <div>
+                {session ? (
+                  <Input
+                    name="username"
+                    type="text"
+                    label="Username"
+                    value={session}
+                    disabled={true}
+                    rows={5}
+                  />
+                ) : (
+                  <>
+                    <p className="mb-2 text-red-500">
+                      <ExclamationCircleIcon className="w-5 h-5 inline-block mr-1" />
+                      Username not set
+                    </p>
+                    <Link
+                      href="/account"
+                      className="bg-yellow-600 text-white py-2 px-6 rounded-md focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 hover:bg-yellow-300 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-yellow-700"
+                    >
+                      Set Username
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
 

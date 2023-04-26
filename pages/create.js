@@ -17,16 +17,21 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
+
+  const userNickName = user.nickname;
+
   return {
-    props: {},
+    props: { userNickName },
   };
 }
 
-const Create = () => {
+const Create = (props) => {
   const addStamp = (data) => {
     return axios.post("/api/stamp", data);
   };
-
   return (
     <Layout>
       <div className="max-w-5xl mx-auto py-12 px-5">
@@ -38,6 +43,7 @@ const Create = () => {
           <ListingForm
             buttonText="Add stamp"
             redirectPath="/"
+            session={props.userNickName}
             onSubmit={addStamp}
           />
         </div>

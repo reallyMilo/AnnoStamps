@@ -19,6 +19,7 @@ export default async function handler(req, res) {
         stampDescription,
         stampCategory,
         stampRegion,
+        stampModded,
       } = req.body;
 
       const user = await prisma.user.findUnique({
@@ -35,6 +36,7 @@ export default async function handler(req, res) {
           region: stampRegion,
           screenshot: stampScreenshot,
           stamp: stampFile,
+          modded: stampModded === "TRUE" ? true : false,
         },
       });
       res.status(200).json(stamp);

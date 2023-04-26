@@ -19,6 +19,9 @@ model Stamp {
   stamp       String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  modded      Boolean  @default(false)
+  likes       Json     @default("{\"users\": []}")
+  downloads   Int      @default(0)
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
