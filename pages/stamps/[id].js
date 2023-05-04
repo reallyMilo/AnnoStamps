@@ -17,7 +17,8 @@ const Listedstamp = (stamp = null) => {
   const [isOwner, setIsOwner] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [stampFile, setStampFile] = useState();
-  const [downloadCount, setDownloadCount] = useState();
+  const [downloadCount, setDownloadCount] = useState(stamp?.downloads);
+  console.log(stamp);
 
   useEffect(() => {
     (async () => {
@@ -30,8 +31,7 @@ const Listedstamp = (stamp = null) => {
         }
       }
     })();
-    setDownloadCount(stamp?.downloads);
-  }, [session?.user, stamp.id, stamp.downloads]);
+  }, [session?.user, stamp.id]);
 
   const deletestamp = async () => {
     let toastId;
