@@ -43,12 +43,11 @@ const Layout = ({ children = null }) => {
                 <Image
                   src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"
                   alt="Buy Me A Coffee"
-                  style="height: 60px !important;width: 217px !important;"
                   width={140}
                   height={60}
                 />
               </a>
-              <script
+              <Script
                 type="text/javascript"
                 src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
                 data-name="bmc-button"
@@ -61,7 +60,7 @@ const Layout = ({ children = null }) => {
                 data-font-color="#ffffff"
                 data-coffee-color="#FFDD00"
                 defer
-              ></script>
+              ></Script>
               <Link href="https://discord.gg/73hfP54qXe" target="_blank">
                 <Image
                   src="/discord.svg"
