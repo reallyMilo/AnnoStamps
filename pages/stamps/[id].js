@@ -18,7 +18,6 @@ const Listedstamp = (stamp = null) => {
   const [deleting, setDeleting] = useState(false);
   const [stampFile, setStampFile] = useState();
   const [downloadCount, setDownloadCount] = useState(stamp?.downloads);
-  console.log(stamp);
 
   useEffect(() => {
     (async () => {
