@@ -6,6 +6,7 @@ module.exports = {
       "bxeklzgnntgnhkipxvol.supabase.in",
       "lh3.googleusercontent.com",
       "cdn.discordapp.com",
+      "cdn.buymeacoffee.com",
     ],
   },
 };
