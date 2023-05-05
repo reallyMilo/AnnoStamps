@@ -3,7 +3,7 @@ import Layout from "@/components/Layout";
 import { PrismaClient } from "@prisma/client";
 import Image from "next/image";
 const prisma = new PrismaClient();
-export async function getServerSideProps() {
+export async function getStaticProps() {
   // Get all stamps
   const stamps = await prisma.stamp.findMany({
     orderBy: [
@@ -24,6 +24,7 @@ export async function getServerSideProps() {
     props: {
       stamps: JSON.parse(JSON.stringify(stamps)),
     },
+    revalidate: 30,
   };
 }
 
