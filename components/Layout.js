@@ -39,28 +39,6 @@ const Layout = ({ children = null }) => {
             <p className="text-white text-sm font-bold">Anno Stamps</p>
 
             <div className="px-5 flex space-x-5 items-center">
-              <a href="https://www.buymeacoffee.com/miloK" target="_blank">
-                <Image
-                  src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"
-                  alt="Buy Me A Coffee"
-                  width={140}
-                  height={60}
-                />
-              </a>
-              <Script
-                type="text/javascript"
-                src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
-                data-name="bmc-button"
-                data-slug="miloK"
-                data-color="#5F7FFF"
-                data-emoji=""
-                data-font="Cookie"
-                data-text="Buy me a coffee"
-                data-outline-color="#000000"
-                data-font-color="#ffffff"
-                data-coffee-color="#FFDD00"
-                defer
-              ></Script>
               <Link href="https://discord.gg/73hfP54qXe" target="_blank">
                 <Image
                   src="/discord.svg"
@@ -86,19 +64,6 @@ const Layout = ({ children = null }) => {
               </Link>
             </div>
           </div>
-          {/* <script
-            data-name="BMC-Widget"
-            data-cfasync="false"
-            src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
-            data-id="miloK"
-            data-description="Support me on Buy me a coffee!"
-            data-message="Thanks for helping support Anno Stamps!"
-            data-color="#5F7FFF"
-            data-position="Right"
-            data-x_margin="18"
-            data-y_margin="18"
-            defer
-          ></script> */}
         </footer>
       </div>
     </>
