@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build:db": "prisma migrate dev",
+    "build:db": "dotenv -e .env.local -- pnpm dlx prisma migrate dev",
     "studio": "dotenv -e .env.local -- pnpm dlx prisma studio"
   },
   "dependencies": {
