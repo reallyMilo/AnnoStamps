@@ -1,3 +1,4 @@
+//TODO: change to strict to true when ready
 {
   "compilerOptions": {
     "baseUrl": ".",
@@ -5,11 +6,7 @@
       "@/components/*": ["components/*"],
       "@/lib/*": ["lib/*"]
     },
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -24,14 +21,6 @@
     "jsx": "preserve",
     "target": "ES2021"
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+  "exclude": ["node_modules"]
 }
