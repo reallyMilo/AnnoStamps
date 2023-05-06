@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import PropTypes from "prop-types";
 import Navigation from "./Navigation";
 
@@ -36,17 +37,32 @@ const Layout = ({ children = null }) => {
         <footer className="py-6  bg-[#222939] mt-auto">
           <div className="container mx-auto px-5 flex items-center justify-between">
             <p className="text-white text-sm font-bold">Anno Stamps</p>
-            <Link
-              href="https://github.com/reallyMilo/AnnoStamps"
-              target="_blank"
-            >
-              <Image
-                src="/github-mark.svg"
-                width="24"
-                height="24"
-                alt="Github"
-              />
-            </Link>
+
+            <div className="px-5 flex space-x-5 items-center">
+              <Link href="https://discord.gg/73hfP54qXe" target="_blank">
+                <Image
+                  src="/discord.svg"
+                  alt="Google"
+                  width={32}
+                  height={32}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
+                />
+              </Link>
+              <Link
+                href="https://github.com/reallyMilo/AnnoStamps"
+                target="_blank"
+              >
+                <Image
+                  src="/github-mark.svg"
+                  width="24"
+                  height="24"
+                  alt="Github"
+                />
+              </Link>
+            </div>
           </div>
         </footer>
       </div>
