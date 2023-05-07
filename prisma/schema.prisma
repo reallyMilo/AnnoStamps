@@ -21,8 +21,10 @@ model Stamp {
   updatedAt   DateTime @updatedAt
   modded      Boolean  @default(false)
   likes       Json     @default("{\"users\": []}")
+  liked       Int      @default(0)
   downloads   Int      @default(0)
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User     @relation("StampCreator", fields: [userId], references: [id], onDelete: Cascade)
+  likedBy     User[]   @relation("StampLiker")
 }
 
 model Account {
@@ -62,7 +64,8 @@ model User {
   nickname      String?   @unique
   accounts      Account[]
   sessions      Session[]
-  listedStamps  Stamp[]
+  listedStamps  Stamp[]   @relation("StampCreator")
+  likedStamps   Stamp[]   @relation("StampLiker")
 }
 
 model VerificationToken {

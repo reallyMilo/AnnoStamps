@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build:db": "pnpm exec dotenv -e .env.local -- prisma migrate dev",
     "studio": "pnpm exec dotenv -e .env.local -- prisma studio",
+    "migrate": "pnpm exec dotenv -e .env.local -- prisma migrate dev",
+    "migrate:create": "pnpm exec dotenv -e .env.local -- prisma migrate dev --create-only",
     "prepare": "husky install"
   },
   "lint-staged": {
