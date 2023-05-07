@@ -2,24 +2,18 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const alice = await prisma.user.upsert({
-    where: { email: "alice@prisma.io" },
-    update: {},
-    create: {
-      email: "alice@prisma.io",
-      name: "Alice",
+  const id = "cl9ebqhxk00003b600tymydho";
+  await prisma.user.upsert({
+    where: {
+      id,
     },
-  });
-  const bob = await prisma.user.upsert({
-    where: { email: "bob@prisma.io" },
-    update: {},
     create: {
-      email: "bob@prisma.io",
-      name: "Bob",
+      id,
     },
+    update: {},
   });
-  console.log({ alice, bob });
 }
+
 main()
   .then(async () => {
     await prisma.$disconnect();
