@@ -15,7 +15,7 @@ CREATE DATABASE annostamps;
 GRANT ALL PRIVILEGES ON DATABASE annostamps TO postgres;
 ```
 
-create .env.local in root add
+create .env in root with
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/annostamps"
 
 ```sh

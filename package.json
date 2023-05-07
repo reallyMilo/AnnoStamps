@@ -7,10 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "studio": "pnpm exec dotenv -e .env.local -- prisma studio",
-    "migrate": "pnpm exec dotenv -e .env.local -- prisma migrate dev",
-    "migrate:create": "pnpm exec dotenv -e .env.local -- prisma migrate dev --create-only",
+    "db-seed": "NODE_ENV=development prisma db seed",
+    "studio": "pnpm exec prisma studio",
+    "migrate": "pnpm exec prisma migrate dev",
+    "migrate:create": "pnpm exec prisma migrate dev --create-only",
     "prepare": "husky install"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "lint-staged": {
     "*": "prettier --ignore-unknown --write"
@@ -44,7 +48,6 @@
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "@typescript-eslint/parser": "^5.59.2",
     "autoprefixer": "^10.4.14",
-    "dotenv-cli": "^7.2.1",
     "eslint": "8.38.0",
     "eslint-config-next": "^13.3.0",
     "eslint-plugin-jsonc": "^2.7.0",
