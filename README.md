@@ -15,8 +15,13 @@ CREATE DATABASE annostamps;
 GRANT ALL PRIVILEGES ON DATABASE annostamps TO postgres;
 ```
 
-create .env in root with, default is postgres:postgres
-DATABASE_URL="postgresql://USERNAME:PASSWORD@localhost:5432/annostamps"
+create .env in root
+
+```sh
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/annostamps"
+```
+
+Finally run the following commands
 
 ```sh
 pnpm i
