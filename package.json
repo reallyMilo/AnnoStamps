@@ -7,10 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db-seed": "NODE_ENV=development prisma db seed",
     "studio": "pnpm exec prisma studio",
     "migrate": "pnpm exec prisma migrate dev",
-    "migrate:create": "pnpm exec prisma migrate dev --create-only",
+    "db-seed": "NODE_ENV=development prisma db seed",
     "prepare": "husky install"
   },
   "prisma": {
