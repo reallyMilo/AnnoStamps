@@ -1,15 +1,16 @@
-import Card from "@/components/Card";
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import { useSession } from "next-auth/react";
-import PropTypes from "prop-types";
-import { useState } from "react";
-const Grid = ({ stamps = [] }) => {
-  const isEmpty = stamps.length === 0;
-  const { data: session, status } = useSession();
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
+import { useSession } from 'next-auth/react'
+import PropTypes from 'prop-types'
+import { useState } from 'react'
 
-  const [regionFilter, setRegionFilter] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [modsFilter, setModsFilter] = useState("");
+import Card from '@/components/Card'
+const Grid = ({ stamps = [] }) => {
+  const isEmpty = stamps.length === 0
+  const { data: session, status } = useSession()
+
+  const [regionFilter, setRegionFilter] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState('')
+  const [modsFilter, setModsFilter] = useState('')
 
   const filteredData = stamps.filter((item) => {
     if (regionFilter && categoryFilter && modsFilter) {
@@ -17,40 +18,40 @@ const Grid = ({ stamps = [] }) => {
         item.region === regionFilter &&
         item.category === categoryFilter &&
         String(item.modded) === modsFilter
-      );
+      )
     } else if (categoryFilter && modsFilter) {
       return (
         item.category === categoryFilter && String(item.modded) === modsFilter
-      );
+      )
     } else if (regionFilter && modsFilter) {
-      return item.region === regionFilter && String(item.modded) === modsFilter;
+      return item.region === regionFilter && String(item.modded) === modsFilter
     } else if (regionFilter) {
-      return item.region === regionFilter;
+      return item.region === regionFilter
     } else if (categoryFilter) {
-      return item.category === categoryFilter;
+      return item.category === categoryFilter
     } else if (modsFilter) {
-      return String(item.modded) === modsFilter;
+      return String(item.modded) === modsFilter
     } else {
-      return true;
+      return true
     }
-  });
+  })
 
   const toggleFavorite = async (id) => {
     // TODO: Add/remove stamp from the authenticated user's favorites
-  };
+  }
 
   return (
     <>
       {isEmpty ? (
-        <p className="text-amber-700 bg-amber-100 px-4 rounded-md py-2 max-w-max inline-flex items-center space-x-1">
-          <ExclamationCircleIcon className="shrink-0 w-5 h-5 mt-px" />
+        <p className="inline-flex max-w-max items-center space-x-1 rounded-md bg-amber-100 px-4 py-2 text-amber-700">
+          <ExclamationCircleIcon className="mt-px h-5 w-5 shrink-0" />
           <span>Unfortunately, there is nothing to display yet.</span>
         </p>
       ) : (
         <div>
-          <div className="md:flex gap-10 mb-10 items-center">
-            <p className="font-bold mb-3 md:mb-0">Filter:</p>
-            <div className="mb-2 md:mb-0 flex space-x-2 items-center">
+          <div className="mb-10 items-center gap-10 md:flex">
+            <p className="mb-3 font-bold md:mb-0">Filter:</p>
+            <div className="mb-2 flex items-center space-x-2 md:mb-0">
               <label
                 htmlFor="categorySelect"
                 className="tex-sm w-[200px] md:w-auto"
@@ -58,7 +59,7 @@ const Grid = ({ stamps = [] }) => {
                 Category
               </label>
               <select
-                className="w-full shadow-sm rounded-md py-2 pl-4 truncate border focus:outline-none focus:ring-4 focus:ring-opacity-20 transition"
+                className="w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20"
                 name="categorySelect"
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
@@ -71,7 +72,7 @@ const Grid = ({ stamps = [] }) => {
                 <option value="General">General</option>
               </select>
             </div>
-            <div className="flex space-x-2 items-center">
+            <div className="flex items-center space-x-2">
               <label
                 htmlFor="regionSelect"
                 className="tex-sm w-[200px] md:w-auto"
@@ -79,7 +80,7 @@ const Grid = ({ stamps = [] }) => {
                 Region
               </label>
               <select
-                className="w-full shadow-sm rounded-md py-2 pl-4 truncate border focus:outline-none focus:ring-4 focus:ring-opacity-20 transition"
+                className="w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20"
                 name="regionSelect"
                 value={regionFilter}
                 onChange={(e) => setRegionFilter(e.target.value)}
@@ -92,7 +93,7 @@ const Grid = ({ stamps = [] }) => {
                 <option value="Enbesa">Enbesa</option>
               </select>
             </div>
-            <div className="flex space-x-2 items-center">
+            <div className="flex items-center space-x-2">
               <label
                 htmlFor="regionSelect"
                 className="tex-sm w-[200px] md:w-auto"
@@ -100,7 +101,7 @@ const Grid = ({ stamps = [] }) => {
                 Mods
               </label>
               <select
-                className="w-full shadow-sm rounded-md py-2 pl-4 truncate border focus:outline-none focus:ring-4 focus:ring-opacity-20 transition"
+                className="w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20"
                 name="regionSelect"
                 value={modsFilter}
                 onChange={(e) => setModsFilter(e.target.value)}
@@ -111,7 +112,7 @@ const Grid = ({ stamps = [] }) => {
               </select>
             </div>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredData.map((stamp) => (
               <Card
                 key={stamp.id}
@@ -125,11 +126,11 @@ const Grid = ({ stamps = [] }) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
 Grid.propTypes = {
   stamps: PropTypes.array,
-};
+}
 
-export default Grid;
+export default Grid
