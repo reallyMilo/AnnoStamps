@@ -21,6 +21,11 @@
     "jsx": "preserve",
     "target": "ES2021"
   },
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "compilerOptions": {}
+  },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
   "exclude": ["node_modules"]
 }

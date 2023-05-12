@@ -1,32 +1,33 @@
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { Menu, Transition } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import {
   ArrowLeftIcon,
   HomeIcon,
   PlusIcon,
   UserIcon,
-} from "@heroicons/react/24/outline";
-import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { Fragment, useState } from "react";
-import AuthModal from "./AuthModal";
+} from '@heroicons/react/24/outline'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { signOut, useSession } from 'next-auth/react'
+import { Fragment, useState } from 'react'
+
+import AuthModal from './AuthModal'
 const menuItems = [
   {
-    label: "My Account",
+    label: 'My Account',
     icon: UserIcon,
-    href: "/account",
+    href: '/account',
   },
   {
-    label: "My stamps",
+    label: 'My stamps',
     icon: HomeIcon,
-    href: "/user/stamps",
+    href: '/user/stamps',
   },
   {
-    label: "Add new stamp",
+    label: 'Add new stamp',
     icon: PlusIcon,
-    href: "/create",
+    href: '/create',
   },
   // {
   //   label: "Favorites",
@@ -34,22 +35,22 @@ const menuItems = [
   //   href: "/favorites",
   // },
   {
-    label: "Logout",
+    label: 'Logout',
     icon: ArrowLeftIcon,
     onClick: signOut,
   },
-];
+]
 const Navigation = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
 
-  const openModal = () => setShowModal(true);
-  const closeModal = () => setShowModal(false);
+  const openModal = () => setShowModal(true)
+  const closeModal = () => setShowModal(false)
 
-  const router = useRouter();
+  const router = useRouter()
 
-  const { data: session, status } = useSession();
-  const user = session?.user;
-  const isLoadingUser = status === "loading";
+  const { data: session, status } = useSession()
+  const user = session?.user
+  const isLoadingUser = status === 'loading'
   return (
     <>
       <div className="flex space-x-6">
@@ -62,31 +63,31 @@ const Navigation = () => {
             priority
             as="svg"
             style={{
-              width: "100%",
-              maxWidth: "160px",
-              height: "auto",
+              width: '100%',
+              maxWidth: '160px',
+              height: 'auto',
             }}
             className="w-[100px] md:w-[160px]"
           />
         </Link>
-        <nav className="flex items-center text-center space-x-4 text-xs md:text-left md:text-sm font-bold">
+        <nav className="flex items-center space-x-4 text-center text-xs font-bold md:text-left md:text-sm">
           <Link
             href="/"
-            className="text-white block hover:bg-amber-800 transition px-3 py-1 rounded-md"
+            className="block rounded-md px-3 py-1 text-white transition hover:bg-amber-800"
           >
             All Stamps
           </Link>
           <button
             onClick={() => {
-              session?.user ? router.push("/create") : openModal();
+              session?.user ? router.push('/create') : openModal()
             }}
-            className="hidden sm:block text-white hover:bg-amber-800 transition px-3 py-1 rounded-md text-sm font-bold"
+            className="hidden rounded-md px-3 py-1 text-sm font-bold text-white transition hover:bg-amber-800 sm:block"
           >
             Add Stamp
           </button>
           <Link
             href="/how-to"
-            className="text-white block hover:bg-amber-800 transition px-3 py-1 rounded-md"
+            className="block rounded-md px-3 py-1 text-white transition hover:bg-amber-800"
           >
             How To
           </Link>
@@ -94,23 +95,23 @@ const Navigation = () => {
       </div>
       <div className="flex items-center space-x-4">
         {isLoadingUser ? (
-          <div className="h-8 w-[75px] bg-gray-200 animate-pulse rounded-md" />
+          <div className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200" />
         ) : user ? (
           <Menu as="div" className="relative z-50">
-            <Menu.Button className="flex items-center space-x-px group">
-              <div className="shrink-0 flex items-center justify-center rounded-full overflow-hidden relative bg-gray-200 w-9 h-9">
+            <Menu.Button className="group flex items-center space-x-px">
+              <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
                 {user?.image ? (
                   <Image
                     src={user?.image}
-                    alt={user?.name || "Avatar"}
+                    alt={user?.name || 'Avatar'}
                     fill
                     sizes="100vw"
                   />
                 ) : (
-                  <UserIcon className="text-gray-400 w-6 h-6" />
+                  <UserIcon className="h-6 w-6 text-gray-400" />
                 )}
               </div>
-              <ChevronDownIcon className="w-5 h-5 shrink-0 text-white group-hover:text-white" />
+              <ChevronDownIcon className="h-5 w-5 shrink-0 text-white group-hover:text-white" />
             </Menu.Button>
             <Transition
               as={Fragment}
@@ -121,18 +122,18 @@ const Navigation = () => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Menu.Items className="absolute right-0 w-72 overflow-hidden mt-1 divide-y divide-gray-100 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <div className="flex items-center space-x-2 py-4 px-4 mb-2">
-                  <div className="shrink-0 flex items-center justify-center rounded-full overflow-hidden relative bg-gray-200 w-9 h-9">
+              <Menu.Items className="absolute right-0 mt-1 w-72 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div className="mb-2 flex items-center space-x-2 px-4 py-4">
+                  <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
                     {user?.image ? (
                       <Image
                         src={user?.image}
-                        alt={user?.name || "Avatar"}
+                        alt={user?.name || 'Avatar'}
                         fill
                         sizes="100vw"
                       />
                     ) : (
-                      <UserIcon className="text-gray-400 w-6 h-6" />
+                      <UserIcon className="h-6 w-6 text-gray-400" />
                     )}
                   </div>
                   <div className="flex flex-col truncate">
@@ -145,23 +146,23 @@ const Navigation = () => {
                   {menuItems.map(({ label, href, onClick, icon: Icon }) => (
                     <div
                       key={label}
-                      className="px-2 last:border-t last:pt-2 last:mt-2"
+                      className="px-2 last:mt-2 last:border-t last:pt-2"
                     >
                       <Menu.Item>
                         {href ? (
                           <Link
                             href={href}
-                            className="flex items-center space-x-2 py-2 px-4 rounded-md hover:bg-gray-100"
+                            className="flex items-center space-x-2 rounded-md px-4 py-2 hover:bg-gray-100"
                           >
-                            <Icon className="w-5 h-5 shrink-0 text-gray-500" />
+                            <Icon className="h-5 w-5 shrink-0 text-gray-500" />
                             <span>{label}</span>
                           </Link>
                         ) : (
                           <button
-                            className="w-full flex items-center space-x-2 py-2 px-4 rounded-md hover:bg-gray-100"
+                            className="flex w-full items-center space-x-2 rounded-md px-4 py-2 hover:bg-gray-100"
                             onClick={onClick}
                           >
-                            <Icon className="w-5 h-5 shrink-0 text-gray-500" />
+                            <Icon className="h-5 w-5 shrink-0 text-gray-500" />
                             <span>{label}</span>
                           </button>
                         )}
@@ -176,7 +177,7 @@ const Navigation = () => {
           <button
             type="button"
             onClick={openModal}
-            className="ml-4 px-4 py-2 rounded-md bg-[#6DD3C0] hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-500 focus:ring-opacity-50 text-[#222939] text-sm font-bold transition"
+            className="ml-4 rounded-md bg-[#6DD3C0] px-4 py-2 text-sm font-bold text-[#222939] transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-500 focus:ring-opacity-50"
           >
             SIGN UP / LOG IN
           </button>
@@ -184,7 +185,7 @@ const Navigation = () => {
       </div>
       <AuthModal show={showModal} onClose={closeModal} />
     </>
-  );
-};
+  )
+}
 
-export default Navigation;
+export default Navigation

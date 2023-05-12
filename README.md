@@ -7,7 +7,7 @@ A site for uploading and sharing stamps for Anno 1800
 
 [install postgres](https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database)
 
-Run the following commands
+Use the guide above to install postgres then run the following commands
 
 ```bash
 sudo -u postgres psql
@@ -15,10 +15,15 @@ CREATE DATABASE annostamps;
 GRANT ALL PRIVILEGES ON DATABASE annostamps TO postgres;
 ```
 
-create .env.local in root add
+create .env in root
+
+```sh
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/annostamps"
+```
+
+Finally run the following commands
 
 ```sh
 pnpm i
-pnpm build:db
+pnpm migrate
 ```

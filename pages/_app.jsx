@@ -1,8 +1,8 @@
-import { SessionProvider } from "next-auth/react";
-import Script from "next/script";
-import { Toaster } from "react-hot-toast";
+import '../styles/globals.css'
 
-import "../styles/globals.css";
+import Script from 'next/script'
+import { SessionProvider } from 'next-auth/react'
+import { Toaster } from 'react-hot-toast'
 function StampsApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>
@@ -28,7 +28,7 @@ function StampsApp({ Component, pageProps: { session, ...pageProps } }) {
 
       <Toaster />
     </>
-  );
+  )
 }
 
-export default StampsApp;
+export default StampsApp

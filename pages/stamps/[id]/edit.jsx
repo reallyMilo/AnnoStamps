@@ -1,48 +1,49 @@
-import Layout from "@/components/Layout";
-import ListingForm from "@/components/ListingForm";
-import { prisma } from "@/lib/prisma";
-import axios from "axios";
-import { getSession } from "next-auth/react";
+import axios from 'axios'
+import { getSession } from 'next-auth/react'
+
+import Layout from '@/components/Layout'
+import ListingForm from '@/components/ListingForm'
+import { prisma } from '@/lib/prisma'
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
+  const session = await getSession(context)
 
   const redirect = {
     redirect: {
-      destination: "/",
+      destination: '/',
       permanent: false,
     },
-  };
+  }
 
   // Check if the user is authenticated
   if (!session) {
-    return redirect;
+    return redirect
   }
 
   // Retrieve the authenticated user
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
     select: { listedStamps: true },
-  });
+  })
 
   // Check if authenticated user is the owner of this stamp
-  const id = context.params.id;
-  const stamp = user?.listedStamps?.find((stamp) => stamp.id === id);
+  const id = context.params.id
+  const stamp = user?.listedStamps?.find((stamp) => stamp.id === id)
   if (!stamp) {
-    return redirect;
+    return redirect
   }
 
   return {
     props: JSON.parse(JSON.stringify(stamp)),
-  };
+  }
 }
 
 const Edit = (stamp = null) => {
-  const handleOnSubmit = (data) => axios.patch(`/api/stamp/${stamp.id}`, data);
+  const handleOnSubmit = (data) => axios.patch(`/api/stamp/${stamp.id}`, data)
 
   return (
     <Layout>
-      <div className="max-w-screen-sm mx-auto py-12 px-5">
+      <div className="mx-auto max-w-screen-sm px-5 py-12">
         <h1 className="text-xl font-medium text-gray-800">Edit your stamp</h1>
         <p className="text-gray-500">
           Fill out the form below to update your stamp.
@@ -59,7 +60,7 @@ const Edit = (stamp = null) => {
         </div>
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default Edit;
+export default Edit
