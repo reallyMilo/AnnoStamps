@@ -10,7 +10,8 @@
     "studio": "pnpm exec prisma studio",
     "migrate": "pnpm exec prisma migrate dev",
     "db-seed": "NODE_ENV=development prisma db seed",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -63,7 +64,7 @@
     "typescript": "^5.0.4"
   },
   "engines": {
-    "node": ">=18.12.1"
+    "node": "18.16.0"
   },
   "packageManager": "pnpm@8.3.0"
 }
