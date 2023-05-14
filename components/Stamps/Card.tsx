@@ -13,7 +13,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
-import AuthModal from './AuthModal'
+import AuthModal from '../AuthModal'
 
 const Card = ({
   id = '',
