@@ -5,7 +5,7 @@
     "plugin:typescript-sort-keys/recommended",
     "plugin:react/jsx-runtime",
     "plugin:react-hooks/recommended",
-    "cypress"
+    "plugin:cypress/recommended"
   ],
   "overrides": [
     {
