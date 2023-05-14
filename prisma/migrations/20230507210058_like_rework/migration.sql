@@ -18,3 +18,15 @@ ALTER TABLE "_StampLiker" ADD CONSTRAINT "_StampLiker_A_fkey" FOREIGN KEY ("A") 
 
 -- AddForeignKey
 ALTER TABLE "_StampLiker" ADD CONSTRAINT "_StampLiker_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+-- Custom Migration Step
+DO $$BEGIN
+  UPDATE "Stamp" SET "liked" = JSON_ARRAY_LENGTH("likes"->'users');
+
+  INSERT INTO "_StampLiker" ("A", "B")
+  SELECT "Stamp"."id", "User"."id"
+  FROM "Stamp", "User"
+  CROSS JOIN LATERAL JSON_ARRAY_ELEMENTS_TEXT("likes"->'users') AS "likedUser"
+  WHERE "User"."id" = "likedUser"::TEXT;
+END$$;
