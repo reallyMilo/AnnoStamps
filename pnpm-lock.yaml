@@ -90,6 +90,9 @@ devDependencies:
   eslint-config-next:
     specifier: ^13.3.0
     version: 13.3.0(eslint@8.38.0)(typescript@5.0.4)
+  eslint-plugin-cypress:
+    specifier: ^2.13.3
+    version: 2.13.3(eslint@8.38.0)
   eslint-plugin-jsonc:
     specifier: ^2.7.0
     version: 2.7.0(eslint@8.38.0)
@@ -2357,6 +2360,18 @@ packages:
       - supports-color
     dev: true
 
+  /eslint-plugin-cypress@2.13.3(eslint@8.38.0):
+    resolution:
+      {
+        integrity: sha512-nAPjZE5WopCsgJwl3vHm5iafpV+ZRO76Z9hMyRygWhmg5ODXDPd+9MaPl7kdJ2azj+sO87H3P1PRnggIrz848g==,
+      }
+    peerDependencies:
+      eslint: '>= 3.2.1'
+    dependencies:
+      eslint: 8.38.0
+      globals: 11.12.0
+    dev: true
+
   /eslint-plugin-import@2.27.5(@typescript-eslint/parser@5.59.2)(eslint-import-resolver-typescript@3.5.5)(eslint@8.38.0):
     resolution:
       {
@@ -3131,6 +3146,14 @@ packages:
     engines: { node: '>=10' }
     dependencies:
       ini: 2.0.0
+    dev: true
+
+  /globals@11.12.0:
+    resolution:
+      {
+        integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==,
+      }
+    engines: { node: '>=4' }
     dev: true
 
   /globals@13.20.0:
