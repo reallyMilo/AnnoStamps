@@ -4,7 +4,8 @@
     "next/core-web-vitals",
     "plugin:typescript-sort-keys/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "cypress"
   ],
   "overrides": [
     {
