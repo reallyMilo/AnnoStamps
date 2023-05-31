@@ -1,4 +1,3 @@
-//FIXME: Factor this on appdir migration
 import { Dialog, Transition } from '@headlessui/react'
 import { EnvelopeOpenIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Form, Formik } from 'formik'

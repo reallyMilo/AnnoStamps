@@ -10,7 +10,6 @@
     "studio": "pnpm exec prisma studio",
     "migrate": "pnpm exec prisma migrate dev",
     "db-seed": "NODE_ENV=development prisma db seed",
-    "cypress:open": "cypress open",
     "prepare": "husky install",
     "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
@@ -52,7 +51,6 @@
     "cypress": "^12.12.0",
     "eslint": "8.38.0",
     "eslint-config-next": "^13.3.0",
-    "eslint-plugin-cypress": "^2.13.3",
     "eslint-plugin-jsonc": "^2.7.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-typescript-sort-keys": "^2.3.0",
