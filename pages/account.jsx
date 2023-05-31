@@ -1,31 +1,32 @@
-import Input from "@/components/Input";
-import Layout from "@/components/Layout";
-import { prisma } from "@/lib/prisma";
-import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
-import axios from "axios";
-import { Form, Formik } from "formik";
-import { getSession, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { toast } from "react-hot-toast";
-import * as Yup from "yup";
+import { ExclamationCircleIcon } from '@heroicons/react/24/solid'
+import axios from 'axios'
+import { Form, Formik } from 'formik'
+import { useRouter } from 'next/router'
+import { getSession, useSession } from 'next-auth/react'
+import { toast } from 'react-hot-toast'
+import * as Yup from 'yup'
+
+import Input from '@/components/Input'
+import Layout from '@/components/Layout'
+import { prisma } from '@/lib/prisma'
 export async function getServerSideProps(context) {
   // Check if user is authenticated
-  const session = await getSession(context);
+  const session = await getSession(context)
 
   // If not, redirect to the homepage
   if (!session) {
     return {
       redirect: {
-        destination: "/",
+        destination: '/',
         permanent: false,
       },
-    };
+    }
   }
 
   // Get info of the authenticated user
   const singleUser = await prisma.user.findFirst({
     where: { email: session.user.email },
-  });
+  })
 
   // Pass the data to the Account component
   return {
@@ -33,47 +34,47 @@ export async function getServerSideProps(context) {
       user: JSON.parse(JSON.stringify(singleUser)),
       session,
     },
-  };
+  }
 }
 const Account = (props) => {
-  const router = useRouter();
+  const router = useRouter()
   const handleSumbit = async (values) => {
-    let toastId;
+    let toastId
     try {
-      toastId = toast.loading("Saving...");
-      const { data } = await axios.post("/api/username/", { values });
+      toastId = toast.loading('Saving...')
+      const { data } = await axios.post('/api/username/', { values })
       if (data.nickname) {
-        toast.success("Successfully saved", { id: toastId });
-        router.push("/account");
+        toast.success('Successfully saved', { id: toastId })
+        router.push('/account')
       } else {
-        toast.error("An error occured, pleas try again later.", {
+        toast.error('An error occured, pleas try again later.', {
           id: toastId,
-        });
+        })
       }
     } catch (e) {
-      if (e.response.data.message === "P2002") {
-        toast.error("Username not available!", { id: toastId });
+      if (e.response.data.message === 'P2002') {
+        toast.error('Username not available!', { id: toastId })
       } else {
-        toast.error("An error occured, pleas try again later.", {
+        toast.error('An error occured, pleas try again later.', {
           id: toastId,
-        });
+        })
       }
     }
-  };
+  }
 
   return (
     <>
       <Layout>
-        <div className="container mx-auto py-12 px-5">
-          <h1 className="text-xl font-bold mb-5">Account Details</h1>
-          <section className="grid grid-cols-1 md:grid-cols-2 space-x-10">
+        <div className="container mx-auto px-5 py-12">
+          <h1 className="mb-5 text-xl font-bold">Account Details</h1>
+          <section className="grid grid-cols-1 space-x-10 md:grid-cols-2">
             <div className="">
               <ul>
                 {props.user.name && (
                   <li className="pb-5">
-                    <p className="font-bold mb-2">Name</p>
+                    <p className="mb-2 font-bold">Name</p>
                     <input
-                      className="w-full shadow-sm rounded-md py-2 pl-4 truncate border focus:outline-none focus:ring-4 focus:ring-opacity-20 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50"
                       type="text"
                       value={props.user.name}
                       disabled
@@ -82,9 +83,9 @@ const Account = (props) => {
                 )}
 
                 <li className="pb-5">
-                  <p className="font-bold mb-2">Email</p>
+                  <p className="mb-2 font-bold">Email</p>
                   <input
-                    className="w-full shadow-sm rounded-md py-2 pl-4 truncate border focus:outline-none focus:ring-4 focus:ring-opacity-20 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50"
                     type="text"
                     value={props.user.email}
                     disabled
@@ -96,9 +97,9 @@ const Account = (props) => {
             <div>
               {props.user.nickname ? (
                 <>
-                  <p className="font-bold mb-2">Username</p>
+                  <p className="mb-2 font-bold">Username</p>
                   <input
-                    className="w-full shadow-sm rounded-md py-2 pl-4 truncate border focus:outline-none focus:ring-4 focus:ring-opacity-20 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50"
                     type="text"
                     value={props.user.nickname}
                     disabled
@@ -107,40 +108,40 @@ const Account = (props) => {
               ) : (
                 <Formik
                   initialValues={{
-                    userName: "",
+                    userName: '',
                   }}
                   validationSchema={Yup.object().shape({
-                    userName: Yup.string().max(50).trim().required("Required"),
+                    userName: Yup.string().max(50).trim().required('Required'),
                   })}
                   onSubmit={handleSumbit}
                 >
                   {({ isSubmitting, isValid }) => (
                     <Form>
-                      <p className="font-bold mb-2">Username</p>
+                      <p className="mb-2 font-bold">Username</p>
                       <Input
                         name="userName"
                         type="text"
                         placeholder={
                           props.user.nickname
                             ? props.user.nickname
-                            : "Sir Archibald Blake"
+                            : 'Sir Archibald Blake'
                         }
                       />
                       <p className="py-2 text-sm text-slate-400">
                         You can set a username that will be displayed with your
                         uploaded stamps.
                         <br />
-                        <span className="text-red-600 font-bold flex items-center space-x-6 mt-1">
-                          <ExclamationCircleIcon className="w-6 h-6 inline-block mr-2" />
+                        <span className="mt-1 flex items-center space-x-6 font-bold text-red-600">
+                          <ExclamationCircleIcon className="mr-2 inline-block h-6 w-6" />
                           Usernames cannot be changed!
                         </span>
                       </p>
                       <button
                         type="submit"
                         disabled={!isValid}
-                        className="bg-yellow-600 text-white py-2 px-6 rounded-md focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 hover:bg-yellow-300 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-yellow-700 mt-5"
+                        className="mt-5 rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
                       >
-                        {isSubmitting ? "Submitting..." : "Submit"}
+                        {isSubmitting ? 'Submitting...' : 'Submit'}
                       </button>
                     </Form>
                   )}
@@ -151,6 +152,6 @@ const Account = (props) => {
         </div>
       </Layout>
     </>
-  );
-};
-export default Account;
+  )
+}
+export default Account

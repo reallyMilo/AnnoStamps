@@ -1,11 +1,12 @@
-import Layout from "@/components/Layout";
-import Image from "next/image";
+import Image from 'next/image'
+
+import Layout from '@/components/Layout'
 
 const HowTo = () => {
   return (
     <Layout>
-      <div className="container max-w-5xl mx-auto py-12 px-5">
-        <h1 className="text-3xl font-bold pb-2">
+      <div className="container mx-auto max-w-5xl px-5 py-12">
+        <h1 className="pb-2 text-3xl font-bold">
           How to use stamps in Anno 1800
         </h1>
         <p className="pb-10">
@@ -14,7 +15,7 @@ const HowTo = () => {
           Stamps are created in game and generate a file that can then be shared
           with others.
         </p>
-        <h3 className="text-xl font-bold pb-5">How to create a stamp</h3>
+        <h3 className="pb-5 text-xl font-bold">How to create a stamp</h3>
         <p className="font-bold">Create the stamp in game.</p>
         <p className="py-5">The stamp menu is shown in the screenshot below.</p>
         <Image
@@ -43,12 +44,12 @@ const HowTo = () => {
           width={800}
           height={600}
           alt="Stamp folder"
-          style={{ height: "auto" }}
+          style={{ height: 'auto' }}
         />
-        <p className="font-bold pt-5">Locate the stamp file in Windows</p>
+        <p className="pt-5 font-bold">Locate the stamp file in Windows</p>
         <p className="py-5">
           Your stamps directory is located in the Windows user
-          &apos;Documents&apos; folder, by default:{" "}
+          &apos;Documents&apos; folder, by default:{' '}
           <span className="italic">
             &apos;C:/Users/[username]/Documents/Anno 1800/stamps&apos;
           </span>
@@ -63,7 +64,7 @@ const HowTo = () => {
           height={600}
           alt="Stamp folder"
         />
-        <h3 className="text-xl font-bold pb-5 pt-10">
+        <h3 className="pb-5 pt-10 text-xl font-bold">
           How to use a downloaded stamp
         </h3>
         <p className="font-bold">Download the stamp</p>
@@ -82,12 +83,12 @@ const HowTo = () => {
           The downloaded stamp file can be re-named to your preference.
         </p>
 
-        <p className="font-bold py-5">
+        <p className="py-5 font-bold">
           Place the stamp file in your stamps directory
         </p>
         <p className="pb-2">
           Your stamps directory is located in the Windows user
-          &apos;Documents&apos; folder, by default:{" "}
+          &apos;Documents&apos; folder, by default:{' '}
           <span className="italic">
             &apos;C:/Users/[username]/Documents/Anno 1800/stamps&apos;
           </span>
@@ -106,7 +107,7 @@ const HowTo = () => {
         />
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default HowTo;
+export default HowTo

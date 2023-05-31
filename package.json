@@ -1,11 +1,23 @@
 {
-  "name": "supa-vacation",
+  "name": "annostamps",
   "private": true,
+  "version": "0.0.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "studio": "pnpm exec prisma studio",
+    "migrate": "pnpm exec prisma migrate dev",
+    "db-seed": "NODE_ENV=development prisma db seed",
+    "prepare": "husky install",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
+  "lint-staged": {
+    "*": "prettier --ignore-unknown --write"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",
@@ -31,11 +43,28 @@
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@types/node": "^20.1.0",
+    "@types/react": "18.2.5",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
     "autoprefixer": "^10.4.14",
     "eslint": "8.38.0",
     "eslint-config-next": "^13.3.0",
+    "eslint-plugin-jsonc": "^2.7.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-typescript-sort-keys": "^2.3.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.2",
     "postcss": "^8.4.21",
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.2.8",
     "prisma": "^4.12.0",
-    "tailwindcss": "^3.3.1"
-  }
+    "tailwindcss": "^3.3.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": "18.16.0"
+  },
+  "packageManager": "pnpm@8.3.0"
 }
