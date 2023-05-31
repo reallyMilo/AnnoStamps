@@ -21,7 +21,7 @@ const Footer = () => {
         <div className="flex items-center space-x-5 px-5">
           {socials.map((social) => (
             <Link
-              key="social.name"
+              key={social.name}
               href={social.url}
               target="_blank"
               data-cy={social.name}
