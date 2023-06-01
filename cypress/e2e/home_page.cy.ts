@@ -1,5 +1,5 @@
 describe('Home Page', () => {
-  it('sucessfully loads', () => {
+  it('should render', () => {
     cy.visit('/')
   })
 
