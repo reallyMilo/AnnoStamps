@@ -3,20 +3,18 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-import { cn } from '@/lib/utils'
+import { cn, pageSize } from '@/lib/utils'
 
 type PaginationProps = {
   count: number
 }
-
-import { PAGE_SIZE } from 'pages'
 
 export const Pagination = ({ count }: PaginationProps) => {
   const router = useRouter()
   const { query } = router
   const [page, setPage] = useState(1)
   const pages = Array.from(
-    { length: Math.ceil(count / PAGE_SIZE) },
+    { length: Math.ceil(count / pageSize()) },
     (_, i) => i + 1
   )
 
@@ -43,8 +41,8 @@ export const Pagination = ({ count }: PaginationProps) => {
       query: { ...query, page: page },
     })
   }
-  const starting = (page - 1) * PAGE_SIZE + 1
-  const ending = Math.min(starting + PAGE_SIZE - 1, count)
+  const starting = (page - 1) * pageSize() + 1
+  const ending = Math.min(starting + pageSize() - 1, count)
 
   return (
     <div className="mt-6 flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">

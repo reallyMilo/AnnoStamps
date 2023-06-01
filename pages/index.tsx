@@ -7,25 +7,20 @@ import Layout from '@/components/Layout/Layout'
 import { Pagination } from '@/components/Pagination'
 import Grid from '@/components/Stamps/Grid'
 import { prisma } from '@/lib/prisma'
+import { pageSize } from '@/lib/utils'
 
 type HomePageProps = {
   count: number
   stamps: Stamp[]
 }
-export const PAGE_SIZE = 10
 
 export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
   query,
   res,
 }) => {
-  // need to uriencode for prod
   const { modded, region, category, page } = query
   const isModded = modded === 'true' ? true : false
-  const pageNumber = Number(page) ?? 1
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=15, stale-while-revalidate=59'
-  )
+  const pageNumber = page ?? 1
 
   const [count, stamps] = await prisma.$transaction([
     prisma.stamp.count({
@@ -54,10 +49,15 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
           },
         },
       },
-      skip: (pageNumber - 1) * PAGE_SIZE,
-      take: PAGE_SIZE,
+      skip: (Number(pageNumber) - 1) * pageSize(),
+      take: pageSize(),
     }),
   ])
+
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=15, stale-while-revalidate=59'
+  )
 
   return {
     props: {
