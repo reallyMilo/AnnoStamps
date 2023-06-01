@@ -4,7 +4,6 @@ import { Form, Formik } from 'formik'
 import Image from 'next/image'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
-import PropTypes from 'prop-types'
 import { Fragment, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import * as Yup from 'yup'
@@ -173,7 +172,10 @@ const AuthModal = ({ show = false, onClose = () => null }) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="relative mx-5 my-8 inline-block w-auto max-w-md transform overflow-hidden bg-white text-left align-middle shadow-xl transition-all sm:rounded-md">
+            <div
+              data-testid="auth-modal"
+              className="relative mx-5 my-8 inline-block w-auto max-w-md transform overflow-hidden bg-white text-left align-middle shadow-xl transition-all sm:rounded-md"
+            >
               {/* Close icon */}
               <button
                 onClick={closeModal}
@@ -237,6 +239,7 @@ const AuthModal = ({ show = false, onClose = () => null }) => {
                       disabled={disabled}
                       onClick={() => signInWithDiscord()}
                       className="mx-auto mt-4 flex h-[46px] w-full items-center justify-center space-x-2 rounded-md border p-2 text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-50 hover:text-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-25 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-gray-200 disabled:hover:bg-transparent disabled:hover:text-gray-500"
+                      data-testid="discord-sign-in"
                     >
                       <Image
                         src="/discord.svg"
@@ -330,11 +333,6 @@ const AuthModal = ({ show = false, onClose = () => null }) => {
       </Dialog>
     </Transition>
   )
-}
-
-AuthModal.propTypes = {
-  show: PropTypes.bool,
-  onClose: PropTypes.func,
 }
 
 export default AuthModal

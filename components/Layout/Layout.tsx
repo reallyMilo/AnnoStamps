@@ -1,5 +1,6 @@
 import Head from 'next/head'
 
+import AuthModal from '../Auth/AuthModal'
 import Footer from './Footer'
 import Navbar from './Navbar'
 
@@ -19,13 +20,14 @@ const Layout = ({ children = null }) => {
         />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-
+      <AuthModal />
       <div className="flex min-h-screen flex-col bg-[#F0F3F4]">
         <Navbar />
 
         <main className="s relative z-10 mx-auto mb-20 min-h-full w-full bg-[#F0F3F4] bg-opacity-95">
           {children}
         </main>
+
         <Footer />
       </div>
     </>

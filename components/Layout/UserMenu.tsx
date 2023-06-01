@@ -10,7 +10,7 @@ import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { Fragment, useState } from 'react'
 
-import AuthModal from '../AuthModal'
+import AuthModal from '@/components/Auth/AuthModal'
 
 const menuItems = [
   {
@@ -58,6 +58,7 @@ const UserMenu = () => {
           type="button"
           onClick={openModal}
           className="ml-4 rounded-md bg-[#6DD3C0] px-4 py-2 text-sm font-bold text-[#222939] transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-500 focus:ring-opacity-50"
+          data-testid="login-button"
         >
           Add a Stamp
         </button>
@@ -65,7 +66,7 @@ const UserMenu = () => {
       </>
     )
   return (
-    <Menu as="div" className="relative z-50">
+    <Menu as="div" data-testid="user-menu" className="relative z-50">
       <Menu.Button className="group flex items-center space-x-px">
         <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
           <UserIcon className="h-6 w-6 text-gray-400" />

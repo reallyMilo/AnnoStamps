@@ -1,19 +1,21 @@
 import {
   CogIcon,
   HandThumbUpIcon,
-  HeartIcon,
   HomeIcon,
   SparklesIcon,
   TagIcon,
   UserCircleIcon,
   WrenchIcon,
 } from '@heroicons/react/24/solid'
+import type { User } from '@prisma/client'
 import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 import { useState } from 'react'
+import type { StampWithLikes } from 'types'
 
-import AuthModal from '../AuthModal'
+import { cn } from '@/lib/utils'
 
 const Card = ({
   id = '',
@@ -21,29 +23,21 @@ const Card = ({
   title = '',
   category = '',
   region = '',
-  favorite = false,
-  modded = '',
-  user = '',
+  modded = false,
+  liked,
   likes,
-  isUserAuthenticated,
-  userSession,
-  downloads,
-  onClickFavorite = () => null,
-}) => {
-  const [showModal, setShowModal] = useState(false)
-  const [usersVoted, setUsersVoted] = useState(new Set(likes?.users))
-  const [likesCount, setLikesCount] = useState(usersVoted.size)
-  const sessionUser = userSession?.user
+}: StampWithLikes) => {
+  const likedBy = new Set(likes?.users)
+  const { data: session } = useSession()
+  const user = session?.user as User
+  const [isLiked, setIsLiked] = useState(likedBy.has(user?.email))
 
   const addToUsersVoted = () => {
-    setUsersVoted((prevUsersVoted) => prevUsersVoted.add(sessionUser?.email))
-    setLikesCount((prevLikesCount) => prevLikesCount + 1)
+    if (!user) return // modal here to login!
+    setIsLiked(true)
 
-    axios.post('/api/likes', { users: Array.from(usersVoted), stampId: id })
+    axios.post('/api/likes', { stampId: id })
   }
-
-  const openModal = () => setShowModal(true)
-  const closeModal = () => setShowModal(false)
 
   let icon
   let categoryColour
@@ -86,14 +80,10 @@ const Card = ({
 
   return (
     <>
-      <AuthModal show={showModal} onClose={closeModal} />
-      <div
-        href={`/stamps/${id}`}
-        className=" grid w-full grid-flow-row grid-rows-2 rounded-lg bg-white shadow-md"
-      >
+      <div className=" grid w-full grid-flow-row grid-rows-2 rounded-lg bg-white shadow-md">
         <div className="relative">
           <div className="aspect-h-9 aspect-w-16 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
-            {screenshot ? (
+            {screenshot && (
               <Link href={`/stamps/${id}`}>
                 <Image
                   src={screenshot}
@@ -114,24 +104,8 @@ const Card = ({
                   </span>
                 )}
               </Link>
-            ) : null}
+            )}
           </div>
-          {/* <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            if (typeof onClickFavorite === "function") {
-              onClickFavorite(id);
-            }
-          }}
-          className="absolute top-2 right-2"
-        >
-          <HeartIcon
-            className={`w-7 h-7 drop-shadow-lg transition ${
-              favorite ? "text-red-500" : "text-white"
-            }`}
-          />
-        </button> */}
         </div>
         <div className="flex flex-col flex-nowrap p-4">
           <p className="pb-2 text-sm text-[#B11E47]">{region}</p>
@@ -139,13 +113,13 @@ const Card = ({
           <div className="mt-2 w-full text-lg font-semibold leading-tight text-gray-700">
             <Link href={`/stamps/${id}`}>{title ?? ''}</Link>
           </div>
-          {user.nickname && (
+          {user?.nickname && (
             <p className="flex items-center gap-1 py-2 text-xs text-slate-500">
               <UserCircleIcon className="h-4 w-4" />
-              {`${user.nickname}`}
+              {user.nickname}
             </p>
           )}
-          <ol className="sapce-y-1 relative bottom-0 mt-auto flex flex-row justify-between  pt-4 text-gray-500">
+          <ol className="relative bottom-0 mt-auto flex flex-row justify-between  pt-4 text-gray-500">
             <li
               className={`flex items-center gap-1 rounded-full ${categoryColour} w-fit py-1  pl-2 pr-3 text-xs text-white`}
             >
@@ -153,28 +127,13 @@ const Card = ({
               {category ?? ''}
             </li>
 
-            {isUserAuthenticated === 'unauthenticated' ? (
-              <li className="flex items-center gap-1 text-sm">
-                <HandThumbUpIcon
-                  className="h-6 w-6 cursor-pointer"
-                  onClick={openModal}
-                />
-                {likesCount}
-              </li>
-            ) : usersVoted.has(sessionUser?.email) ? (
-              <li className="flex cursor-pointer items-center gap-1 text-sm">
-                <HandThumbUpIcon className="h-6 w-6 text-[#6DD3C0]" />
-                {likesCount}
-              </li>
-            ) : (
-              <li className="flex cursor-pointer items-center gap-1 text-sm">
-                <HandThumbUpIcon
-                  className="h-6 w-6"
-                  onClick={addToUsersVoted}
-                />
-                {likesCount}
-              </li>
-            )}
+            <li className="flex cursor-pointer items-center gap-1 text-sm">
+              <HandThumbUpIcon
+                className={cn('h-6 w-6', isLiked && 'text-[#6DD3C0]')}
+                onClick={addToUsersVoted}
+              />
+              {liked}
+            </li>
           </ol>
         </div>
       </div>
