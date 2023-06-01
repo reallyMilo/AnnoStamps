@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getSession } from 'next-auth/react'
 
-import Layout from '@/components/Layout'
+import Layout from '@/components/Layout/Layout'
 import ListingForm from '@/components/ListingForm'
 import { prisma } from '@/lib/prisma'
 

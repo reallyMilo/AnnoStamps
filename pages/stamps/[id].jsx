@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
-import Layout from '@/components/Layout'
+import Layout from '@/components/Layout/Layout'
 import { prisma } from '@/lib/prisma'
 
 const Listedstamp = (stamp = null) => {
