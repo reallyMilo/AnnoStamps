@@ -6,8 +6,8 @@ import { getSession, useSession } from 'next-auth/react'
 import { toast } from 'react-hot-toast'
 import * as Yup from 'yup'
 
-import Input from '@/components/Input'
-import Layout from '@/components/Layout'
+import Input from '@/components/Auth/Input'
+import Layout from '@/components/Layout/Layout'
 import { prisma } from '@/lib/prisma'
 export async function getServerSideProps(context) {
   // Check if user is authenticated

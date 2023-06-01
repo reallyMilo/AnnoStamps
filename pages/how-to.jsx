@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import Layout from '@/components/Layout'
+import Layout from '@/components/Layout/Layout'
 
 const HowTo = () => {
   return (

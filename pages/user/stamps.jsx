@@ -1,7 +1,7 @@
 import { getSession } from 'next-auth/react'
 
-import Grid from '@/components/Grid'
-import Layout from '@/components/Layout'
+import Layout from '@/components/Layout/Layout'
+import Grid from '@/components/Stamps/Grid'
 import { prisma } from '@/lib/prisma'
 
 export async function getServerSideProps(context) {

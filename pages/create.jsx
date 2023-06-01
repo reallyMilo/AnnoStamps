@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import axios from 'axios'
 import { getSession } from 'next-auth/react'
 
-import Layout from '@/components/Layout'
+import Layout from '@/components/Layout/Layout'
 import ListingForm from '@/components/ListingForm'
 
 const prisma = new PrismaClient()

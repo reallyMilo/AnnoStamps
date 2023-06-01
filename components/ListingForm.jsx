@@ -9,7 +9,7 @@ import { toast } from 'react-hot-toast'
 import * as Yup from 'yup'
 
 import ImageUpload from '@/components/ImageUpload'
-import Input from '@/components/Input'
+import Input from '@/components/Auth/Input'
 import StampUpload from '@/components/StampUpload'
 
 import SelectField from './Select'
