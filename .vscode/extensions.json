@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    // Linting / Formatting
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    // PR management / Reviewing
+    "github.vscode-pull-request-github",
+    // Showing todo comments
+    "gruntfuggly.todo-tree"
+  ]
+}

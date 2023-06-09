@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Stamp" ADD COLUMN     "liked" INTEGER NOT NULL DEFAULT 0;
