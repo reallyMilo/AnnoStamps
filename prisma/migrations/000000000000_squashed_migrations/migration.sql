@@ -13,6 +13,7 @@ CREATE TABLE "Stamp" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "modded" BOOLEAN NOT NULL DEFAULT false,
     "likes" JSONB NOT NULL DEFAULT '{"users": []}',
+    "liked" INTEGER NOT NULL DEFAULT 0,
     "downloads" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Stamp_pkey" PRIMARY KEY ("id")
@@ -67,6 +68,12 @@ CREATE TABLE "VerificationToken" (
     "expires" TIMESTAMP(3) NOT NULL
 );
 
+-- CreateTable
+CREATE TABLE "_StampLiker" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
 
@@ -85,6 +92,12 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 -- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "_StampLiker_AB_unique" ON "_StampLiker"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_StampLiker_B_index" ON "_StampLiker"("B");
+
 -- AddForeignKey
 ALTER TABLE "Stamp" ADD CONSTRAINT "Stamp_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -93,4 +106,10 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_StampLiker" ADD CONSTRAINT "_StampLiker_A_fkey" FOREIGN KEY ("A") REFERENCES "Stamp"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_StampLiker" ADD CONSTRAINT "_StampLiker_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
