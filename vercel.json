@@ -1,5 +1,4 @@
 {
-  "buildCommand": "prisma generate && prisma migrate resolve --applied 000000000000_squashed_migrations && next build",
   "git": {
     "deploymentEnabled": {
       "main": false
