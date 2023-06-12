@@ -1,39 +1,69 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, User } from '@prisma/client'
+
+import { GOODS_1800 } from './game/1800/data'
+import { getGoodRegion } from './game/1800/helpers'
 
 const prisma = new PrismaClient()
 
+const userData: Partial<User>[] = Array.from({ length: 100 }, (_, index) => ({
+  name: `User ${index + 1}`,
+  email: `user${index + 1}@example.com`,
+  nickname: `user${index + 1}`,
+}))
+
 async function seed() {
-  // Create 40 users
-  const users = []
-  for (let i = 0; i < 40; i++) {
-    const user = await prisma.user.create({
-      data: {
-        name: `User ${i + 1}`,
-        email: `user${i + 1}@example.com`,
-        nickname: `user${i + 1}`,
-      },
-    })
+  const users: User[] = []
+
+  for (const data of userData) {
+    const user: User = await prisma.user.create({ data })
     users.push(user)
   }
 
-  // Create 40 stamps with associated users
-  for (let i = 0; i < 40; i++) {
-    await prisma.stamp.create({
-      data: {
-        userId: users[i].id,
-        game: `Game ${i + 1}`,
-        title: `Stamp ${i + 1}`,
-        description: `Description for Stamp ${i + 1}`,
-        category: i % 3 ? 'Housing' : 'Production Chain',
-        region: i % 2 ? 'Old World' : 'New World',
-        screenshot: '/stamp-highlight.jpg',
-        stamp: 'stampFile',
-        modded: i % 2 === 0,
-        liked: i,
-        downloads: i,
-      },
+  const stampData = Array.from({ length: 1000 }, (_, index) => {
+    const goodCategories = Object.keys(GOODS_1800)
+    const rndCategoryIndex = Math.floor(Math.random() * goodCategories.length)
+
+    const associatedGoods = Object.values(GOODS_1800)[rndCategoryIndex].items
+    const rndGoodIndex = Math.floor(Math.random() * associatedGoods.length)
+
+    const goodCategory = goodCategories[rndCategoryIndex]
+    const good = associatedGoods[rndGoodIndex].name
+
+    return {
+      userId: users[index % users.length].id,
+      game: '1800',
+      title: `Stamp-${goodCategory}-${good}-${index}`,
+      description: `Stamp-${goodCategory}-${good}-${index}`,
+      category: 'Production',
+      region: getGoodRegion(good),
+      imageUrl: '/stamp.png',
+      stampFileUrl: '/stamp.zip',
+      townhall: index % 2 ? false : true,
+      tradeUnion: index % 2 ? true : false,
+      goodCategory,
+      good,
+    }
+  })
+
+  const stamp = await prisma.stamp.createMany({
+    data: stampData,
+  })
+
+  const insertedStamps = await prisma.stamp.findMany({ take: 250 })
+
+  const updatedStamps = await Promise.all(
+    insertedStamps.map((stamp) => {
+      const selectUser = users[Math.floor(Math.random() * users.length)]
+      return prisma.stamp.update({
+        where: { id: stamp.id },
+        data: {
+          likedBy: {
+            connect: { id: selectUser.id },
+          },
+        },
+      })
     })
-  }
+  )
 
   console.log('Seed completed successfully')
 }
