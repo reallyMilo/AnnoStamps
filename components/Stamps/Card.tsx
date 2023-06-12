@@ -18,19 +18,26 @@ import type { StampWithLikes } from 'types'
 import { cn } from '@/lib/utils'
 
 const Card = ({
-  id = '',
-  screenshot = '',
-  title = '',
-  category = '',
-  region = '',
-  modded = false,
-  liked,
-  likes,
+  id,
+  imageUrl,
+  title,
+  category,
+  region,
+  modded,
+  likedBy,
 }: StampWithLikes) => {
-  const likedBy = new Set(likes?.users)
+  const likes = likedBy.length
+
   const { data: session } = useSession()
   const user = session?.user as User
-  const [isLiked, setIsLiked] = useState(likedBy.has(user?.email))
+
+  //TODO: Query user on likedStamps and see if stamp id exists
+  const userLikedPost = () => {
+    if (likedBy.some((liked) => liked.id === user.id)) return true
+    return false
+  }
+
+  const [isLiked, setIsLiked] = useState(user ? userLikedPost : false)
 
   const addToUsersVoted = () => {
     if (!user) return // modal here to login!
@@ -83,10 +90,10 @@ const Card = ({
       <div className=" grid w-full grid-flow-row grid-rows-2 rounded-lg bg-white shadow-md">
         <div className="relative">
           <div className="aspect-h-9 aspect-w-16 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
-            {screenshot && (
+            {imageUrl && (
               <Link href={`/stamps/${id}`}>
                 <Image
-                  src={screenshot}
+                  src={imageUrl}
                   alt={title}
                   className="transition hover:opacity-80"
                   fill
@@ -132,7 +139,7 @@ const Card = ({
                 className={cn('h-6 w-6', isLiked && 'text-[#6DD3C0]')}
                 onClick={addToUsersVoted}
               />
-              {liked}
+              {likes}
             </li>
           </ol>
         </div>

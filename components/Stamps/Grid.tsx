@@ -1,8 +1,8 @@
-import type { Stamp } from '@prisma/client'
+import { StampWithLikes } from 'types'
 
 import Card from './Card'
 
-const Grid = ({ stamps }: { stamps: Stamp[] }) => {
+const Grid = ({ stamps }: { stamps: StampWithLikes[] }) => {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {stamps.map((stamp) => (
