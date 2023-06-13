@@ -31,6 +31,9 @@ dependencies:
   clsx:
     specifier: ^1.2.1
     version: 1.2.1
+  downshift:
+    specifier: ^7.6.0
+    version: 7.6.0(react@18.2.0)
   formik:
     specifier: ^2.2.9
     version: 2.2.9(react@18.2.0)
@@ -1838,6 +1841,13 @@ packages:
     engines: { node: '>=4.0.0' }
     dev: true
 
+  /compute-scroll-into-view@2.0.4:
+    resolution:
+      {
+        integrity: sha512-y/ZA3BGnxoM/QHHQ2Uy49CLtnWPbt4tTPpEEZiEmmiWBFKjej7nEyH8Ryz54jH0MLXflUYA3Er2zUxPSJu5R+g==,
+      }
+    dev: false
+
   /concat-map@0.0.1:
     resolution:
       {
@@ -2180,6 +2190,22 @@ packages:
         integrity: sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg==,
       }
     dev: true
+
+  /downshift@7.6.0(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-VSoTVynTAsabou/hbZ6HJHUVhtBiVOjQoBsCPcQq5eAROIGP+9XKMp9asAKQ3cEcUP4oe0fFdD2pziUjhFY33Q==,
+      }
+    peerDependencies:
+      react: '>=16.12.0'
+    dependencies:
+      '@babel/runtime': 7.21.5
+      compute-scroll-into-view: 2.0.4
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-is: 17.0.2
+      tslib: 2.5.0
+    dev: false
 
   /eastasianwidth@0.2.0:
     resolution:
@@ -5258,7 +5284,6 @@ packages:
       {
         integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==,
       }
-    dev: true
 
   /react@18.2.0:
     resolution:
