@@ -36,9 +36,12 @@ const Create = () => {
         <p className="text-gray-500">
           Fill out the form below to upload your stamp.
         </p>
-        <div className="mt-8">
-          <ListingForm buttonText="Add stamp" redirectPath="/" />
-        </div>
+        <p className="mt-6 text-gray-500">
+          Join the discord to get notified when new Stamps are uploaded! (coming
+          soon)
+        </p>
+
+        <ListingForm />
       </div>
     </Layout>
   )
