@@ -1,12 +1,14 @@
+//TODO: refactor repeated logic and jsx when implementing edit stamp feature
+import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import type { Stamp } from '@prisma/client'
 import Downshift from 'downshift'
 import { GOODS_1800 } from 'game/1800/data'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
+import useSWRMutation from 'swr/mutation'
 
-import ImageUpload from '@/components/ImageUpload'
-import StampUpload from '@/components/StampUpload'
 import { cn } from '@/lib/utils'
 
 type StampFields = Omit<
@@ -29,243 +31,367 @@ const boxStyle =
 const errorStyle =
   'border-red-400 text-red-800 focus:border-red-400 focus:ring-red-400'
 
+const imageMimeType = /image\/(png|jpg|jpeg|webp)/i
+const sizeLimit = 1024 * 1024 // 1 MB
+
+async function sendRequest(url, { arg }: { arg: StampFields }) {
+  return fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(arg),
+  }).then((res) => res.json())
+}
+
 const ListingForm = () => {
   const router = useRouter()
   const [category, setCategory] = useState('')
   const [image, setImage] = useState(null)
-  const [file, setFile] = useState(null)
-  console.log(image)
-  const handleOnSubmit = async () => {
-    let toastId
-    if (image && file) {
-      try {
-        toastId = toast.loading('Submitting...')
-        // Submit data
+  const [stamp, setStamp] = useState(null)
+  const { trigger, isMutating } = useSWRMutation('/api/add-stamp', sendRequest)
 
-        toast.success('Successfully submitted', { id: toastId })
-        // Redirect user
-      } catch (e) {
-        toast.error('Unable to submit', { id: toastId })
-      }
-    } else {
-      alert('Screenshot and Stamp file are required')
+  const handleImage = (e) => {
+    const [file] = e.target.files
+    if (!file.type.match(imageMimeType) || file.size > sizeLimit) {
+      return
     }
+    setImage(URL.createObjectURL(file))
+  }
+  const handleStamp = (e) => {
+    const [file] = e.target.files
+    if (file.size > sizeLimit) {
+      return
+    }
+    setStamp(URL.createObjectURL(file))
+  }
+  const handleOnSubmit = async () => {
+    // if (!image && !stamp) {
+    //   alert('Screenshot and Stamp file are required')
+    // }
+    try {
+      const response = await trigger({
+        title: '',
+        description: '',
+        category: '',
+        region: '',
+        goodCategory: '',
+        good: '',
+        capital: '',
+        townhall: false,
+        tradeUnion: false,
+        modded: false,
+      })
+    } catch (e) {}
+    // toast.loading('Submitting...')
+
+    // toast.success('Successfully submitted')
+
+    // toast.error('Unable to submit')
   }
 
   return (
-    <div className="mt-8">
+    <form onSubmit={handleOnSubmit} className="mt-8 space-y-8">
       <div className="mb-10 grid grid-cols-2 gap-10">
-        <ImageUpload image={image} setImage={setImage} />
+        {/* IMAGE UPLOAD */}
+        <div className="flex flex-col space-y-2">
+          <h2 className="py-1 font-bold"> Screenshot </h2>
 
-        <StampUpload />
+          <div
+            className={cn(
+              'group aspect-h-9 aspect-w-16 relative overflow-hidden rounded-md border-gray-300 transition focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+              image
+                ? 'pointer- hover:opacity-50 disabled:hover:opacity-100'
+                : 'border-2 border-dashed hover:border-gray-400 focus:border-gray-400 disabled:hover:border-gray-200'
+            )}
+          >
+            {image ? (
+              <Image
+                className="object-contain"
+                src={image}
+                alt="screenshot"
+                width={400}
+                height={220}
+                onClick={() => setImage(null)}
+              />
+            ) : (
+              <label className="flex flex-col items-center justify-center space-y-2">
+                <div className="w-fit shrink-0 self-center rounded-full bg-gray-200 p-2 transition group-hover:scale-110 group-focus:scale-110">
+                  <ArrowUpIcon className="h-4 w-4 text-gray-500 transition" />
+                </div>
+                <span className="text-xs font-semibold text-gray-500 transition">
+                  Upload
+                </span>
+                <input
+                  type="file"
+                  id="image"
+                  accept=".png, .jpg, .jpeg, .webp"
+                  onChange={handleImage}
+                  hidden
+                  required
+                />
+              </label>
+            )}
+
+            {false && (
+              <span className="text-sm text-red-600">
+                File size exceeds 1MB or is not .png .jpp .jpeg .webp
+              </span>
+            )}
+          </div>
+        </div>
+        {/* STAMP UPLOAD */}
+        <div className="flex flex-col space-y-2">
+          <h2 className="py-1 font-bold"> Stamp File </h2>
+
+          <div
+            className={cn(
+              'group aspect-h-9 aspect-w-16 relative overflow-hidden rounded-md border-gray-300 transition focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+              stamp
+                ? 'pointer- hover:opacity-50 disabled:hover:opacity-100'
+                : 'border-2 border-dashed hover:border-gray-400 focus:border-gray-400 disabled:hover:border-gray-200'
+            )}
+          >
+            {stamp ? (
+              <button className="" onClick={() => setStamp(null)}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="green"
+                  className="h-24 w-24"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            ) : (
+              <label className="flex flex-col items-center justify-center space-y-2">
+                <div className="w-fit shrink-0 self-center rounded-full bg-gray-200 p-2 transition group-hover:scale-110 group-focus:scale-110">
+                  <ArrowUpIcon className="h-4 w-4 text-gray-500 transition" />
+                </div>
+                <span className="text-xs font-semibold text-gray-500 transition">
+                  Upload
+                </span>
+                <input
+                  type="file"
+                  id="stamp"
+                  onChange={handleStamp}
+                  hidden
+                  required
+                />
+              </label>
+            )}
+
+            {false && (
+              <span className="text-sm text-red-600">File exceeds 1Mb</span>
+            )}
+          </div>
+        </div>
       </div>
+      <div className="flex w-full space-x-4">
+        <div>
+          <label htmlFor="category">Category</label>
+          <br />
+          <select
+            id="category"
+            name="category"
+            autoComplete="category-name"
+            className={cn(boxStyle)}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+          >
+            <option value="">-Select-</option>
+            <option value="Housing">Housing</option>
+            <option value="Production">Production</option>
+            <option value="Island">Whole Island</option>
+            <option value="Cosmetic">Cosmetic</option>
+            <option value="General">General</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="Region">Region</label>
+          <br />
+          <select required className={cn(boxStyle)}>
+            <option value="">-Select-</option>
+            <option value="Old World">Old World</option>
+            <option value="New World">New World</option>
+            <option value="Old World">Cape Trelawney</option>
+            <option value="Arctic">Arctic</option>
+            <option value="Enbesa">Enbesa</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="modded">Uses Mods</label>
+          <br />
+          <select name="Modded" id="modded" className={cn(boxStyle)} required>
+            <option value="">-Select-</option>
+            <option value="TRUE">Yes</option>
+            <option value="FALSE">No</option>
+          </select>
+        </div>
+      </div>
+      {category === 'Production' && (
+        <div className="grid grid-cols-3 gap-x-4">
+          <Downshift
+            onChange={(selection) =>
+              alert(
+                selection
+                  ? `You selected ${selection.value}`
+                  : 'Selection Cleared'
+              )
+            }
+            itemToString={(item) => (item ? item.value.toLowerCase() : '')}
+          >
+            {({
+              getInputProps,
+              getItemProps,
+              getMenuProps,
+              getLabelProps,
+              inputValue,
+              isOpen,
+            }) => (
+              <div className="relative flex flex-col space-y-1">
+                <label
+                  {...getLabelProps()}
+                  htmlFor="good"
+                  className="text-gray-600"
+                >
+                  Enter Good
+                </label>
+                <input
+                  {...getInputProps()}
+                  placeholder="Enter final good in chain"
+                  id="good"
+                  name="Good"
+                  type="text"
+                  className={cn(boxStyle, 'relative')}
+                  required
+                />
 
-      <form onSubmit={handleOnSubmit} className="space-y-8">
-        <div className="flex w-full space-x-4">
-          <div>
-            <label htmlFor="category">Category</label>
-            <br />
+                <ul
+                  className="absolute end-0 right-0 top-20 max-h-80 w-44 list-none overflow-y-scroll bg-white p-0"
+                  {...getMenuProps()}
+                >
+                  {isOpen &&
+                    items
+                      .filter(
+                        (item) =>
+                          !inputValue ||
+                          item.value.includes(inputValue.toLowerCase())
+                      )
+                      .map((item, index) => (
+                        //FIXME: no warning or error in console
+                        /* eslint-disable react/jsx-key */
+                        <li
+                          className="cursor-default select-none py-2 pl-3 pr-9 hover:bg-gray-100"
+                          {...getItemProps({
+                            key: `${item.value}${index}`,
+                            item,
+                            index,
+                          })}
+                        >
+                          {item.name}
+                        </li>
+                      ))}
+                </ul>
+              </div>
+            )}
+          </Downshift>
+          <div className="flex flex-col space-y-1">
+            <label className="text-gray-600" htmlFor="trade-union">
+              Trade Union
+            </label>
             <select
-              id="category"
-              name="category"
-              autoComplete="category-name"
               className={cn(boxStyle)}
-              onChange={(e) => setCategory(e.target.value)}
+              id="trade-union"
+              name="trade-union"
               required
             >
-              <option value="">-Select-</option>
-              <option value="Housing">Housing</option>
-              <option value="Production">Production</option>
-              <option value="Island">Whole Island</option>
-              <option value="Cosmetic">Cosmetic</option>
-              <option value="General">General</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="Region">Region</label>
-            <br />
-            <select required className={cn(boxStyle)}>
-              <option value="">-Select-</option>
-              <option value="Old World">Old World</option>
-              <option value="New World">New World</option>
-              <option value="Old World">Cape Trelawney</option>
-              <option value="Arctic">Arctic</option>
-              <option value="Enbesa">Enbesa</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="modded">Uses Mods</label>
-            <br />
-            <select name="Modded" id="modded" className={cn(boxStyle)} required>
               <option value="">-Select-</option>
               <option value="TRUE">Yes</option>
               <option value="FALSE">No</option>
             </select>
           </div>
         </div>
-        {category === 'Production' && (
-          <div className="grid grid-cols-3 gap-x-4">
-            <Downshift
-              onChange={(selection) =>
-                alert(
-                  selection
-                    ? `You selected ${selection.value}`
-                    : 'Selection Cleared'
-                )
-              }
-              itemToString={(item) => (item ? item.value.toLowerCase() : '')}
+      )}
+      {category === 'Housing' && (
+        <div className="grid grid-cols-3 gap-x-4">
+          <div className="flex flex-col space-y-1">
+            <label className="text-gray-600" htmlFor="town-hall">
+              Town Hall
+            </label>
+            <select
+              className={cn(boxStyle)}
+              id="town-hall"
+              name="Town Hall"
+              required
             >
-              {({
-                getInputProps,
-                getItemProps,
-                getMenuProps,
-                getLabelProps,
-                inputValue,
-                isOpen,
-              }) => (
-                <div className="relative flex flex-col space-y-1">
-                  <label
-                    {...getLabelProps()}
-                    htmlFor="good"
-                    className="text-gray-600"
-                  >
-                    Enter Good
-                  </label>
-                  <input
-                    {...getInputProps()}
-                    placeholder="Enter final good in chain"
-                    id="good"
-                    name="Good"
-                    type="text"
-                    className={cn(boxStyle, 'relative')}
-                    required
-                  />
-
-                  <ul
-                    className="absolute end-0 right-0 top-20 max-h-80 w-44 list-none overflow-y-scroll bg-white p-0"
-                    {...getMenuProps()}
-                  >
-                    {isOpen &&
-                      items
-                        .filter(
-                          (item) =>
-                            !inputValue ||
-                            item.value.includes(inputValue.toLowerCase())
-                        )
-                        .map((item, index) => (
-                          //FIXME: no warning or error in console
-                          /* eslint-disable react/jsx-key */
-                          <li
-                            className="cursor-default select-none py-2 pl-3 pr-9 hover:bg-gray-100"
-                            {...getItemProps({
-                              key: `${item.value}${index}`,
-                              item,
-                              index,
-                            })}
-                          >
-                            {item.name}
-                          </li>
-                        ))}
-                  </ul>
-                </div>
-              )}
-            </Downshift>
-            <div className="flex flex-col space-y-1">
-              <label className="text-gray-600" htmlFor="trade-union">
-                Trade Union
-              </label>
-              <select
-                className={cn(boxStyle)}
-                id="trade-union"
-                name="trade-union"
-                required
-              >
-                <option value="">-Select-</option>
-                <option value="TRUE">Yes</option>
-                <option value="FALSE">No</option>
-              </select>
-            </div>
-          </div>
-        )}
-        {category === 'Housing' && (
-          <div className="grid grid-cols-3 gap-x-4">
-            <div className="flex flex-col space-y-1">
-              <label className="text-gray-600" htmlFor="town-hall">
-                Town Hall
-              </label>
-              <select
-                className={cn(boxStyle)}
-                id="town-hall"
-                name="Town Hall"
-                required
-              >
-                <option value="">-Select-</option>
-                <option value="TRUE">Yes</option>
-                <option value="FALSE">No</option>
-              </select>
-            </div>
-          </div>
-        )}
-        {category === 'Island' && (
-          <div className="grid grid-cols-3 gap-x-4">
-            <div className="flex flex-col space-y-1">
-              <label className="text-gray-600" htmlFor="capital">
-                Capital
-              </label>
-              <select
-                className={cn(boxStyle)}
-                id="capital"
-                name="Capital"
-                required
-              >
-                <option value="">-Select-</option>
-                <option value="Crown Falls">Crown Falls</option>
-                <option value="Manila">Manila</option>
-              </select>
-            </div>
-          </div>
-        )}
-        <div className="space-y-6">
-          <div className="flex flex-col space-y-1">
-            <label className="text-gray-600" htmlFor="title">
-              Stamp Title
-            </label>
-            <input
-              id="title"
-              name="Title"
-              type="text"
-              placeholder="Final Produced Good + Descriptors, see anno wiki
-              production layouts for reference"
-              className={cn(boxStyle)}
-              required
-            />
-          </div>
-          <div className="flex flex-col space-y-1">
-            <label className="text-gray-600" htmlFor="description">
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="Description"
-              className={cn(boxStyle)}
-              placeholder="Add a description for your stamp"
-              rows={5}
-              required
-            />
+              <option value="">-Select-</option>
+              <option value="TRUE">Yes</option>
+              <option value="FALSE">No</option>
+            </select>
           </div>
         </div>
-
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            //disabled={disabled || !isValid}
-            className="rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
-          >
-            Add Stamp
-          </button>
+      )}
+      {category === 'Island' && (
+        <div className="grid grid-cols-3 gap-x-4">
+          <div className="flex flex-col space-y-1">
+            <label className="text-gray-600" htmlFor="capital">
+              Capital
+            </label>
+            <select
+              className={cn(boxStyle)}
+              id="capital"
+              name="Capital"
+              required
+            >
+              <option value="">-Select-</option>
+              <option value="Crown Falls">Crown Falls</option>
+              <option value="Manila">Manila</option>
+            </select>
+          </div>
         </div>
-      </form>
-    </div>
+      )}
+      <div className="space-y-6">
+        <div className="flex flex-col space-y-1">
+          <label className="text-gray-600" htmlFor="title">
+            Stamp Title
+          </label>
+          <input
+            id="title"
+            name="Title"
+            type="text"
+            placeholder="Final Produced Good"
+            className={cn(boxStyle)}
+            required
+          />
+        </div>
+        <div className="flex flex-col space-y-1">
+          <label className="text-gray-600" htmlFor="description">
+            Description
+          </label>
+          <textarea
+            id="description"
+            name="Description"
+            className={cn(boxStyle, 'whitespace-pre-line')}
+            placeholder="Add some two letter fields for searching at the start of the description, see anno wiki
+            production layouts for reference."
+            rows={5}
+            required
+          />
+        </div>
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          disabled={isMutating}
+          className="rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
+        >
+          Add Stamp
+        </button>
+      </div>
+    </form>
   )
 }
 
