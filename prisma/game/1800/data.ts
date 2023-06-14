@@ -1,5 +1,5 @@
 // all chatgpt generated could be errors
-export const GOODS_1800 = {
+export const SEED_1800 = {
   'Consumer Goods': {
     category: 'Consumer Good',
     icon: 'empty',

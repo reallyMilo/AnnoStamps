@@ -5,17 +5,17 @@ import {
   OLD_WORLD_GOODS,
 } from './data'
 
-export function getGoodRegion(good: string): string | null {
+export function getGoodRegion(good: string): string {
   if (isOldWorldGood(good)) {
-    return 'Old World'
+    return 'old world'
   } else if (isNewWorldGood(good)) {
-    return 'New World'
+    return 'new world'
   } else if (isArcticGood(good)) {
-    return 'Arctic'
+    return 'arctic'
   } else if (isEnbesaGood(good)) {
-    return 'Enbesa'
+    return 'enbesa'
   } else {
-    return 'Unknown'
+    return 'none'
   }
 }
 
