@@ -1,24 +1,39 @@
 import {
   ARCTIC_GOODS,
   ENBESA_GOODS,
+  GOOD_CATEGORIES_1800,
   NEW_WORLD_GOODS,
   OLD_WORLD_GOODS,
 } from './data'
 
 export function getGoodRegion(good: string): string | null {
   if (isOldWorldGood(good)) {
-    return 'Old World'
+    return 'old world'
   } else if (isNewWorldGood(good)) {
-    return 'New World'
+    return 'new world'
   } else if (isArcticGood(good)) {
-    return 'Arctic'
+    return 'arctic'
   } else if (isEnbesaGood(good)) {
-    return 'Enbesa'
+    return 'enbesa'
   } else {
     return 'Unknown'
   }
 }
 
+export function getGoodCategory(good: string | null) {
+  if (!good || good === 'none') {
+    return 'none'
+  }
+
+  for (const category of Object.values(GOOD_CATEGORIES_1800)) {
+    for (const currentItem of category.items) {
+      if (currentItem.value === good) {
+        return category.category
+      }
+    }
+  }
+  return ''
+}
 function isOldWorldGood(good: string) {
   return OLD_WORLD_GOODS.includes(good)
 }

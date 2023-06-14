@@ -22,6 +22,9 @@ export async function getServerSideProps(context) {
   const stamps = await prisma.stamp.findMany({
     where: { user: { email: session.user.email } },
     orderBy: { createdAt: 'desc' },
+    include: {
+      likedBy: true,
+    },
   })
 
   // Pass the data to the Stamps component

@@ -895,58 +895,8 @@ export const GOOD_CATEGORIES_1800 = {
       },
     ],
   },
-} as const
-export const CAPITAL_1800 = [
-  {
-    name: 'Crown Falls',
-    value: 'crown falls',
-  },
-  {
-    name: 'Manila',
-    value: 'manila',
-  },
-] as const
-export const REGION_1800 = [
-  {
-    name: 'Old World',
-    value: 'old world',
-  },
-  {
-    name: 'New World',
-    value: 'new world',
-  },
-  {
-    name: 'Arctic',
-    value: 'arctic',
-  },
-  {
-    name: 'Enbesa',
-    value: 'enbesa',
-  },
-] as const
+}
 
-export const CATEGORY = [
-  {
-    name: 'Housing',
-    value: 'housing',
-  },
-  {
-    name: 'Production',
-    value: 'production',
-  },
-  {
-    name: 'Whole Island',
-    value: 'island',
-  },
-  {
-    name: 'Beauty Build',
-    value: 'cosmetic',
-  },
-  {
-    name: 'General',
-    value: 'general',
-  },
-] as const
 export const GOODS_1800 = [
   {
     name: 'Fish',
@@ -1813,7 +1763,7 @@ export const GOODS_1800 = [
     icon: 'empty',
     value: 'medicine',
   },
-] as const
+]
 const FARMERS = ['Wood', 'Fish', 'Potato', 'Schnapps', 'Wool', 'Work Clothes']
 
 const WORKERS = [

@@ -1,8 +1,9 @@
 //TODO: refactor repeated logic and jsx when implementing edit stamp feature
+
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import Downshift from 'downshift'
-import { CAPITAL_1800, CATEGORY, GOODS_1800, REGION_1800 } from 'game/1800/data'
-import { Create1800Stamp } from 'game/1800/types'
+import { GOODS_1800 } from 'game/1800/data'
+import { Capital1800, Category, Region1800 } from 'game/1800/enum'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -20,8 +21,12 @@ const imageMimeType = /image\/(png|jpg|jpeg|webp)/i
 const sizeLimit = 1024 * 1024 // 1 MB
 
 async function sendRequest(
-  url,
-  { arg }: { arg: Omit<Create1800Stamp, 'game'> }
+  url: string,
+  {
+    arg,
+  }: {
+    arg: any
+  }
 ) {
   return fetch(url, {
     method: 'POST',
@@ -31,25 +36,52 @@ async function sendRequest(
 
 const ListingForm = () => {
   const router = useRouter()
+  //FIXME: need to combine all these usestates into 1 useimmer
   const [category, setCategory] = useState('')
-  const [image, setImage] = useState(null)
-  const [stamp, setStamp] = useState(null)
+  const [image, setImage] = useState<{
+    localUrl: string | null
+    src: ArrayBuffer | string | null
+  }>({ localUrl: null, src: null })
+  const [stamp, setStamp] = useState<{
+    src: ArrayBuffer | string | null
+  }>({ src: null })
   const { trigger, isMutating } = useSWRMutation('/api/add-stamp', sendRequest)
 
-  const handleImage = (e) => {
-    const [file] = e.target.files
-    if (!file.type.match(imageMimeType) || file.size > sizeLimit) {
-      return
-    }
-    setImage(URL.createObjectURL(file))
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    // if (!e.target.files) {
+    //   return
+    // }
+    // const file = e.target.files[0]
+    // if (!file.type.match(imageMimeType) || file.size > sizeLimit) {
+    //   return
+    // }
+
+    // const reader = new FileReader()
+    // reader.onloadend = () => {
+    //   setImage({
+    //     localUrl: URL.createObjectURL(file),
+    //     src: reader.result,
+    //   })
+    // }
+    // reader.readAsDataURL(file)
   }
-  const handleStamp = (e) => {
-    const [file] = e.target.files
-    if (file.size > sizeLimit) {
-      return
-    }
-    setStamp(URL.createObjectURL(file))
+  const handleStamp = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    // if (!e.target.files) {
+    //   return
+    // }
+    // const [file] = e.target.files
+    // if (file.size > sizeLimit) {
+    //   return
+    // }
+    // const reader = new FileReader()
+    // reader.onloadend = () => {
+    //   setStamp({ src: reader.result })
+    // }
+    // reader.readAsDataURL(file)
   }
+
   const handleOnSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
@@ -60,25 +92,29 @@ const ListingForm = () => {
     }
 
     const targetField = {
-      title: formData.get('title') as string,
-      description: formData.get('description') as string,
-      category: formData.get('category') as string,
+      title: formData.get('title'),
+      description: formData.get('description'),
+      category: formData.get('category'),
       region: formData.get('region'),
-      good: formData.get('good') as string,
-      capital: formData.get('capital') as string,
+      good: formData.get('good') ?? 'none',
+      capital: formData.get('capital') ?? 'none',
       townhall: formData.get('townhall') === 'true',
       tradeUnion: formData.get('tradeUnion') === 'true',
       modded: formData.get('modded') === 'true',
-      image,
-      stamp,
+      image: image.src,
+      stamp: stamp.src,
     }
 
     try {
       const response = await trigger(targetField)
-      console.log(response)
-      toast.success('Successfully submitted')
+      toast.success(response.message)
+      router.push('/user/stamps')
     } catch (e) {
-      toast.error('Unable to submit')
+      let message
+      if (e instanceof Error) message = e.message
+      else message = String(e)
+
+      toast.error(message)
     }
   }
 
@@ -92,19 +128,19 @@ const ListingForm = () => {
           <div
             className={cn(
               'group aspect-h-9 aspect-w-16 relative overflow-hidden rounded-md border-gray-300 transition focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
-              image
+              image?.localUrl
                 ? 'pointer- hover:opacity-50 disabled:hover:opacity-100'
                 : 'border-2 border-dashed hover:border-gray-400 focus:border-gray-400 disabled:hover:border-gray-200'
             )}
           >
-            {image ? (
+            {image?.localUrl ? (
               <Image
                 className="object-contain"
-                src={image}
+                src={image.localUrl}
                 alt="screenshot"
                 width={400}
                 height={220}
-                onClick={() => setImage(null)}
+                onClick={() => setImage({ localUrl: null, src: null })}
               />
             ) : (
               <label
@@ -143,13 +179,13 @@ const ListingForm = () => {
           <div
             className={cn(
               'group aspect-h-9 aspect-w-16 relative overflow-hidden rounded-md border-gray-300 transition focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
-              stamp
+              stamp?.src
                 ? 'pointer- hover:opacity-50 disabled:hover:opacity-100'
                 : 'border-2 border-dashed hover:border-gray-400 focus:border-gray-400 disabled:hover:border-gray-200'
             )}
           >
-            {stamp ? (
-              <button className="" onClick={() => setStamp(null)}>
+            {stamp?.src ? (
+              <button className="" onClick={() => setStamp({ src: null })}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -204,9 +240,13 @@ const ListingForm = () => {
             required
           >
             <option value="">-Select-</option>
-            {CATEGORY.map((category) => (
-              <option key={`category-${category.value}`} value={category.value}>
-                {category.name}
+            {Object.values(Category).map((category) => (
+              <option
+                className="capitalize"
+                key={`category-${category}`}
+                value={category}
+              >
+                {category}
               </option>
             ))}
           </select>
@@ -216,9 +256,13 @@ const ListingForm = () => {
           <br />
           <select id="region" name="region" required className={cn(boxStyle)}>
             <option value="">-Select-</option>
-            {REGION_1800.map((region) => (
-              <option key={`region-${region.value}`} value={region.value}>
-                {region.name}
+            {Object.values(Region1800).map((region) => (
+              <option
+                className="capitalize"
+                key={`region-${region}`}
+                value={region}
+              >
+                {region}
               </option>
             ))}
           </select>
@@ -236,13 +280,6 @@ const ListingForm = () => {
       {category === 'production' && (
         <div className="grid grid-cols-3 gap-x-4">
           <Downshift
-            onChange={(selection) =>
-              alert(
-                selection
-                  ? `You selected ${selection.value}`
-                  : 'Selection Cleared'
-              )
-            }
             itemToString={(item) => (item ? item.value.toLowerCase() : '')}
           >
             {({
@@ -262,13 +299,14 @@ const ListingForm = () => {
                   Enter Good
                 </label>
                 <input
-                  {...getInputProps()}
-                  placeholder="Enter final good in chain"
-                  id="good"
-                  name="good"
-                  type="text"
-                  className={cn(boxStyle, 'relative')}
-                  required
+                  {...getInputProps({
+                    id: 'good',
+                    name: 'good',
+                    type: 'text',
+                    placeholder: 'Enter final good in chain',
+                    require,
+                  })}
+                  className={cn(boxStyle, 'relative capitalize')}
                 />
 
                 <ul
@@ -283,12 +321,10 @@ const ListingForm = () => {
                           item.value.includes(inputValue.toLowerCase())
                       )
                       .map((item, index) => (
-                        //FIXME: no warning or error in console
-                        /* eslint-disable react/jsx-key */
                         <li
-                          className="cursor-default select-none py-2 pl-3 pr-9 hover:bg-gray-100"
+                          key={`${item.value}-${index}`}
+                          className="cursor-default select-none py-2 pl-3 pr-9 capitalize hover:bg-gray-100"
                           {...getItemProps({
-                            key: `${item.value}${index}`,
                             item,
                             index,
                           })}
@@ -343,15 +379,19 @@ const ListingForm = () => {
               Capital
             </label>
             <select
-              className={cn(boxStyle)}
+              className={cn(boxStyle, 'capitalize')}
               id="capital"
               name="capital"
               required
             >
               <option value="">-Select-</option>
-              {CAPITAL_1800.map((capital) => (
-                <option key={`capital-${capital.value}`} value={capital.value}>
-                  {capital.name}
+              {Object.values(Capital1800).map((capital) => (
+                <option
+                  className="capitalize"
+                  key={`capital-${capital}`}
+                  value={capital}
+                >
+                  {capital}
                 </option>
               ))}
             </select>
