@@ -1,8 +1,8 @@
 //TODO: refactor repeated logic and jsx when implementing edit stamp feature
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
-import type { Stamp } from '@prisma/client'
 import Downshift from 'downshift'
-import { GOODS_1800 } from 'game/1800/data'
+import { CAPITAL_1800, CATEGORY, GOODS_1800, REGION_1800 } from 'game/1800/data'
+import { Create1800Stamp } from 'game/1800/types'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -10,25 +10,6 @@ import { toast } from 'react-hot-toast'
 import useSWRMutation from 'swr/mutation'
 
 import { cn } from '@/lib/utils'
-
-type StampField = Omit<
-  Stamp,
-  | 'id'
-  | 'userId'
-  | 'game'
-  | 'createdAt'
-  | 'updatedAt'
-  | 'downloads'
-  | 'imageUrl'
-  | 'stampFileUrl'
-  | 'goodCategory'
-  | 'oldLikes'
-  | 'population'
-> & {
-  image: string
-  stamp: string
-}
-
 const items = GOODS_1800
 const boxStyle =
   'w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 focus:border-gray-400 focus:ring-gray-400'
@@ -38,7 +19,10 @@ const errorStyle =
 const imageMimeType = /image\/(png|jpg|jpeg|webp)/i
 const sizeLimit = 1024 * 1024 // 1 MB
 
-async function sendRequest(url, { arg }: { arg: StampField }) {
+async function sendRequest(
+  url,
+  { arg }: { arg: Omit<Create1800Stamp, 'game'> }
+) {
   return fetch(url, {
     method: 'POST',
     body: JSON.stringify(arg),
@@ -79,7 +63,7 @@ const ListingForm = () => {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
       category: formData.get('category') as string,
-      region: formData.get('region') as string,
+      region: formData.get('region'),
       good: formData.get('good') as string,
       capital: formData.get('capital') as string,
       townhall: formData.get('townhall') === 'true',
@@ -220,11 +204,11 @@ const ListingForm = () => {
             required
           >
             <option value="">-Select-</option>
-            <option value="Housing">Housing</option>
-            <option value="Production">Production</option>
-            <option value="Island">Whole Island</option>
-            <option value="Cosmetic">Cosmetic</option>
-            <option value="General">General</option>
+            {CATEGORY.map((category) => (
+              <option key={`category-${category.value}`} value={category.value}>
+                {category.name}
+              </option>
+            ))}
           </select>
         </div>
         <div>
@@ -232,11 +216,11 @@ const ListingForm = () => {
           <br />
           <select id="region" name="region" required className={cn(boxStyle)}>
             <option value="">-Select-</option>
-            <option value="Old World">Old World</option>
-            <option value="New World">New World</option>
-            <option value="Old World">Cape Trelawney</option>
-            <option value="Arctic">Arctic</option>
-            <option value="Enbesa">Enbesa</option>
+            {REGION_1800.map((region) => (
+              <option key={`region-${region.value}`} value={region.value}>
+                {region.name}
+              </option>
+            ))}
           </select>
         </div>
         <div>
@@ -244,12 +228,12 @@ const ListingForm = () => {
           <br />
           <select name="modded" id="modded" className={cn(boxStyle)} required>
             <option value="">-Select-</option>
-            <option value="TRUE">Yes</option>
-            <option value="FALSE">No</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
           </select>
         </div>
       </div>
-      {category === 'Production' && (
+      {category === 'production' && (
         <div className="grid grid-cols-3 gap-x-4">
           <Downshift
             onChange={(selection) =>
@@ -327,13 +311,13 @@ const ListingForm = () => {
               required
             >
               <option value="">-Select-</option>
-              <option value="TRUE">Yes</option>
-              <option value="FALSE">No</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
             </select>
           </div>
         </div>
       )}
-      {category === 'Housing' && (
+      {category === 'housing' && (
         <div className="grid grid-cols-3 gap-x-4">
           <div className="flex flex-col space-y-1">
             <label className="text-gray-600" htmlFor="townhall">
@@ -346,13 +330,13 @@ const ListingForm = () => {
               required
             >
               <option value="">-Select-</option>
-              <option value="TRUE">Yes</option>
-              <option value="FALSE">No</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
             </select>
           </div>
         </div>
       )}
-      {category === 'Island' && (
+      {category === 'island' && (
         <div className="grid grid-cols-3 gap-x-4">
           <div className="flex flex-col space-y-1">
             <label className="text-gray-600" htmlFor="capital">
@@ -365,8 +349,11 @@ const ListingForm = () => {
               required
             >
               <option value="">-Select-</option>
-              <option value="Crown Falls">Crown Falls</option>
-              <option value="Manila">Manila</option>
+              {CAPITAL_1800.map((capital) => (
+                <option key={`capital-${capital.value}`} value={capital.value}>
+                  {capital.name}
+                </option>
+              ))}
             </select>
           </div>
         </div>

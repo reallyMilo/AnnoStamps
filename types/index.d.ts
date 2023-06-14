@@ -6,3 +6,8 @@ const stampWithLikes = Prisma.validator<Prisma.StampArgs>()({
   include: { likedBy: true },
 })
 type StampWithLikes = Prisma.StampGetPayload<typeof stampWithLikes>
+
+enum Category {}
+interface CreateStamp extends Prisma.StampCreateInput {
+  category: 'housing' | 'island' | 'production' | 'cosmetic' | 'general'
+}
