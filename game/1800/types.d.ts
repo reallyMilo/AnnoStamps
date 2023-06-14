@@ -374,7 +374,7 @@ export type Tier =
   | 'Shepherds'
   | 'Elders'
 
-export type Region = 'Old_World' | 'New_World' | 'Arctic' | 'Enbesa'
+export type Region = 'Old World' | 'New World' | 'Arctic' | 'Enbesa'
 
 interface ProductionItemData {
   produces: ProductionItem[]

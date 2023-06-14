@@ -11,7 +11,7 @@ import useSWRMutation from 'swr/mutation'
 
 import { cn } from '@/lib/utils'
 
-type StampFields = Omit<
+type StampField = Omit<
   Stamp,
   | 'id'
   | 'userId'
@@ -21,9 +21,13 @@ type StampFields = Omit<
   | 'downloads'
   | 'imageUrl'
   | 'stampFileUrl'
+  | 'goodCategory'
   | 'oldLikes'
   | 'population'
->
+> & {
+  image: string
+  stamp: string
+}
 
 const items = GOODS_1800
 const boxStyle =
@@ -34,7 +38,7 @@ const errorStyle =
 const imageMimeType = /image\/(png|jpg|jpeg|webp)/i
 const sizeLimit = 1024 * 1024 // 1 MB
 
-async function sendRequest(url, { arg }: { arg: StampFields }) {
+async function sendRequest(url, { arg }: { arg: StampField }) {
   return fetch(url, {
     method: 'POST',
     body: JSON.stringify(arg),
@@ -62,29 +66,36 @@ const ListingForm = () => {
     }
     setStamp(URL.createObjectURL(file))
   }
-  const handleOnSubmit = async () => {
-    // if (!image && !stamp) {
-    //   alert('Screenshot and Stamp file are required')
-    // }
+  const handleOnSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault()
+    const formData = new FormData(e.target as HTMLFormElement)
+
+    if (!image && !stamp) {
+      alert('Screenshot and Stamp file are required')
+      return
+    }
+
+    const targetField = {
+      title: formData.get('title') as string,
+      description: formData.get('description') as string,
+      category: formData.get('category') as string,
+      region: formData.get('region') as string,
+      good: formData.get('good') as string,
+      capital: formData.get('capital') as string,
+      townhall: formData.get('townhall') === 'true',
+      tradeUnion: formData.get('tradeUnion') === 'true',
+      modded: formData.get('modded') === 'true',
+      image,
+      stamp,
+    }
+
     try {
-      const response = await trigger({
-        title: '',
-        description: '',
-        category: '',
-        region: '',
-        goodCategory: '',
-        good: '',
-        capital: '',
-        townhall: false,
-        tradeUnion: false,
-        modded: false,
-      })
-    } catch (e) {}
-    // toast.loading('Submitting...')
-
-    // toast.success('Successfully submitted')
-
-    // toast.error('Unable to submit')
+      const response = await trigger(targetField)
+      console.log(response)
+      toast.success('Successfully submitted')
+    } catch (e) {
+      toast.error('Unable to submit')
+    }
   }
 
   return (
@@ -112,7 +123,10 @@ const ListingForm = () => {
                 onClick={() => setImage(null)}
               />
             ) : (
-              <label className="flex flex-col items-center justify-center space-y-2">
+              <label
+                htmlFor="image"
+                className="flex flex-col items-center justify-center space-y-2"
+              >
                 <div className="w-fit shrink-0 self-center rounded-full bg-gray-200 p-2 transition group-hover:scale-110 group-focus:scale-110">
                   <ArrowUpIcon className="h-4 w-4 text-gray-500 transition" />
                 </div>
@@ -122,6 +136,7 @@ const ListingForm = () => {
                 <input
                   type="file"
                   id="image"
+                  name="image"
                   accept=".png, .jpg, .jpeg, .webp"
                   onChange={handleImage}
                   hidden
@@ -165,7 +180,10 @@ const ListingForm = () => {
                 </svg>
               </button>
             ) : (
-              <label className="flex flex-col items-center justify-center space-y-2">
+              <label
+                htmlFor="stamp"
+                className="flex flex-col items-center justify-center space-y-2"
+              >
                 <div className="w-fit shrink-0 self-center rounded-full bg-gray-200 p-2 transition group-hover:scale-110 group-focus:scale-110">
                   <ArrowUpIcon className="h-4 w-4 text-gray-500 transition" />
                 </div>
@@ -175,6 +193,7 @@ const ListingForm = () => {
                 <input
                   type="file"
                   id="stamp"
+                  name="stamp"
                   onChange={handleStamp}
                   hidden
                   required
@@ -209,9 +228,9 @@ const ListingForm = () => {
           </select>
         </div>
         <div>
-          <label htmlFor="Region">Region</label>
+          <label htmlFor="region">Region</label>
           <br />
-          <select required className={cn(boxStyle)}>
+          <select id="region" name="region" required className={cn(boxStyle)}>
             <option value="">-Select-</option>
             <option value="Old World">Old World</option>
             <option value="New World">New World</option>
@@ -223,7 +242,7 @@ const ListingForm = () => {
         <div>
           <label htmlFor="modded">Uses Mods</label>
           <br />
-          <select name="Modded" id="modded" className={cn(boxStyle)} required>
+          <select name="modded" id="modded" className={cn(boxStyle)} required>
             <option value="">-Select-</option>
             <option value="TRUE">Yes</option>
             <option value="FALSE">No</option>
@@ -262,7 +281,7 @@ const ListingForm = () => {
                   {...getInputProps()}
                   placeholder="Enter final good in chain"
                   id="good"
-                  name="Good"
+                  name="good"
                   type="text"
                   className={cn(boxStyle, 'relative')}
                   required
@@ -317,13 +336,13 @@ const ListingForm = () => {
       {category === 'Housing' && (
         <div className="grid grid-cols-3 gap-x-4">
           <div className="flex flex-col space-y-1">
-            <label className="text-gray-600" htmlFor="town-hall">
+            <label className="text-gray-600" htmlFor="townhall">
               Town Hall
             </label>
             <select
               className={cn(boxStyle)}
-              id="town-hall"
-              name="Town Hall"
+              id="townhall"
+              name="townhall"
               required
             >
               <option value="">-Select-</option>
@@ -342,7 +361,7 @@ const ListingForm = () => {
             <select
               className={cn(boxStyle)}
               id="capital"
-              name="Capital"
+              name="capital"
               required
             >
               <option value="">-Select-</option>
@@ -359,7 +378,7 @@ const ListingForm = () => {
           </label>
           <input
             id="title"
-            name="Title"
+            name="title"
             type="text"
             placeholder="Final Produced Good"
             className={cn(boxStyle)}
@@ -372,7 +391,7 @@ const ListingForm = () => {
           </label>
           <textarea
             id="description"
-            name="Description"
+            name="description"
             className={cn(boxStyle, 'whitespace-pre-line')}
             placeholder="Add some two letter fields for searching at the start of the description, see anno wiki
             production layouts for reference."
@@ -388,7 +407,7 @@ const ListingForm = () => {
           disabled={isMutating}
           className="rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
         >
-          Add Stamp
+          {isMutating ? 'Loading...' : 'Add Stamp'}
         </button>
       </div>
     </form>

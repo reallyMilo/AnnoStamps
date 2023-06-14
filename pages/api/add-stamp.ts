@@ -1,11 +1,32 @@
+import type { Stamp } from '@prisma/client'
+import { decode } from 'base64-arraybuffer'
+import { nanoid } from 'nanoid'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 
 import { prisma } from '@/lib/prisma'
+import { supabase } from '@/lib/supabase'
 
 import { authOptions } from './auth/[...nextauth]'
 type ResponseData = {
   message: string
+}
+type StampField = Omit<
+  Stamp,
+  | 'id'
+  | 'userId'
+  | 'game'
+  | 'createdAt'
+  | 'updatedAt'
+  | 'downloads'
+  | 'imageUrl'
+  | 'stampFileUrl'
+  | 'goodCategory'
+  | 'oldLikes'
+  | 'population'
+> & {
+  image: string
+  stamp: string
 }
 
 export default async function addStampHandler(
@@ -13,6 +34,7 @@ export default async function addStampHandler(
   res: NextApiResponse<ResponseData>
 ) {
   const session = await getServerSession(req, res, authOptions)
+
   if (!session) {
     return res.status(401).json({ message: 'Unauthorized.' })
   }
@@ -23,6 +45,19 @@ export default async function addStampHandler(
       .status(405)
       .json({ message: `HTTP method ${req.method} is not supported.` })
   }
+  const {
+    title,
+    description,
+    category,
+    region,
+    good,
+    capital,
+    townhall,
+    tradeUnion,
+    modded,
+    image,
+    stamp,
+  }: StampField = req.body
 
   console.log(req.body)
 
