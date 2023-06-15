@@ -41,8 +41,8 @@ async function seed() {
       stampFileUrl: '/stamp.zip',
       townhall: index % 2 ? false : true,
       tradeUnion: index % 2 ? true : false,
-      goodCategory,
-      good,
+      goodCategory: goodCategory.toLowerCase(),
+      good: good.toLowerCase(),
     }
   })
 
