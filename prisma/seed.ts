@@ -1,7 +1,7 @@
 import { PrismaClient, User } from '@prisma/client'
 
-import { SEED_1800 } from './game/1800/data'
-import { getGoodRegion } from './game/1800/helpers'
+import { GOOD_CATEGORIES_1800 } from '../game/1800/data'
+import { getGoodRegion } from '../game/1800/helpers'
 
 const prisma = new PrismaClient()
 
@@ -20,10 +20,11 @@ async function seed() {
   }
 
   const stampData = Array.from({ length: 1000 }, (_, index) => {
-    const goodCategories = Object.keys(SEED_1800)
+    const goodCategories = Object.keys(GOOD_CATEGORIES_1800)
     const rndCategoryIndex = Math.floor(Math.random() * goodCategories.length)
 
-    const associatedGoods = Object.values(SEED_1800)[rndCategoryIndex].items
+    const associatedGoods =
+      Object.values(GOOD_CATEGORIES_1800)[rndCategoryIndex].items
     const rndGoodIndex = Math.floor(Math.random() * associatedGoods.length)
 
     const goodCategory = goodCategories[rndCategoryIndex]

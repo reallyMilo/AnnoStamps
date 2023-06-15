@@ -6,7 +6,7 @@ import {
   OLD_WORLD_GOODS,
 } from './data'
 
-export function getGoodRegion(good: string): string | null {
+export function getGoodRegion(good: string): string {
   if (isOldWorldGood(good)) {
     return 'old world'
   } else if (isNewWorldGood(good)) {
@@ -16,8 +16,14 @@ export function getGoodRegion(good: string): string | null {
   } else if (isEnbesaGood(good)) {
     return 'enbesa'
   } else {
-    return 'Unknown'
+    return 'none'
   }
+}
+
+export function getGoods() {
+  return Object.values(GOOD_CATEGORIES_1800)
+    .map((category) => category.items)
+    .flat()
 }
 
 export function getGoodCategory(good: string | null) {
@@ -28,7 +34,7 @@ export function getGoodCategory(good: string | null) {
   for (const category of Object.values(GOOD_CATEGORIES_1800)) {
     for (const currentItem of category.items) {
       if (currentItem.value === good) {
-        return category.category
+        return category.category.toLowerCase()
       }
     }
   }

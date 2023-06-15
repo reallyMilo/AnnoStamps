@@ -2,8 +2,8 @@
 
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import Downshift from 'downshift'
-import { GOODS_1800 } from 'game/1800/data'
 import { Capital1800, Category, Region1800 } from 'game/1800/enum'
+import { getGoods } from 'game/1800/helpers'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -11,7 +11,7 @@ import { toast } from 'react-hot-toast'
 import useSWRMutation from 'swr/mutation'
 
 import { cn } from '@/lib/utils'
-const items = GOODS_1800
+const items = getGoods()
 const boxStyle =
   'w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 focus:border-gray-400 focus:ring-gray-400'
 const errorStyle =
