@@ -25,14 +25,15 @@ const Card = ({
   region,
   modded,
   likedBy,
-}: StampWithLikes) => {
-  const likes = likedBy.length
+}: Partial<StampWithLikes>) => {
+  const likes = likedBy ? likedBy.length : 0
 
   const { data: session } = useSession()
   const user = session?.user as User
 
   //TODO: Query user on likedStamps and see if stamp id exists
   const userLikedPost = () => {
+    if (!likedBy) return false
     if (likedBy.some((liked) => liked.id === user.id)) return true
     return false
   }
@@ -94,7 +95,7 @@ const Card = ({
               <Link href={`/stamps/${id}`}>
                 <Image
                   src={imageUrl}
-                  alt={title}
+                  alt={title ?? 'image alt'}
                   className="transition hover:opacity-80"
                   fill
                   sizes="(max-width: 320px) 700px
