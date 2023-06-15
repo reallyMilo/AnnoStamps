@@ -49,37 +49,37 @@ const ListingForm = () => {
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
-    // if (!e.target.files) {
-    //   return
-    // }
-    // const file = e.target.files[0]
-    // if (!file.type.match(imageMimeType) || file.size > sizeLimit) {
-    //   return
-    // }
+    if (!e.target.files) {
+      return
+    }
+    const file = e.target.files[0]
+    if (!file.type.match(imageMimeType) || file.size > sizeLimit) {
+      return
+    }
 
-    // const reader = new FileReader()
-    // reader.onloadend = () => {
-    //   setImage({
-    //     localUrl: URL.createObjectURL(file),
-    //     src: reader.result,
-    //   })
-    // }
-    // reader.readAsDataURL(file)
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setImage({
+        localUrl: URL.createObjectURL(file),
+        src: reader.result,
+      })
+    }
+    reader.readAsDataURL(file)
   }
   const handleStamp = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
-    // if (!e.target.files) {
-    //   return
-    // }
-    // const [file] = e.target.files
-    // if (file.size > sizeLimit) {
-    //   return
-    // }
-    // const reader = new FileReader()
-    // reader.onloadend = () => {
-    //   setStamp({ src: reader.result })
-    // }
-    // reader.readAsDataURL(file)
+    if (!e.target.files) {
+      return
+    }
+    const [file] = e.target.files
+    if (file.size > sizeLimit) {
+      return
+    }
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setStamp({ src: reader.result })
+    }
+    reader.readAsDataURL(file)
   }
 
   const handleOnSubmit = async (e: React.SyntheticEvent) => {
