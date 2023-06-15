@@ -43,6 +43,7 @@ async function seed() {
       tradeUnion: index % 2 ? true : false,
       goodCategory: goodCategory.toLowerCase(),
       good: good.toLowerCase(),
+      downloads: index,
     }
   })
 
