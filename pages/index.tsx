@@ -1,6 +1,7 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import type { StampWithLikes } from 'types'
+import type { StampWithLikes } from 'types'
 
 import Filter from '@/components/Filter/Filter'
 import Layout from '@/components/Layout/Layout'
@@ -11,21 +12,52 @@ import { pageSize } from '@/lib/utils'
 
 type HomePageProps = {
   count: number
-  stamps: StampWithLikes[]
+  stamps: Partial<StampWithLikes>[]
 }
 
 export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
   query,
   res,
 }) => {
-  const { modded, region, category, page } = query
+  const {
+    modded,
+    region,
+    category,
+    page,
+    capital,
+    townhall,
+    tradeUnion,
+    sort,
+  } = query
+
   const isModded = modded === 'true' ? true : false
+  const isTownhall = townhall === 'true' ? true : false
+  const isTradeUnion = tradeUnion === 'true' ? true : false
   const pageNumber = page ?? 1
 
   const whereStatement = {
     modded: isModded,
     ...(region ? { region: region as string } : {}),
     ...(category ? { category: category as string } : {}),
+    ...(capital ? { capital: capital as string } : {}),
+    ...(isTownhall ? { townhall: isTownhall } : {}),
+    ...(isTradeUnion ? { tradeUnion: isTradeUnion } : {}),
+  }
+  const orderByStatement = (value: string) => {
+    switch (value) {
+      case 'downloads':
+        return { downloads: 'desc' as const }
+
+      case 'new':
+        return { createdAt: 'asc' as const }
+
+      default:
+        return {
+          likedBy: {
+            _count: 'desc' as const,
+          },
+        }
+    }
   }
 
   const [count, stamps] = await prisma.$transaction([
@@ -33,20 +65,18 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
       where: whereStatement,
     }),
     prisma.stamp.findMany({
-      where: whereStatement,
-      orderBy: {
-        likedBy: {
-          _count: 'desc',
-        },
-      },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        imageUrl: true,
+        category: true,
+        region: true,
+        modded: true,
         likedBy: true,
-        user: {
-          select: {
-            nickname: true,
-          },
-        },
       },
+      where: whereStatement,
+      orderBy: orderByStatement(sort as string),
+
       skip: (Number(pageNumber) - 1) * pageSize(),
       take: pageSize(),
     }),
@@ -60,7 +90,7 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
   return {
     props: {
       count,
-      stamps: JSON.parse(JSON.stringify(stamps)),
+      stamps,
     },
   }
 }

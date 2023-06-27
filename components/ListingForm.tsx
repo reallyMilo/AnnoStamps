@@ -11,6 +11,8 @@ import { toast } from 'react-hot-toast'
 import useSWRMutation from 'swr/mutation'
 
 import { cn } from '@/lib/utils'
+
+import Select from './ui/Select'
 const items = getGoods()
 const boxStyle =
   'w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 focus:border-gray-400 focus:ring-gray-400'
@@ -231,41 +233,29 @@ const ListingForm = () => {
         <div>
           <label htmlFor="category">Category</label>
           <br />
-          <select
+          <Select
             id="category"
             name="category"
-            autoComplete="category-name"
-            className={cn(boxStyle)}
+            variant="primaryShadow"
+            options={Object.values(Category)}
             onChange={(e) => setCategory(e.target.value)}
             required
           >
             <option value="">-Select-</option>
-            {Object.values(Category).map((category) => (
-              <option
-                className="capitalize"
-                key={`category-${category}`}
-                value={category}
-              >
-                {category}
-              </option>
-            ))}
-          </select>
+          </Select>
         </div>
         <div>
           <label htmlFor="region">Region</label>
           <br />
-          <select id="region" name="region" required className={cn(boxStyle)}>
+          <Select
+            id="region"
+            name="region"
+            required
+            options={Object.values(Region1800)}
+            className={cn(boxStyle)}
+          >
             <option value="">-Select-</option>
-            {Object.values(Region1800).map((region) => (
-              <option
-                className="capitalize"
-                key={`region-${region}`}
-                value={region}
-              >
-                {region}
-              </option>
-            ))}
-          </select>
+          </Select>
         </div>
         <div>
           <label htmlFor="modded">Uses Mods</label>

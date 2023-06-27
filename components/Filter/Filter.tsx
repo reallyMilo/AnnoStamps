@@ -1,70 +1,145 @@
+import { Capital1800, Category, Region1800 } from 'game/1800/enum'
 import useFilterReducer from 'hooks/useFilter'
 import { useRouter } from 'next/router'
+
+import Select from '../ui/Select'
+
 const Filter = () => {
   const { query } = useRouter()
   const initialFilterState = {
     category: (query.category as string) ?? '',
     region: (query.region as string) ?? '',
     mods: (query.modded as string) ?? 'false',
+    capital: (query.capital as string) ?? '',
+    tradeUnion: (query.tradeunion as string) ?? '',
+    townhall: (query.townhall as string) ?? '',
+    sort: (query.sort as string) ?? '',
   }
   const [filter, setFilter] = useFilterReducer(initialFilterState)
 
   return (
-    <div className="mb-10 items-center gap-10 md:flex">
-      <p className="mb-3 font-bold md:mb-0">Filter:</p>
-      <div className="mb-2 flex items-center space-x-2 md:mb-0">
-        <label htmlFor="categorySelect" className="tex-sm w-[200px] md:w-auto">
-          Category
-        </label>
-        <select
-          className="w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20"
-          name="categorySelect"
-          value={filter.category}
-          onChange={(e) =>
-            setFilter({ payload: e.target.value, type: 'CATEGORY' })
-          }
-        >
-          <option value="">All</option>
-          <option value="Housing">Housing</option>
-          <option value="Production Chain">Production Chain</option>
-          <option value="Farm">Farm</option>
-          <option value="Cosmetic">Cosmetic/Beauty Build</option>
-          <option value="General">General</option>
-        </select>
+    <div className="flex flex-col pb-10">
+      <div className="mb-4 items-center gap-10 md:flex">
+        <div className="flex items-center space-x-2 md:mb-0">
+          <label htmlFor="category" className="tex-sm w-[200px] md:w-auto">
+            Category
+          </label>
+          <Select
+            id="category"
+            name="category"
+            options={Object.values(Category)}
+            value={filter.category}
+            onChange={(e) =>
+              setFilter({ payload: e.target.value, type: 'CATEGORY' })
+            }
+          >
+            <option value="">All</option>
+          </Select>
+        </div>
+        <div className="flex items-center space-x-2">
+          <label htmlFor="region" className="tex-sm w-[200px] md:w-auto">
+            Region
+          </label>
+          <Select
+            id="region"
+            name="region"
+            options={Object.values(Region1800)}
+            value={filter.region}
+            onChange={(e) =>
+              setFilter({ payload: e.target.value, type: 'REGION' })
+            }
+          >
+            <option value="">All</option>
+          </Select>
+        </div>
+        <div className="flex items-center space-x-2">
+          <label htmlFor="capital" className="tex-sm w-[200px] md:w-auto">
+            Capital
+          </label>
+          <Select
+            id="capital"
+            name="capital"
+            options={Object.values(Capital1800)}
+            value={filter.capital}
+            onChange={(e) =>
+              setFilter({ payload: e.target.value, type: 'CAPITAL' })
+            }
+          >
+            <option value="">All</option>
+          </Select>
+        </div>
+        <div className="ml-auto flex items-center space-x-2">
+          <label htmlFor="sort" className="tex-sm w-[200px] md:w-auto">
+            Sort
+          </label>
+          <Select
+            id="sort"
+            name="sort"
+            options={['downloads', 'new']}
+            onChange={(e) =>
+              setFilter({ payload: e.target.value, type: 'SORT' })
+            }
+          >
+            <option value="">Most Liked</option>
+          </Select>
+        </div>
       </div>
-      <div className="flex items-center space-x-2">
-        <label htmlFor="regionSelect" className="tex-sm w-[200px] md:w-auto">
-          Region
-        </label>
-        <select
-          className="w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20"
-          name="regionSelect"
-          value={filter.region}
-          onChange={(e) =>
-            setFilter({ payload: e.target.value, type: 'REGION' })
-          }
-        >
-          <option value="">All</option>
-          <option value="Old World">Old World</option>
-          <option value="New World">New World</option>
-          <option value="Cape Trelawney">Cape Trelawney</option>
-          <option value="Arctic">Arctic</option>
-          <option value="Enbesa">Enbesa</option>
-        </select>
-      </div>
-      <div className="flex items-center space-x-2">
-        <label htmlFor="regionSelect" className="tex-sm w-[200px] md:w-auto">
-          Mods
-        </label>
-        <select
-          className="w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20"
-          name="regionSelect"
-          value={filter.mods}
-          onChange={(e) => setFilter({ payload: e.target.value, type: 'MODS' })}
-        >
-          <option value="false">No</option>
-          <option value="true">Yes</option>
-        </select>
+
+      <div className="items-center gap-10 md:flex">
+        <div className="flex items-center space-x-2">
+          <label htmlFor="modded" className="tex-sm w-[200px] md:w-auto">
+            Modded
+          </label>
+          <input
+            id="modded"
+            name="modded"
+            type="checkbox"
+            value={filter.mods}
+            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+            onChange={(e) =>
+              setFilter({
+                payload: e.target.value === 'true' ? 'false' : 'true',
+                type: 'MODS',
+              })
+            }
+          />
+        </div>
+        <div className="flex items-center space-x-2">
+          <label htmlFor="townhall" className="tex-sm w-[200px] md:w-auto">
+            Town Hall
+          </label>
+          <input
+            id="townhall"
+            name="townhall"
+            type="checkbox"
+            value={filter.townhall}
+            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+            onChange={(e) =>
+              setFilter({
+                payload: e.target.value === 'true' ? 'false' : 'true',
+                type: 'TOWNHALL',
+              })
+            }
+          />
+        </div>
+        <div className="flex items-center space-x-2">
+          <label htmlFor="trade-union" className="tex-sm w-[200px] md:w-auto">
+            Trade Union
+          </label>
+          <input
+            id="trade-union"
+            name="trade-union"
+            type="checkbox"
+            value={filter.tradeUnion}
+            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+            onChange={(e) =>
+              setFilter({
+                payload: e.target.value === 'true' ? 'false' : 'true',
+                type: 'TRADEUNION',
+              })
+            }
+          />
+        </div>
       </div>
     </div>
   )

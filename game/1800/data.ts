@@ -897,7 +897,15 @@ export const GOOD_CATEGORIES_1800 = {
   },
 }
 
-const FARMERS = ['Wood', 'Fish', 'Potato', 'Schnapps', 'Wool', 'Work Clothes']
+const FARMERS = [
+  'Wood',
+  'Timber',
+  'Fish',
+  'Potato',
+  'Schnapps',
+  'Wool',
+  'Work Clothes',
+]
 
 const WORKERS = [
   'Clay',
@@ -996,7 +1004,7 @@ export const OLD_WORLD_GOODS = [
 ] as const
 
 const JORNALEROS = [
-  'Plantain',
+  'Plantains',
   'Fish Oil',
   'Sugar Cane',
   'Fried Plantains',
@@ -1024,6 +1032,8 @@ const OBREROS = [
   'Gold Ore',
   'Bauxite',
   'Aluminium Profiles',
+  'Dung',
+  'Helium',
 ]
 
 const ARTISTAS = [
@@ -1058,6 +1068,7 @@ const ARTISTAS = [
   'Cinema',
   'City Hospital',
   'Scooter',
+  'Police Equipment',
 ]
 export const NEW_WORLD_GOODS = [...JORNALEROS, ...OBREROS, ...ARTISTAS]
 
@@ -1071,7 +1082,14 @@ const EXPLORERS = [
   'Oil Lamps',
 ]
 
-const TECHNICIANS = ['Bear Fur', 'Parkas', 'Sleds', 'Huskies', 'Husky Sleds']
+const TECHNICIANS = [
+  'Bear Fur',
+  'Parkas',
+  'Sleds',
+  'Huskies',
+  'Husky Sleds',
+  'Arctic Gas',
+]
 
 export const ARCTIC_GOODS = [...EXPLORERS, ...TECHNICIANS]
 
@@ -1087,6 +1105,7 @@ const SHEPHERDS = [
 ]
 
 const ELDERS = [
+  'Teff',
   'Mud Bricks',
   'Ceramics',
   'Tapestries',
