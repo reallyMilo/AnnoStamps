@@ -1,6 +1,6 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
-import type { Stamp } from '@prisma/client'
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import type { StampWithLikes } from 'types'
 
 import Filter from '@/components/Filter/Filter'
 import Layout from '@/components/Layout/Layout'
@@ -11,7 +11,7 @@ import { pageSize } from '@/lib/utils'
 
 type HomePageProps = {
   count: number
-  stamps: Stamp[]
+  stamps: StampWithLikes[]
 }
 
 export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
@@ -22,25 +22,23 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
   const isModded = modded === 'true' ? true : false
   const pageNumber = page ?? 1
 
+  const whereStatement = {
+    modded: isModded,
+    ...(region ? { region: region as string } : {}),
+    ...(category ? { category: category as string } : {}),
+  }
+
   const [count, stamps] = await prisma.$transaction([
     prisma.stamp.count({
-      where: {
-        modded: isModded,
-        ...(region ? { region: region as string } : {}),
-        ...(category ? { category: category as string } : {}),
-      },
+      where: whereStatement,
     }),
     prisma.stamp.findMany({
-      where: {
-        modded: isModded,
-        ...(region ? { region: region as string } : {}),
-        ...(category ? { category: category as string } : {}),
-      },
-      orderBy: [
-        {
-          liked: 'desc',
+      where: whereStatement,
+      orderBy: {
+        likedBy: {
+          _count: 'desc',
         },
-      ],
+      },
       include: {
         likedBy: true,
         user: {

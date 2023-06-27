@@ -9,23 +9,28 @@ datasource db {
 }
 
 model Stamp {
-  id          String   @id @default(cuid())
-  userId      String
-  game        String
-  title       String
-  description String
-  category    String
-  region      String
-  screenshot  String
-  stamp       String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  modded      Boolean  @default(false)
-  likes       Json     @default("{\"users\": []}")
-  liked       Int      @default(0)
-  downloads   Int      @default(0)
-  user        User     @relation("StampCreator", fields: [userId], references: [id], onDelete: Cascade)
-  likedBy     User[]   @relation("StampLiker")
+  id           String   @id @default(cuid())
+  userId       String
+  game         String
+  title        String
+  description  String
+  category     String
+  region       String
+  imageUrl     String
+  stampFileUrl String
+  goodCategory String?
+  good         String?
+  population   String?
+  capital      String?
+  townhall     Boolean  @default(false)
+  tradeUnion   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  modded       Boolean  @default(false)
+  oldLikes     Json     @default("{\"users\": []}")
+  downloads    Int      @default(0)
+  user         User     @relation("StampCreator", fields: [userId], references: [id], onDelete: Cascade)
+  likedBy      User[]   @relation("StampLiker")
 }
 
 model Account {

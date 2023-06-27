@@ -12,36 +12,48 @@ type PaginationProps = {
 export const Pagination = ({ count }: PaginationProps) => {
   const router = useRouter()
   const { query } = router
-  const [page, setPage] = useState(1)
-  const pages = Array.from(
-    { length: Math.ceil(count / pageSize()) },
-    (_, i) => i + 1
-  )
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPageCount = Math.ceil(count / pageSize())
+  const visiblePageCount = 20
+  let pages = []
+
+  if (totalPageCount <= visiblePageCount) {
+    pages = Array.from({ length: totalPageCount }, (_, i) => i + 1)
+  } else {
+    const middlePage = Math.ceil(visiblePageCount / 2)
+    const startPage = Math.max(1, currentPage - middlePage + 1)
+    const endPage = Math.min(startPage + visiblePageCount - 1, totalPageCount)
+
+    pages = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    )
+  }
 
   const incrementPage = () => {
-    if (page + 1 > pages.length) return
-    setPage((prev) => prev + 1)
+    if (currentPage + 1 > totalPageCount) return
+    setCurrentPage((prev) => prev + 1)
     router.push({
       pathname: '/',
-      query: { ...query, page: page + 1 },
+      query: { ...query, page: currentPage + 1 },
     })
   }
   const decrementPage = () => {
-    if (page - 1 < 1) return
-    setPage((prev) => prev - 1)
+    if (currentPage - 1 < 1) return
+    setCurrentPage((prev) => prev - 1)
     router.push({
       pathname: '/',
-      query: { ...query, page: page - 1 },
+      query: { ...query, page: currentPage - 1 },
     })
   }
   const changePage = (page: number) => {
-    setPage(page)
+    setCurrentPage(page)
     router.push({
       pathname: '/',
       query: { ...query, page: page },
     })
   }
-  const starting = (page - 1) * pageSize() + 1
+  const starting = (currentPage - 1) * pageSize() + 1
   const ending = Math.min(starting + pageSize() - 1, count)
 
   return (
@@ -83,7 +95,7 @@ export const Pagination = ({ count }: PaginationProps) => {
                   key={p + '-pagination'}
                   className={cn(
                     'relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-indigo-400 focus:z-20 focus:outline-offset-0 md:inline-flex',
-                    p === page &&
+                    p === currentPage &&
                       'z-10 bg-indigo-600 text-white hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                   )}
                   value={p}

@@ -4,7 +4,7 @@ import AuthModal from '../Auth/AuthModal'
 import Footer from './Footer'
 import Navbar from './Navbar'
 
-const Layout = ({ children = null }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Head>
