@@ -1,4 +1,5 @@
 import { StampWithLikes } from 'types'
+import { StampWithLikes } from 'types'
 
 import Card from './Card'
 

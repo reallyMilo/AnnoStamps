@@ -1,6 +1,7 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import type { StampWithLikes } from 'types'
+import type { StampWithLikes } from 'types'
 
 import Filter from '@/components/Filter/Filter'
 import Layout from '@/components/Layout/Layout'

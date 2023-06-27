@@ -141,6 +141,7 @@ const Card = ({
                 onClick={addToUsersVoted}
               />
               {likes}
+              {likes}
             </li>
           </ol>
         </div>
