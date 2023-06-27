@@ -19,7 +19,7 @@ const Filter = () => {
 
   return (
     <div className="flex flex-col pb-10">
-      <div className="mb-4 flex items-center gap-10">
+      <div className="mb-4 items-center gap-10 md:flex">
         <div className="flex items-center space-x-2 md:mb-0">
           <label htmlFor="category" className="tex-sm w-[200px] md:w-auto">
             Category
@@ -85,7 +85,7 @@ const Filter = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-10">
+      <div className="items-center gap-10 md:flex">
         <div className="flex items-center space-x-2">
           <label htmlFor="modded" className="tex-sm w-[200px] md:w-auto">
             Modded
