@@ -94,16 +94,16 @@ const Listedstamp = ({ stamp }: { stamp: ListedStampProps }) => {
           )}
         </div>
         <h1 className="mx-5 mt-6 truncate text-2xl font-semibold">
-          {stamp.title}
+          {stamp?.title}
         </h1>
         <div className="mx-5 grid grid-cols-1 gap-10 pb-10 md:grid-cols-2">
           <div>
             <ol className="mb-2 mt-4 items-center text-gray-500">
               <li>
-                <span className="font-bold">Category:</span> {stamp.category}
+                <span className="font-bold">Category:</span> {stamp?.category}
               </li>
               <li>
-                <span className="font-bold">Region:</span> {stamp.region}
+                <span className="font-bold">Region:</span> {stamp?.region}
               </li>
             </ol>
             <a
@@ -117,12 +117,12 @@ const Listedstamp = ({ stamp }: { stamp: ListedStampProps }) => {
             <p className="flex cursor-default items-center gap-1 pt-3 text-sm">
               Total Downloads:
               <span className="flex cursor-default items-center gap-1 text-sm">
-                {stamp.downloads}
+                {stamp?.downloads}
               </span>
             </p>
           </div>
           <div>
-            <p className="break-words text-lg">{stamp.description}</p>
+            <p className="break-words text-lg">{stamp?.description}</p>
           </div>
         </div>
       </div>
