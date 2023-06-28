@@ -121,9 +121,9 @@ const Listedstamp = ({ stamp }: { stamp: ListedStampProps }) => {
               </span>
             </p>
           </div>
-          <div>
-            <p className="break-words text-lg">{stamp?.description}</p>
-          </div>
+
+          <p className="break-words text-lg">{stamp?.description}</p>
+          <p>Direct stamp link if download fails: {stamp?.stampFileUrl}</p>
         </div>
       </div>
     </Layout>

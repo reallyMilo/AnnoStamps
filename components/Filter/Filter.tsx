@@ -75,12 +75,12 @@ const Filter = () => {
           <Select
             id="sort"
             name="sort"
-            options={['downloads', 'new']}
+            options={['newest']}
             onChange={(e) =>
               setFilter({ payload: e.target.value, type: 'SORT' })
             }
           >
-            <option value="">Most Liked</option>
+            <option value="">Most Downloaded</option>
           </Select>
         </div>
       </div>
