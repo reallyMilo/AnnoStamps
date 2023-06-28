@@ -107,9 +107,9 @@ const Listedstamp = ({ stamp }: { stamp: ListedStampProps }) => {
               </li>
             </ol>
             <a
+              href={`${stamp?.stampFileUrl}?download=${stamp?.title}`}
               className="mt-5 inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
               onClick={incrementDownloads}
-              download={`${stamp?.stampFileUrl}?download=${stamp?.title}`}
             >
               <ArrowDownTrayIcon className="mr-2 inline-block h-6 w-6" />
               Download Stamp
