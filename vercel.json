@@ -3,5 +3,6 @@
     "deploymentEnabled": {
       "main": false
     }
-  }
+  },
+  "buildCommand": "prisma generate && prisma migrate resolve --applied 000000000000_squashed_migrations && prisma migrate deploy && next build"
 }
