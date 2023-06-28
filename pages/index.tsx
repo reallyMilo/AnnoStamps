@@ -44,18 +44,11 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
   }
   const orderByStatement = (value: string) => {
     switch (value) {
-      case 'downloads':
-        return { downloads: 'desc' as const }
-
-      case 'new':
-        return { createdAt: 'asc' as const }
+      case 'newest':
+        return { createdAt: 'desc' as const }
 
       default:
-        return {
-          likedBy: {
-            _count: 'desc' as const,
-          },
-        }
+        return { downloads: 'desc' as const }
     }
   }
 
