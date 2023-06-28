@@ -8,14 +8,14 @@ import {
   WrenchIcon,
 } from '@heroicons/react/24/solid'
 import type { User } from '@prisma/client'
-import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
+import useSWRMutation from 'swr/mutation'
 import type { StampWithLikes } from 'types'
 
-import { cn } from '@/lib/utils'
+import { cn, sendRequest } from '@/lib/utils'
 
 const Card = ({
   id,
@@ -39,12 +39,13 @@ const Card = ({
   }
 
   const [isLiked, setIsLiked] = useState(user ? userLikedPost : false)
+  const { trigger } = useSWRMutation('/api/likes', sendRequest)
 
-  const addToUsersVoted = () => {
-    if (!user) return // modal here to login!
+  const addLikeToStamp = async () => {
+    if (!user) return alert('login plz') // modal here to login!
     setIsLiked(true)
 
-    axios.post('/api/likes', { stampId: id })
+    await trigger({ stampId: id, userId: user.id })
   }
 
   let icon
@@ -135,12 +136,13 @@ const Card = ({
               {category ?? ''}
             </li>
 
-            <li className="flex cursor-pointer items-center gap-1 text-sm">
+            <li
+              onClick={addLikeToStamp}
+              className="flex cursor-pointer items-center gap-1 text-sm"
+            >
               <HandThumbUpIcon
                 className={cn('h-6 w-6', isLiked && 'text-[#6DD3C0]')}
-                onClick={addToUsersVoted}
               />
-              {likes}
               {likes}
             </li>
           </ol>
