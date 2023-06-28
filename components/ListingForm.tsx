@@ -10,31 +10,17 @@ import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import useSWRMutation from 'swr/mutation'
 
-import { cn } from '@/lib/utils'
+import { cn, sendRequest } from '@/lib/utils'
 
 import Select from './ui/Select'
 const items = getGoods()
 const boxStyle =
   'w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 focus:border-gray-400 focus:ring-gray-400'
-const errorStyle =
-  'border-red-400 text-red-800 focus:border-red-400 focus:ring-red-400'
+// const errorStyle =
+//   'border-red-400 text-red-800 focus:border-red-400 focus:ring-red-400'
 
 const imageMimeType = /image\/(png|jpg|jpeg|webp)/i
 const sizeLimit = 1024 * 1024 // 1 MB
-
-async function sendRequest(
-  url: string,
-  {
-    arg,
-  }: {
-    arg: any
-  }
-) {
-  return fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(arg),
-  }).then((res) => res.json())
-}
 
 const ListingForm = () => {
   const router = useRouter()
