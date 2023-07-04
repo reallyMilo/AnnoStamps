@@ -1,21 +1,10 @@
 import { Capital1800, Category, Region1800 } from 'game/1800/enum'
 import useFilterReducer from 'hooks/useFilter'
-import { useRouter } from 'next/router'
 
 import Select from '../ui/Select'
 
 const Filter = () => {
-  const { query } = useRouter()
-  const initialFilterState = {
-    category: (query.category as string) ?? '',
-    region: (query.region as string) ?? '',
-    mods: (query.modded as string) ?? 'false',
-    capital: (query.capital as string) ?? '',
-    tradeUnion: (query.tradeunion as string) ?? '',
-    townhall: (query.townhall as string) ?? '',
-    sort: (query.sort as string) ?? '',
-  }
-  const [filter, setFilter] = useFilterReducer(initialFilterState)
+  const [filter, setFilter] = useFilterReducer()
 
   return (
     <div className="flex flex-col pb-10">

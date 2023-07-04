@@ -60,7 +60,7 @@ const UserMenu = () => {
           className="ml-4 rounded-md bg-[#6DD3C0] px-4 py-2 text-sm font-bold text-[#222939] transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-500 focus:ring-opacity-50"
           data-testid="login-button"
         >
-          Add a Stamp
+          Add Stamp
         </button>
         <AuthModal show={showModal} onClose={closeModal} />
       </>
