@@ -17,7 +17,7 @@ import type { StampWithLikes } from 'types'
 
 import { cn, sendRequest } from '@/lib/utils'
 
-const Card = ({
+const StampCard = ({
   id,
   imageUrl,
   title,
@@ -152,4 +152,4 @@ const Card = ({
   )
 }
 
-export default Card
+export default StampCard
