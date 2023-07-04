@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import Search from '../Filter/Search'
 import UserMenu from './UserMenu'
 const navigation = [
   {
@@ -18,7 +19,7 @@ const Navbar = () => {
       <div className="container mx-auto h-full">
         <div className="flex h-full items-center justify-between space-x-4 px-4">
           <div className="flex space-x-6">
-            <Link href="/" className="flex items-center space-x-1">
+            <Link href="/" className="hidden items-center space-x-1 md:flex">
               <Image
                 src="/anno-stamps-logo.svg"
                 width="160"
@@ -44,6 +45,7 @@ const Navbar = () => {
                 </Link>
               ))}
             </nav>
+            <Search />
           </div>
           <UserMenu />
         </div>

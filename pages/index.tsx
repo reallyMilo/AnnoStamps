@@ -3,9 +3,10 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import type { StampWithLikes } from 'types'
 
 import Filter from '@/components/Filter/Filter'
+import Grid from '@/components/Layout/Grid'
 import Layout from '@/components/Layout/Layout'
 import { Pagination } from '@/components/Pagination'
-import Grid from '@/components/Stamps/Grid'
+import StampCard from '@/components/StampCard'
 import { prisma } from '@/lib/prisma'
 import { pageSize } from '@/lib/utils'
 
@@ -27,6 +28,7 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
     townhall,
     tradeUnion,
     sort,
+    search,
   } = query
 
   const isModded = modded === 'true' ? true : false
@@ -41,6 +43,13 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
     ...(capital ? { capital: capital as string } : {}),
     ...(isTownhall ? { townhall: isTownhall } : {}),
     ...(isTradeUnion ? { tradeUnion: isTradeUnion } : {}),
+    ...(search
+      ? {
+          title: {
+            search: search as string,
+          },
+        }
+      : {}),
   }
   const orderByStatement = (value: string) => {
     switch (value) {
@@ -101,7 +110,11 @@ export default function Home({
             <span>No stamps found.</span>
           </p>
         ) : (
-          <Grid stamps={stamps} />
+          <Grid>
+            {stamps.map((stamp) => (
+              <StampCard key={stamp.id} {...stamp} />
+            ))}
+          </Grid>
         )}
         <Pagination count={count} />
       </div>

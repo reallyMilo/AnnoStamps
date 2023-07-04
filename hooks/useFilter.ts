@@ -6,6 +6,7 @@ type Filter = {
   category: string
   mods: string
   region: string
+  search: string
   sort: string
   townhall: string
   tradeUnion: string
@@ -18,11 +19,21 @@ type Action =
   | { payload: string; type: 'TOWNHALL' }
   | { payload: string; type: 'TRADEUNION' }
   | { payload: string; type: 'SORT' }
+  | { payload: string; type: 'SEARCH' }
 
-const useFilterReducer = (initialFilterState: Filter) => {
+const useFilterReducer = () => {
   const router = useRouter()
   const { query } = router
-
+  const initialFilterState = {
+    category: (query.category as string) ?? '',
+    region: (query.region as string) ?? '',
+    mods: (query.modded as string) ?? 'false',
+    capital: (query.capital as string) ?? '',
+    tradeUnion: (query.tradeunion as string) ?? '',
+    townhall: (query.townhall as string) ?? '',
+    sort: (query.sort as string) ?? '',
+    search: (query.search as string) ?? '',
+  }
   const filterReducer = (draft: Filter, action: Action) => {
     switch (action.type) {
       case 'CATEGORY':
@@ -72,6 +83,13 @@ const useFilterReducer = (initialFilterState: Filter) => {
         router.push({
           pathname: '/',
           query: { ...query, sort: action.payload },
+        })
+        break
+      case 'SEARCH':
+        draft.sort = action.payload
+        router.push({
+          pathname: '/',
+          query: { ...query, search: action.payload },
         })
         break
       default:
