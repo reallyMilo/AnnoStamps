@@ -4,6 +4,7 @@ import {
   HomeIcon,
   SparklesIcon,
   TagIcon,
+  UserCircleIcon,
   WrenchIcon,
 } from '@heroicons/react/24/solid'
 import Image from 'next/image'
@@ -11,7 +12,7 @@ import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import useSWRMutation from 'swr/mutation'
-import type { StampWithLikes } from 'types'
+import type { StampWithRelations } from 'types'
 
 import { cn, sendRequest } from '@/lib/utils'
 
@@ -23,24 +24,25 @@ const StampCard = ({
   region,
   modded,
   likedBy,
-}: Partial<StampWithLikes>) => {
+  user,
+}: Partial<StampWithRelations>) => {
   const likes = likedBy ? likedBy.length : 0
   const { data: session } = useSession()
-  const user = session?.user
+  const authUser = session?.user
 
   //TODO: Query user on likedStamps and see if stamp id exists
   const userLikedPost = () => {
-    if (!likedBy || !user) return false
-    if (likedBy.some((liked) => liked.email === user.email)) return true
+    if (!likedBy || !authUser) return false
+    if (likedBy.some((liked) => liked.id === authUser.id)) return true
     return false
   }
 
   const { data, trigger } = useSWRMutation('/api/likes', sendRequest)
   const [isLiked, setIsLiked] = useState(false)
   const addLikeToStamp = async () => {
-    if (!user) return alert('login plz') // modal here to login!
+    if (!authUser) return alert('login plz') // modal here to login!
 
-    await trigger({ stampId: id, userEmail: user.email })
+    await trigger({ stampId: id, userId: authUser.id })
     setIsLiked(true)
   }
 
@@ -99,14 +101,14 @@ const StampCard = ({
         <div className="mt-2 w-full text-lg font-semibold leading-tight text-gray-700">
           <Link href={`/stamps/${id}`}>{title}</Link>
         </div>
-        {/* TODO: next-auth callblack nickname
-          {user?.nickname && (
-            <p className="flex items-center gap-1 py-2 text-xs text-slate-500">
-              <UserCircleIcon className="h-4 w-4" />
-              {user.nickname}
-            </p>
-          )}
-            */}
+
+        {user?.nickname && (
+          <p className="flex items-center gap-1 py-2 text-xs text-slate-500">
+            <UserCircleIcon className="h-4 w-4" />
+            {user.nickname}
+          </p>
+        )}
+
         <ol className="relative bottom-0 mt-auto flex flex-row justify-between  pt-4 text-gray-500">
           <li
             className={`flex items-center gap-1 rounded-full capitalize ${categoryColour} w-fit py-1  pl-2 pr-3 text-xs text-white`}

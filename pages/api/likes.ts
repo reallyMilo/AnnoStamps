@@ -17,14 +17,14 @@ export default async function likesHandler(
   //FIXME: shouldnt be post, should be [likes] dynamic api route
   if (req.method === 'POST') {
     try {
-      const { stampId, userEmail } = JSON.parse(req.body)
+      const { stampId, userId } = JSON.parse(req.body)
 
       const updateStampLikes = await prisma.stamp.update({
         where: { id: stampId },
         include: { likedBy: true },
         data: {
           likedBy: {
-            connect: { email: userEmail },
+            connect: { id: userId },
           },
         },
       })
