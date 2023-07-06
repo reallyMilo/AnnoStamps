@@ -90,6 +90,9 @@ devDependencies:
   '@types/node':
     specifier: ^20.1.0
     version: 20.1.0
+  '@types/nodemailer':
+    specifier: ^6.4.8
+    version: 6.4.8
   '@types/react':
     specifier: 18.2.5
     version: 18.2.5
@@ -106,7 +109,7 @@ devDependencies:
     specifier: ^12.12.0
     version: 12.12.0
   eslint:
-    specifier: 8.38.0
+    specifier: ^8.38.0
     version: 8.38.0
   eslint-config-next:
     specifier: ^13.3.0
@@ -823,6 +826,15 @@ packages:
       {
         integrity: sha512-O+z53uwx64xY7D6roOi4+jApDGFg0qn6WHcxe5QeqjMaTezBO/mxdfFXIVAVVyNWKx84OmPB3L8kbVYOTeN34A==,
       }
+
+  /@types/nodemailer@6.4.8:
+    resolution:
+      {
+        integrity: sha512-oVsJSCkqViCn8/pEu2hfjwVO+Gb3e+eTWjg3PcjeFKRItfKpKwHphQqbYmPQrlMk+op7pNNWPbsJIEthpFN/OQ==,
+      }
+    dependencies:
+      '@types/node': 20.1.0
+    dev: true
 
   /@types/phoenix@1.5.6:
     resolution:
