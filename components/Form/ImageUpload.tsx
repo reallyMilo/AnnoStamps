@@ -10,7 +10,7 @@ const sizeLimit = 1024 * 1024 // 1 MB
 const ImageUpload = () => {
   const [image, setImage] = useState<{
     localUrl: string | null
-    src: ArrayBuffer | string | null
+    src: string | null
   }>({ localUrl: null, src: null })
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +27,7 @@ const ImageUpload = () => {
     reader.onloadend = () => {
       setImage({
         localUrl: URL.createObjectURL(file),
-        src: reader.result,
+        src: reader.result as string,
       })
     }
     reader.readAsDataURL(file)
@@ -46,14 +46,24 @@ const ImageUpload = () => {
         )}
       >
         {image?.localUrl ? (
-          <Image
-            className="object-contain"
-            src={image.localUrl}
-            alt="screenshot"
-            width={400}
-            height={220}
-            onClick={() => setImage({ localUrl: null, src: null })}
-          />
+          <>
+            <Image
+              id="image"
+              className="object-contain"
+              src={image.localUrl}
+              alt="screenshot"
+              width={400}
+              height={220}
+              onClick={() => setImage({ localUrl: null, src: null })}
+            />
+            <input
+              hidden
+              readOnly
+              value={image.src ?? ''}
+              name="imgSrc"
+              id="imgSrc"
+            />
+          </>
         ) : (
           <label
             htmlFor="image"
@@ -65,6 +75,7 @@ const ImageUpload = () => {
             <span className="text-xs font-semibold text-gray-500 transition">
               Upload
             </span>
+
             <input
               type="file"
               id="image"

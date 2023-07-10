@@ -7,7 +7,7 @@ const sizeLimit = 1024 * 1024 // 1 MB
 
 const FileUpload = () => {
   const [stamp, setStamp] = useState<{
-    src: ArrayBuffer | string | null
+    src: string | null
   }>({ src: null })
 
   const handleStamp = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +21,7 @@ const FileUpload = () => {
     }
     const reader = new FileReader()
     reader.onloadend = () => {
-      setStamp({ src: reader.result })
+      setStamp({ src: reader.result as string })
     }
     reader.readAsDataURL(file)
   }
@@ -38,7 +38,7 @@ const FileUpload = () => {
         )}
       >
         {stamp?.src ? (
-          <button className="" onClick={() => setStamp({ src: null })}>
+          <>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -51,18 +51,28 @@ const FileUpload = () => {
                 clipRule="evenodd"
               />
             </svg>
-          </button>
+            <input
+              hidden
+              readOnly
+              value={stamp.src ?? ''}
+              name="fileSrc"
+              id="fileSrc"
+            />
+          </>
         ) : (
           <label
             htmlFor="stamp"
             className="flex flex-col items-center justify-center space-y-2"
           >
-            <div className="w-fit shrink-0 self-center rounded-full bg-gray-200 p-2 transition group-hover:scale-110 group-focus:scale-110">
-              <ArrowUpIcon className="h-4 w-4 text-gray-500 transition" />
-            </div>
-            <span className="text-xs font-semibold text-gray-500 transition">
-              Upload
-            </span>
+            <>
+              <div className="w-fit shrink-0 self-center rounded-full bg-gray-200 p-2 transition group-hover:scale-110 group-focus:scale-110">
+                <ArrowUpIcon className="h-4 w-4 text-gray-500 transition" />
+              </div>
+              <span className="text-xs font-semibold text-gray-500 transition">
+                Upload
+              </span>
+            </>
+
             <input
               type="file"
               id="stamp"
@@ -73,7 +83,6 @@ const FileUpload = () => {
             />
           </label>
         )}
-
         {false && (
           <span className="text-sm text-red-600">File exceeds 1Mb</span>
         )}

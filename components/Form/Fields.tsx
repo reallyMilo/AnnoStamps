@@ -13,7 +13,7 @@ const boxStyle =
 // const errorStyle =
 //   'border-red-400 text-red-800 focus:border-red-400 focus:ring-red-400'
 
-const Description = ({ isMutating }: { isMutating: boolean }) => {
+const Fields = () => {
   const [category, setCategory] = useState('')
 
   return (
@@ -186,7 +186,7 @@ const Description = ({ isMutating }: { isMutating: boolean }) => {
             id="title"
             name="title"
             type="text"
-            placeholder="Final Produced Good"
+            placeholder="Enter stamp title"
             className={cn(boxStyle)}
             required
           />
@@ -206,18 +206,8 @@ const Description = ({ isMutating }: { isMutating: boolean }) => {
           />
         </div>
       </div>
-
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={isMutating}
-          className="rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
-        >
-          {isMutating ? 'Loading...' : 'Add Stamp'}
-        </button>
-      </div>
     </>
   )
 }
 
-export default Description
+export default Fields
