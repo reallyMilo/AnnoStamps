@@ -1,11 +1,9 @@
 import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
 import type { User } from '@prisma/client'
 import Image from 'next/image'
-import useSWRMutation from 'swr/mutation'
 
 import Layout from '@/components/Layout/Layout'
 import { prisma } from '@/lib/prisma'
-import { sendRequest } from '@/lib/utils'
 
 export async function getStaticPaths() {
   const stamps = await prisma.stamp.findMany({
@@ -16,7 +14,7 @@ export async function getStaticPaths() {
     paths: stamps.map((stamp) => ({
       params: { id: stamp.id },
     })),
-    fallback: true,
+    fallback: 'blocking',
   }
 }
 type Params = {
@@ -42,19 +40,11 @@ export async function getStaticProps({ params }: Params) {
     where: { id: params.id },
   })
 
-  if (stamp) {
-    return {
-      props: {
-        stamp,
-      },
-    }
-  }
-
   return {
-    redirect: {
-      destination: '/',
-      permanent: false,
+    props: {
+      stamp,
     },
+    revalidate: 30,
   }
 }
 //TODO: on edit define props for queries
@@ -71,10 +61,8 @@ type ListedStampProps = {
   title: string
 }
 const Listedstamp = ({ stamp }: { stamp: ListedStampProps }) => {
-  const { trigger } = useSWRMutation('/api/downloads', sendRequest)
-
   const incrementDownloads = async () => {
-    await trigger(stamp.id)
+    await fetch(`/api/stamp/download/${stamp.id}`)
   }
 
   return (
@@ -107,7 +95,7 @@ const Listedstamp = ({ stamp }: { stamp: ListedStampProps }) => {
               </li>
             </ol>
             <a
-              href={`${stamp?.stampFileUrl}?download=${stamp?.title}`}
+              //href={`${stamp?.stampFileUrl}?download=${stamp?.title}`}
               className="mt-5 inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
               onClick={incrementDownloads}
             >

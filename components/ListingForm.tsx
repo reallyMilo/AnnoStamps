@@ -11,7 +11,7 @@ import ImageUpload from './Form/ImageUpload'
 const ListingForm = () => {
   const router = useRouter()
 
-  const { trigger, isMutating } = useSWRMutation('/api/add-stamp', sendRequest)
+  const { trigger, isMutating } = useSWRMutation('/api/stamp/add', sendRequest)
 
   const handleOnSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()

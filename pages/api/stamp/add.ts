@@ -13,7 +13,7 @@ import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { supabase } from '@/lib/supabase'
 
-import { authOptions } from './auth/[...nextauth]'
+import { authOptions } from '../auth/[...nextauth]'
 
 type ResponseData = {
   message: string

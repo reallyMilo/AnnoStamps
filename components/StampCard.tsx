@@ -37,7 +37,7 @@ const StampCard = ({
     return false
   }
 
-  const { data, trigger } = useSWRMutation('/api/likes', sendRequest)
+  const { data, trigger } = useSWRMutation('/api/stamp/like', sendRequest)
   const [isLiked, setIsLiked] = useState(false)
   const addLikeToStamp = async () => {
     if (!authUser) return alert('login plz') // modal here to login!
@@ -68,48 +68,51 @@ const StampCard = ({
   }
 
   return (
-    <div className=" grid w-full grid-flow-row grid-rows-2 rounded-lg bg-white shadow-md">
-      <div className="relative">
-        <div className="aspect-h-9 aspect-w-16 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
-          {imageUrl && (
-            <Link href={`/stamps/${id}`}>
-              <Image
-                src={imageUrl}
-                alt={title ?? 'image alt'}
-                className="transition hover:opacity-80"
-                fill
-                sizes="(max-width: 320px) 700px
-              (max-width: 768px) 390px,
-              (max-width: 1200px) 290px"
-                style={{
-                  objectFit: 'cover',
-                }}
-              />
-              {modded && (
-                <span className="absolute right-2 top-2 flex flex-row items-center rounded-full bg-[#6DD3C0] px-2 py-1 text-xs text-black">
-                  <WrenchIcon className="mr-1 h-3 w-3" />
-                  mods
-                </span>
-              )}
-            </Link>
+    <div className="w-full rounded-lg bg-white shadow-md">
+      <Link href={`/stamp/${id}`}>
+        <div className="relative">
+          <div className="aspect-h-9 aspect-w-16 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
+            {imageUrl && (
+              <div>
+                <Image
+                  src={imageUrl}
+                  alt={title ?? 'image alt'}
+                  className="transition hover:opacity-80"
+                  fill
+                  sizes="(max-width: 320px) 700px
+                (max-width: 768px) 390px,
+                (max-width: 1200px) 290px"
+                  style={{
+                    objectFit: 'cover',
+                  }}
+                />
+                {modded && (
+                  <span className="absolute right-2 top-2 flex flex-row items-center rounded-full bg-[#6DD3C0] px-2 py-1 text-xs text-black">
+                    <WrenchIcon className="mr-1 h-3 w-3" />
+                    mods
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col flex-nowrap p-4">
+          <p className="pb-2 text-sm text-[#B11E47]">{region}</p>
+
+          <div className="mt-2 w-full text-lg font-semibold leading-tight text-gray-700">
+            {title}
+          </div>
+
+          {user?.nickname && (
+            <p className="flex items-center gap-1 py-2 text-xs text-slate-500">
+              <UserCircleIcon className="h-4 w-4" />
+              {user.nickname}
+            </p>
           )}
         </div>
-      </div>
+      </Link>
       <div className="flex flex-col flex-nowrap p-4">
-        <p className="pb-2 text-sm text-[#B11E47]">{region}</p>
-
-        <div className="mt-2 w-full text-lg font-semibold leading-tight text-gray-700">
-          <Link href={`/stamps/${id}`}>{title}</Link>
-        </div>
-
-        {user?.nickname && (
-          <p className="flex items-center gap-1 py-2 text-xs text-slate-500">
-            <UserCircleIcon className="h-4 w-4" />
-            {user.nickname}
-          </p>
-        )}
-
-        <ol className="relative bottom-0 mt-auto flex flex-row justify-between  pt-4 text-gray-500">
+        <ol className="relative flex flex-row justify-between pt-4 text-gray-500">
           <li
             className={`flex items-center gap-1 rounded-full capitalize ${categoryColour} w-fit py-1  pl-2 pr-3 text-xs text-white`}
           >

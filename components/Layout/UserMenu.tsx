@@ -16,7 +16,7 @@ const menuItems = [
   {
     label: 'My Account',
     icon: UserIcon,
-    href: '/account',
+    href: '/user/account',
   },
   {
     label: 'My stamps',
@@ -26,7 +26,7 @@ const menuItems = [
   {
     label: 'Add new stamp',
     icon: PlusIcon,
-    href: '/create',
+    href: '/user/create',
   },
   // {
   //   label: "Favorites",
