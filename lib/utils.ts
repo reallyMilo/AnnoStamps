@@ -9,6 +9,8 @@ export const pageSize = () => {
   return Number(process.env.NEXT_PUBLIC_PAGE_SIZE) || 20
 }
 
+export const fetcher = (url: string) => fetch(url).then((r) => r.json())
+
 export async function sendRequest(
   url: string,
   {

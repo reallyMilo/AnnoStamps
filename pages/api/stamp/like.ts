@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth/next'
 
 import { prisma } from '@/lib/prisma'
 
-import { authOptions } from './auth/[...nextauth]'
+import { authOptions } from '../auth/[...nextauth]'
 
 export default async function likesHandler(
   req: NextApiRequest,
@@ -14,11 +14,10 @@ export default async function likesHandler(
   if (!session) {
     return res.status(401).json({ message: 'Unauthorized.' })
   }
-  //FIXME: shouldnt be post, should be [likes] dynamic api route
-  if (req.method === 'POST') {
-    try {
-      const { stampId, userId } = JSON.parse(req.body)
 
+  if (req.method === 'POST') {
+    const { stampId, userId } = JSON.parse(req.body)
+    try {
       const updateStampLikes = await prisma.stamp.update({
         where: { id: stampId },
         include: { likedBy: true },

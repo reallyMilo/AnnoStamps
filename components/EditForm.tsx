@@ -5,14 +5,13 @@ import useSWRMutation from 'swr/mutation'
 import { sendRequest } from '@/lib/utils'
 
 import Fields from './Form/Fields'
-import FileUpload from './Form/FileUpload'
-import ImageUpload from './Form/ImageUpload'
 
-const ListingForm = () => {
+const EditForm = ({ stampId }: { stampId: string }) => {
   const router = useRouter()
-
-  const { trigger, isMutating } = useSWRMutation('/api/stamp/add', sendRequest)
-
+  const { trigger, isMutating } = useSWRMutation(
+    `/api/stamp/${stampId}`,
+    sendRequest
+  )
   const handleOnSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
@@ -27,8 +26,6 @@ const ListingForm = () => {
       townhall: formData.get('townhall') === 'true',
       tradeUnion: formData.get('tradeUnion') === 'true',
       modded: formData.get('modded') === 'true',
-      image: formData.get('imgSrc'),
-      stamp: formData.get('fileSrc'),
     }
 
     try {
@@ -43,12 +40,14 @@ const ListingForm = () => {
       toast.error(message)
     }
   }
-
   return (
     <form id="form" onSubmit={handleOnSubmit} className="mt-8 space-y-8">
       <div className="mb-10 grid grid-cols-2 gap-10">
-        <ImageUpload />
-        <FileUpload />
+        <p className="prose">
+          Not allowed to edit images or stamp files once they have been
+          submitted. You can change fields, titles and descriptions only. Can
+          always link the new stamp in the description of the original.
+        </p>
       </div>
       <Fields />
       <div className="flex justify-end">
@@ -57,11 +56,11 @@ const ListingForm = () => {
           disabled={isMutating}
           className="rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
         >
-          {isMutating ? 'Loading...' : 'Add Stamp'}
+          {isMutating ? 'Loading...' : 'Update Stamp'}
         </button>
       </div>
     </form>
   )
 }
 
-export default ListingForm
+export default EditForm
