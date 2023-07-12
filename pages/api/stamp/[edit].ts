@@ -50,8 +50,6 @@ export default async function editStampHandler(
     modded: z.boolean(),
   })
 
-  console.log(req.body, 'REQ BODYYYYYYYYY')
-
   const safeParse = editStampSchema.safeParse(JSON.parse(req.body))
   if (!safeParse.success) {
     return res.status(400).json({ message: 'Invalid Data' })
@@ -69,23 +67,27 @@ export default async function editStampHandler(
     modded,
   } = safeParse.data
 
-  const updateStamp = await prisma.stamp.update({
-    where: {
-      id: getStamp.id,
-    },
-    data: {
-      title,
-      description,
-      category,
-      region,
-      good,
-      goodCategory: getGoodCategory(good),
-      capital,
-      townhall,
-      tradeUnion,
-      modded,
-    },
-  })
+  try {
+    await prisma.stamp.update({
+      where: {
+        id: getStamp.id,
+      },
+      data: {
+        title,
+        description,
+        category,
+        region,
+        good,
+        goodCategory: getGoodCategory(good),
+        capital,
+        townhall,
+        tradeUnion,
+        modded,
+      },
+    })
 
-  res.status(200).json({ message: 'successfully updated' })
+    res.status(200).json({ message: 'successfully updated' })
+  } catch (e) {
+    res.status(500).json({ message: 'something went wrong' })
+  }
 }
