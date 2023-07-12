@@ -68,7 +68,7 @@ const StampCard = ({
   }
 
   return (
-    <div className="w-full rounded-lg bg-white shadow-md">
+    <div className="grid w-full grid-flow-row rounded-lg bg-white shadow-md">
       <Link href={`/stamp/${id}`}>
         <div className="relative">
           <div className="aspect-h-9 aspect-w-16 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
@@ -111,7 +111,7 @@ const StampCard = ({
           )}
         </div>
       </Link>
-      <div className="flex flex-col flex-nowrap p-4">
+      <div className="flex flex-col flex-nowrap self-end p-4">
         <ol className="relative flex flex-row justify-between pt-4 text-gray-500">
           <li
             className={`flex items-center gap-1 rounded-full capitalize ${categoryColour} w-fit py-1  pl-2 pr-3 text-xs text-white`}

@@ -24,7 +24,7 @@ const EditForm = ({ stampId }: { stampId: string }) => {
       good: formData.get('good') ?? 'none',
       capital: formData.get('capital') ?? 'none',
       townhall: formData.get('townhall') === 'true',
-      tradeUnion: formData.get('tradeUnion') === 'true',
+      tradeUnion: formData.get('trade-union') === 'true',
       modded: formData.get('modded') === 'true',
     }
 
