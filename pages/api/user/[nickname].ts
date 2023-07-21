@@ -29,5 +29,6 @@ export default async function nicknameHandler(
     select: { listedStamps: true },
     where: { nickname: nickname },
   })
-  res.status(200).json({ listedStamps: getUserStamps[0].listedStamps })
+
+  res.status(200).json({ listedStamps: getUserStamps[0]?.listedStamps })
 }

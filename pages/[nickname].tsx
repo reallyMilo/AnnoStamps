@@ -14,12 +14,33 @@ export default function NicknamePage() {
     fetcher
   )
 
-  if (error) return <div>failed to load</div>
-  if (isLoading) return <div>loading...</div>
+  if (error || !data?.listedStamps)
+    return (
+      <Layout>
+        <div className="container mx-auto max-w-7xl px-5 py-12">
+          <h1>{router.query.nickname} Stamps</h1>
+          <Grid>
+            <div>User has no Stamps</div>
+          </Grid>
+        </div>
+      </Layout>
+    )
+  if (isLoading)
+    return (
+      <Layout>
+        <div className="container mx-auto max-w-7xl px-5 py-12">
+          <h1>{router.query.nickname} Stamps</h1>
+          <Grid>
+            <div className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200" />
+          </Grid>
+        </div>
+      </Layout>
+    )
 
   return (
     <Layout>
       <div className="container mx-auto max-w-7xl px-5 py-12">
+        <h1>{router.query.nickname} Stamps</h1>
         <Grid>
           {data.listedStamps.map((stamp: Stamp) => (
             <StampCard key={stamp.id} {...stamp} />
