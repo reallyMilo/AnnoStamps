@@ -24,3 +24,22 @@ export async function sendRequest(
     body: JSON.stringify(arg),
   }).then((res) => res.json())
 }
+
+export function triggerDownload(data: Blob, filename: string) {
+  const blobUrl =
+    window.URL && window.URL.createObjectURL
+      ? window.URL.createObjectURL(data)
+      : window.webkitURL.createObjectURL(data)
+  const tempLink = document.createElement('a')
+  tempLink.style.display = 'none'
+  tempLink.href = blobUrl
+  tempLink.setAttribute('download', filename)
+
+  document.body.appendChild(tempLink)
+  tempLink.click()
+
+  setTimeout(function () {
+    document.body.removeChild(tempLink)
+    window.URL.revokeObjectURL(blobUrl)
+  }, 200)
+}
