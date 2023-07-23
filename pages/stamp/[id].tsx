@@ -4,6 +4,7 @@ import Image from 'next/image'
 
 import Layout from '@/components/Layout/Layout'
 import { prisma } from '@/lib/prisma'
+import { triggerDownload } from '@/lib/utils'
 
 export async function getStaticPaths() {
   const stamps = await prisma.stamp.findMany({
@@ -61,7 +62,13 @@ type ListedStampProps = {
   title: string
 }
 const Listedstamp = ({ stamp }: { stamp: ListedStampProps }) => {
-  const incrementDownloads = async () => {
+  const handleDownload = async () => {
+    const res = await fetch(stamp?.stampFileUrl)
+    if (!res.ok) {
+      return
+    }
+    const file = await res.blob()
+    triggerDownload(file, stamp.title)
     await fetch(`/api/stamp/download/${stamp.id}`)
   }
 
@@ -94,14 +101,13 @@ const Listedstamp = ({ stamp }: { stamp: ListedStampProps }) => {
                 <span className="font-bold">Region:</span> {stamp?.region}
               </li>
             </ol>
-            <a
-              //href={`${stamp?.stampFileUrl}?download=${stamp?.title}`}
+            <button
               className="mt-5 inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
-              onClick={incrementDownloads}
+              onClick={handleDownload}
             >
               <ArrowDownTrayIcon className="mr-2 inline-block h-6 w-6" />
               Download Stamp
-            </a>
+            </button>
             <p className="flex cursor-default items-center gap-1 pt-3 text-sm">
               Total Downloads:
               <span className="flex cursor-default items-center gap-1 text-sm">

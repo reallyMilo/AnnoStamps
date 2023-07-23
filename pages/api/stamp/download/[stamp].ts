@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { prisma } from '@/lib/prisma'
 
-export default async function downloadsHandler(
+export default async function downloadHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
