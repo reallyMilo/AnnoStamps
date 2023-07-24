@@ -1,9 +1,14 @@
 import '../styles/globals.css'
 
+import type { AppProps } from 'next/app'
 import Script from 'next/script'
 import { SessionProvider } from 'next-auth/react'
 import { Toaster } from 'react-hot-toast'
-function StampsApp({ Component, pageProps: { session, ...pageProps } }) {
+
+function StampsApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   return (
     <>
       <Script

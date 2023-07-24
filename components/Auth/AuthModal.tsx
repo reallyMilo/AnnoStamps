@@ -1,21 +1,12 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { EnvelopeOpenIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Form, Formik } from 'formik'
 import Image from 'next/image'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { Fragment, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import * as Yup from 'yup'
 
-import Input from './Input'
-
-const SignInSchema = Yup.object().shape({
-  email: Yup.string()
-    .trim()
-    .email('Invalid email')
-    .required('This field is required'),
-})
+import { cn } from '@/lib/utils'
 
 const Confirm = ({ show = false, email = '' }) => (
   <Transition appear show={show} as={Fragment}>
@@ -63,39 +54,44 @@ const Confirm = ({ show = false, email = '' }) => (
   </Transition>
 )
 
-const AuthModal = ({ show = false, onClose = () => null }) => {
-  const [disabled, setDisabled] = useState(false)
-  const [showConfirm, setConfirm] = useState(false)
-  const [showSignIn, setShowSignIn] = useState(false)
+const AuthModal = () => {
+  const [isOpen, setIsOpen] = useState(false)
 
-  const signInWithEmail = async ({ email }) => {
+  useEffect(() => {
+    const openModal = () => {
+      setIsOpen(true)
+    }
+    window.addEventListener('open-auth-modal', openModal)
+
+    return () => {
+      window.removeEventListener('open-auth-modal', openModal)
+    }
+  }, [])
+
+  const signInWithEmail = async (e: React.SyntheticEvent) => {
+    const formData = new FormData(e.target as HTMLFormElement)
     let toastId
     try {
       toastId = toast.loading('Loading...')
-      setDisabled(true)
-      // Perform sign in
-      const { error } = await signIn('email', {
+
+      const response = await signIn('email', {
         redirect: false,
         callbackUrl: window.location.href,
-        email,
+        email: formData.get('email'),
       })
-      // Something went wrong
-      if (error) {
-        throw new Error(error)
+
+      if (response?.error) {
+        throw new Error(response.error)
       }
-      setConfirm(true)
       toast.dismiss(toastId)
     } catch (err) {
       toast.error('Unable to sign in', { id: toastId })
-    } finally {
-      setDisabled(false)
     }
   }
 
   const signInWithGoogle = () => {
     toast.loading('Redirecting...')
-    setDisabled(true)
-    // Perform sign in
+
     signIn('google', {
       callbackUrl: window.location.href,
     })
@@ -103,42 +99,18 @@ const AuthModal = ({ show = false, onClose = () => null }) => {
 
   const signInWithDiscord = () => {
     toast.loading('Redirecting...')
-    setDisabled(true)
-    // Perform sign in
+
     signIn('discord', {
       callbackUrl: window.location.href,
     })
   }
 
-  const closeModal = () => {
-    if (typeof onClose === 'function') {
-      onClose()
-    }
-  }
-
-  // Reset modal
-  useEffect(() => {
-    if (!show) {
-      // Wait for 200ms for aniamtion to finish
-      setTimeout(() => {
-        setDisabled(false)
-        setConfirm(false)
-        setShowSignIn(false)
-      }, 200)
-    }
-  }, [show])
-
-  // Remove pending toasts if any
-  useEffect(() => {
-    toast.dismiss()
-  }, [])
-
   return (
-    <Transition appear show={show} as={Fragment}>
+    <Transition appear show={isOpen} as={Fragment}>
       <Dialog
         as="div"
         className="fixed inset-0 z-50 overflow-y-auto"
-        onClose={closeModal}
+        onClose={() => setIsOpen(false)}
       >
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-75" />
 
@@ -178,7 +150,7 @@ const AuthModal = ({ show = false, onClose = () => null }) => {
             >
               {/* Close icon */}
               <button
-                onClick={closeModal}
+                onClick={() => setIsOpen(false)}
                 className="absolute right-2 top-2 shrink-0 rounded-md p-1 transition hover:bg-gray-100 focus:outline-none"
               >
                 <XMarkIcon className="h-8 w-8" />
@@ -206,19 +178,12 @@ const AuthModal = ({ show = false, onClose = () => null }) => {
                     as="h3"
                     className="mt-6 text-center text-lg font-bold sm:text-2xl"
                   >
-                    {showSignIn ? 'Welcome back!' : 'Create your account'}
+                    Create your account
                   </Dialog.Title>
-
-                  {!showSignIn ? (
-                    <Dialog.Description className="mt-2 text-center text-base text-gray-500">
-                      Please create an account to upload stamps.
-                    </Dialog.Description>
-                  ) : null}
 
                   <div className="mt-10">
                     {/* Sign with Google */}
                     <button
-                      disabled={disabled}
                       onClick={() => signInWithGoogle()}
                       className="mx-auto flex h-[46px] w-full items-center justify-center space-x-2 rounded-md border p-2 text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-50 hover:text-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-25 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-gray-200 disabled:hover:bg-transparent disabled:hover:text-gray-500"
                     >
@@ -232,11 +197,9 @@ const AuthModal = ({ show = false, onClose = () => null }) => {
                           height: 'auto',
                         }}
                       />
-                      <span>Sign {showSignIn ? 'in' : 'up'} with Google</span>
+                      <span>Sign in with Google</span>
                     </button>
-
                     <button
-                      disabled={disabled}
                       onClick={() => signInWithDiscord()}
                       className="mx-auto mt-4 flex h-[46px] w-full items-center justify-center space-x-2 rounded-md border p-2 text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-50 hover:text-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-25 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-gray-200 disabled:hover:bg-transparent disabled:hover:text-gray-500"
                       data-testid="discord-sign-in"
@@ -251,79 +214,43 @@ const AuthModal = ({ show = false, onClose = () => null }) => {
                           height: 'auto',
                         }}
                       />
-                      <span>Sign {showSignIn ? 'in' : 'up'} with Discord</span>
+                      <span>Sign in with Discord</span>
                     </button>
+                    <form className="mt-4" onSubmit={signInWithEmail}>
+                      <div className="flex flex-col space-y-1">
+                        <div className="flex-1">
+                          <div className="relative">
+                            <input
+                              id="email"
+                              type="email"
+                              name="email"
+                              placeholder="Enter Email"
+                              className={cn(
+                                'w-full truncate rounded-md border border-gray-300 py-2 pl-4 shadow-sm transition focus:border-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50'
+                              )}
+                            />
+                          </div>
+                        </div>
 
-                    {/* Sign with email */}
-                    <Formik
-                      initialValues={{ email: '' }}
-                      validationSchema={SignInSchema}
-                      validateOnBlur={false}
-                      onSubmit={signInWithEmail}
-                    >
-                      {({ isSubmitting, isValid, values, resetForm }) => (
-                        <Form className="mt-4">
-                          <Input
+                        {/* {error && (
+                          <p
                             name="email"
-                            type="email"
-                            placeholder="Email address"
-                            disabled={disabled}
-                            spellCheck={false}
-                          />
-
-                          <button
-                            type="submit"
-                            disabled={disabled || !isValid}
-                            className="mt-6 w-full rounded-md bg-rose-600 px-8 py-2 text-white transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-rose-600"
+                            className="text-sm text-red-600 first-letter:uppercase"
                           >
-                            {isSubmitting
-                              ? 'Loading...'
-                              : `Sign ${showSignIn ? 'in' : 'up'}`}
-                          </button>
-
-                          <p className="mt-2 text-center text-sm text-gray-500">
-                            {showSignIn ? (
-                              <>
-                                Don&apos;t have an account yet?{' '}
-                                <button
-                                  type="button"
-                                  disabled={disabled}
-                                  onClick={() => {
-                                    setShowSignIn(false)
-                                    resetForm()
-                                  }}
-                                  className="font-semibold text-rose-500 underline underline-offset-1 hover:text-rose-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:text-rose-500"
-                                >
-                                  Sign up
-                                </button>
-                                .
-                              </>
-                            ) : (
-                              <>
-                                Already have an account?{' '}
-                                <button
-                                  type="button"
-                                  disabled={disabled}
-                                  onClick={() => {
-                                    setShowSignIn(true)
-                                    resetForm()
-                                  }}
-                                  className="font-semibold text-rose-500 underline underline-offset-1 hover:text-rose-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:text-rose-500"
-                                >
-                                  Log in
-                                </button>
-                                .
-                              </>
-                            )}
+                            {error}
                           </p>
+                        )} */}
+                      </div>
 
-                          <Confirm
-                            show={showConfirm}
-                            email={values?.email ?? ''}
-                          />
-                        </Form>
-                      )}
-                    </Formik>
+                      <button
+                        type="submit"
+                        className="mt-6 w-full rounded-md bg-rose-600 px-8 py-2 text-white transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-rose-600"
+                      >
+                        Sign in
+                      </button>
+
+                      {/* <Confirm show={showConfirm} email={values?.email ?? ''} /> */}
+                    </form>
                   </div>
                 </div>
               </div>
