@@ -8,8 +8,8 @@ import { toast } from 'react-hot-toast'
 
 import { cn } from '@/lib/utils'
 
-const Confirm = ({ show = false, email = '' }) => (
-  <Transition appear show={show} as={Fragment}>
+const Confirm = ({ email = '' }) => (
+  <Transition appear show={email !== ''} as={Fragment}>
     <div className="fixed inset-0 z-50">
       <Transition.Child
         as={Fragment}
@@ -56,6 +56,7 @@ const Confirm = ({ show = false, email = '' }) => (
 
 const AuthModal = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [email, setEmail] = useState<string | null>(null)
 
   useEffect(() => {
     const openModal = () => {
@@ -72,7 +73,7 @@ const AuthModal = () => {
     const formData = new FormData(e.target as HTMLFormElement)
     let toastId
     try {
-      toastId = toast.loading('Loading...')
+      toastId = toast.loading('Sending magic link...')
 
       const response = await signIn('email', {
         redirect: false,
@@ -83,6 +84,7 @@ const AuthModal = () => {
       if (response?.error) {
         throw new Error(response.error)
       }
+      setEmail(formData.get('email') as string)
       toast.dismiss(toastId)
     } catch (err) {
       toast.error('Unable to sign in', { id: toastId })
@@ -127,7 +129,7 @@ const AuthModal = () => {
             <Dialog.Overlay className="fixed inset-0" />
           </Transition.Child>
 
-          {/* This element is to trick the browser into centering the modal contents. */}
+          {/* This element is to trick the browser into centering the modal contents. can be create portal? */}
           <span
             className="inline-block h-screen align-middle"
             aria-hidden="true"
@@ -228,18 +230,10 @@ const AuthModal = () => {
                               className={cn(
                                 'w-full truncate rounded-md border border-gray-300 py-2 pl-4 shadow-sm transition focus:border-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50'
                               )}
+                              required
                             />
                           </div>
                         </div>
-
-                        {/* {error && (
-                          <p
-                            name="email"
-                            className="text-sm text-red-600 first-letter:uppercase"
-                          >
-                            {error}
-                          </p>
-                        )} */}
                       </div>
 
                       <button
@@ -249,7 +243,7 @@ const AuthModal = () => {
                         Sign in
                       </button>
 
-                      {/* <Confirm show={showConfirm} email={values?.email ?? ''} /> */}
+                      <Confirm email={email ?? ''} />
                     </form>
                   </div>
                 </div>
