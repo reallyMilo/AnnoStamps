@@ -1,6 +1,5 @@
 //TODO: Refactor on new image uploading procedure, compression, s3 bucket etc...
 
-import { User } from '@prisma/client'
 import { decode } from 'base64-arraybuffer'
 import { Category, Region1800 } from 'game/1800/enum'
 import { getGoodCategory } from 'game/1800/helpers'
@@ -46,7 +45,7 @@ export default async function addStampHandler(
 ) {
   const session = await getServerSession(req, res, authOptions)
 
-  if (!session || !session?.user?.email) {
+  if (!session || !session?.user?.id) {
     return res.status(401).json({ message: 'Unauthorized.' })
   }
 
@@ -94,13 +93,7 @@ export default async function addStampHandler(
   const stampPath = `${stampId}`
 
   if (process.env.NODE_ENV === 'development') {
-    const [user, userError] = await getUser(session.user.email)
-
-    if (userError || !user) {
-      return res.status(500).json({ message: 'error getting user' })
-    }
-
-    const [, stampError] = await createStamp(user, {
+    const [, stampError] = await createStamp(session.user.id, {
       ...safeParse.data,
       game: '1800',
       imageUrl: '/uploaded.png',
@@ -155,7 +148,6 @@ export default async function addStampHandler(
     stampUpload.data.path
   }`
 
-  //FIXME: should be pulling userId from user sesssion!
   const insertStamp: Omit<CreateStamp1800, 'user'> = {
     game: '1800' as const,
     category,
@@ -172,12 +164,7 @@ export default async function addStampHandler(
     stampFileUrl,
   }
 
-  const [user, userError] = await getUser(session.user.email)
-
-  if (userError || !user) {
-    return res.status(500).json({ message: 'error getting user' })
-  }
-  const [, stampError] = await createStamp(user, insertStamp)
+  const [, stampError] = await createStamp(session.user.id, insertStamp)
 
   if (stampError) {
     return res.status(500).json({ message: 'error creating stamp' })
@@ -186,28 +173,14 @@ export default async function addStampHandler(
   res.status(200).json({ message: 'Stamp uploaded successfully!' })
 }
 
-//TODO: next-auth callbacks to add userid + nickname to session
-const getUser = async (
-  email: string
-): Promise<[User | null, null | unknown]> => {
-  try {
-    const user = await prisma.user.findUnique({
-      where: { email: email },
-    })
-    return [user, null]
-  } catch (e) {
-    return [null, e]
-  }
-}
-
 const createStamp = async (
-  user: User,
+  userId: string,
   insert: Omit<CreateStamp1800, 'user'>
 ) => {
   try {
     const stamp = await prisma.stamp.create({
       data: {
-        userId: user.id,
+        userId,
         game: insert.game,
         title: insert.title,
         description: insert.description,
