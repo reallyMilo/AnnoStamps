@@ -36,8 +36,8 @@ const HowTo = () => {
         <p className="py-5">
           Stamps are grouped in folders. Clicking on the stamp folder in the
           stamp menu will display a menu above it with a list of stamps in that
-          folder. Rightlicking the stamp or the stamp folder will display a menu
-          allowing you to rename the folder/stamp and set an icon.
+          folder. Right clicking the stamp or the stamp folder will display a
+          menu allowing you to rename the folder/stamp and set an icon.
         </p>
         <Image
           src="/stamp-name.jpg"
@@ -55,7 +55,7 @@ const HowTo = () => {
           </span>
         </p>
         <p className="py-5">
-          Stamps will be organised by region and then sub categorised within a
+          Stamps will be organized by region and then sub categorized within a
           folder that can contain multiple stamps.
         </p>
         <Image
@@ -94,9 +94,9 @@ const HowTo = () => {
           </span>
         </p>
         <p className="pb-5">
-          Stamps are organised by the region they are associated with so you
+          Stamps are organized by the region they are associated with so you
           will need to place the stamp file in the relevant region folder.
-          Stamps can also be further sub categorised inside the region folder
+          Stamps can also be further sub categorized inside the region folder
           with a folder containing multiple stamps.
         </p>
         <Image
