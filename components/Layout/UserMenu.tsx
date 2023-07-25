@@ -6,6 +6,7 @@ import {
   PlusIcon,
   UserIcon,
 } from '@heroicons/react/24/outline'
+import Image from 'next/image'
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { Fragment } from 'react'
@@ -64,7 +65,11 @@ const UserMenu = () => {
     <Menu as="div" data-testid="user-menu" className="relative z-50">
       <Menu.Button className="group flex items-center space-x-px">
         <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-          <UserIcon className="h-6 w-6 text-gray-400" />
+          {user?.image ? (
+            <Image src={user.image} alt="Avatar" fill sizes="100vw" />
+          ) : (
+            <UserIcon className="h-6 w-6 text-gray-400" />
+          )}
         </div>
         <ChevronDownIcon className="h-5 w-5 shrink-0 text-white group-hover:text-white" />
       </Menu.Button>
@@ -80,7 +85,11 @@ const UserMenu = () => {
         <Menu.Items className="absolute right-0 mt-1 w-72 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="mb-2 flex items-center space-x-2 px-4 py-4">
             <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-              <UserIcon className="h-6 w-6 text-gray-400" />
+              {user?.image ? (
+                <Image src={user.image} alt="Avatar" fill sizes="100vw" />
+              ) : (
+                <UserIcon className="h-6 w-6 text-gray-400" />
+              )}
             </div>
             <div className="flex flex-col truncate">
               <span>{user?.name}</span>
