@@ -1,6 +1,6 @@
 import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
-import type { User } from '@prisma/client'
 import Image from 'next/image'
+import type { StampWithLikes } from 'types'
 
 import Layout from '@/components/Layout/Layout'
 import { prisma } from '@/lib/prisma'
@@ -48,20 +48,8 @@ export async function getStaticProps({ params }: Params) {
     revalidate: 30,
   }
 }
-//TODO: on edit define props for queries
-type ListedStampProps = {
-  category: string
-  description: string
-  downloads: number
-  id: string
-  imageUrl: string
-  likedBy: User[]
-  modded: boolean
-  region: string
-  stampFileUrl: string
-  title: string
-}
-const Listedstamp = ({ stamp }: { stamp: ListedStampProps }) => {
+
+const ListedStamp = ({ stamp }: { stamp: StampWithLikes }) => {
   const handleDownload = async () => {
     const res = await fetch(stamp?.stampFileUrl)
     if (!res.ok) {
@@ -117,11 +105,10 @@ const Listedstamp = ({ stamp }: { stamp: ListedStampProps }) => {
           </div>
 
           <p className="break-words text-lg">{stamp?.description}</p>
-          <p>Direct stamp link if download fails: {stamp?.stampFileUrl}</p>
         </div>
       </div>
     </Layout>
   )
 }
 
-export default Listedstamp
+export default ListedStamp

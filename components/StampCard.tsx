@@ -14,7 +14,7 @@ import { useState } from 'react'
 import useSWRMutation from 'swr/mutation'
 import type { StampWithRelations } from 'types'
 
-import { cn, sendRequest } from '@/lib/utils'
+import { cn, displayAuthModal, sendRequest } from '@/lib/utils'
 
 const StampCard = ({
   id,
@@ -40,7 +40,7 @@ const StampCard = ({
   const { data, trigger } = useSWRMutation('/api/stamp/like', sendRequest)
   const [isLiked, setIsLiked] = useState(false)
   const addLikeToStamp = async () => {
-    if (!authUser) return window.dispatchEvent(new Event('open-auth-modal'))
+    if (!authUser) return displayAuthModal()
 
     await trigger({ stampId: id, userId: authUser.id })
     setIsLiked(true)

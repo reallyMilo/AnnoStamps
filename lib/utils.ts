@@ -43,3 +43,7 @@ export function triggerDownload(data: Blob, filename: string) {
     window.URL.revokeObjectURL(blobUrl)
   }, 200)
 }
+
+export function displayAuthModal() {
+  window.dispatchEvent(new Event('open-auth-modal'))
+}
