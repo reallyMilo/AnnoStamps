@@ -90,6 +90,7 @@ export const authOptions: NextAuthOptions = {
     session: async ({ session, user }) => {
       if (session?.user) {
         session.user.id = user.id
+        session.user.nickname = user.nickname
       }
       return session
     },
