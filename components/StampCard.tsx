@@ -40,7 +40,7 @@ const StampCard = ({
   const { data, trigger } = useSWRMutation('/api/stamp/like', sendRequest)
   const [isLiked, setIsLiked] = useState(false)
   const addLikeToStamp = async () => {
-    if (!authUser) return alert('login plz') // modal here to login!
+    if (!authUser) return window.dispatchEvent(new Event('open-auth-modal'))
 
     await trigger({ stampId: id, userId: authUser.id })
     setIsLiked(true)
