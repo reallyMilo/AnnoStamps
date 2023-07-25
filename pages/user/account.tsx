@@ -1,17 +1,15 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid'
-import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-hot-toast'
 
 import Layout from '@/components/Layout/Layout'
+import { displayAuthModal } from '@/lib/utils'
 
 const Account = () => {
-  const router = useRouter()
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      //TODO: open modal
-      router.replace('/')
+      displayAuthModal()
     },
   })
 
@@ -34,7 +32,9 @@ const Account = () => {
   if (status === 'loading') {
     return (
       <Layout>
-        <div className="container mx-auto px-5 py-12"></div>
+        <div className="container mx-auto px-5 py-12">
+          <p>login please</p>
+        </div>
       </Layout>
     )
   }

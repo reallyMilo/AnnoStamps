@@ -1,18 +1,25 @@
-import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 
 import Layout from '@/components/Layout/Layout'
 import ListingForm from '@/components/ListingForm'
+import { displayAuthModal } from '@/lib/utils'
 
 const Create = () => {
-  const router = useRouter()
-  useSession({
+  const { status } = useSession({
     required: true,
     onUnauthenticated() {
-      //TODO: open modal
-      router.replace('/')
+      displayAuthModal()
     },
   })
+
+  if (status === 'loading')
+    return (
+      <Layout>
+        <div className="mx-auto max-w-5xl px-5 py-12">
+          <p> login please</p>
+        </div>
+      </Layout>
+    )
 
   return (
     <Layout>
