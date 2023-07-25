@@ -11,6 +11,8 @@ import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { Fragment } from 'react'
 
+import { displayAuthModal } from '@/lib/utils'
+
 const menuItems = [
   {
     label: 'My Account',
@@ -44,7 +46,7 @@ const UserMenu = () => {
   const user = session?.user
 
   const handleOnClick = () => {
-    window.dispatchEvent(new Event('open-auth-modal'))
+    displayAuthModal()
   }
 
   if (status === 'loading')
