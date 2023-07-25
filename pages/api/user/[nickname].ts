@@ -26,26 +26,33 @@ export default async function nicknameHandler(
       where: { nickname: nickname },
     })
 
-    res.status(200).json({ listedStamps: getUserStamps[0]?.listedStamps })
+    return res
+      .status(200)
+      .json({ listedStamps: getUserStamps[0]?.listedStamps })
   }
 
   if (req.method === 'PUT') {
     const session = await getServerSession(req, res, authOptions)
-    if (!session?.user.email) {
+    if (!session?.user.id) {
       return res.status(401).json({ message: 'Unauthorized.' })
     }
 
     try {
-      const nickName = req.body.values.userName
       await prisma.user.update({
-        where: { email: session.user.email },
+        where: { id: session.user.id },
         data: {
-          nickname: nickName,
+          nickname: nickname,
         },
       })
-      res.status(200).json({ message: 'Updated user nickname' })
+      return res.status(200).json({ message: 'Updated user nickname' })
     } catch (e) {
-      res.status(500).json({ message: 'failed to updated user nickname' })
+      return res
+        .status(500)
+        .json({ message: 'failed to updated user nickname' })
     }
   }
+
+  return res
+    .status(405)
+    .json({ message: `HTTP method ${req.method} is not supported.` })
 }

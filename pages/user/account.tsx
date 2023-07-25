@@ -7,7 +7,7 @@ import Layout from '@/components/Layout/Layout'
 
 const Account = () => {
   const router = useRouter()
-  const { data: session } = useSession({
+  const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
       //TODO: open modal
@@ -31,9 +31,12 @@ const Account = () => {
       })
     }
   }
-
-  if (!session) {
-    return router.push('/')
+  if (status === 'loading') {
+    return (
+      <Layout>
+        <div className="container mx-auto px-5 py-12"></div>
+      </Layout>
+    )
   }
 
   return (
