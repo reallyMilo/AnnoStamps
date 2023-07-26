@@ -36,3 +36,4 @@ yarn-error.log*
 
 # cypress
 cypress.env.json
+/cypress/screenshots/
