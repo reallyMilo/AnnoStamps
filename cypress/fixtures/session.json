@@ -1,0 +1,11 @@
+{
+  "user": {
+    "name": "user9000",
+    "email": "testuser1@example.com",
+    "image": null,
+    "nickname": "USER9000",
+    "id": "user9000id"
+  },
+  "expires": "3000-01-01T00:00:00.000Z",
+  "accessToken": "abcdefghijklmnopqrst"
+}
