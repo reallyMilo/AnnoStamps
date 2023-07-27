@@ -90,6 +90,7 @@ const ListedStamp = ({ stamp }: { stamp: StampWithLikes }) => {
               </li>
             </ol>
             <button
+              data-testid="stamp-download"
               className="mt-5 inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
               onClick={handleDownload}
             >
