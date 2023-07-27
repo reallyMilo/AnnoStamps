@@ -82,10 +82,10 @@ const ListedStamp = ({ stamp }: { stamp: StampWithLikes }) => {
         <div className="mx-5 grid grid-cols-1 gap-10 pb-10 md:grid-cols-2">
           <div>
             <ol className="mb-2 mt-4 items-center text-gray-500">
-              <li>
+              <li className="capitalize">
                 <span className="font-bold">Category:</span> {stamp?.category}
               </li>
-              <li>
+              <li className="capitalize">
                 <span className="font-bold">Region:</span> {stamp?.region}
               </li>
             </ol>

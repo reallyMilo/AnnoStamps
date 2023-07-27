@@ -121,6 +121,7 @@ const StampCard = ({
           </li>
 
           <li
+            data-testid="stamp-card-like"
             onClick={addLikeToStamp}
             className="flex cursor-pointer items-center gap-1 text-sm"
           >
