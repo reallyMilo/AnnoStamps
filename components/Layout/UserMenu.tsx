@@ -97,8 +97,10 @@ const UserMenu = () => {
               )}
             </div>
             <div className="flex flex-col truncate">
-              <span>{user?.name}</span>
-              <span className="text-sm text-gray-500">{user?.email}</span>
+              <span id="user-name">{user?.name}</span>
+              <span id="user-email" className="text-sm text-gray-500">
+                {user?.email}
+              </span>
             </div>
           </div>
 
@@ -107,6 +109,7 @@ const UserMenu = () => {
               <div
                 key={label}
                 className="px-2 last:mt-2 last:border-t last:pt-2"
+                data-testid="user-menu-item"
               >
                 <Menu.Item>
                   {href ? (
@@ -119,6 +122,7 @@ const UserMenu = () => {
                     </Link>
                   ) : (
                     <button
+                      data-testid="logout-button"
                       className="flex w-full items-center space-x-2 rounded-md px-4 py-2 hover:bg-gray-100"
                       onClick={() => signOut()}
                     >
