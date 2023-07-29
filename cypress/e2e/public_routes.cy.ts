@@ -45,21 +45,18 @@ describe('public routes render', () => {
           cy.visit($link.attr('href'))
         })
     })
-    it('stamp title', () => {
+    it('has all stamp fields', () => {
       cy.get('h1').invoke('text').should('include', 'Stamp-')
-    })
-    it('list has category and region', () => {
       cy.get('ol li').should('have.length', 2)
     })
-    it('mouseover on download button is pointer', () => {
+
+    it('download button should download stamp', () => {
+      cy.intercept('GET', '/stamp.zip').as('download')
       cy.getBySel('stamp-download')
         .trigger('mouseover')
         .then(($link) => {
           expect($link.css('cursor')).to.equal('pointer')
         })
-    })
-    it('download button should download stamp', () => {
-      cy.intercept('GET', '/stamp.zip').as('download')
       cy.getBySel('stamp-download').click()
       cy.wait('@download').then((req) => {
         expect(req.response.statusCode).to.equal(200)

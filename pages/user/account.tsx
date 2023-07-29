@@ -101,6 +101,7 @@ const Account = () => {
                   <button
                     type="submit"
                     className="mt-5 rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
+                    data-testid="nickname-submit"
                   >
                     Submit
                   </button>
