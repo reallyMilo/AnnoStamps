@@ -57,7 +57,8 @@ describe('public routes render', () => {
         .then(($link) => {
           expect($link.css('cursor')).to.equal('pointer')
         })
-      cy.getBySel('stamp-download').click()
+        .click()
+
       cy.wait('@download').then((req) => {
         expect(req.response.statusCode).to.equal(200)
       })
