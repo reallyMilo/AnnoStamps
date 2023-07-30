@@ -172,6 +172,7 @@ const AuthModal = () => {
                           maxWidth: '160px',
                           height: '60px',
                         }}
+                        data-testid="anno-stamp-logo"
                       />
                     </Link>
                   </div>
@@ -180,7 +181,7 @@ const AuthModal = () => {
                     as="h3"
                     className="mt-6 text-center text-lg font-bold sm:text-2xl"
                   >
-                    Create your account
+                    Welcome!
                   </Dialog.Title>
 
                   <div className="mt-10">
@@ -188,16 +189,18 @@ const AuthModal = () => {
                     <button
                       onClick={() => signInWithGoogle()}
                       className="mx-auto flex h-[46px] w-full items-center justify-center space-x-2 rounded-md border p-2 text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-50 hover:text-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-25 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-gray-200 disabled:hover:bg-transparent disabled:hover:text-gray-500"
+                      data-testid="google-sign-in"
                     >
                       <Image
                         src="/google.svg"
-                        alt="Google"
+                        alt="google sign in"
                         width={32}
                         height={32}
                         style={{
                           maxWidth: '100%',
                           height: 'auto',
                         }}
+                        data-testid="google-icon"
                       />
                       <span>Sign in with Google</span>
                     </button>
@@ -208,13 +211,14 @@ const AuthModal = () => {
                     >
                       <Image
                         src="/discord.svg"
-                        alt="Google"
+                        alt="discord sign in"
                         width={32}
                         height={32}
                         style={{
                           maxWidth: '100%',
                           height: 'auto',
                         }}
+                        data-testid="discord-icon"
                       />
                       <span>Sign in with Discord</span>
                     </button>

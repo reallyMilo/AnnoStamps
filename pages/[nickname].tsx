@@ -20,7 +20,7 @@ export default function NicknamePage() {
         <div className="container mx-auto max-w-7xl px-5 py-12">
           <h1>{router.query.nickname} Stamps</h1>
           <Grid>
-            <div>User has no Stamps</div>
+            <p>User has no Stamps</p>
           </Grid>
         </div>
       </Layout>

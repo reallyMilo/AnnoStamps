@@ -19,7 +19,11 @@ const Navbar = () => {
       <div className="container mx-auto h-full">
         <div className="flex h-full items-center justify-between space-x-4 px-1 md:px-4">
           <div className="flex md:space-x-6">
-            <Link href="/" className="hidden items-center space-x-1 md:flex">
+            <Link
+              id="header-logo"
+              href="/"
+              className="hidden items-center space-x-1 md:flex"
+            >
               <Image
                 src="/anno-stamps-logo.svg"
                 width="160"

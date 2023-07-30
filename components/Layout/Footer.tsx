@@ -2,12 +2,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 const socials = [
   {
-    name: 'Discord',
+    name: 'discord',
     url: 'https://discord.gg/73hfP54qXe',
     src: '/discord.svg',
   },
   {
-    name: 'Github',
+    name: 'github',
     url: 'https://github.com/reallyMilo/AnnoStamps',
     src: '/github-mark.svg',
   },
@@ -24,7 +24,7 @@ const Footer = () => {
               key={social.name}
               href={social.url}
               target="_blank"
-              data-cy={social.name}
+              data-testid={social.name}
             >
               <Image
                 src={social.src}

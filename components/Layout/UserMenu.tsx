@@ -84,7 +84,10 @@ const UserMenu = () => {
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 mt-1 w-72 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items
+          data-testid="user-dropdown"
+          className="absolute right-0 mt-1 w-72 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        >
           <div className="mb-2 flex items-center space-x-2 px-4 py-4">
             <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
               {user?.image ? (
@@ -94,8 +97,10 @@ const UserMenu = () => {
               )}
             </div>
             <div className="flex flex-col truncate">
-              <span>{user?.name}</span>
-              <span className="text-sm text-gray-500">{user?.email}</span>
+              <span id="user-name">{user?.name}</span>
+              <span id="user-email" className="text-sm text-gray-500">
+                {user?.email}
+              </span>
             </div>
           </div>
 
@@ -104,6 +109,7 @@ const UserMenu = () => {
               <div
                 key={label}
                 className="px-2 last:mt-2 last:border-t last:pt-2"
+                data-testid="user-menu-item"
               >
                 <Menu.Item>
                   {href ? (
@@ -116,6 +122,7 @@ const UserMenu = () => {
                     </Link>
                   ) : (
                     <button
+                      data-testid="logout-button"
                       className="flex w-full items-center space-x-2 rounded-md px-4 py-2 hover:bg-gray-100"
                       onClick={() => signOut()}
                     >

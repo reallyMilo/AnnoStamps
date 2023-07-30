@@ -48,13 +48,14 @@ const ImageUpload = () => {
         {image?.localUrl ? (
           <>
             <Image
-              id="image"
+              id="image-preview"
               className="object-contain"
               src={image.localUrl}
               alt="screenshot"
               width={400}
               height={220}
               onClick={() => setImage({ localUrl: null, src: null })}
+              data-testid="image-upload"
             />
             <input
               hidden
