@@ -70,6 +70,7 @@ model User {
   emailVerified DateTime?
   image         String?
   nickname      String?   @unique
+  nicknameURL   String?   @unique
   accounts      Account[]
   sessions      Session[]
   listedStamps  Stamp[]   @relation("StampCreator")

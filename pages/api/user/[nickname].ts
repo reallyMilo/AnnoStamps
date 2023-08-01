@@ -16,14 +16,12 @@ export default async function nicknameHandler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
-  const nickname = req.query.nickname as string
-  const nicknameSchema = z.string()
-  nicknameSchema.parse(req.query.nickname) // throws zod error
+  const nickname = z.string().parse(req.query.nickname)
 
   if (req.method === 'GET') {
     const getUserStamps = await prisma.user.findMany({
       select: { listedStamps: true },
-      where: { nickname: nickname },
+      where: { nicknameURL: nickname.toLowerCase() },
     })
 
     return res
@@ -42,6 +40,7 @@ export default async function nicknameHandler(
         where: { id: session.user.id },
         data: {
           nickname: nickname,
+          nicknameURL: nickname.toLowerCase(),
         },
       })
       return res.status(200).json({ message: 'Updated user nickname' })
