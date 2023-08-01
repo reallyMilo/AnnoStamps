@@ -4,5 +4,5 @@
       "main": false
     }
   },
-  "buildCommand": "prisma migrate deploy && next build"
+  "buildCommand": "prisma generate && next build"
 }
