@@ -9,6 +9,7 @@ const userData: Partial<User>[] = Array.from({ length: 100 }, (_, index) => ({
   name: `User ${index + 1}`,
   email: `user${index + 1}@example.com`,
   nickname: `user${index + 1}`,
+  nicknameURL: `user${index + 1}`,
 }))
 
 async function seed() {
