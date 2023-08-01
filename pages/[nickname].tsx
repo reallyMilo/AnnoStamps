@@ -9,8 +9,12 @@ import { fetcher } from '@/lib/utils'
 
 export default function NicknamePage() {
   const router = useRouter()
+
+  const nicknameURL =
+    typeof router.query.nickname === 'string' ? router.query.nickname : ''
+
   const { data, error, isLoading } = useSWR(
-    `/api/user/${router.query.nickname}`,
+    nicknameURL ? `/api/user/${nicknameURL}` : null,
     fetcher
   )
 
@@ -18,7 +22,7 @@ export default function NicknamePage() {
     return (
       <Layout>
         <div className="container mx-auto max-w-7xl px-5 py-12">
-          <h1>{router.query.nickname} Stamps</h1>
+          <h1>{nicknameURL} Stamps</h1>
           <Grid>
             <p>User has no Stamps</p>
           </Grid>
@@ -29,7 +33,7 @@ export default function NicknamePage() {
     return (
       <Layout>
         <div className="container mx-auto max-w-7xl px-5 py-12">
-          <h1>{router.query.nickname} Stamps</h1>
+          <h1>{nicknameURL} Stamps</h1>
           <Grid>
             <div className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200" />
           </Grid>
@@ -40,7 +44,7 @@ export default function NicknamePage() {
   return (
     <Layout>
       <div className="container mx-auto max-w-7xl px-5 py-12">
-        <h1>{router.query.nickname} Stamps</h1>
+        <h1 className="mb-5">{data.nickname} Stamps</h1>
         <Grid>
           {data.listedStamps.map((stamp: Stamp) => (
             <StampCard key={stamp.id} {...stamp} />

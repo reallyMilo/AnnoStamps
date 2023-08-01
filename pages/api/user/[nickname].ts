@@ -10,6 +10,7 @@ import { authOptions } from '../auth/[...nextauth]'
 type ResponseData = {
   listedStamps?: Stamp[]
   message?: string
+  nickname?: string
 }
 
 export default async function nicknameHandler(
@@ -20,13 +21,14 @@ export default async function nicknameHandler(
 
   if (req.method === 'GET') {
     const getUserStamps = await prisma.user.findMany({
-      select: { listedStamps: true },
+      select: { nickname: true, listedStamps: true },
       where: { nicknameURL: nickname.toLowerCase() },
     })
 
-    return res
-      .status(200)
-      .json({ listedStamps: getUserStamps[0]?.listedStamps })
+    return res.status(200).json({
+      nickname: getUserStamps[0]?.nickname as string,
+      listedStamps: getUserStamps[0]?.listedStamps,
+    })
   }
 
   if (req.method === 'PUT') {
