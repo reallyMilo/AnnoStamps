@@ -36,7 +36,7 @@ export async function getStaticProps({ params }: Params) {
       region: true,
       modded: true,
       downloads: true,
-      likedBy: true,
+      //likedBy: true,
     },
     where: { id: params.id },
   })
