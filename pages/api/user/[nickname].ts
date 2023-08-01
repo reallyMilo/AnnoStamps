@@ -1,6 +1,6 @@
-import { Stamp } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
+import { StampWithLikes } from 'types'
 import { z } from 'zod'
 
 import { prisma } from '@/lib/prisma'
@@ -8,7 +8,7 @@ import { prisma } from '@/lib/prisma'
 import { authOptions } from '../auth/[...nextauth]'
 
 type ResponseData = {
-  listedStamps?: Stamp[]
+  listedStamps?: StampWithLikes[]
   message?: string
   nickname?: string
 }
@@ -21,7 +21,14 @@ export default async function nicknameHandler(
 
   if (req.method === 'GET') {
     const getUserStamps = await prisma.user.findMany({
-      select: { nickname: true, listedStamps: true },
+      select: {
+        nickname: true,
+        listedStamps: {
+          include: {
+            likedBy: true,
+          },
+        },
+      },
       where: { nicknameURL: nickname.toLowerCase() },
     })
 
