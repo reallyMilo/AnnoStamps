@@ -1,11 +1,16 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid'
+import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { toast } from 'react-hot-toast'
+import z from 'zod'
 
 import Layout from '@/components/Layout/Layout'
 import { displayAuthModal } from '@/lib/utils'
 
+const allowedCharactersRegex = /^[a-zA-Z0-9_-]+$/
+
 const Account = () => {
+  const router = useRouter()
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -14,19 +19,35 @@ const Account = () => {
   })
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
-    const nickname = formData.get('nickname') as string
-    let toastId
+    const nickname = formData.get('nickname')
+    const usernameValidator = z
+      .string()
+      .min(1, { message: 'Username must not be empty' })
+      .max(50, { message: 'Username must not exceed 50 characters' })
+      .refine((value) => allowedCharactersRegex.test(value), {
+        message: 'Username contains disallowed characters',
+      })
 
+    let toastId
     try {
+      usernameValidator.parse(nickname)
       toastId = toast.loading('Saving...')
       await fetch(`/api/user/${nickname}`, { method: 'PUT' })
 
       toast.success('Successfully saved', { id: toastId })
+      router.reload()
     } catch (e) {
-      toast.error('An error occurred, pleas try again later.', {
-        id: toastId,
-      })
+      if (e instanceof z.ZodError) {
+        toast.error(e.errors[0]?.message || 'Invalid username', {
+          id: toastId,
+        })
+      } else {
+        toast.error('An error occurred, pleas try again later.', {
+          id: toastId,
+        })
+      }
     }
   }
   if (status === 'loading') {
@@ -80,8 +101,9 @@ const Account = () => {
                 type="text"
                 id="nickname"
                 name="nickname"
-                value={session.user?.nickname}
-                placeholder="Sir Archibald Blake"
+                defaultValue={session.user?.nickname ?? ''}
+                placeholder="Sir-Archibald-Blake"
+                readOnly={session.user?.nickname ? true : false}
               />
               {session?.user.nickname ? (
                 <p className="py-2 text-sm text-slate-400">
@@ -92,12 +114,21 @@ const Account = () => {
                   <p className="py-2 text-sm text-slate-400">
                     You can set a username that will be displayed with your
                     uploaded stamps.
-                    <br />
-                    <span className="mt-1 flex items-center space-x-6 font-bold text-red-600">
-                      <ExclamationCircleIcon className="mr-2 inline-block h-6 w-6" />
-                      Usernames cannot be changed!
-                    </span>
                   </p>
+                  <p className="mt-1 flex items-center space-x-6 font-bold text-red-600">
+                    <ExclamationCircleIcon className="mr-2 inline-block h-6 w-6" />
+                    Usernames are used as your personal shareable stamp page.
+                    annostamps.com/YOUR-USERNAME
+                  </p>
+                  <figure>
+                    <figcaption>Username must contain only:</figcaption>
+                    <ol>
+                      <li>Letters (a-z, A-Z)</li>
+                      <li>Digits (0-9)</li>
+                      <li>Underscores (_) or Hyphens (-)</li>
+                      <li>No other special characters are allowed.</li>
+                    </ol>
+                  </figure>
                   <button
                     type="submit"
                     className="mt-5 rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
