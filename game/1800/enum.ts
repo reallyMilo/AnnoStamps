@@ -15,5 +15,5 @@ export enum Category {
 }
 export enum Capital1800 {
   Crown = 'crown falls',
-  Manila = 'manila',
+  Manola = 'manola',
 }
