@@ -59,20 +59,7 @@ export default async function addStampHandler(
   if (!safeParse.success) {
     return res.status(400).json({ message: 'Invalid Data' })
   }
-  const {
-    title,
-    description,
-    category,
-    region,
-    good,
-    capital,
-    townhall,
-    tradeUnion,
-    modded,
-    image,
-    stamp,
-  } = safeParse.data
-
+  const { image, stamp } = safeParse.data
   const imageType = image.match(/data:(.*);base64/)?.[1]
   const base64Image = image.split('base64,')?.[1]
   const stampFileType = stamp.match(
@@ -148,23 +135,12 @@ export default async function addStampHandler(
     stampUpload.data.path
   }`
 
-  const insertStamp: Omit<CreateStamp1800, 'user'> = {
-    game: '1800' as const,
-    category,
-    region,
-    title,
-    description,
+  const [, stampError] = await createStamp(session.user.id, {
+    ...safeParse.data,
     imageUrl,
-    good,
-    goodCategory: getGoodCategory(good),
-    capital,
-    townhall,
-    tradeUnion,
-    modded,
     stampFileUrl,
-  }
-
-  const [, stampError] = await createStamp(session.user.id, insertStamp)
+    game: '1800',
+  })
 
   if (stampError) {
     return res.status(500).json({ message: 'error creating stamp' })
@@ -187,6 +163,7 @@ const createStamp = async (
         category: insert.category,
         region: insert.region,
         good: insert.good,
+        capital: insert.capital,
         goodCategory: getGoodCategory(insert.good ?? 'none'),
         imageUrl: insert.imageUrl,
         stampFileUrl: insert.stampFileUrl,

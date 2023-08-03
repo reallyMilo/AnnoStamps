@@ -157,23 +157,14 @@ const Fields = () => {
             <label className="text-gray-600" htmlFor="capital">
               Capital
             </label>
-            <select
-              className={cn(boxStyle, 'capitalize')}
+            <Select
               id="capital"
               name="capital"
-              required
+              options={Object.values(Capital1800)}
+              className={cn(boxStyle)}
             >
               <option value="">-Select-</option>
-              {Object.values(Capital1800).map((capital) => (
-                <option
-                  className="capitalize"
-                  key={`capital-${capital}`}
-                  value={capital}
-                >
-                  {capital}
-                </option>
-              ))}
-            </select>
+            </Select>
           </div>
         </div>
       )}
