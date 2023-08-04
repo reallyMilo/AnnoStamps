@@ -55,34 +55,14 @@ export default async function editStampHandler(
     return res.status(400).json({ message: 'Invalid Data' })
   }
 
-  const {
-    title,
-    description,
-    category,
-    region,
-    good,
-    capital,
-    townhall,
-    tradeUnion,
-    modded,
-  } = safeParse.data
-
   try {
     await prisma.stamp.update({
       where: {
         id: getStamp.id,
       },
       data: {
-        title,
-        description,
-        category,
-        region,
-        good,
-        goodCategory: getGoodCategory(good),
-        capital,
-        townhall,
-        tradeUnion,
-        modded,
+        ...safeParse.data,
+        goodCategory: getGoodCategory(safeParse.data.good ?? 'none'),
       },
     })
 
