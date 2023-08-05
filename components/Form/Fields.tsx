@@ -8,8 +8,6 @@ import { cn } from '@/lib/utils'
 import Select, { selectVariantStyles } from '../ui/Select'
 
 const items = getGoods()
-// const errorStyle =
-//   'border-red-400 text-red-800 focus:border-red-400 focus:ring-red-400'
 
 const Fields = () => {
   const [category, setCategory] = useState('')
