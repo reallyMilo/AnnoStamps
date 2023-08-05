@@ -16,6 +16,21 @@ import type { StampWithRelations } from 'types'
 
 import { cn, displayAuthModal, sendRequest } from '@/lib/utils'
 
+type CategoryInfo = {
+  color: string
+  icon: React.ReactNode
+}
+
+const categoryMap: Record<string, CategoryInfo> = {
+  housing: { icon: <HomeIcon className="h-5 w-5" />, color: 'bg-[#8B6834]' },
+  production: { icon: <CogIcon className="h-5 w-5" />, color: 'bg-[#18806D]' },
+  cosmetic: {
+    icon: <SparklesIcon className="h-5 w-5" />,
+    color: 'bg-[#C34E27]',
+  },
+  general: { icon: <TagIcon className="h-5 w-5" />, color: 'bg-[#D72455]' },
+}
+
 const StampCard = ({
   id,
   imageUrl,
@@ -29,6 +44,10 @@ const StampCard = ({
   const likes = likedBy ? likedBy.length : 0
   const { data: session } = useSession()
   const authUser = session?.user
+  const { data, trigger } = useSWRMutation('/api/stamp/like', sendRequest)
+  const [isLiked, setIsLiked] = useState(false)
+
+  const { icon, color } = categoryMap[category ?? 'general']
 
   //TODO: Query user on likedStamps and see if stamp id exists
   const userLikedPost = () => {
@@ -37,34 +56,11 @@ const StampCard = ({
     return false
   }
 
-  const { data, trigger } = useSWRMutation('/api/stamp/like', sendRequest)
-  const [isLiked, setIsLiked] = useState(false)
   const addLikeToStamp = async () => {
     if (!authUser) return displayAuthModal()
 
     await trigger({ stampId: id, userId: authUser.id })
     setIsLiked(true)
-  }
-
-  let icon
-  let categoryColour
-
-  if (category === 'housing') {
-    icon = <HomeIcon className="h-5 w-5" />
-    categoryColour = 'bg-[#8B6834]'
-  }
-  if (category === 'production') {
-    icon = <CogIcon className="h-5 w-5" />
-    categoryColour = 'bg-[#18806D]'
-  }
-
-  if (category === 'cosmetic') {
-    icon = <SparklesIcon className="h-5 w-5" />
-    categoryColour = 'bg-[#C34E27]'
-  }
-  if (category === 'general') {
-    icon = <TagIcon className="h-5 w-5" />
-    categoryColour = 'bg-[#D72455]'
   }
 
   return (
@@ -114,7 +110,10 @@ const StampCard = ({
       <div className="flex flex-col flex-nowrap self-end p-4">
         <ol className="relative flex flex-row justify-between pt-4 text-gray-500">
           <li
-            className={`flex items-center gap-1 rounded-full capitalize ${categoryColour} w-fit py-1  pl-2 pr-3 text-xs text-white`}
+            className={cn(
+              'flex w-fit items-center gap-1 rounded-full py-1 pl-2 pr-3 text-xs capitalize text-white',
+              color
+            )}
           >
             {icon}
             {category}
