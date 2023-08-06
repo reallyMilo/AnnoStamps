@@ -12,7 +12,7 @@ import { prisma } from '@/lib/prisma'
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context)
 
-  if (!session?.user?.email) {
+  if (!session?.user?.id) {
     return {
       redirect: {
         destination: '/',
@@ -22,7 +22,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const stamps = await prisma.stamp.findMany({
-    where: { user: { email: session.user.email } },
+    where: { userId: session.user.id },
     orderBy: { createdAt: 'desc' },
   })
 
