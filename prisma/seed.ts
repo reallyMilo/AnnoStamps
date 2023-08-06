@@ -12,6 +12,11 @@ const userData: Partial<User>[] = Array.from({ length: 100 }, (_, index) => ({
   nicknameURL: `user${index + 1}`,
 }))
 
+const folderImagePaths = [
+  '/stamp-name.jpg',
+  '/stamp-highlight.jpg',
+  '/header.jpg',
+]
 async function seed() {
   const users: User[] = []
 
@@ -31,6 +36,8 @@ async function seed() {
     const goodCategory = goodCategories[rndCategoryIndex]
     const good = associatedGoods[rndGoodIndex].name
 
+    const rndImage =
+      folderImagePaths[Math.floor(Math.random() * folderImagePaths.length)]
     return {
       userId: users[index % users.length].id,
       game: '1800',
@@ -38,7 +45,7 @@ async function seed() {
       description: `Stamp-${goodCategory}-${good}-${index}`,
       category: 'production',
       region: getGoodRegion(good),
-      imageUrl: '/stamp.png',
+      imageUrl: rndImage,
       stampFileUrl: '/stamp.zip',
       townhall: index % 2 ? false : true,
       tradeUnion: index % 2 ? true : false,
