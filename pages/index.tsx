@@ -8,7 +8,7 @@ import Layout from '@/components/Layout/Layout'
 import { Pagination } from '@/components/Pagination'
 import StampCard from '@/components/StampCard'
 import { prisma } from '@/lib/prisma'
-import { pageSize } from '@/lib/utils'
+import { stampsPerPage } from '@/lib/utils'
 
 type HomePageProps = {
   count: number
@@ -79,8 +79,8 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
       where: whereStatement,
       orderBy: orderByStatement(sort as string),
 
-      skip: (Number(pageNumber) - 1) * pageSize(),
-      take: pageSize(),
+      skip: (Number(pageNumber) - 1) * stampsPerPage(),
+      take: stampsPerPage(),
     }),
   ])
 
@@ -111,13 +111,15 @@ export default function Home({
             <span>No stamps found.</span>
           </p>
         ) : (
-          <Grid>
-            {stamps.map((stamp) => (
-              <StampCard key={stamp.id} {...stamp} />
-            ))}
-          </Grid>
+          <>
+            <Grid>
+              {stamps.map((stamp) => (
+                <StampCard key={stamp.id} {...stamp} />
+              ))}
+            </Grid>
+            <Pagination count={count} />
+          </>
         )}
-        <Pagination count={count} />
       </div>
     </Layout>
   )

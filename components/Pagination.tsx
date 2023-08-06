@@ -2,20 +2,16 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-import { cn, pageSize } from '@/lib/utils'
-
-const presetVisiblePageCount = 20
+import { cn, stampsPerPage } from '@/lib/utils'
 
 const generatePageNumbers = (totalPageCount: number, currentPage: number) => {
-  if (totalPageCount <= presetVisiblePageCount) {
+  const presetMaxPageList = 20
+  if (totalPageCount <= presetMaxPageList) {
     return Array.from({ length: totalPageCount }, (_, i) => i + 1)
   } else {
-    const middlePage = Math.ceil(presetVisiblePageCount / 2)
+    const middlePage = Math.ceil(presetMaxPageList / 2)
     const startPage = Math.max(1, currentPage - middlePage + 1)
-    const endPage = Math.min(
-      startPage + presetVisiblePageCount - 1,
-      totalPageCount
-    )
+    const endPage = Math.min(startPage + presetMaxPageList - 1, totalPageCount)
 
     return Array.from(
       { length: endPage - startPage + 1 },
@@ -28,7 +24,7 @@ export const Pagination = ({ count }: { count: number }) => {
   const router = useRouter()
   const { query } = router
   const [currentPage, setCurrentPage] = useState(1)
-  const totalPageCount = Math.ceil(count / pageSize())
+  const totalPageCount = Math.ceil(count / stampsPerPage())
 
   const pageNumbers = generatePageNumbers(totalPageCount, currentPage)
 
@@ -56,8 +52,8 @@ export const Pagination = ({ count }: { count: number }) => {
       query: { ...query, page: page },
     })
   }
-  const starting = (currentPage - 1) * pageSize() + 1
-  const ending = Math.min(starting + pageSize() - 1, count)
+  const starting = (currentPage - 1) * stampsPerPage() + 1
+  const ending = Math.min(starting + stampsPerPage() - 1, count)
 
   return (
     <div className="mt-6 flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
