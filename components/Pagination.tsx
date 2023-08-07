@@ -1,34 +1,32 @@
-//bad implementation will refactor later
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-import { cn, pageSize } from '@/lib/utils'
+import { cn, stampsPerPage } from '@/lib/utils'
 
-type PaginationProps = {
-  count: number
-}
-
-export const Pagination = ({ count }: PaginationProps) => {
-  const router = useRouter()
-  const { query } = router
-  const [currentPage, setCurrentPage] = useState(1)
-  const totalPageCount = Math.ceil(count / pageSize())
-  const visiblePageCount = 20
-  let pages = []
-
-  if (totalPageCount <= visiblePageCount) {
-    pages = Array.from({ length: totalPageCount }, (_, i) => i + 1)
+const generatePageNumbers = (totalPageCount: number, currentPage: number) => {
+  const presetMaxPageList = 20
+  if (totalPageCount <= presetMaxPageList) {
+    return Array.from({ length: totalPageCount }, (_, i) => i + 1)
   } else {
-    const middlePage = Math.ceil(visiblePageCount / 2)
+    const middlePage = Math.ceil(presetMaxPageList / 2)
     const startPage = Math.max(1, currentPage - middlePage + 1)
-    const endPage = Math.min(startPage + visiblePageCount - 1, totalPageCount)
+    const endPage = Math.min(startPage + presetMaxPageList - 1, totalPageCount)
 
-    pages = Array.from(
+    return Array.from(
       { length: endPage - startPage + 1 },
       (_, i) => startPage + i
     )
   }
+}
+
+export const Pagination = ({ count }: { count: number }) => {
+  const router = useRouter()
+  const { query } = router
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPageCount = Math.ceil(count / stampsPerPage())
+
+  const pageNumbers = generatePageNumbers(totalPageCount, currentPage)
 
   const incrementPage = () => {
     if (currentPage + 1 > totalPageCount) return
@@ -46,15 +44,16 @@ export const Pagination = ({ count }: PaginationProps) => {
       query: { ...query, page: currentPage - 1 },
     })
   }
-  const changePage = (page: number) => {
+  const changePage = (e: React.MouseEvent<HTMLLIElement>) => {
+    const page = e.currentTarget.value
     setCurrentPage(page)
     router.push({
       pathname: '/',
       query: { ...query, page: page },
     })
   }
-  const starting = (currentPage - 1) * pageSize() + 1
-  const ending = Math.min(starting + pageSize() - 1, count)
+  const starting = (currentPage - 1) * stampsPerPage() + 1
+  const ending = Math.min(starting + stampsPerPage() - 1, count)
 
   return (
     <div className="mt-6 flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
@@ -90,20 +89,18 @@ export const Pagination = ({ count }: PaginationProps) => {
                 <span className="sr-only">Previous</span>
                 <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
               </li>
-              {pages.map((p) => (
+              {pageNumbers.map((pageNum) => (
                 <li
-                  key={p + '-pagination'}
+                  key={pageNum + '-pagination'}
                   className={cn(
                     'relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-indigo-400 focus:z-20 focus:outline-offset-0 md:inline-flex',
-                    p === currentPage &&
+                    pageNum === currentPage &&
                       'z-10 bg-indigo-600 text-white hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                   )}
-                  value={p}
-                  onClick={(e: React.MouseEvent<HTMLLIElement>) =>
-                    changePage(e.currentTarget.value)
-                  }
+                  value={pageNum}
+                  onClick={changePage}
                 >
-                  {p}
+                  {pageNum}
                 </li>
               ))}
               <li

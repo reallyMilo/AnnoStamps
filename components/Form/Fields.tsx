@@ -5,13 +5,9 @@ import { useState } from 'react'
 
 import { cn } from '@/lib/utils'
 
-import Select from '../ui/Select'
+import Select, { selectVariantStyles } from '../ui/Select'
 
 const items = getGoods()
-const boxStyle =
-  'w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 focus:border-gray-400 focus:ring-gray-400'
-// const errorStyle =
-//   'border-red-400 text-red-800 focus:border-red-400 focus:ring-red-400'
 
 const Fields = () => {
   const [category, setCategory] = useState('')
@@ -41,7 +37,7 @@ const Fields = () => {
             name="region"
             required
             options={Object.values(Region1800)}
-            className={cn(boxStyle)}
+            variant="primaryShadow"
           >
             <option value="">-Select-</option>
           </Select>
@@ -49,7 +45,12 @@ const Fields = () => {
         <div>
           <label htmlFor="modded">Uses Mods</label>
           <br />
-          <select name="modded" id="modded" className={cn(boxStyle)} required>
+          <select
+            name="modded"
+            id="modded"
+            className={selectVariantStyles.primaryShadow}
+            required
+          >
             <option value="">-Select-</option>
             <option value="true">Yes</option>
             <option value="false">No</option>
@@ -85,7 +86,10 @@ const Fields = () => {
                     placeholder: 'Enter final good in chain',
                     require,
                   })}
-                  className={cn(boxStyle, 'relative capitalize')}
+                  className={cn(
+                    selectVariantStyles.primaryShadow,
+                    'relative capitalize'
+                  )}
                 />
 
                 <ul
@@ -120,7 +124,7 @@ const Fields = () => {
               Trade Union
             </label>
             <select
-              className={cn(boxStyle)}
+              className={selectVariantStyles.primaryShadow}
               id="trade-union"
               name="trade-union"
               required
@@ -139,7 +143,7 @@ const Fields = () => {
               Town Hall
             </label>
             <select
-              className={cn(boxStyle)}
+              className={selectVariantStyles.primaryShadow}
               id="townhall"
               name="townhall"
               required
@@ -161,7 +165,7 @@ const Fields = () => {
               id="capital"
               name="capital"
               options={Object.values(Capital1800)}
-              className={cn(boxStyle)}
+              className={selectVariantStyles.primaryShadow}
             >
               <option value="">-Select-</option>
             </Select>
@@ -178,7 +182,7 @@ const Fields = () => {
             name="title"
             type="text"
             placeholder="Enter stamp title"
-            className={cn(boxStyle)}
+            className={selectVariantStyles.primaryShadow}
             required
           />
         </div>
@@ -189,7 +193,10 @@ const Fields = () => {
           <textarea
             id="description"
             name="description"
-            className={cn(boxStyle, 'whitespace-pre-line')}
+            className={cn(
+              selectVariantStyles.primaryShadow,
+              'whitespace-pre-line'
+            )}
             placeholder="Add some two letter fields for searching at the start of the description, see anno wiki
             production layouts for reference."
             rows={5}

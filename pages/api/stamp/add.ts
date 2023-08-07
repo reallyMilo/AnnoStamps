@@ -2,7 +2,6 @@
 
 import { decode } from 'base64-arraybuffer'
 import { Category, Region1800 } from 'game/1800/enum'
-import { getGoodCategory } from 'game/1800/helpers'
 import type { CreateStamp1800 } from 'game/1800/types'
 import { nanoid } from 'nanoid'
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -17,20 +16,6 @@ import { authOptions } from '../auth/[...nextauth]'
 type ResponseData = {
   message: string
 }
-
-const stampSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  category: z.nativeEnum(Category),
-  region: z.nativeEnum(Region1800),
-  good: z.string(),
-  capital: z.string(),
-  townhall: z.boolean(),
-  tradeUnion: z.boolean(),
-  modded: z.boolean(),
-  image: z.string(),
-  stamp: z.string(),
-})
 
 export const config = {
   api: {
@@ -55,11 +40,26 @@ export default async function addStampHandler(
       .json({ message: `HTTP method ${req.method} is not supported.` })
   }
 
-  const safeParse = stampSchema.safeParse(JSON.parse(req.body))
-  if (!safeParse.success) {
+  const createStampSchema = z
+    .object({
+      title: z.string(),
+      description: z.string(),
+      category: z.nativeEnum(Category),
+      region: z.nativeEnum(Region1800),
+      good: z.string(),
+      capital: z.string(),
+      townhall: z.boolean(),
+      tradeUnion: z.boolean(),
+      modded: z.boolean(),
+      image: z.string(),
+      stamp: z.string(),
+    })
+    .safeParse(JSON.parse(req.body))
+
+  if (!createStampSchema.success) {
     return res.status(400).json({ message: 'Invalid Data' })
   }
-  const { image, stamp } = safeParse.data
+  const { image, stamp } = createStampSchema.data
   const imageType = image.match(/data:(.*);base64/)?.[1]
   const base64Image = image.split('base64,')?.[1]
   const stampFileType = stamp.match(
@@ -81,7 +81,7 @@ export default async function addStampHandler(
 
   if (process.env.NODE_ENV === 'development') {
     const [, stampError] = await createStamp(session.user.id, {
-      ...safeParse.data,
+      ...createStampSchema.data,
       game: '1800',
       imageUrl: '/uploaded.png',
       stampFileUrl: 'no-stamp',
@@ -136,7 +136,7 @@ export default async function addStampHandler(
   }`
 
   const [, stampError] = await createStamp(session.user.id, {
-    ...safeParse.data,
+    ...createStampSchema.data,
     imageUrl,
     stampFileUrl,
     game: '1800',
@@ -157,17 +157,7 @@ const createStamp = async (
     const stamp = await prisma.stamp.create({
       data: {
         userId,
-        game: insert.game,
-        title: insert.title,
-        description: insert.description,
-        category: insert.category,
-        region: insert.region,
-        good: insert.good,
-        capital: insert.capital,
-        goodCategory: getGoodCategory(insert.good ?? 'none'),
-        imageUrl: insert.imageUrl,
-        stampFileUrl: insert.stampFileUrl,
-        modded: insert.modded,
+        ...insert,
       },
     })
     return [stamp, null]

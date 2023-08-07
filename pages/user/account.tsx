@@ -40,7 +40,7 @@ const Account = () => {
       router.reload()
     } catch (e) {
       if (e instanceof z.ZodError) {
-        toast.error(e.errors[0]?.message || 'Invalid username', {
+        toast.error(e.errors[0]?.message || 'parsing error', {
           id: toastId,
         })
       } else {

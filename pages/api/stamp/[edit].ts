@@ -1,5 +1,4 @@
 import { Category, Region1800 } from 'game/1800/enum'
-import { getGoodCategory } from 'game/1800/helpers'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 import { z } from 'zod'
@@ -38,20 +37,21 @@ export default async function editStampHandler(
     return res.status(401).json({ message: 'Not stamp author' })
   }
 
-  const editStampSchema = z.object({
-    title: z.string(),
-    description: z.string(),
-    category: z.nativeEnum(Category),
-    region: z.nativeEnum(Region1800),
-    good: z.string(),
-    capital: z.string(),
-    townhall: z.boolean(),
-    tradeUnion: z.boolean(),
-    modded: z.boolean(),
-  })
+  const editStampSchema = z
+    .object({
+      title: z.string(),
+      description: z.string(),
+      category: z.nativeEnum(Category),
+      region: z.nativeEnum(Region1800),
+      good: z.string(),
+      capital: z.string(),
+      townhall: z.boolean(),
+      tradeUnion: z.boolean(),
+      modded: z.boolean(),
+    })
+    .safeParse(JSON.parse(req.body))
 
-  const safeParse = editStampSchema.safeParse(JSON.parse(req.body))
-  if (!safeParse.success) {
+  if (!editStampSchema.success) {
     return res.status(400).json({ message: 'Invalid Data' })
   }
 
@@ -60,10 +60,7 @@ export default async function editStampHandler(
       where: {
         id: getStamp.id,
       },
-      data: {
-        ...safeParse.data,
-        goodCategory: getGoodCategory(safeParse.data.good ?? 'none'),
-      },
+      data: editStampSchema.data,
     })
 
     res.status(200).json({ message: 'successfully updated' })

@@ -26,20 +26,6 @@ export function getGoods() {
     .flat()
 }
 
-export function getGoodCategory(good: string | null) {
-  if (!good || good === 'none') {
-    return 'none'
-  }
-
-  for (const category of Object.values(GOOD_CATEGORIES_1800)) {
-    for (const currentItem of category.items) {
-      if (currentItem.value === good) {
-        return category.category.toLowerCase()
-      }
-    }
-  }
-  return ''
-}
 function isOldWorldGood(good: string) {
   return OLD_WORLD_GOODS.includes(good)
 }

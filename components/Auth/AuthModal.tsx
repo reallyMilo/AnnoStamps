@@ -70,6 +70,7 @@ const AuthModal = () => {
   }, [])
 
   const signInWithEmail = async (e: React.SyntheticEvent) => {
+    e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
     let toastId
     try {
