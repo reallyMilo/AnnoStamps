@@ -14,8 +14,8 @@ dependencies:
     specifier: ^4.16.2
     version: 4.16.2(prisma@4.16.2)
   '@supabase/supabase-js':
-    specifier: ^2.29.0
-    version: 2.29.0
+    specifier: ^2.32.0
+    version: 2.32.0
   '@tailwindcss/forms':
     specifier: ^0.5.4
     version: 0.5.4(tailwindcss@3.3.3)
@@ -650,10 +650,10 @@ packages:
       - encoding
     dev: false
 
-  /@supabase/gotrue-js@2.43.1:
+  /@supabase/gotrue-js@2.46.1:
     resolution:
       {
-        integrity: sha512-HVjjElEPbM5sDoK1pXry/H181X7A1a9G9O68PZwN276y/EUwWOw3pA8KKKSRTaTSiK+41BPC8HUfsfbe7470RQ==,
+        integrity: sha512-tebFX3XvPqEJKHOVgkXTN20g9iUhLx6tebIYQvTggYTrqOT2af8oTpSBdgYzbwJ291G6P6CSpR6KY0cT9ade5A==,
       }
     dependencies:
       cross-fetch: 3.1.8
@@ -661,10 +661,10 @@ packages:
       - encoding
     dev: false
 
-  /@supabase/postgrest-js@1.7.2:
+  /@supabase/postgrest-js@1.8.0:
     resolution:
       {
-        integrity: sha512-GK80JpRq8l6Qll85erICypAfQCied8tdlXfsDN14W844HqXCSOisk8AaE01DAwGJanieaoN5fuqhzA2yKxDvEQ==,
+        integrity: sha512-R6leDIC92NgjyG2/tCRJ42rWN7+fZY6ulTEE+c00tcnghn6cX4IYUlnTNMtrdfYC2JYNOTyM+rWj63Wdhr7Zig==,
       }
     dependencies:
       cross-fetch: 3.1.8
@@ -696,15 +696,15 @@ packages:
       - encoding
     dev: false
 
-  /@supabase/supabase-js@2.29.0:
+  /@supabase/supabase-js@2.32.0:
     resolution:
       {
-        integrity: sha512-Lb/7sxsTLAzYl6Op1CL+hH+9NC3FUAj1FfgUUbCBysJlAF39/kbdrimq/JMFOAnN1/cqpkR3rR/1WmU9ARS29g==,
+        integrity: sha512-1ShFhuOI5Du7604nlCelBsRD61daXk2O0qwjumoz35bqrYThnSPPtpJqZOHw6Mg6o7mLjIInYLh/DBlh8UvzRg==,
       }
     dependencies:
       '@supabase/functions-js': 2.1.2
-      '@supabase/gotrue-js': 2.43.1
-      '@supabase/postgrest-js': 1.7.2
+      '@supabase/gotrue-js': 2.46.1
+      '@supabase/postgrest-js': 1.8.0
       '@supabase/realtime-js': 2.7.3
       '@supabase/storage-js': 2.5.1
       cross-fetch: 3.1.8

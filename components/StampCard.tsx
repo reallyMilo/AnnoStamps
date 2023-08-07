@@ -1,5 +1,6 @@
 import {
   CogIcon,
+  GlobeEuropeAfricaIcon,
   HandThumbUpIcon,
   HomeIcon,
   SparklesIcon,
@@ -27,6 +28,10 @@ const categoryMap: Record<string, CategoryInfo> = {
   cosmetic: {
     icon: <SparklesIcon className="h-5 w-5" />,
     color: 'bg-[#C34E27]',
+  },
+  island: {
+    icon: <GlobeEuropeAfricaIcon className="h-5 w-5" />,
+    color: 'bg-[#2B4162]',
   },
   general: { icon: <TagIcon className="h-5 w-5" />, color: 'bg-[#D72455]' },
 }

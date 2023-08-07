@@ -1,5 +1,6 @@
 //TODO: Refactor on new image uploading procedure, compression, s3 bucket etc...
 
+import { createClient } from '@supabase/supabase-js'
 import { decode } from 'base64-arraybuffer'
 import { Category, Region1800 } from 'game/1800/enum'
 import type { CreateStamp1800 } from 'game/1800/types'
@@ -9,7 +10,6 @@ import { getServerSession } from 'next-auth/next'
 import { z } from 'zod'
 
 import { prisma } from '@/lib/prisma'
-import { supabase } from '@/lib/supabase'
 
 import { authOptions } from '../auth/[...nextauth]'
 
@@ -59,7 +59,7 @@ export default async function addStampHandler(
   if (!createStampSchema.success) {
     return res.status(400).json({ message: 'Invalid Data' })
   }
-  const { image, stamp } = createStampSchema.data
+  const { image, stamp, ...createStampFields } = createStampSchema.data
   const imageType = image.match(/data:(.*);base64/)?.[1]
   const base64Image = image.split('base64,')?.[1]
   const stampFileType = stamp.match(
@@ -81,7 +81,7 @@ export default async function addStampHandler(
 
   if (process.env.NODE_ENV === 'development') {
     const [, stampError] = await createStamp(session.user.id, {
-      ...createStampSchema.data,
+      ...createStampFields,
       game: '1800',
       imageUrl: '/uploaded.png',
       stampFileUrl: 'no-stamp',
@@ -96,11 +96,15 @@ export default async function addStampHandler(
   if (
     !process.env.SUPABASE_SCREENSHOTS ||
     !process.env.SUPABASE_STAMPS ||
-    !process.env.SUPABASE_URL
+    !process.env.SUPABASE_URL ||
+    !process.env.SUPABASE_KEY
   ) {
     return res.status(500).json({ message: 'set your supabase keys' })
   }
-
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_KEY
+  )
   const [imageUpload, stampUpload] = await Promise.all([
     supabase.storage
       .from(process.env.SUPABASE_SCREENSHOTS)
@@ -136,7 +140,7 @@ export default async function addStampHandler(
   }`
 
   const [, stampError] = await createStamp(session.user.id, {
-    ...createStampSchema.data,
+    ...createStampFields,
     imageUrl,
     stampFileUrl,
     game: '1800',
