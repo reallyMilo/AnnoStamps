@@ -27,3 +27,5 @@ Finally run the following commands
 pnpm i
 pnpm migrate
 ```
+
+images
