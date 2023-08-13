@@ -116,6 +116,7 @@ export default async function addStampHandler(
       .from(process.env.SUPABASE_STAMPS)
       .upload(stampPath, decode(base64StampFile), {
         upsert: true,
+        contentType: 'application/octet-stream',
       }),
   ])
 
