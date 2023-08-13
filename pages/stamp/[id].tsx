@@ -56,7 +56,9 @@ const ListedStamp = ({ stamp }: { stamp: StampWithLikes }) => {
       return
     }
     const file = await res.blob()
-    triggerDownload(file, stamp.title)
+    //FIXME: files responding with text/html
+    const newFile = file.slice(0, file.size, 'application/octet-stream')
+    triggerDownload(newFile, stamp.title)
     await fetch(`/api/stamp/download/${stamp.id}`)
   }
 
