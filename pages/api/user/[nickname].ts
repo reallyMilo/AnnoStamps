@@ -20,22 +20,32 @@ export default async function nicknameHandler(
   const nickname = z.string().parse(req.query.nickname)
 
   if (req.method === 'GET') {
-    const getUserStamps = await prisma.user.findMany({
-      select: {
-        nickname: true,
-        listedStamps: {
-          include: {
-            likedBy: true,
+    try {
+      const getUserStamps = await prisma.user.findUnique({
+        select: {
+          nickname: true,
+          listedStamps: {
+            include: {
+              likedBy: {
+                select: {
+                  id: true,
+                },
+              },
+            },
           },
         },
-      },
-      where: { nicknameURL: nickname.toLowerCase() },
-    })
-
-    return res.status(200).json({
-      nickname: getUserStamps[0]?.nickname as string,
-      listedStamps: getUserStamps[0]?.listedStamps,
-    })
+        where: { nicknameURL: nickname.toLowerCase() },
+      })
+      if (!getUserStamps) {
+        return res.status(200).json({ message: 'no user found' })
+      }
+      return res.status(200).json({
+        nickname: getUserStamps?.nickname as string,
+        listedStamps: getUserStamps?.listedStamps,
+      })
+    } catch (e) {
+      return res.status(500).json({ message: 'prisma error ' })
+    }
   }
 
   if (req.method === 'PUT') {

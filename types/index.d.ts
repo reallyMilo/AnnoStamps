@@ -3,12 +3,22 @@ import { Prisma } from '@prisma/client'
 import { Category } from 'game/1800/enum'
 
 const stampWithLikes = Prisma.validator<Prisma.StampArgs>()({
-  include: { likedBy: true },
+  include: { likedBy: { select: { id: true } } },
 })
 type StampWithLikes = Prisma.StampGetPayload<typeof stampWithLikes>
 
 const stampWithRelations = Prisma.validator<Prisma.StampArgs>()({
-  include: { likedBy: true, user: true },
+  include: {
+    likedBy: { select: { id: true } },
+    user: {
+      select: {
+        id: true,
+        nickname: true,
+        nicknameURL: true,
+        image: true,
+      },
+    },
+  },
 })
 
 type StampWithRelations = Prisma.StampGetPayload<typeof stampWithRelations>
