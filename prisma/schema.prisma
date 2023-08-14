@@ -29,7 +29,6 @@ model Stamp {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   modded       Boolean  @default(false)
-  oldLikes     Json     @default("{\"users\": []}")
   downloads    Int      @default(0)
   user         User     @relation("StampCreator", fields: [userId], references: [id], onDelete: Cascade)
   likedBy      User[]   @relation("StampLiker")

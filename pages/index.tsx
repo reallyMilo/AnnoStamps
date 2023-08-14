@@ -74,7 +74,11 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
         category: true,
         region: true,
         modded: true,
-        likedBy: true,
+        likedBy: {
+          select: {
+            id: true,
+          },
+        },
         user: true,
       },
       where: whereStatement,
