@@ -7,6 +7,7 @@ import { getSession } from 'next-auth/react'
 import Grid from '@/components/Layout/Grid'
 import Layout from '@/components/Layout/Layout'
 import StampCard from '@/components/StampCard'
+import Container from '@/components/ui/Container'
 import { prisma } from '@/lib/prisma'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -40,7 +41,7 @@ const Stamps = ({ stamps }: { stamps: Stamp[] }) => {
         Your listings
       </h1>
 
-      <div className="container mx-auto max-w-7xl px-5 py-12">
+      <Container>
         <Grid>
           {stamps.map((stamp) => (
             <div key={stamp.id} className="flex flex-col">
@@ -58,7 +59,7 @@ const Stamps = ({ stamps }: { stamps: Stamp[] }) => {
             </div>
           ))}
         </Grid>
-      </div>
+      </Container>
     </Layout>
   )
 }

@@ -1,11 +1,12 @@
 import Image from 'next/image'
 
 import Layout from '@/components/Layout/Layout'
+import Container from '@/components/ui/Container'
 
 const HowTo = () => {
   return (
     <Layout>
-      <div className="container mx-auto max-w-5xl px-5 py-12">
+      <Container className="max-w-5xl">
         <h1 className="pb-2 text-3xl font-bold">
           How to use stamps in Anno 1800
         </h1>
@@ -105,7 +106,7 @@ const HowTo = () => {
           height={600}
           alt="Stamp folder"
         />
-      </div>
+      </Container>
     </Layout>
   )
 }
