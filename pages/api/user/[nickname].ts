@@ -1,3 +1,4 @@
+import type { User } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 import { StampWithLikes } from 'types'
@@ -8,9 +9,9 @@ import { prisma } from '@/lib/prisma'
 import { authOptions } from '../auth/[...nextauth]'
 
 type ResponseData = {
-  listedStamps?: StampWithLikes[]
   message?: string
-  nickname?: string
+  stamps?: StampWithLikes[]
+  user?: Partial<User>
 }
 
 export default async function nicknameHandler(
@@ -23,6 +24,7 @@ export default async function nicknameHandler(
     try {
       const getUserStamps = await prisma.user.findUnique({
         select: {
+          image: true,
           nickname: true,
           listedStamps: {
             include: {
@@ -39,9 +41,12 @@ export default async function nicknameHandler(
       if (!getUserStamps) {
         return res.status(200).json({ message: 'no user found' })
       }
+
+      const { listedStamps, ...user } = getUserStamps
+
       return res.status(200).json({
-        nickname: getUserStamps?.nickname as string,
-        listedStamps: getUserStamps?.listedStamps,
+        user,
+        stamps: listedStamps,
       })
     } catch (e) {
       return res.status(500).json({ message: 'prisma error ' })
