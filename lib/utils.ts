@@ -25,7 +25,7 @@ export async function sendRequest(
   }).then((res) => res.json())
 }
 
-export function triggerDownload(data: Blob, filename: string) {
+export const triggerDownload = (data: Blob, filename: string) => {
   const blobUrl =
     window.URL && window.URL.createObjectURL
       ? window.URL.createObjectURL(data)
@@ -40,12 +40,12 @@ export function triggerDownload(data: Blob, filename: string) {
   document.body.appendChild(tempLink)
   tempLink.click()
 
-  setTimeout(function () {
+  setTimeout(() => {
     document.body.removeChild(tempLink)
     window.URL.revokeObjectURL(blobUrl)
   }, 200)
 }
 
-export function displayAuthModal() {
+export const displayAuthModal = () => {
   window.dispatchEvent(new Event('open-auth-modal'))
 }

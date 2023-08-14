@@ -7,7 +7,7 @@ import Layout from '@/components/Layout/Layout'
 import StampCard from '@/components/StampCard'
 import { fetcher } from '@/lib/utils'
 
-export default function NicknamePage() {
+const NicknamePage = () => {
   const router = useRouter()
 
   const nicknameURL =
@@ -54,3 +54,5 @@ export default function NicknamePage() {
     </Layout>
   )
 }
+
+export default NicknamePage
