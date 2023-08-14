@@ -19,6 +19,7 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
   query,
   res,
 }) => {
+  //TODO: clean up when finished with filter / search
   const {
     modded,
     region,
@@ -97,10 +98,10 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
   }
 }
 
-export default function Home({
+const HomePage = ({
   count,
   stamps,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout>
       <div className="container mx-auto max-w-7xl px-5 py-12">
@@ -124,3 +125,4 @@ export default function Home({
     </Layout>
   )
 }
+export default HomePage

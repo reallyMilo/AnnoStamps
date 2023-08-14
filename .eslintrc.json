@@ -11,7 +11,15 @@
       "extends": ["plugin:@typescript-eslint/recommended"],
       "files": ["**/*.{ts,tsx}"],
       "rules": {
-        "no-console": 2
+        "no-console": 2,
+        "prefer-arrow-callback": "warn",
+        "react/function-component-definition": [
+          1,
+          {
+            "namedComponents": "arrow-function",
+            "unnamedComponents": "arrow-function"
+          }
+        ]
       }
     },
     {

@@ -5,10 +5,10 @@ import Script from 'next/script'
 import { SessionProvider } from 'next-auth/react'
 import { Toaster } from 'react-hot-toast'
 
-function StampsApp({
+const StampsApp = ({
   Component,
   pageProps: { session, ...pageProps },
-}: AppProps) {
+}: AppProps) => {
   return (
     <>
       <Script
