@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -7,7 +7,6 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-  
 }
 
 model Stamp {
@@ -70,6 +69,10 @@ model User {
   image         String?
   nickname      String?   @unique
   nicknameURL   String?   @unique
+  biography     String?
+  discord       String?
+  reddit        String?
+  emailContact  String?
   accounts      Account[]
   sessions      Session[]
   listedStamps  Stamp[]   @relation("StampCreator")
