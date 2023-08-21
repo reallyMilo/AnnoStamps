@@ -7,10 +7,10 @@ declare module 'next-auth' {
   interface Session {
     user: {
       id: string
-      nickname?: string
+      username?: string
     } & DefaultSession['user']
   }
   interface User extends DefaultUser {
-    nickname: string
+    username: string
   }
 }
