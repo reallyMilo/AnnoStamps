@@ -7,14 +7,14 @@ import Layout from '@/components/Layout/Layout'
 import StampCard from '@/components/StampCard'
 import { fetcher } from '@/lib/utils'
 
-const NicknamePage = () => {
+const UsernamePage = () => {
   const router = useRouter()
 
-  const nicknameURL =
-    typeof router.query.nickname === 'string' ? router.query.nickname : ''
+  const usernameURL =
+    typeof router.query.username === 'string' ? router.query.username : ''
 
   const { data, error, isLoading } = useSWR(
-    nicknameURL ? `/api/user/${nicknameURL}` : null,
+    usernameURL ? `/api/user/${usernameURL}` : null,
     fetcher
   )
 
@@ -22,7 +22,7 @@ const NicknamePage = () => {
     return (
       <Layout>
         <div className="container mx-auto max-w-7xl px-5 py-12">
-          <h1>{nicknameURL} Stamps</h1>
+          <h1>{usernameURL} Stamps</h1>
           <Grid>
             <p>User has no Stamps</p>
           </Grid>
@@ -33,7 +33,7 @@ const NicknamePage = () => {
     return (
       <Layout>
         <div className="container mx-auto max-w-7xl px-5 py-12">
-          <h1>{nicknameURL} Stamps</h1>
+          <h1>{usernameURL} Stamps</h1>
           <Grid>
             <div className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200" />
           </Grid>
@@ -44,7 +44,7 @@ const NicknamePage = () => {
   return (
     <Layout>
       <div className="container mx-auto max-w-7xl px-5 py-12">
-        <h1 className="mb-5">{data.nickname} Stamps</h1>
+        <h1 className="mb-5">{data.username} Stamps</h1>
         <Grid>
           {data.listedStamps.map((stamp: Stamp) => (
             <StampCard key={stamp.id} {...stamp} />
@@ -55,4 +55,4 @@ const NicknamePage = () => {
   )
 }
 
-export default NicknamePage
+export default UsernamePage

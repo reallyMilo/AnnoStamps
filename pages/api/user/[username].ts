@@ -10,20 +10,20 @@ import { authOptions } from '../auth/[...nextauth]'
 type ResponseData = {
   listedStamps?: StampWithLikes[]
   message?: string
-  nickname?: string
+  username?: string
 }
 
-export default async function nicknameHandler(
+export default async function usernameHandler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
-  const nickname = z.string().parse(req.query.nickname)
+  const username = z.string().parse(req.query.username)
 
   if (req.method === 'GET') {
     try {
       const getUserStamps = await prisma.user.findUnique({
         select: {
-          nickname: true,
+          username: true,
           listedStamps: {
             include: {
               likedBy: {
@@ -34,13 +34,13 @@ export default async function nicknameHandler(
             },
           },
         },
-        where: { nicknameURL: nickname.toLowerCase() },
+        where: { usernameURL: username.toLowerCase() },
       })
       if (!getUserStamps) {
         return res.status(200).json({ message: 'no user found' })
       }
       return res.status(200).json({
-        nickname: getUserStamps?.nickname as string,
+        username: getUserStamps?.username as string,
         listedStamps: getUserStamps?.listedStamps,
       })
     } catch (e) {
@@ -58,15 +58,15 @@ export default async function nicknameHandler(
       await prisma.user.update({
         where: { id: session.user.id },
         data: {
-          nickname: nickname,
-          nicknameURL: nickname.toLowerCase(),
+          username: username,
+          usernameURL: username.toLowerCase(),
         },
       })
-      return res.status(200).json({ message: 'Updated user nickname' })
+      return res.status(200).json({ message: 'Updated user username' })
     } catch (e) {
       return res
         .status(500)
-        .json({ message: 'failed to updated user nickname' })
+        .json({ message: 'failed to updated user username' })
     }
   }
 

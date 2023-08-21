@@ -16,7 +16,7 @@ describe('public routes render', () => {
     cy.get('h1').contains('user1 Stamps')
     cy.contains('User has no Stamps').should('not.exist')
   })
-  it('invalid creator path nickname has no stamps', () => {
+  it('invalid creator path username has no stamps', () => {
     cy.visit('/nostampshere')
     cy.get('h1').contains('nostampshere Stamps')
     cy.contains('User has no Stamps').should('exist')

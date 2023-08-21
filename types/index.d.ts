@@ -13,8 +13,8 @@ const stampWithRelations = Prisma.validator<Prisma.StampArgs>()({
     user: {
       select: {
         id: true,
-        nickname: true,
-        nicknameURL: true,
+        username: true,
+        usernameURL: true,
         image: true,
       },
     },
