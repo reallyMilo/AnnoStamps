@@ -70,6 +70,12 @@ model User {
   image         String?
   username      String?   @unique
   usernameURL   String?   @unique
+  biography     String?
+  discord       String?
+  reddit        String?
+  emailContact  String?
+  twitch        String?
+  twitter       String?
   accounts      Account[]
   sessions      Session[]
   listedStamps  Stamp[]   @relation("StampCreator")
