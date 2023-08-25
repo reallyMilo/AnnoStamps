@@ -6,11 +6,23 @@ declare module 'next-auth' {
    */
   interface Session {
     user: {
+      biography?: string
+      discord?: string
+      emailContact?: string
       id: string
+      reddit?: string
+      twitch?: string
+      twitter?: string
       username?: string
     } & DefaultSession['user']
   }
   interface User extends DefaultUser {
+    biography: string
+    discord: string
+    emailContact: string
+    reddit: string
+    twitch: string
+    twitter: string
     username: string
   }
 }

@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 import Layout from '@/components/Layout/Layout'
 import { displayAuthModal } from '@/lib/utils'
@@ -13,30 +14,35 @@ const Account = () => {
       displayAuthModal()
     },
   })
-  const username = session?.user.username
-  const ref = useRef()
-  const [error, setError] = useState(false)
 
-  const handleBlur = (e: React.ReactHTMLElement<HTMLInputElement>) => {
-    if (!error) {
-      if (e.target.validity.patternMismatch) {
-        ref.current.focus()
-        setError(true)
-      }
+  const username = session?.user.username
+  const [isError, setIsError] = useState(false)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.validity.patternMismatch) {
+      setIsError(true)
+      return
     }
+
+    setIsError(false)
   }
-  const handleChange = (e) => {
-    const isNewValueValid = !e.target.validity.patternMismatch
-  }
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
     const username = formData.get('username')
 
     try {
-      await fetch(`/api/user/${username}`, { method: 'PUT' })
+      await fetch(`/api/user/${username}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(Object.fromEntries(formData)),
+      })
       router.reload()
-    } catch (e) {}
+    } catch (e) {
+      toast.error('Failed to update data!')
+    }
   }
   if (status === 'loading') {
     return (
@@ -51,7 +57,7 @@ const Account = () => {
   return (
     <Layout>
       <div className="container mx-auto px-5 py-12">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="space-y-12">
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
               <div>
@@ -60,7 +66,7 @@ const Account = () => {
                 </h2>
                 <p className="mt-1 text-sm leading-6 text-gray-600">
                   Setting your username allows you to share all your stamps. It
-                  will also appear on every steam you upload.
+                  will also appear on every stamp you upload.
                 </p>
               </div>
 
@@ -74,47 +80,46 @@ const Account = () => {
                   </label>
                   <div className="mt-2">
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
-                      <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">
+                      <span className="flex select-none items-center rounded-l-md pl-3 text-gray-500 sm:text-sm">
                         annostamps.com/
                       </span>
                       <input
                         type="text"
                         name="username"
                         id="username"
-                        className="relative w-full flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                        placeholder="Sir-Archibald-Blake"
+                        className="block w-full flex-1 rounded-r-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         defaultValue={username ?? ''}
                         readOnly={username ? true : false}
-                        pattern="/^[a-zA-Z0-9_-]+$/"
-                        ref={ref}
-                        onBlur={handleBlur}
+                        pattern={`^[a-zA-Z0-9_\\-]+$`}
+                        title="alphanumeric characters, dashes, and underscores"
                         onChange={handleChange}
-                        onFocus={handleFocus}
                       />
                     </div>
-                    {username && (
-                      <p>
-                        If you wish to change your username please contact us in
-                        the discord.
-                      </p>
-                    )}
                   </div>
+                  {isError && (
+                    <p
+                      className="mt-2 text-sm text-red-600"
+                      id="username-error"
+                    >
+                      Only alphanumeric, dashes(-) and underscores(_) accepted.
+                    </p>
+                  )}
                 </div>
 
                 <div className="col-span-full">
                   <label
-                    htmlFor="about"
+                    htmlFor="biography"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
                     About
                   </label>
                   <div className="mt-2">
                     <textarea
-                      id="about"
-                      name="about"
+                      id="biography"
+                      name="biography"
                       rows={3}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      defaultValue={''}
+                      defaultValue={session.user?.biography}
                     />
                   </div>
                   <p className="mt-3 text-sm leading-6 text-gray-600">
@@ -138,18 +143,20 @@ const Account = () => {
               <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
                 <div className="sm:col-span-4">
                   <label
-                    htmlFor="email"
+                    htmlFor="emailContact"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
                     Email Contact
                   </label>
                   <div className="mt-2">
                     <input
-                      id="email"
-                      name="email"
+                      id="emailContact"
+                      name="emailContact"
                       type="email"
                       autoComplete="email"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      placeholder="Email contact to be displayed"
+                      defaultValue={session.user?.emailContact}
                     />
                   </div>
                 </div>
@@ -159,7 +166,7 @@ const Account = () => {
                     htmlFor="discord"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Discord Username
+                    Discord
                   </label>
                   <div className="mt-2">
                     <input
@@ -168,6 +175,8 @@ const Account = () => {
                       type="text"
                       autoComplete="off"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      placeholder="Discord username"
+                      defaultValue={session.user?.discord}
                     />
                   </div>
                 </div>
@@ -177,7 +186,7 @@ const Account = () => {
                     htmlFor="twitter"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Twitter Handle
+                    Twitter
                   </label>
                   <div className="mt-2">
                     <input
@@ -186,6 +195,8 @@ const Account = () => {
                       type="text"
                       autoComplete="off"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      placeholder="Twitter handle"
+                      defaultValue={session.user?.twitter}
                     />
                   </div>
                 </div>
@@ -195,7 +206,7 @@ const Account = () => {
                     htmlFor="reddit"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Reddit Username
+                    Reddit
                   </label>
                   <div className="mt-2">
                     <input
@@ -204,6 +215,8 @@ const Account = () => {
                       type="text"
                       autoComplete="off"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      placeholder="Reddit username"
+                      defaultValue={session.user?.reddit}
                     />
                   </div>
                 </div>
@@ -213,7 +226,7 @@ const Account = () => {
                     htmlFor="twitch"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Twitch Username
+                    Twitch
                   </label>
                   <div className="mt-2">
                     <input
@@ -222,6 +235,8 @@ const Account = () => {
                       type="text"
                       autoComplete="off"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      placeholder="Twitch username"
+                      defaultValue={session.user?.twitch}
                     />
                   </div>
                 </div>
