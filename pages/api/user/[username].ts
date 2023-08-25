@@ -36,8 +36,9 @@ export default async function usernameHandler(
         },
         where: { usernameURL: username.toLowerCase() },
       })
+
       if (!getUserStamps) {
-        return res.status(200).json({ message: 'no user found' })
+        return res.status(404).json({ message: 'User does not exist' })
       }
       return res.status(200).json({
         username: getUserStamps?.username as string,
@@ -50,6 +51,18 @@ export default async function usernameHandler(
 
   if (req.method === 'PUT') {
     const session = await getServerSession(req, res, authOptions)
+    const formData = z
+      .object({
+        username: z.string(),
+        biography: z.string().optional(),
+        emailContact: z.string().optional(),
+        discord: z.string().optional(),
+        twitter: z.string().optional(),
+        reddit: z.string().optional(),
+        twitch: z.string().optional(),
+      })
+      .parse(req.body)
+
     if (!session?.user.id) {
       return res.status(401).json({ message: 'Unauthorized.' })
     }
@@ -58,8 +71,8 @@ export default async function usernameHandler(
       await prisma.user.update({
         where: { id: session.user.id },
         data: {
-          username: username,
           usernameURL: username.toLowerCase(),
+          ...formData,
         },
       })
       return res.status(200).json({ message: 'Updated user username' })

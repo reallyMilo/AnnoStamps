@@ -1,13 +1,10 @@
-import { ExclamationCircleIcon } from '@heroicons/react/24/solid'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-import { toast } from 'react-hot-toast'
-import z from 'zod'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 import Layout from '@/components/Layout/Layout'
 import { displayAuthModal } from '@/lib/utils'
-
-const allowedCharactersRegex = /^[a-zA-Z0-9_-]+$/
 
 const Account = () => {
   const router = useRouter()
@@ -18,36 +15,33 @@ const Account = () => {
     },
   })
 
+  const username = session?.user.username
+  const [isError, setIsError] = useState(false)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.validity.patternMismatch) {
+      setIsError(true)
+      return
+    }
+
+    setIsError(false)
+  }
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
     const username = formData.get('username')
-    const usernameValidator = z
-      .string()
-      .min(1, { message: 'Username must not be empty' })
-      .max(50, { message: 'Username must not exceed 50 characters' })
-      .refine((value) => allowedCharactersRegex.test(value), {
-        message: 'Username contains disallowed characters',
-      })
 
-    let toastId
     try {
-      usernameValidator.parse(username)
-      toastId = toast.loading('Saving...')
-      await fetch(`/api/user/${username}`, { method: 'PUT' })
-
-      toast.success('Successfully saved', { id: toastId })
+      await fetch(`/api/user/${username}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(Object.fromEntries(formData)),
+      })
       router.reload()
     } catch (e) {
-      if (e instanceof z.ZodError) {
-        toast.error(e.errors[0]?.message || 'parsing error', {
-          id: toastId,
-        })
-      } else {
-        toast.error('An error occurred, pleas try again later.', {
-          id: toastId,
-        })
-      }
+      toast.error('Failed to update data!')
     }
   }
   if (status === 'loading') {
@@ -63,58 +57,201 @@ const Account = () => {
   return (
     <Layout>
       <div className="container mx-auto px-5 py-12">
-        <h1 className="mb-5 text-xl font-bold">Account Details</h1>
-        <section className="grid grid-cols-1 space-x-10 md:grid-cols-2">
-          <div>
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="username" className="mb-2 font-bold">
-                Username
-              </label>
-              <input
-                className="w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50"
-                type="text"
-                id="username"
-                name="username"
-                defaultValue={session.user?.username ?? ''}
-                placeholder="Sir-Archibald-Blake"
-                readOnly={session.user?.username ? true : false}
-              />
-              {session?.user.username ? (
-                <p className="py-2 text-sm text-slate-400">
-                  Notify us if you wish to change your username in discord
+        <form onSubmit={handleSubmit}>
+          <div className="space-y-12">
+            <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
+              <div>
+                <h2 className="text-base font-semibold leading-7 text-gray-900">
+                  Profile
+                </h2>
+                <p className="mt-1 text-sm leading-6 text-gray-600">
+                  Setting your username allows you to share all your stamps. It
+                  will also appear on every stamp you upload.
                 </p>
-              ) : (
-                <>
-                  <p className="py-2 text-sm text-slate-400">
-                    You can set a username that will be displayed with your
-                    uploaded stamps.
-                  </p>
-                  <p className="mt-1 flex items-center space-x-6 font-bold text-red-600">
-                    <ExclamationCircleIcon className="mr-2 inline-block h-6 w-6" />
-                    Usernames are used as your personal shareable stamp page.
-                    annostamps.com/YOUR-USERNAME
-                  </p>
-                  <figure>
-                    <figcaption>Username must contain only:</figcaption>
-                    <ol>
-                      <li>Letters (a-z, A-Z)</li>
-                      <li>Digits (0-9)</li>
-                      <li>Underscores (_) or Hyphens (-)</li>
-                      <li>No other special characters are allowed.</li>
-                    </ol>
-                  </figure>
-                  <button
-                    type="submit"
-                    className="mt-5 rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
-                    data-testid="username-submit"
+              </div>
+
+              <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+                <div className="sm:col-span-6">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Submit
-                  </button>
-                </>
-              )}
-            </form>
+                    Username
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                      <span className="flex select-none items-center rounded-l-md pl-3 text-gray-500 sm:text-sm">
+                        annostamps.com/
+                      </span>
+                      <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        className="block w-full flex-1 rounded-r-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        defaultValue={username ?? ''}
+                        readOnly={username ? true : false}
+                        pattern={`^[a-zA-Z0-9_\\-]+$`}
+                        title="alphanumeric characters, dashes, and underscores"
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  {isError && (
+                    <p
+                      className="mt-2 text-sm text-red-600"
+                      id="username-error"
+                    >
+                      Only alphanumeric, dashes(-) and underscores(_) accepted.
+                    </p>
+                  )}
+                </div>
+
+                <div className="col-span-full">
+                  <label
+                    htmlFor="biography"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    About
+                  </label>
+                  <div className="mt-2">
+                    <textarea
+                      id="biography"
+                      name="biography"
+                      rows={3}
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      defaultValue={session.user?.biography}
+                    />
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-gray-600">
+                    To be displayed on your page banner.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
+              <div>
+                <h2 className="text-base font-semibold leading-7 text-gray-900">
+                  Socials
+                </h2>
+                <p className="mt-1 text-sm leading-6 text-gray-600">
+                  Social contacts that you add will be displayed on your
+                  annostamps.com/username page for users to contact you.
+                </p>
+              </div>
+
+              <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+                <div className="sm:col-span-4">
+                  <label
+                    htmlFor="emailContact"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Email Contact
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="emailContact"
+                      name="emailContact"
+                      type="email"
+                      autoComplete="email"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      placeholder="Email contact to be displayed"
+                      defaultValue={session.user?.emailContact}
+                    />
+                  </div>
+                </div>
+                <div className="sm:col-span-4">
+                  {/* Discord */}
+                  <label
+                    htmlFor="discord"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Discord
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="discord"
+                      name="discord"
+                      type="text"
+                      autoComplete="off"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      placeholder="Discord username"
+                      defaultValue={session.user?.discord}
+                    />
+                  </div>
+                </div>
+                <div className="sm:col-span-4">
+                  {/* Twitter */}
+                  <label
+                    htmlFor="twitter"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Twitter
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="twitter"
+                      name="twitter"
+                      type="text"
+                      autoComplete="off"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      placeholder="Twitter handle"
+                      defaultValue={session.user?.twitter}
+                    />
+                  </div>
+                </div>
+                <div className="sm:col-span-4">
+                  {/* Reddit */}
+                  <label
+                    htmlFor="reddit"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Reddit
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="reddit"
+                      name="reddit"
+                      type="text"
+                      autoComplete="off"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      placeholder="Reddit username"
+                      defaultValue={session.user?.reddit}
+                    />
+                  </div>
+                </div>
+                <div className="sm:col-span-4">
+                  {/* Twitch */}
+                  <label
+                    htmlFor="twitch"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Twitch
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="twitch"
+                      name="twitch"
+                      type="text"
+                      autoComplete="off"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      placeholder="Twitch username"
+                      defaultValue={session.user?.twitch}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </section>
+          <div className="mt-6 flex items-center justify-end gap-x-6">
+            <button
+              type="submit"
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </Layout>
   )
