@@ -7,6 +7,7 @@ import Grid from '@/components/Layout/Grid'
 import Layout from '@/components/Layout/Layout'
 import { Pagination } from '@/components/Pagination'
 import StampCard from '@/components/StampCard'
+import Container from '@/components/ui/Container'
 import { prisma } from '@/lib/prisma'
 import { stampsPerPage } from '@/lib/utils'
 
@@ -19,7 +20,7 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
   query,
   res,
 }) => {
-  //TODO: clean up when finished with filter / search
+  //TODO: refactor when finished with filter / search and nickname page filter / search
   const {
     modded,
     region,
@@ -82,6 +83,8 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
         user: {
           select: {
             id: true,
+            username: true,
+            usernameURL: true,
           },
         },
       },
@@ -112,7 +115,7 @@ const HomePage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout>
-      <div className="container mx-auto max-w-7xl px-5 py-12">
+      <Container>
         <Filter />
         {stamps.length === 0 ? (
           <p className="inline-flex max-w-max items-center space-x-1 rounded-md bg-amber-100 px-4 py-2 text-amber-700">
@@ -129,7 +132,7 @@ const HomePage = ({
             <Pagination count={count} />
           </>
         )}
-      </div>
+      </Container>
     </Layout>
   )
 }

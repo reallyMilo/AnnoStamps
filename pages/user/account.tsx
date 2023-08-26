@@ -4,6 +4,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import Layout from '@/components/Layout/Layout'
+import Container from '@/components/ui/Container'
 import { displayAuthModal } from '@/lib/utils'
 
 const Account = () => {
@@ -47,16 +48,16 @@ const Account = () => {
   if (status === 'loading') {
     return (
       <Layout>
-        <div className="container mx-auto px-5 py-12">
+        <Container>
           <p>login please</p>
-        </div>
+        </Container>
       </Layout>
     )
   }
 
   return (
     <Layout>
-      <div className="container mx-auto px-5 py-12">
+      <Container>
         <form onSubmit={handleSubmit}>
           <div className="space-y-12">
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
@@ -252,7 +253,7 @@ const Account = () => {
             </button>
           </div>
         </form>
-      </div>
+      </Container>
     </Layout>
   )
 }

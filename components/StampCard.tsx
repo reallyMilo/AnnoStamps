@@ -98,20 +98,30 @@ const StampCard = ({
           </div>
         </div>
         <div className="flex flex-col flex-nowrap p-4">
-          <p className="pb-2 text-sm text-[#B11E47]">{region}</p>
+          <p
+            id="stamp-region"
+            className="pb-2 text-sm capitalize text-[#B11E47]"
+          >
+            {region}
+          </p>
 
-          <div className="mt-2 w-full text-lg font-semibold leading-tight text-gray-700">
+          <h1
+            id="stamp-title"
+            className="mt-2 w-full text-lg font-semibold leading-tight text-gray-700"
+          >
             {title}
-          </div>
-
-          {user?.username && (
-            <p className="flex items-center gap-1 py-2 text-xs text-slate-500">
-              <UserCircleIcon className="h-4 w-4" />
-              {user.username}
-            </p>
-          )}
+          </h1>
         </div>
       </Link>
+      {user?.username && (
+        <Link
+          href={`/${user.usernameURL}`}
+          className="flex items-center gap-1 p-4 py-2 text-slate-500"
+        >
+          <UserCircleIcon className="h-4 w-4" />
+          <span className="hover:text-sky-700">{user.username}</span>
+        </Link>
+      )}
       <div className="flex flex-col flex-nowrap self-end p-4">
         <ol className="relative flex flex-row justify-between pt-4 text-gray-500">
           <li

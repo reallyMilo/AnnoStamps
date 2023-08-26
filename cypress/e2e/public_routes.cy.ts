@@ -13,23 +13,31 @@ describe('public routes render', () => {
   })
   it('display stamp creator page', () => {
     cy.visit('/user1')
-    cy.get('h1').contains('user1 Stamps')
+    cy.get('h1').contains('user1')
     cy.contains('User has no Stamps').should('not.exist')
   })
   it('invalid creator path username has no stamps', () => {
     cy.visit('/nostampshere')
-    cy.get('h1').contains('nostampshere Stamps')
-    cy.contains('User has no Stamps').should('exist')
+    cy.get('h1').contains('nostampshere')
+    cy.contains('User does not exist').should('exist')
   })
 
   describe('Stamp Card', () => {
-    it('navigates to stamp', () => {
+    beforeEach(() => {
       cy.visit('/')
+    })
+    it('contains all field of stamp', () => {
+      cy.getBySel('stamp-card-link')
+        .first()
+        .then(() => {
+          cy.contains('user100')
+        })
+    })
+    it('navigates to stamp', () => {
       cy.getBySel('stamp-card-link').first().click()
       cy.url().should('include', '/stamp')
     })
     it('liking stamp opens auth modal', () => {
-      cy.visit('/')
       cy.getBySel('auth-modal').should('not.exist')
       cy.getBySel('stamp-card-like').first().click()
       cy.getBySel('auth-modal').should('be.visible')
