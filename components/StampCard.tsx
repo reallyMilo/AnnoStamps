@@ -104,10 +104,10 @@ const StampCard = ({
             {title}
           </div>
 
-          {user?.nickname && (
+          {user?.username && (
             <p className="flex items-center gap-1 py-2 text-xs text-slate-500">
               <UserCircleIcon className="h-4 w-4" />
-              {user.nickname}
+              {user.username}
             </p>
           )}
         </div>

@@ -80,7 +80,11 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
             id: true,
           },
         },
-        user: true,
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
       where: whereStatement,
       orderBy: orderByStatement(sort as string),

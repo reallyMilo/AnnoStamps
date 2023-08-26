@@ -67,12 +67,14 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  nickname      String?   @unique
-  nicknameURL   String?   @unique
+  username      String?   @unique
+  usernameURL   String?   @unique
   biography     String?
   discord       String?
   reddit        String?
   emailContact  String?
+  twitch        String?
+  twitter       String?
   accounts      Account[]
   sessions      Session[]
   listedStamps  Stamp[]   @relation("StampCreator")

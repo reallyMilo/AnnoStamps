@@ -9,7 +9,20 @@ export const stampsPerPage = () => {
   return Number(process.env.NEXT_PUBLIC_STAMPS_PER_PAGE) || 20
 }
 
-export const fetcher = (url: string) => fetch(url).then((r) => r.json())
+export const fetcher = async (url: string) => {
+  const res = await fetch(url)
+
+  if (!res.ok) {
+    const error = new Error(
+      'An error occurred while fetching the data.'
+    ) as Error & { info: string; status: number }
+    error.info = await res.json()
+    error.status = res.status
+    throw error
+  }
+
+  return res.json()
+}
 
 export async function sendRequest(
   url: string,
