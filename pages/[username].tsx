@@ -1,3 +1,4 @@
+import { Popover } from '@headlessui/react'
 import { XCircleIcon } from '@heroicons/react/20/solid'
 import {
   EnvelopeIcon,
@@ -30,13 +31,63 @@ const UsernameView = ({ user, children }: NicknameViewProps) => {
               <h1 className="text-2xl">{user?.username}</h1>
               <p className="text-sm">{user?.biography}</p>
 
-              <div className="flex gap-4">
-                <h2>Connect</h2>
-                {user?.discord && <p>Discord</p>}
-                {user?.reddit && <p>Reddit</p>}
-                {user?.emailContact && <p>Email</p>}
-                {user?.twitch && <p>Twitch</p>}
-                {user?.twitter && <p>Twitter</p>}
+              <div className="flex items-center gap-4">
+                {user?.discord && (
+                  <Popover className="relative flex">
+                    <Popover.Button className="self-center">
+                      <Image
+                        width={30}
+                        height={30}
+                        className="h-[30px] w-[30px]"
+                        alt="discord username"
+                        src="/discord-white-icon.svg"
+                      />
+                    </Popover.Button>
+
+                    <Popover.Panel className="absolute top-10 z-10">
+                      <span className="border bg-white p-2 text-black">
+                        {user.discord}
+                      </span>
+                    </Popover.Panel>
+                  </Popover>
+                )}
+                {user?.reddit && (
+                  <a href={`https://reddit.com/u/${user.reddit}`}>
+                    <Image
+                      width={30}
+                      height={30}
+                      alt="reddit username"
+                      src="/reddit_icon_snoo.svg"
+                    />
+                  </a>
+                )}
+                {user?.emailContact && (
+                  <a href={`mailto:${user.emailContact}`}>
+                    <EnvelopeIcon className="h-[30px] w-[30px]" />
+                  </a>
+                )}
+                {user?.twitch && (
+                  <a href={`https://twitch.com/${user.twitch}`}>
+                    <Image
+                      width={30}
+                      height={30}
+                      className="h-[30px] w-[30px]"
+                      alt="twitch username"
+                      src="/TwitchGlitchWhite.svg"
+                    />
+                  </a>
+                )}
+                {user?.twitter && (
+                  <a href={`https://twitter.com/${user.twitter}`}>
+                    <Image
+                      width={30}
+                      height={30}
+                      className="h-[30px] w-[30px]"
+                      alt="twitter handle"
+                      src="/twitter-logo.svg"
+                    />
+                  </a>
+                )}
               </div>
             </div>
           </div>
