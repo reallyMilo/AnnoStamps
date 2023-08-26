@@ -4,7 +4,7 @@ const socials = [
   {
     name: 'discord',
     url: 'https://discord.gg/73hfP54qXe',
-    src: '/discord.svg',
+    src: '/discord-white-icon.svg',
   },
   {
     name: 'github',
