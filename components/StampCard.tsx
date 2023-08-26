@@ -119,7 +119,7 @@ const StampCard = ({
           className="flex items-center gap-1 p-4 py-2 text-slate-500"
         >
           <UserCircleIcon className="h-4 w-4" />
-          {user.username}
+          <span className="hover:text-sky-700">{user.username}</span>
         </Link>
       )}
       <div className="flex flex-col flex-nowrap self-end p-4">
