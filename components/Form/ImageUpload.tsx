@@ -1,8 +1,7 @@
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
+import { cn } from 'lib/utils'
 import Image from 'next/image'
 import { useState } from 'react'
-
-import { cn } from '@/lib/utils'
 
 const imageMimeType = /image\/(png|jpg|jpeg|webp)/i
 const sizeLimit = 1024 * 1024 // 1 MB

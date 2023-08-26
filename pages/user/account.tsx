@@ -1,11 +1,10 @@
+import Layout from 'components/Layout/Layout'
+import Container from 'components/ui/Container'
+import { displayAuthModal } from 'lib/utils'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-
-import Layout from '@/components/Layout/Layout'
-import Container from '@/components/ui/Container'
-import { displayAuthModal } from '@/lib/utils'
 
 const Account = () => {
   const router = useRouter()

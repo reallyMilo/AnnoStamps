@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from 'lib/utils'
 
 interface SelectProps extends React.ComponentPropsWithRef<'select'> {
   children: React.ReactElement<'option'>

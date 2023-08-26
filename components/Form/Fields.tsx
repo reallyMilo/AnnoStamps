@@ -1,9 +1,8 @@
 import Downshift from 'downshift'
 import { Capital1800, Category, Region1800 } from 'game/1800/enum'
 import { getGoods } from 'game/1800/helpers'
+import { cn } from 'lib/utils'
 import { useState } from 'react'
-
-import { cn } from '@/lib/utils'
 
 import Select, { selectVariantStyles } from '../ui/Select'
 

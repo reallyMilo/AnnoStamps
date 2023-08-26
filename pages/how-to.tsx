@@ -1,7 +1,6 @@
+import Layout from 'components/Layout/Layout'
+import Container from 'components/ui/Container'
 import Image from 'next/image'
-
-import Layout from '@/components/Layout/Layout'
-import Container from '@/components/ui/Container'
 
 const HowTo = () => {
   return (

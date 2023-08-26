@@ -1,12 +1,11 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { EnvelopeOpenIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { cn } from 'lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { Fragment, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-
-import { cn } from '@/lib/utils'
 
 const Confirm = ({ email = '' }) => (
   <Transition appear show={email !== ''} as={Fragment}>

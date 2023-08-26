@@ -1,8 +1,7 @@
+import { sendRequest } from 'lib/utils'
 import { useRouter } from 'next/router'
 import { toast } from 'react-hot-toast'
 import useSWRMutation from 'swr/mutation'
-
-import { sendRequest } from '@/lib/utils'
 
 import Fields from './Form/Fields'
 import FileUpload from './Form/FileUpload'

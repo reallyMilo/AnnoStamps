@@ -1,10 +1,9 @@
 import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
+import Layout from 'components/Layout/Layout'
+import { prisma } from 'lib/prisma'
+import { triggerDownload } from 'lib/utils'
 import Image from 'next/image'
 import type { StampWithLikes } from 'types'
-
-import Layout from '@/components/Layout/Layout'
-import { prisma } from '@/lib/prisma'
-import { triggerDownload } from '@/lib/utils'
 
 export async function getStaticPaths() {
   const stamps = await prisma.stamp.findMany({

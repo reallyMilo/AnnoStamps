@@ -1,14 +1,13 @@
 import { PencilSquareIcon } from '@heroicons/react/20/solid'
 import type { Stamp } from '@prisma/client'
+import Grid from 'components/Layout/Grid'
+import Layout from 'components/Layout/Layout'
+import StampCard from 'components/StampCard'
+import Container from 'components/ui/Container'
+import { prisma } from 'lib/prisma'
 import type { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import { getSession } from 'next-auth/react'
-
-import Grid from '@/components/Layout/Grid'
-import Layout from '@/components/Layout/Layout'
-import StampCard from '@/components/StampCard'
-import Container from '@/components/ui/Container'
-import { prisma } from '@/lib/prisma'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context)

@@ -1,7 +1,6 @@
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
+import { cn } from 'lib/utils'
 import { useState } from 'react'
-
-import { cn } from '@/lib/utils'
 
 const sizeLimit = 1024 * 1024 // 1 MB
 

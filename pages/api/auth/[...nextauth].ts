@@ -1,14 +1,13 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { readFileSync } from 'fs'
 import Handlebars from 'handlebars'
+import { prisma } from 'lib/prisma'
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import DiscordProvider from 'next-auth/providers/discord'
 import EmailProvider from 'next-auth/providers/email'
 import GoogleProvider from 'next-auth/providers/google'
 import nodemailer from 'nodemailer'
 import path from 'path'
-
-import { prisma } from '@/lib/prisma'
 
 const transporter = nodemailer.createTransport({
   //@ts-expect-error overload match
