@@ -83,6 +83,8 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
         user: {
           select: {
             id: true,
+            username: true,
+            usernameURL: true,
           },
         },
       },
