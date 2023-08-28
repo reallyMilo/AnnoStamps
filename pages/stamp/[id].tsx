@@ -1,20 +1,24 @@
 import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
 import Layout from 'components/Layout/Layout'
+import Container from 'components/ui/Container'
 import { prisma } from 'lib/prisma'
 import { triggerDownload } from 'lib/utils'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import type { StampWithLikes } from 'types'
 
 export async function getStaticPaths() {
   const stamps = await prisma.stamp.findMany({
     select: { id: true },
+    orderBy: { downloads: 'desc' },
+    take: 20,
   })
 
   return {
     paths: stamps.map((stamp) => ({
       params: { id: stamp.id },
     })),
-    fallback: 'blocking',
+    fallback: 'true',
   }
 }
 type Params = {
@@ -44,11 +48,12 @@ export async function getStaticProps({ params }: Params) {
     props: {
       stamp,
     },
-    revalidate: 30,
   }
 }
 
 const ListedStamp = ({ stamp }: { stamp: StampWithLikes }) => {
+  const router = useRouter()
+
   const handleDownload = async () => {
     const res = await fetch(stamp?.stampFileUrl)
     if (!res.ok) {
@@ -63,10 +68,19 @@ const ListedStamp = ({ stamp }: { stamp: StampWithLikes }) => {
     triggerDownload(newFile, formattedTitle)
     await fetch(`/api/stamp/download/${stamp.id}`)
   }
+  if (router.isFallback) {
+    return (
+      <Layout>
+        <Container>
+          <p>Loading...</p>
+        </Container>
+      </Layout>
+    )
+  }
 
   return (
     <Layout>
-      <div className="mx-auto max-w-screen-lg px-5 py-12">
+      <Container>
         <div className="aspect-h-9 aspect-w-16 relative mx-5 mt-6 overflow-hidden rounded-lg bg-gray-200 shadow-md">
           {stamp?.imageUrl && (
             <Image
@@ -111,7 +125,7 @@ const ListedStamp = ({ stamp }: { stamp: StampWithLikes }) => {
 
           <p className="break-words text-lg">{stamp?.description}</p>
         </div>
-      </div>
+      </Container>
     </Layout>
   )
 }
