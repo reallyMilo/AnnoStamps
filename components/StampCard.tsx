@@ -44,7 +44,7 @@ const StampCard = ({
   modded,
   likedBy,
   user,
-}: Partial<StampWithRelations>) => {
+}: StampWithRelations) => {
   const likes = likedBy ? likedBy.length : 0
   const { data: session } = useSession()
   const authUser = session?.user
