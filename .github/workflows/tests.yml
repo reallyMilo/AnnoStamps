@@ -19,12 +19,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'pnpm'
       - uses: pnpm/action-setup@v2
         name: Install pnpm
-        id: pnpm-install
         with:
           version: 8
+          run_install: false
       - run: pnpm install
       - name: Run lint
         run: pnpm lint
@@ -38,12 +37,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'pnpm'
       - uses: pnpm/action-setup@v2
         name: Install pnpm
-        id: pnpm-install
         with:
           version: 8
+          run_install: false
       - run: pnpm install
   build:
     name: 'build nextjs'
@@ -55,12 +53,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'pnpm'
       - uses: pnpm/action-setup@v2
         name: Install pnpm
-        id: pnpm-install
         with:
           version: 8
+          run_install: false
       - run: pnpm install
       - name: Build
         run: pnpm build
@@ -75,12 +72,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'pnpm'
       - uses: pnpm/action-setup@v2
         name: Install pnpm
-        id: pnpm-install
         with:
           version: 8
+          run_install: false
       - run: pnpm install
       - name: Cypress run
         uses: cypress-io/github-action@v5
