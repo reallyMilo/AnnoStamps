@@ -24,7 +24,6 @@ jobs:
         id: pnpm-install
         with:
           version: 8
-          run_install: false
       - name: Run lint
         run: pnpm lint
   test:
@@ -42,7 +41,6 @@ jobs:
         id: pnpm-install
         with:
           version: 8
-          run_install: false
   build:
     name: 'build nextjs'
     needs: [lint, test]
@@ -58,7 +56,6 @@ jobs:
         id: pnpm-install
         with:
           version: 8
-          run_install: false
       - name: Build
         run: pnpm build
   e2e:
@@ -77,7 +74,6 @@ jobs:
         id: pnpm-install
         with:
           version: 8
-          run_install: false
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
