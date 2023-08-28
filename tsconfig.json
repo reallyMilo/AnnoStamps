@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "target": "ES2021",
+    "target": "ESNext",
     "types": ["vitest/globals"]
   },
   "ts-node": {
@@ -22,6 +22,6 @@
     "files": true,
     "compilerOptions": {}
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "./cypress.config.ts", "cypress"]
 }
