@@ -88,5 +88,3 @@ jobs:
           build: pnpm build
           start: pnpm start
           wait-on: 'http://localhost:3000'
-        env:
-          ELECTRON_EXTRA_LAUNCH_ARGS: '--disable-gpu'
