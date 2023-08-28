@@ -18,7 +18,7 @@ export async function getStaticPaths() {
     paths: stamps.map((stamp) => ({
       params: { id: stamp.id },
     })),
-    fallback: 'true',
+    fallback: true,
   }
 }
 type Params = {
