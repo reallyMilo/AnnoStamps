@@ -7,6 +7,7 @@ import type { StampWithRelations } from 'types'
 
 import StampCard from '../StampCard'
 
+//FIXME: global use session mock
 const mocks = vi.hoisted(() => {
   return {
     useSession: vi.fn(),
