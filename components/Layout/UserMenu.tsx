@@ -6,12 +6,11 @@ import {
   PlusIcon,
   UserIcon,
 } from '@heroicons/react/24/outline'
+import { displayAuthModal } from 'lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { Fragment } from 'react'
-
-import { displayAuthModal } from '@/lib/utils'
 
 const menuItems = [
   {

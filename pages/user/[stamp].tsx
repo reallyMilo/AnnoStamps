@@ -1,8 +1,7 @@
+import EditForm from 'components/EditForm'
+import Layout from 'components/Layout/Layout'
 import { GetServerSidePropsContext } from 'next'
 import { getSession } from 'next-auth/react'
-
-import EditForm from '@/components/EditForm'
-import Layout from '@/components/Layout/Layout'
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext

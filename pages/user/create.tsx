@@ -1,8 +1,7 @@
+import Layout from 'components/Layout/Layout'
+import ListingForm from 'components/ListingForm'
+import { displayAuthModal } from 'lib/utils'
 import { useSession } from 'next-auth/react'
-
-import Layout from '@/components/Layout/Layout'
-import ListingForm from '@/components/ListingForm'
-import { displayAuthModal } from '@/lib/utils'
 
 const Create = () => {
   const { status } = useSession({

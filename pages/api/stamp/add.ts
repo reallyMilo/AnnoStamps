@@ -4,12 +4,11 @@ import { createClient } from '@supabase/supabase-js'
 import { decode } from 'base64-arraybuffer'
 import { Category, Region1800 } from 'game/1800/enum'
 import type { CreateStamp1800 } from 'game/1800/types'
+import { prisma } from 'lib/prisma'
 import { nanoid } from 'nanoid'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 import { z } from 'zod'
-
-import { prisma } from '@/lib/prisma'
 
 import { authOptions } from '../auth/[...nextauth]'
 

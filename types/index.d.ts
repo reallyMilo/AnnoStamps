@@ -8,8 +8,18 @@ const stampWithLikes = Prisma.validator<Prisma.StampArgs>()({
 type StampWithLikes = Prisma.StampGetPayload<typeof stampWithLikes>
 
 const stampWithRelations = Prisma.validator<Prisma.StampArgs>()({
-  include: {
-    likedBy: { select: { id: true } },
+  select: {
+    id: true,
+    title: true,
+    imageUrl: true,
+    category: true,
+    region: true,
+    modded: true,
+    likedBy: {
+      select: {
+        id: true,
+      },
+    },
     user: {
       select: {
         id: true,

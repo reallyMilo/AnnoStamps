@@ -29,6 +29,12 @@
         "jsonc/sort-keys": "error"
       },
       "extends": ["plugin:jsonc/recommended-with-json"]
+    },
+    {
+      "files": [
+        "**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)"
+      ],
+      "extends": ["plugin:testing-library/react"]
     }
   ],
   "parser": "@typescript-eslint/parser",
@@ -37,7 +43,8 @@
     "react",
     "react-hooks",
     "simple-import-sort",
-    "typescript-sort-keys"
+    "typescript-sort-keys",
+    "testing-library"
   ],
   "root": true,
   "rules": {

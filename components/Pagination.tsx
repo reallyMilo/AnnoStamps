@@ -1,8 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
+import { cn, stampsPerPage } from 'lib/utils'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-
-import { cn, stampsPerPage } from '@/lib/utils'
 
 const generatePageNumbers = (totalPageCount: number, currentPage: number) => {
   const presetMaxPageList = 20

@@ -7,15 +7,14 @@ import {
 } from '@heroicons/react/24/outline'
 import type { User } from '@prisma/client'
 import { Stamp } from '@prisma/client'
+import Grid from 'components/Layout/Grid'
+import Layout from 'components/Layout/Layout'
+import StampCard from 'components/StampCard'
+import Container from 'components/ui/Container'
+import { fetcher } from 'lib/utils'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-
-import Grid from '@/components/Layout/Grid'
-import Layout from '@/components/Layout/Layout'
-import StampCard from '@/components/StampCard'
-import Container from '@/components/ui/Container'
-import { fetcher } from '@/lib/utils'
 
 type NicknameViewProps = {
   children: React.ReactNode

@@ -1,9 +1,8 @@
 import { Category, Region1800 } from 'game/1800/enum'
+import { prisma } from 'lib/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 import { z } from 'zod'
-
-import { prisma } from '@/lib/prisma'
 
 import { authOptions } from '../auth/[...nextauth]'
 

@@ -8,14 +8,13 @@ import {
   UserCircleIcon,
   WrenchIcon,
 } from '@heroicons/react/24/solid'
+import { cn, displayAuthModal, sendRequest } from 'lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import useSWRMutation from 'swr/mutation'
 import type { StampWithRelations } from 'types'
-
-import { cn, displayAuthModal, sendRequest } from '@/lib/utils'
 
 type CategoryInfo = {
   color: string
@@ -45,7 +44,7 @@ const StampCard = ({
   modded,
   likedBy,
   user,
-}: Partial<StampWithRelations>) => {
+}: StampWithRelations) => {
   const likes = likedBy ? likedBy.length : 0
   const { data: session } = useSession()
   const authUser = session?.user
