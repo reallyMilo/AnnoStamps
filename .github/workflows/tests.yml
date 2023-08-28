@@ -1,0 +1,88 @@
+name: 'Tests'
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+      - run: pnpm install
+      - name: Run lint
+        run: pnpm lint
+  test:
+    name: 'test_front'
+    needs: [lint]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+      - run: pnpm install
+      - name: Run test
+        run: pnpm test
+#   build:
+#     name: 'build nextjs'
+#     needs: [lint, test]
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Install Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
+#       - uses: pnpm/action-setup@v2
+#         name: Install pnpm
+#         with:
+#           version: 8
+#           run_install: false
+#       - run: pnpm install
+#       - name: Build
+#         run: pnpm build
+#   e2e:
+#     timeout-minutes: 15
+#     name: 'e2e tests'
+#     needs: [lint, test, build]
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Install Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 18
+#       - uses: pnpm/action-setup@v2
+#         name: Install pnpm
+#         with:
+#           version: 8
+#           run_install: false
+#       - run: pnpm install
+#       - name: Cypress run
+#         uses: cypress-io/github-action@v5
+#         with:
+#           build: pnpm build
+#           start: pnpm start
+#           wait-on: 'http://localhost:3000'
