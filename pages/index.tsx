@@ -8,11 +8,11 @@ import Container from 'components/ui/Container'
 import { prisma } from 'lib/prisma'
 import { stampsPerPage } from 'lib/utils'
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import type { StampWithLikes } from 'types'
+import type { StampWithRelations } from 'types'
 
 type HomePageProps = {
   count: number
-  stamps: Partial<StampWithLikes>[]
+  stamps: StampWithRelations[]
 }
 
 export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
@@ -84,6 +84,7 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
             id: true,
             username: true,
             usernameURL: true,
+            image: true,
           },
         },
       },
