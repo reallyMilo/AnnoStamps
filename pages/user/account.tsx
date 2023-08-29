@@ -93,6 +93,7 @@ const Account = () => {
                         pattern={`^[a-zA-Z0-9_\\-]+$`}
                         title="alphanumeric characters, dashes, and underscores"
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   </div>
@@ -102,6 +103,12 @@ const Account = () => {
                       id="username-error"
                     >
                       Only alphanumeric, dashes(-) and underscores(_) accepted.
+                    </p>
+                  )}
+                  {session.user?.username && (
+                    <p className="mt-2 text-xs">
+                      If you wish to change your username please contact us via
+                      the discord server.
                     </p>
                   )}
                 </div>
