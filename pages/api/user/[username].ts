@@ -15,7 +15,7 @@ export default async function usernameHandler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
-  const username = z.string().parse(req.query.username)
+  const queryUsername = z.string().parse(req.query.username)
 
   if (req.method === 'GET') {
     try {
@@ -38,7 +38,7 @@ export default async function usernameHandler(
             },
           },
         },
-        where: { usernameURL: username.toLowerCase() },
+        where: { usernameURL: queryUsername.toLowerCase() },
       })
 
       if (!getUserStamps) {
@@ -54,6 +54,11 @@ export default async function usernameHandler(
 
   if (req.method === 'PUT') {
     const session = await getServerSession(req, res, authOptions)
+
+    if (!session?.user.id) {
+      return res.status(401).json({ message: 'Unauthorized.' })
+    }
+
     const formData = z
       .object({
         username: z.string(),
@@ -66,19 +71,31 @@ export default async function usernameHandler(
       })
       .parse(req.body)
 
-    if (!session?.user.id) {
-      return res.status(401).json({ message: 'Unauthorized.' })
-    }
-
     try {
-      await prisma.user.update({
+      const updateUserSettings = await prisma.user.update({
+        select: {
+          username: true,
+          usernameURL: true,
+          biography: true,
+          discord: true,
+          emailContact: true,
+          twitch: true,
+          twitter: true,
+          reddit: true,
+        },
         where: { id: session.user.id },
         data: {
-          usernameURL: username.toLowerCase(),
+          ...(session.user.username
+            ? {}
+            : {
+                username: formData.username,
+                usernameURL: formData.username.toLowerCase(),
+              }),
+
           ...formData,
         },
       })
-      return res.status(200).json({ message: 'Updated user username' })
+      return res.status(200).json({ user: updateUserSettings })
     } catch (e) {
       return res
         .status(500)
