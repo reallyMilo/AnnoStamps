@@ -17,9 +17,3 @@ CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_usernameURL_key" ON "User"("usernameURL");
-
--- DropIndex
-DROP INDEX "User_nicknameURL_key";
-
--- DropIndex
-DROP INDEX "User_nickname_key";
