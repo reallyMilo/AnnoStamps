@@ -1,7 +1,7 @@
 import { PrismaClient, User } from '@prisma/client'
 
-import { GOOD_CATEGORIES_1800 } from '../game/1800/data'
-import { getGoodRegion } from '../game/1800/helpers'
+import { GOOD_CATEGORIES_1800 } from '@/lib/game/1800/data'
+import { getGoodRegion } from '@/lib/game/1800/helpers'
 
 const prisma = new PrismaClient()
 
