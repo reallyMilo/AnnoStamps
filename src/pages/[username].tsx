@@ -7,7 +7,6 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 import Grid from '@/components/Layout/Grid'
-import Layout from '@/components/Layout/Layout'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import { fetcher } from '@/lib/utils'
@@ -18,7 +17,7 @@ type NicknameViewProps = {
 }
 const UsernameView = ({ user, children }: NicknameViewProps) => {
   return (
-    <Layout>
+    <>
       <div className="w-full bg-[#8B6834] text-white">
         <Container className="py-4">
           <div className="grid grid-cols-4">
@@ -91,7 +90,7 @@ const UsernameView = ({ user, children }: NicknameViewProps) => {
       <Container>
         <Grid>{children}</Grid>
       </Container>
-    </Layout>
+    </>
   )
 }
 const UsernamePage = () => {

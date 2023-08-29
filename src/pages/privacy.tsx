@@ -1,8 +1,8 @@
-import Layout from '@/components/Layout/Layout'
+import Container from '@/components/ui/Container'
 
 const Privacy = () => {
   return (
-    <Layout>
+    <Container>
       <h1 className="mb-2 font-bold">Privacy Policy</h1>
       <div className="support_block page">
         <h2 className="mb-2 font-bold">
@@ -198,7 +198,7 @@ const Privacy = () => {
         </div>
         <p>&nbsp;</p>
       </div>
-    </Layout>
+    </Container>
   )
 }
 

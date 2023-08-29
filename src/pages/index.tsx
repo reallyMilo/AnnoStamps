@@ -3,7 +3,6 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
 import Filter from '@/components/Filter/Filter'
 import Grid from '@/components/Layout/Grid'
-import Layout from '@/components/Layout/Layout'
 import { Pagination } from '@/components/Pagination'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
@@ -115,26 +114,24 @@ const HomePage = ({
   stamps,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <Layout>
-      <Container>
-        <Filter />
-        {stamps.length === 0 ? (
-          <p className="inline-flex max-w-max items-center space-x-1 rounded-md bg-amber-100 px-4 py-2 text-amber-700">
-            <ExclamationCircleIcon className="mt-px h-5 w-5 shrink-0" />
-            <span>No stamps found.</span>
-          </p>
-        ) : (
-          <>
-            <Grid>
-              {stamps.map((stamp) => (
-                <StampCard key={stamp.id} {...stamp} />
-              ))}
-            </Grid>
-            <Pagination count={count} />
-          </>
-        )}
-      </Container>
-    </Layout>
+    <Container>
+      <Filter />
+      {stamps.length === 0 ? (
+        <p className="inline-flex max-w-max items-center space-x-1 rounded-md bg-amber-100 px-4 py-2 text-amber-700">
+          <ExclamationCircleIcon className="mt-px h-5 w-5 shrink-0" />
+          <span>No stamps found.</span>
+        </p>
+      ) : (
+        <>
+          <Grid>
+            {stamps.map((stamp) => (
+              <StampCard key={stamp.id} {...stamp} />
+            ))}
+          </Grid>
+          <Pagination count={count} />
+        </>
+      )}
+    </Container>
   )
 }
 export default HomePage
