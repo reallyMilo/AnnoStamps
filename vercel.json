@@ -4,5 +4,5 @@
       "main": false
     }
   },
-  "buildCommand": "prisma migrate deploy && prisma generate && next build"
+  "buildCommand": "prisma migrate resolve --rolled-back 20230821172527_rename_nickname_to_username && prisma migrate deploy && prisma generate && next build"
 }
