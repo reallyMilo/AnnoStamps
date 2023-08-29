@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { getSession } from 'next-auth/react'
 
 import Grid from '@/components/Layout/Grid'
-import Layout from '@/components/Layout/Layout'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import { prisma } from '@/lib/prisma'
@@ -57,31 +56,26 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 const Stamps = ({ stamps }: { stamps: StampWithRelations[] }) => {
   return (
-    <Layout>
-      <h1 className="container mx-auto mt-12 max-w-7xl px-5 text-xl font-bold text-gray-800">
-        Your listings
-      </h1>
+    <Container>
+      <h1 className="text-xl font-bold text-gray-800">Your listings</h1>
+      <Grid>
+        {stamps.map((stamp) => (
+          <div key={stamp.id} className="flex flex-col">
+            <Link
+              className="mb-1 ml-auto flex rounded-md bg-[#6DD3C0] px-4 py-2 text-sm font-bold text-[#222939] transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-500 focus:ring-opacity-50"
+              href={{
+                pathname: `/user/[stamp]`,
+                query: { stamp: stamp.id, author: stamp.user.id },
+              }}
+            >
+              <PencilSquareIcon className="mr-2 h-5 w-5" /> Edit Stamp{' '}
+            </Link>
 
-      <Container>
-        <Grid>
-          {stamps.map((stamp) => (
-            <div key={stamp.id} className="flex flex-col">
-              <Link
-                className="mb-1 ml-auto flex rounded-md bg-[#6DD3C0] px-4 py-2 text-sm font-bold text-[#222939] transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-500 focus:ring-opacity-50"
-                href={{
-                  pathname: `/user/[stamp]`,
-                  query: { stamp: stamp.id, author: stamp.user.id },
-                }}
-              >
-                <PencilSquareIcon className="mr-2 h-5 w-5" /> Edit Stamp{' '}
-              </Link>
-
-              <StampCard {...stamp} />
-            </div>
-          ))}
-        </Grid>
-      </Container>
-    </Layout>
+            <StampCard {...stamp} />
+          </div>
+        ))}
+      </Grid>
+    </Container>
   )
 }
 

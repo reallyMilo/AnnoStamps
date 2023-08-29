@@ -5,6 +5,7 @@ import Script from 'next/script'
 import { SessionProvider } from 'next-auth/react'
 import { Toaster } from 'react-hot-toast'
 
+import Layout from '@/components/Layout/Layout'
 const StampsApp = ({
   Component,
   pageProps: { session, ...pageProps },
@@ -28,8 +29,10 @@ const StampsApp = ({
         `}
       </Script>
       <SessionProvider session={session}>
-        <Component {...pageProps} className="font-sans" />
-        <Toaster />
+        <Layout>
+          <Component {...pageProps} className="font-sans" />
+          <Toaster />
+        </Layout>
       </SessionProvider>
     </>
   )
