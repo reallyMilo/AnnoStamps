@@ -1,5 +1,3 @@
-import '@testing-library/jest-dom'
-
 import { render as renderRTL, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useSession } from 'next-auth/react'
