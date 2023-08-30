@@ -33,6 +33,31 @@ const stampWithRelations = Prisma.validator<Prisma.StampArgs>()({
 })
 
 type StampWithRelations = Prisma.StampGetPayload<typeof stampWithRelations>
+
+const userWithListedStamps = Prisma.validator<Prisma.UserArgs>()({
+  select: {
+    id: true,
+    username: true,
+    usernameURL: true,
+    image: true,
+    discord: true,
+    reddit: true,
+    emailContact: true,
+    twitch: true,
+    twitter: true,
+    biography: true,
+    listedStamps: {
+      include: {
+        likedBy: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    },
+  },
+})
+type UserWithListedStamps = Prisma.UserGetPayload<typeof userWithListedStamps>
 interface CreateStamp extends Prisma.StampCreateInput {
   category: Category
 }
