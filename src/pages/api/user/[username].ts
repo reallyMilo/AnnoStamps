@@ -22,7 +22,10 @@ export default async function usernameHandler(
     try {
       const getUserStamps = await prisma.user.findUnique({
         select: {
+          id: true,
           username: true,
+          usernameURL: true,
+          image: true,
           discord: true,
           reddit: true,
           emailContact: true,
@@ -62,7 +65,7 @@ export default async function usernameHandler(
 
     const formData = z
       .object({
-        username: z.string(),
+        username: z.string().regex(/^[a-zA-Z0-9_\\-]+$/),
         biography: z.string().optional(),
         emailContact: z.string().optional(),
         discord: z.string().optional(),

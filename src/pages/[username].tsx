@@ -10,12 +10,24 @@ import Grid from '@/components/Layout/Grid'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import { fetcher } from '@/lib/utils'
+import type { UserWithListedStamps } from '@/types'
 
-type NicknameViewProps = {
+type UsernameViewProps = {
   children: React.ReactNode
-  user: Partial<User>
+  user: Partial<
+    Pick<
+      User,
+      | 'biography'
+      | 'username'
+      | 'discord'
+      | 'emailContact'
+      | 'twitch'
+      | 'twitter'
+      | 'reddit'
+    >
+  >
 }
-const UsernameView = ({ user, children }: NicknameViewProps) => {
+const UsernameView = ({ user, children }: UsernameViewProps) => {
   return (
     <>
       <div className="w-full bg-[#8B6834] text-white">
@@ -99,7 +111,7 @@ const UsernamePage = () => {
   const usernameURL =
     typeof router.query.username === 'string' ? router.query.username : ''
 
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading } = useSWR<{ user: UserWithListedStamps }>(
     usernameURL ? `/api/user/${usernameURL}` : null,
     fetcher
   )
@@ -127,17 +139,20 @@ const UsernamePage = () => {
   if (isLoading)
     return (
       <UsernameView user={{ username: usernameURL }}>
-        <div className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200" />{' '}
+        <div
+          className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200"
+          data-testid="loading"
+        />{' '}
       </UsernameView>
     )
 
   return (
-    <UsernameView user={data?.user}>
+    <UsernameView user={data?.user ?? {}}>
       {data?.user.listedStamps.length === 0 ? (
         <p>User has no stamps</p>
       ) : (
-        data?.user.listedStamps.map((stamp: any) => (
-          <StampCard key={stamp.id} {...stamp} />
+        data?.user.listedStamps.map((stamp) => (
+          <StampCard key={stamp.id} user={data.user} {...stamp} />
         ))
       )}
     </UsernameView>
