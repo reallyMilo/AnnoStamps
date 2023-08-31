@@ -6,7 +6,7 @@ import Grid from '@/components/Layout/Grid'
 import { Pagination } from '@/components/Pagination'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma/singleton'
 import { stampsPerPage } from '@/lib/utils'
 import type { StampWithRelations } from '@/types'
 

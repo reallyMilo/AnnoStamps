@@ -8,7 +8,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import nodemailer from 'nodemailer'
 import path from 'path'
 
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma/singleton'
 
 const transporter = nodemailer.createTransport({
   //@ts-expect-error overload match

@@ -9,7 +9,7 @@ import { z } from 'zod'
 
 import { Category, Region1800 } from '@/lib/game/1800/enum'
 import type { CreateStamp1800 } from '@/lib/game/1800/types'
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma/singleton'
 
 import { authOptions } from '../auth/[...nextauth]'
 
