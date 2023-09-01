@@ -62,3 +62,5 @@ export const triggerDownload = (data: Blob, filename: string) => {
 export const displayAuthModal = () => {
   window.dispatchEvent(new Event('open-auth-modal'))
 }
+
+export const parseBoolean = (value?: string) => value === 'true'
