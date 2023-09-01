@@ -1,20 +1,26 @@
 import { useRouter } from 'next/router'
 import { useImmerReducer } from 'use-immer'
+import { z } from 'zod'
 
-type Filter = {
-  capital: string
-  category: string
-  mods: string
-  region: string
-  search: string
-  sort: string
-  townhall: string
-  tradeUnion: string
-}
+export const filterSchema = z
+  .object({
+    capital: z.string(),
+    category: z.string(),
+    modded: z.string(),
+    page: z.string(),
+    region: z.string(),
+    search: z.string(),
+    sort: z.string(),
+    townhall: z.string(),
+    tradeUnion: z.string(),
+  })
+  .partial()
+
+export type Filter = z.infer<typeof filterSchema>
 type Action =
   | { payload: string; type: 'CATEGORY' }
   | { payload: string; type: 'REGION' }
-  | { payload: string; type: 'MODS' }
+  | { payload: string; type: 'MODDED' }
   | { payload: string; type: 'CAPITAL' }
   | { payload: string; type: 'TOWNHALL' }
   | { payload: string; type: 'TRADEUNION' }
@@ -24,16 +30,8 @@ type Action =
 const useFilterReducer = () => {
   const router = useRouter()
   const { query } = router
-  const initialFilterState = {
-    category: (query.category as string) ?? '',
-    region: (query.region as string) ?? '',
-    mods: (query.modded as string) ?? 'false',
-    capital: (query.capital as string) ?? '',
-    tradeUnion: (query.tradeunion as string) ?? '',
-    townhall: (query.townhall as string) ?? '',
-    sort: (query.sort as string) ?? '',
-    search: (query.search as string) ?? '',
-  }
+  const initialFilterState = filterSchema.parse(query)
+
   const filterReducer = (draft: Filter, action: Action) => {
     switch (action.type) {
       case 'CATEGORY':
@@ -50,8 +48,8 @@ const useFilterReducer = () => {
           query: { ...query, region: action.payload },
         })
         break
-      case 'MODS':
-        draft.mods = action.payload
+      case 'MODDED':
+        draft.modded = action.payload
         router.push({
           pathname: '/',
           query: { ...query, modded: action.payload },
