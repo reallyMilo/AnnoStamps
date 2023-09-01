@@ -1,6 +1,6 @@
 import { ParsedUrlQuery } from 'querystring'
 
-import { Filter, filterSchema } from '../hooks/useFilter'
+import { FilterProps, filterSchema } from '../hooks/useFilter'
 import { parseBoolean, stampsPerPage } from '../utils'
 import prisma from './singleton'
 
@@ -9,7 +9,7 @@ export const getStampsAndCount = async (query: ParsedUrlQuery) => {
 
   const pageNumber = parseInt(page || '1', 10)
 
-  const buildWhereClause = (filter: Omit<Filter, 'sort' | 'page'>) => {
+  const buildWhereClause = (filter: Omit<FilterProps, 'sort' | 'page'>) => {
     const { modded, capital, region, category, townhall, tradeUnion, search } =
       filter
     return {
@@ -28,7 +28,7 @@ export const getStampsAndCount = async (query: ParsedUrlQuery) => {
         : {}),
     }
   }
-  const buildOrderByClause = (orderBy?: Filter['sort']) => {
+  const buildOrderByClause = (orderBy?: FilterProps['sort']) => {
     switch (orderBy) {
       case 'newest':
         return { createdAt: 'desc' as const }
