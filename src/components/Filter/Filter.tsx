@@ -83,12 +83,12 @@ const Filter = () => {
             id="modded"
             name="modded"
             type="checkbox"
-            value={filter.mods}
+            value={filter.modded}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
             onChange={(e) =>
               setFilter({
                 payload: e.target.value === 'true' ? 'false' : 'true',
-                type: 'MODS',
+                type: 'MODDED',
               })
             }
           />

@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth'
 import { z } from 'zod'
 
 import { Category, Region1800 } from '@/lib/game/1800/enum'
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma/singleton'
 
 import { authOptions } from '../auth/[...nextauth]'
 

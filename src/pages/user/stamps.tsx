@@ -6,7 +6,7 @@ import { getSession } from 'next-auth/react'
 import Grid from '@/components/Layout/Grid'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma/singleton'
 import { StampWithRelations } from '@/types'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {

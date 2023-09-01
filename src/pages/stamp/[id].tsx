@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 
 import Container from '@/components/ui/Container'
-import { prisma } from '@/lib/prisma'
+import { prisma } from '@/lib/prisma/singleton'
 import { triggerDownload } from '@/lib/utils'
 import type { StampWithLikes } from '@/types'
 
