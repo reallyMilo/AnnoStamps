@@ -10,11 +10,6 @@ describe('Username Page', () => {
 
   it('displays error message for user not found', () => {
     cy.visit('/no-user')
-    cy.intercept('get', '/api/user/no-user', {
-      statusCode: 404,
-      body: { message: 'User not found' },
-    })
-
     cy.contains('User not found')
   })
 })
