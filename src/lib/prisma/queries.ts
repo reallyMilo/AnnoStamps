@@ -1,74 +1,115 @@
+import { Prisma } from '@prisma/client'
 import { ParsedUrlQuery } from 'querystring'
+import z from 'zod'
 
-import { FilterProps, filterSchema } from '../hooks/useFilter'
-import { parseBoolean, stampsPerPage } from '../utils'
+import { filterSchema } from '../hooks/useFilter'
+import {
+  buildFilterWhereClause,
+  buildOrderByClause,
+  stampsPerPage,
+} from '../utils'
 import prisma from './singleton'
+
+//TODO: prisma extensions, only way to stop these huge select statements
+// which are only necessary because you cannot exclude fields or set private field on schema
 
 export const getStampsAndCount = async (query: ParsedUrlQuery) => {
   const { page, sort, ...filter } = filterSchema.parse(query)
 
   const pageNumber = parseInt(page || '1', 10)
 
-  const buildWhereClause = (filter: Omit<FilterProps, 'sort' | 'page'>) => {
-    const { modded, capital, region, category, townhall, tradeUnion, search } =
-      filter
-    return {
-      modded: parseBoolean(modded),
-      ...(region ? { region } : {}),
-      ...(category ? { category } : {}),
-      ...(capital ? { capital } : {}),
-      ...(parseBoolean(townhall) ? { townhall: true } : {}),
-      ...(parseBoolean(tradeUnion) ? { tradeUnion: true } : {}),
-      ...(search
-        ? {
-            title: {
-              search,
+  try {
+    const [count, stamps] = await prisma.$transaction([
+      prisma.stamp.count({
+        where: buildFilterWhereClause(filter),
+      }),
+      prisma.stamp.findMany({
+        select: {
+          id: true,
+          title: true,
+          imageUrl: true,
+          category: true,
+          region: true,
+          modded: true,
+          likedBy: {
+            select: {
+              id: true,
             },
-          }
-        : {}),
-    }
-  }
-  const buildOrderByClause = (orderBy?: FilterProps['sort']) => {
-    switch (orderBy) {
-      case 'newest':
-        return { createdAt: 'desc' as const }
-      default:
-        return { downloads: 'desc' as const }
-    }
-  }
-  const [count, stamps] = await prisma.$transaction([
-    prisma.stamp.count({
-      where: buildWhereClause(filter),
-    }),
-    prisma.stamp.findMany({
-      select: {
-        id: true,
-        title: true,
-        imageUrl: true,
-        category: true,
-        region: true,
-        modded: true,
-        likedBy: {
-          select: {
-            id: true,
+          },
+          user: {
+            select: {
+              id: true,
+              username: true,
+              usernameURL: true,
+              image: true,
+            },
           },
         },
-        user: {
+        where: buildFilterWhereClause(filter),
+
+        orderBy: buildOrderByClause(sort),
+        skip: (pageNumber - 1) * stampsPerPage(),
+        take: stampsPerPage(),
+      }),
+    ])
+
+    return [count, stamps] as const
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === '2002') {
+        throw new Error(e.message)
+      }
+    }
+    throw e
+  }
+}
+export const getUserStamps = async (query: ParsedUrlQuery) => {
+  const { username } = z
+    .object({ username: z.string(), search: z.string().optional() })
+    .parse(query)
+
+  try {
+    const getUserStamps = await prisma.user.findUnique({
+      select: {
+        id: true,
+        username: true,
+        usernameURL: true,
+        image: true,
+        discord: true,
+        reddit: true,
+        emailContact: true,
+        twitch: true,
+        twitter: true,
+        biography: true,
+        listedStamps: {
           select: {
             id: true,
-            username: true,
-            usernameURL: true,
-            image: true,
+            title: true,
+            imageUrl: true,
+            category: true,
+            region: true,
+            modded: true,
+            likedBy: {
+              select: {
+                id: true,
+              },
+            },
           },
         },
       },
-      where: buildWhereClause(filter),
+      where: buildFilterWhereClause({}, username),
+    })
 
-      orderBy: buildOrderByClause(sort),
-      skip: (pageNumber - 1) * stampsPerPage(),
-      take: stampsPerPage(),
-    }),
-  ])
-
-  return [count, stamps] as const
+    if (!getUserStamps) {
+      return null
+    }
+    return getUserStamps
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === '2002') {
+        throw new Error(e.message)
+      }
+    }
+    throw e
+  }
 }

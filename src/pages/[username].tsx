@@ -1,33 +1,50 @@
 import { Popover } from '@headlessui/react'
-import { XCircleIcon } from '@heroicons/react/20/solid'
 import { EnvelopeIcon } from '@heroicons/react/24/outline'
-import type { User } from '@prisma/client'
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
 
 import Grid from '@/components/Layout/Grid'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
-import { fetcher } from '@/lib/utils'
-import type { UserWithListedStamps } from '@/types'
+import { getUserStamps } from '@/lib/prisma/queries'
+import { UserWithListedStamps } from '@/types'
 
-type UsernameViewProps = {
-  children: React.ReactNode
-  user: Partial<
-    Pick<
-      User,
-      | 'biography'
-      | 'username'
-      | 'discord'
-      | 'emailContact'
-      | 'twitch'
-      | 'twitter'
-      | 'reddit'
-    >
-  >
+type UsernamePageProps = {
+  user: UserWithListedStamps | null
 }
-const UsernameView = ({ user, children }: UsernameViewProps) => {
+export const getServerSideProps: GetServerSideProps<
+  UsernamePageProps
+> = async ({ query, res }) => {
+  const user = await getUserStamps(query)
+
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=15, stale-while-revalidate=59'
+  )
+
+  return {
+    props: {
+      user,
+    },
+  }
+}
+
+const UsernamePage = ({
+  user,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const router = useRouter()
+  const { username: queryUsername } = router.query
+
+  if (!user) {
+    //TODO: 404 page
+    return (
+      <Container className="flex flex-col justify-center gap-4">
+        <h1 className="text-center text-2xl">{queryUsername}</h1>
+        <span className="text-center">User not found</span>
+      </Container>
+    )
+  }
   return (
     <>
       <div className="w-full bg-[#8B6834] text-white">
@@ -100,62 +117,18 @@ const UsernameView = ({ user, children }: UsernameViewProps) => {
         </Container>
       </div>
       <Container>
-        <Grid>{children}</Grid>
+        <Grid>
+          {' '}
+          {user.listedStamps.length === 0 ? (
+            <p>User has no stamps</p>
+          ) : (
+            user?.listedStamps.map((stamp) => (
+              <StampCard key={stamp.id} user={user} {...stamp} />
+            ))
+          )}
+        </Grid>
       </Container>
     </>
-  )
-}
-const UsernamePage = () => {
-  const router = useRouter()
-
-  const usernameURL =
-    typeof router.query.username === 'string' ? router.query.username : ''
-
-  const { data, error, isLoading } = useSWR<{ user: UserWithListedStamps }>(
-    usernameURL ? `/api/user/${usernameURL}` : null,
-    fetcher
-  )
-
-  if (error)
-    return (
-      <UsernameView user={{ username: usernameURL }}>
-        <div className="rounded-md bg-red-50 p-4">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <XCircleIcon
-                className="h-5 w-5 text-red-400"
-                aria-hidden="true"
-              />
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">
-                {error.info.message}
-              </h3>
-            </div>
-          </div>
-        </div>
-      </UsernameView>
-    )
-  if (isLoading)
-    return (
-      <UsernameView user={{ username: usernameURL }}>
-        <div
-          className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200"
-          data-testid="loading"
-        />{' '}
-      </UsernameView>
-    )
-
-  return (
-    <UsernameView user={data?.user ?? {}}>
-      {data?.user.listedStamps.length === 0 ? (
-        <p>User has no stamps</p>
-      ) : (
-        data?.user.listedStamps.map((stamp) => (
-          <StampCard key={stamp.id} user={data.user} {...stamp} />
-        ))
-      )}
-    </UsernameView>
   )
 }
 

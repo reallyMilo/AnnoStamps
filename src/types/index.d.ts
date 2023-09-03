@@ -47,7 +47,13 @@ const userWithListedStamps = Prisma.validator<Prisma.UserArgs>()({
     twitter: true,
     biography: true,
     listedStamps: {
-      include: {
+      select: {
+        id: true,
+        title: true,
+        imageUrl: true,
+        category: true,
+        region: true,
+        modded: true,
         likedBy: {
           select: {
             id: true,
