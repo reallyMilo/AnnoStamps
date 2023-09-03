@@ -16,46 +16,6 @@ export default async function usernameHandler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
-  const queryUsername = z.string().parse(req.query.username)
-
-  if (req.method === 'GET') {
-    try {
-      const getUserStamps = await prisma.user.findUnique({
-        select: {
-          id: true,
-          username: true,
-          usernameURL: true,
-          image: true,
-          discord: true,
-          reddit: true,
-          emailContact: true,
-          twitch: true,
-          twitter: true,
-          biography: true,
-          listedStamps: {
-            include: {
-              likedBy: {
-                select: {
-                  id: true,
-                },
-              },
-            },
-          },
-        },
-        where: { usernameURL: queryUsername.toLowerCase() },
-      })
-
-      if (!getUserStamps) {
-        return res.status(404).json({ message: 'User does not exist' })
-      }
-      return res.status(200).json({
-        user: getUserStamps,
-      })
-    } catch (e) {
-      return res.status(500).json({ message: 'prisma error ' })
-    }
-  }
-
   if (req.method === 'PUT') {
     const session = await getServerSession(req, res, authOptions)
 

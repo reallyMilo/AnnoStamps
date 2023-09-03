@@ -1,6 +1,7 @@
 import { ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
+import { FilterProps } from './hooks/useFilter'
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -64,3 +65,35 @@ export const displayAuthModal = () => {
 }
 
 export const parseBoolean = (value?: string) => value === 'true'
+
+export const buildFilterWhereClause = (
+  filter: Omit<FilterProps, 'sort' | 'page'>,
+  username?: string
+) => {
+  const { modded, capital, region, category, townhall, tradeUnion, search } =
+    filter
+  return {
+    ...(username ? { usernameURL: username.toLowerCase() } : {}),
+    ...(modded ? { modded: parseBoolean(modded) } : {}),
+    ...(region ? { region } : {}),
+    ...(category ? { category } : {}),
+    ...(capital ? { capital } : {}),
+    ...(parseBoolean(townhall) ? { townhall: true } : {}),
+    ...(parseBoolean(tradeUnion) ? { tradeUnion: true } : {}),
+    ...(search
+      ? {
+          title: {
+            search,
+          },
+        }
+      : {}),
+  }
+}
+export const buildOrderByClause = (orderBy?: FilterProps['sort']) => {
+  switch (orderBy) {
+    case 'newest':
+      return { createdAt: 'desc' as const }
+    default:
+      return { downloads: 'desc' as const }
+  }
+}
