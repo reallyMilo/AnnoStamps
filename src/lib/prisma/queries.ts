@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client'
-import { ParsedUrlQuery } from 'querystring'
 import z from 'zod'
 
 import { filterSchema } from '../hooks/useFilter'
@@ -10,10 +9,10 @@ import {
 } from '../utils'
 import prisma from './singleton'
 
-//TODO: prisma extensions, only way to stop these huge select statements
-// which are only necessary because you cannot exclude fields or set private field on schema
+//TODO: prisma extensions, and error handling
 
-export const getStampsAndCount = async (query: ParsedUrlQuery) => {
+type GetStampsAndCountProps = z.infer<typeof filterSchema>
+export const getStampsAndCount = async (query: GetStampsAndCountProps) => {
   const { page, sort, ...filter } = filterSchema.parse(query)
 
   const pageNumber = parseInt(page || '1', 10)
@@ -63,10 +62,12 @@ export const getStampsAndCount = async (query: ParsedUrlQuery) => {
     throw e
   }
 }
-export const getUserStamps = async (query: ParsedUrlQuery) => {
-  const { username } = z
-    .object({ username: z.string(), search: z.string().optional() })
-    .parse(query)
+const getUserStampsSchema = z
+  .object({ userId: z.string(), username: z.string(), search: z.string() })
+  .partial()
+export type GetUserStampsProps = z.infer<typeof getUserStampsSchema>
+export const getUserStamps = async (query: GetUserStampsProps) => {
+  const { userId, username } = getUserStampsSchema.parse(query)
 
   try {
     const getUserStamps = await prisma.user.findUnique({
@@ -97,7 +98,10 @@ export const getUserStamps = async (query: ParsedUrlQuery) => {
           },
         },
       },
-      where: buildFilterWhereClause({}, username),
+      where: {
+        ...(username ? { usernameURL: username.toLowerCase() } : {}),
+        ...(userId ? { id: userId } : {}),
+      },
     })
 
     if (!getUserStamps) {

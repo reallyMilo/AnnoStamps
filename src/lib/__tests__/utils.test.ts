@@ -36,20 +36,12 @@ describe('buildFilterWhereClause', () => {
       region: undefined,
       search: 'Test',
     }
-    const result = buildFilterWhereClause(filter, undefined)
+    const result = buildFilterWhereClause(filter)
     expect(result).toEqual({
       modded: true,
       title: {
         search: 'Test',
       },
-    })
-  })
-
-  it('include usernameURL when username is provided', () => {
-    const username = 'AnnOgamer'
-    const result = buildFilterWhereClause({}, username)
-    expect(result).toEqual({
-      usernameURL: 'annogamer',
     })
   })
 
