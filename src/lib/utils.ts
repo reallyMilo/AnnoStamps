@@ -67,13 +67,11 @@ export const displayAuthModal = () => {
 export const parseBoolean = (value?: string) => value === 'true'
 
 export const buildFilterWhereClause = (
-  filter: Omit<FilterProps, 'sort' | 'page'>,
-  username?: string
+  filter: Omit<FilterProps, 'sort' | 'page'>
 ) => {
   const { modded, capital, region, category, townhall, tradeUnion, search } =
     filter
   return {
-    ...(username ? { usernameURL: username.toLowerCase() } : {}),
     ...(modded ? { modded: parseBoolean(modded) } : {}),
     ...(region ? { region } : {}),
     ...(category ? { category } : {}),

@@ -10,7 +10,7 @@ export const filterSchema = z
     page: z.string(),
     region: z.string(),
     search: z.string(),
-    sort: z.string(),
+    sort: z.enum(['newest']),
     townhall: z.string(),
     tradeUnion: z.string(),
   })
@@ -24,7 +24,7 @@ type Action =
   | { payload: string; type: 'CAPITAL' }
   | { payload: string; type: 'TOWNHALL' }
   | { payload: string; type: 'TRADEUNION' }
-  | { payload: string; type: 'SORT' }
+  | { payload: FilterProps['sort']; type: 'SORT' }
   | { payload: string; type: 'SEARCH' }
 
 const useFilterReducer = () => {
@@ -84,7 +84,7 @@ const useFilterReducer = () => {
         })
         break
       case 'SEARCH':
-        draft.sort = action.payload
+        draft.search = action.payload
         router.push({
           pathname: '/',
           query: { ...query, search: action.payload },

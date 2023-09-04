@@ -3,9 +3,10 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 import { z } from 'zod'
 
+import { getUserStamps } from '@/lib/prisma/queries'
 import { prisma } from '@/lib/prisma/singleton'
 
-import { authOptions } from '../auth/[...nextauth]'
+import { authOptions } from './auth/[...nextauth]'
 
 type ResponseData = {
   message?: string
@@ -16,13 +17,20 @@ export default async function usernameHandler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
-  if (req.method === 'PUT') {
-    const session = await getServerSession(req, res, authOptions)
+  const session = await getServerSession(req, res, authOptions)
 
-    if (!session?.user.id) {
-      return res.status(401).json({ message: 'Unauthorized.' })
+  if (!session?.user.id) {
+    return res.status(401).json({ message: 'Unauthorized.' })
+  }
+  if (req.method === 'GET') {
+    const user = await getUserStamps({ userId: session.user.id })
+    if (!user) {
+      return res.status(404).json({ message: 'No stamps found' })
     }
+    return res.status(200).json({ user })
+  }
 
+  if (req.method === 'PUT') {
     const formData = z
       .object({
         username: z.string().regex(/^[a-zA-Z0-9_\\-]+$/),
