@@ -1,5 +1,8 @@
 import { Capital1800, Category, Region1800 } from '@/lib/game/1800/enum'
-import useFilterReducer from '@/lib/hooks/useFilter'
+import useFilterReducer, {
+  FilterProps,
+  filterSchema,
+} from '@/lib/hooks/useFilter'
 
 import Select from '../ui/Select'
 
@@ -64,9 +67,12 @@ const Filter = () => {
           <Select
             id="sort"
             name="sort"
-            options={['newest']}
+            options={Object.values(filterSchema.pick({ sort: true }))}
             onChange={(e) =>
-              setFilter({ payload: e.target.value, type: 'SORT' })
+              setFilter({
+                payload: e.target.value as FilterProps['sort'],
+                type: 'SORT',
+              })
             }
           >
             <option value="">Most Downloaded</option>
