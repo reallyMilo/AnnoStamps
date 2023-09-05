@@ -67,7 +67,7 @@ const Filter = () => {
           <Select
             id="sort"
             name="sort"
-            options={Object.values(filterSchema.pick({ sort: true }))}
+            options={filterSchema.shape.sort._def.innerType.options}
             onChange={(e) =>
               setFilter({
                 payload: e.target.value as FilterProps['sort'],
