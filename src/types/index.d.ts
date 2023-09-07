@@ -4,7 +4,22 @@ import { Prisma } from '@prisma/client'
 import { Category } from '@/lib/game/1800enum'
 
 const stampWithLikes = Prisma.validator<Prisma.StampArgs>()({
-  include: { likedBy: { select: { id: true } } },
+  select: {
+    id: true,
+    title: true,
+    description: true,
+    imageUrl: true,
+    stampFileUrl: true,
+    category: true,
+    region: true,
+    modded: true,
+    downloads: true,
+    likedBy: {
+      select: {
+        id: true,
+      },
+    },
+  },
 })
 type StampWithLikes = Prisma.StampGetPayload<typeof stampWithLikes>
 
