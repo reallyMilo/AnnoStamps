@@ -1,15 +1,20 @@
 import { PrismaClient, User } from '@prisma/client'
 
-import { GOOD_CATEGORIES_1800 } from '../game/1800/data'
-import { getGoodRegion } from '../game/1800/helpers'
+import { GOOD_CATEGORIES_1800 } from '@/lib/game/1800/data'
+import { getGoodRegion } from '@/lib/game/1800/helpers'
 
 const prisma = new PrismaClient()
 
 const userData: Partial<User>[] = Array.from({ length: 100 }, (_, index) => ({
   name: `User ${index + 1}`,
   email: `user${index + 1}@example.com`,
-  nickname: `user${index + 1}`,
-  nicknameURL: `user${index + 1}`,
+  username: `user${index + 1}`,
+  usernameURL: `user${index + 1}`,
+  biography: `user${index + 1} amazing stamp creator`,
+  discord: `user${index + 1}`,
+  reddit: `user${index + 1}`,
+  twitter: `user${index + 1}`,
+  twitch: `user${index + 1}`,
 }))
 
 const folderImagePaths = [

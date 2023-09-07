@@ -11,7 +11,15 @@
       "extends": ["plugin:@typescript-eslint/recommended"],
       "files": ["**/*.{ts,tsx}"],
       "rules": {
-        "no-console": 2
+        "no-console": 2,
+        "prefer-arrow-callback": "warn",
+        "react/function-component-definition": [
+          1,
+          {
+            "namedComponents": "arrow-function",
+            "unnamedComponents": "arrow-function"
+          }
+        ]
       }
     },
     {
@@ -21,6 +29,12 @@
         "jsonc/sort-keys": "error"
       },
       "extends": ["plugin:jsonc/recommended-with-json"]
+    },
+    {
+      "files": [
+        "**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)"
+      ],
+      "extends": ["plugin:testing-library/react"]
     }
   ],
   "parser": "@typescript-eslint/parser",
@@ -29,7 +43,8 @@
     "react",
     "react-hooks",
     "simple-import-sort",
-    "typescript-sort-keys"
+    "typescript-sort-keys",
+    "testing-library"
   ],
   "root": true,
   "rules": {
