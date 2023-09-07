@@ -62,19 +62,19 @@ describe('UsernamePage', () => {
     },
   }))
   it('renders and all provided fields', () => {
-    render(UsernamePage({ user }))
+    render(<UsernamePage user={user} />)
 
     expect(screen.queryByText('user1', { selector: 'h1' })).toBeInTheDocument()
     expect(screen.getByText('the greatest stamper')).toBeInTheDocument()
   })
   it('displays no user found', () => {
-    render(UsernamePage({ user: null }))
+    render(<UsernamePage user={null} />)
 
     expect(screen.getByText('User not found')).toBeInTheDocument()
   })
   it('notifies user has no stamps', () => {
     user.listedStamps = []
-    render(UsernamePage({ user }))
+    render(<UsernamePage user={user} />)
 
     expect(screen.getByText('user1')).toBeInTheDocument()
     expect(screen.getByText('User has no stamps')).toBeInTheDocument()
