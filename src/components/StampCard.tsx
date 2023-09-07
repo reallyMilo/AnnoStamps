@@ -69,7 +69,7 @@ const StampCard = ({
   }
 
   return (
-    <div className="grid w-full grid-flow-row rounded-lg bg-white shadow-md">
+    <article className="grid w-full grid-flow-row rounded-lg bg-white shadow-md">
       <Link href={`/stamp/${id}`} data-testid="stamp-card-link">
         <div className="relative">
           <div className="aspect-h-9 aspect-w-16 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
@@ -105,12 +105,12 @@ const StampCard = ({
             {region}
           </p>
 
-          <h1
+          <h2
             id="stamp-title"
             className="mt-2 w-full text-lg font-semibold leading-tight text-gray-700"
           >
             {title}
-          </h1>
+          </h2>
         </div>
       </Link>
       {user?.username && (
@@ -149,7 +149,7 @@ const StampCard = ({
           </li>
         </ol>
       </div>
-    </div>
+    </article>
   )
 }
 
