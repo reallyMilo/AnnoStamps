@@ -35,7 +35,7 @@ describe('Stamp Page', () => {
   }))
 
   it('renders with all provided fields', () => {
-    render(StampPage({ stamp }))
+    render(<StampPage stamp={stamp} />)
 
     expect(screen.getByText('Stamp-Raw Material-Wood-998')).toBeInTheDocument()
     expect(screen.getByText('best stamp for wood')).toBeInTheDocument()
