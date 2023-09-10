@@ -6,9 +6,8 @@ import useSWR from 'swr'
 import Grid from '@/components/Layout/Grid'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
+import type { UserWithStamps } from '@/lib/prisma/queries'
 import { displayAuthModal, fetcher } from '@/lib/utils'
-import { UserWithListedStamps } from '@/types'
-
 const Stamps = () => {
   const { data: session, status } = useSession({
     required: true,
@@ -17,10 +16,10 @@ const Stamps = () => {
     },
   })
   const {
-    data: { user: userStamps } = {},
+    data: userStamps,
     isLoading,
     error,
-  } = useSWR<{ user: UserWithListedStamps }>(
+  } = useSWR<UserWithStamps>(
     status === 'authenticated' ? '/api/user' : null,
     fetcher
   )

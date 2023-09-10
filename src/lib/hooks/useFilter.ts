@@ -16,7 +16,7 @@ export const filterSchema = z
   })
   .partial()
 
-export type FilterProps = z.infer<typeof filterSchema>
+export type FilterState = z.infer<typeof filterSchema>
 type Action =
   | { payload: string; type: 'CATEGORY' }
   | { payload: string; type: 'REGION' }
@@ -24,7 +24,7 @@ type Action =
   | { payload: string; type: 'CAPITAL' }
   | { payload: string; type: 'TOWNHALL' }
   | { payload: string; type: 'TRADEUNION' }
-  | { payload: FilterProps['sort']; type: 'SORT' }
+  | { payload: FilterState['sort']; type: 'SORT' }
   | { payload: string; type: 'SEARCH' }
 
 const useFilterReducer = () => {
@@ -32,7 +32,7 @@ const useFilterReducer = () => {
   const { query } = router
   const initialFilterState = filterSchema.parse(query)
 
-  const filterReducer = (draft: FilterProps, action: Action) => {
+  const filterReducer = (draft: FilterState, action: Action) => {
     switch (action.type) {
       case 'CATEGORY':
         draft.category = action.payload

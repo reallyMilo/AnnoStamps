@@ -1,5 +1,6 @@
 //TODO: Refactor on new image uploading procedure, compression, s3 bucket etc...
 
+import { Prisma } from '@prisma/client'
 import { createClient } from '@supabase/supabase-js'
 import { decode } from 'base64-arraybuffer'
 import { nanoid } from 'nanoid'
@@ -8,8 +9,7 @@ import { getServerSession } from 'next-auth/next'
 import { z } from 'zod'
 
 import { Category, Region1800 } from '@/lib/game/1800/enum'
-import type { CreateStamp1800 } from '@/lib/game/1800/types'
-import { prisma } from '@/lib/prisma/singleton'
+import prisma from '@/lib/prisma/singleton'
 
 import { authOptions } from '../auth/[...nextauth]'
 
@@ -156,7 +156,7 @@ export default async function addStampHandler(
 
 const createStamp = async (
   userId: string,
-  insert: Omit<CreateStamp1800, 'user'>
+  insert: Omit<Prisma.StampCreateInput, 'user'>
 ) => {
   try {
     const stamp = await prisma.stamp.create({

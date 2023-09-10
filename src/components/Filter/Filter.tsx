@@ -1,7 +1,7 @@
 import { Capital1800, Category, Region1800 } from '@/lib/game/1800/enum'
 import useFilterReducer, {
-  FilterProps,
   filterSchema,
+  FilterState,
 } from '@/lib/hooks/useFilter'
 
 import Select from '../ui/Select'
@@ -70,7 +70,7 @@ const Filter = () => {
             options={filterSchema.shape.sort._def.innerType.options}
             onChange={(e) =>
               setFilter({
-                payload: e.target.value as FilterProps['sort'],
+                payload: e.target.value as FilterState['sort'],
                 type: 'SORT',
               })
             }
