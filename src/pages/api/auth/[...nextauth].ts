@@ -1,4 +1,5 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import { PrismaClient } from '@prisma/client'
 import { readFileSync } from 'fs'
 import Handlebars from 'handlebars'
 import NextAuth, { NextAuthOptions } from 'next-auth'
@@ -8,7 +9,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import nodemailer from 'nodemailer'
 import path from 'path'
 
-import { prisma } from '@/lib/prisma/singleton'
+import prisma from '@/lib/prisma/singleton'
 
 const transporter = nodemailer.createTransport({
   //@ts-expect-error overload match
@@ -84,7 +85,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
     }),
   ],
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma as unknown as PrismaClient),
   events: { createUser: sendWelcomeEmail },
   callbacks: {
     session: async ({ session, user }) => {

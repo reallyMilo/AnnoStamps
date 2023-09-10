@@ -7,26 +7,38 @@ import { useRouter } from 'next/router'
 import Grid from '@/components/Layout/Grid'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
-import { getUserStamps } from '@/lib/prisma/queries'
-import { UserWithListedStamps } from '@/types'
+import { UserWithStamps, userWithStamps } from '@/lib/prisma/queries'
+import prisma from '@/lib/prisma/singleton'
 
 type UsernamePageProps = {
-  user: UserWithListedStamps | null
+  user: UserWithStamps | null
 }
+//@ts-expect-error computed createdAt is number not date.
 export const getServerSideProps: GetServerSideProps<
   UsernamePageProps
 > = async ({ query, res }) => {
-  const user = await getUserStamps(query)
+  try {
+    const user = await prisma.user.findUnique({
+      include: userWithStamps,
+      where: { usernameURL: query.username as string },
+    })
 
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=15, stale-while-revalidate=59'
-  )
+    res.setHeader(
+      'Cache-Control',
+      'public, s-maxage=15, stale-while-revalidate=59'
+    )
 
-  return {
-    props: {
-      user,
-    },
+    return {
+      props: {
+        user,
+      },
+    }
+  } catch (e) {
+    return {
+      props: {
+        user: null,
+      },
+    }
   }
 }
 

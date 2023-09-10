@@ -1,17 +1,17 @@
 import { User } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
-import { z } from 'zod'
 
-import { getUserStamps } from '@/lib/prisma/queries'
-import { prisma } from '@/lib/prisma/singleton'
+import { userWithStamps } from '@/lib/prisma/queries'
+import prisma from '@/lib/prisma/singleton'
 
 import { authOptions } from './auth/[...nextauth]'
 
-type ResponseData = {
-  message?: string
-  user?: Partial<User>
-}
+type ResponseData =
+  | {
+      message?: string
+    }
+  | Partial<User>
 
 export default async function usernameHandler(
   req: NextApiRequest,
@@ -23,55 +23,41 @@ export default async function usernameHandler(
     return res.status(401).json({ message: 'Unauthorized.' })
   }
   if (req.method === 'GET') {
-    const user = await getUserStamps({ userId: session.user.id })
-    if (!user) {
-      return res.status(404).json({ message: 'No stamps found' })
+    try {
+      const user = await prisma.user.findUnique({
+        include: userWithStamps,
+        where: {
+          id: session.user.id,
+        },
+      })
+
+      if (!user) {
+        return res.status(404).json({ message: 'No stamps found' })
+      }
+      return res.status(200).json(user)
+    } catch (e) {
+      return res.status(500).json({ message: 'zod/prisma/server error' })
     }
-    return res.status(200).json({ user })
   }
 
   if (req.method === 'PUT') {
-    const formData = z
-      .object({
-        username: z.string().regex(/^[a-zA-Z0-9_\\-]+$/),
-        biography: z.string().optional(),
-        emailContact: z.string().optional(),
-        discord: z.string().optional(),
-        twitter: z.string().optional(),
-        reddit: z.string().optional(),
-        twitch: z.string().optional(),
-      })
-      .parse(req.body)
-
     try {
-      const updateUserSettings = await prisma.user.update({
-        select: {
-          username: true,
-          usernameURL: true,
-          biography: true,
-          discord: true,
-          emailContact: true,
-          twitch: true,
-          twitter: true,
-          reddit: true,
-        },
-        where: { id: session.user.id },
-        data: {
-          ...(session.user.username
-            ? {}
-            : {
-                username: formData.username,
-                usernameURL: formData.username.toLowerCase(),
-              }),
+      const { username, ...profile } = req.body
 
-          ...formData,
-        },
+      const updateData = session.user.username
+        ? profile
+        : {
+            username,
+            usernameURL: username.toLowerCase(),
+            ...profile,
+          }
+      const user = await prisma.user.update({
+        data: updateData,
+        where: { id: session.user.id },
       })
-      return res.status(200).json({ user: updateUserSettings })
+      return res.status(200).json(user)
     } catch (e) {
-      return res
-        .status(500)
-        .json({ message: 'failed to updated user username' })
+      return res.status(500).json({ message: 'zod/prisma/server error' })
     }
   }
 

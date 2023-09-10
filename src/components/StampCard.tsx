@@ -14,8 +14,8 @@ import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import useSWRMutation from 'swr/mutation'
 
+import type { StampWithRelations } from '@/lib/prisma/queries'
 import { cn, displayAuthModal, sendRequest } from '@/lib/utils'
-import type { StampWithRelations } from '@/types'
 
 type CategoryInfo = {
   color: string
