@@ -13,14 +13,17 @@ import prisma from '@/lib/prisma/singleton'
 type UsernamePageProps = {
   user: UserWithStamps | null
 }
-//@ts-expect-error computed createdAt is number not date.
+
 export const getServerSideProps: GetServerSideProps<
   UsernamePageProps
 > = async ({ query, res }) => {
   try {
+    if (typeof query.username !== 'string') {
+      throw new Error('invalid input')
+    }
     const user = await prisma.user.findUnique({
       include: userWithStamps,
-      where: { usernameURL: query.username as string },
+      where: { usernameURL: query.username },
     })
 
     res.setHeader(

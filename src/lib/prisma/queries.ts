@@ -7,9 +7,15 @@ export const stampWithRelations = {
   likedBy: true,
 } satisfies Prisma.StampInclude
 
-export type StampWithRelations = Prisma.StampGetPayload<{
-  include: typeof stampWithRelations
-}>
+export type StampWithRelations = Omit<
+  Prisma.StampGetPayload<{
+    include: typeof stampWithRelations
+  }>,
+  'createdAt' | 'updatedAt'
+> & {
+  createdAt: number
+  updatedAt: number
+}
 
 export const stampExtensions = Prisma.defineExtension({
   result: {
@@ -39,9 +45,13 @@ export const userWithStamps = {
   },
 } satisfies Prisma.UserInclude
 
-export type UserWithStamps = Prisma.UserGetPayload<{
-  include: typeof userWithStamps
-}>
+export type UserWithStamps = Omit<
+  Prisma.UserGetPayload<{
+    include: typeof userWithStamps
+  }>,
+  'listedStamps'
+> & { listedStamps: Omit<StampWithRelations, 'user'>[] }
+
 const userProfileSchema = z
   .object({
     username: z.string().regex(/^[a-zA-Z0-9_\\-]+$/),
