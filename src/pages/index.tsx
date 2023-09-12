@@ -22,7 +22,7 @@ type HomePageProps = {
   count: number
   stamps: StampWithRelations[]
 }
-//@ts-expect-error Types of property 'createdAt' are incompatible.
+
 export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
   query,
   res,
