@@ -29,10 +29,9 @@ const Account = () => {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
-    const username = formData.get('username')
 
     try {
-      await fetch(`/api/user/${username}`, {
+      await fetch(`/api/user`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -248,6 +247,7 @@ const Account = () => {
           <button
             type="submit"
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            disabled={isError}
           >
             Save
           </button>

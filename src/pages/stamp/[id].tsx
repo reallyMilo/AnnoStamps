@@ -3,9 +3,12 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 
 import Container from '@/components/ui/Container'
-import { prisma } from '@/lib/prisma/singleton'
+import {
+  type StampWithRelations,
+  stampWithRelations,
+} from '@/lib/prisma/queries'
+import prisma from '@/lib/prisma/singleton'
 import { triggerDownload } from '@/lib/utils'
-import { StampWithLikes } from '@/types'
 
 export async function getStaticPaths() {
   const stamps = await prisma.stamp.findMany({
@@ -29,22 +32,7 @@ type Params = {
 
 export async function getStaticProps({ params }: Params) {
   const stamp = await prisma.stamp.findUnique({
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      imageUrl: true,
-      stampFileUrl: true,
-      category: true,
-      region: true,
-      modded: true,
-      downloads: true,
-      likedBy: {
-        select: {
-          id: true,
-        },
-      },
-    },
+    include: stampWithRelations,
     where: { id: params.id },
   })
 
@@ -55,7 +43,7 @@ export async function getStaticProps({ params }: Params) {
   }
 }
 
-const StampPage = ({ stamp }: { stamp: StampWithLikes }) => {
+const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
   const router = useRouter()
 
   const handleDownload = async () => {

@@ -1,7 +1,9 @@
+import { Prisma } from '@prisma/client'
 import { ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
-import { FilterProps } from './hooks/useFilter'
+import { FilterState } from './hooks/useFilter'
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -67,11 +69,11 @@ export const displayAuthModal = () => {
 export const parseBoolean = (value?: string) => value === 'true'
 
 export const buildFilterWhereClause = (
-  filter: Omit<FilterProps, 'sort' | 'page'>
+  filter: Omit<FilterState, 'sort' | 'page'>
 ) => {
   const { modded, capital, region, category, townhall, tradeUnion, search } =
     filter
-  return {
+  return Prisma.validator<Prisma.StampWhereInput>()({
     ...(modded ? { modded: parseBoolean(modded) } : {}),
     ...(region ? { region } : {}),
     ...(category ? { category } : {}),
@@ -85,9 +87,9 @@ export const buildFilterWhereClause = (
           },
         }
       : {}),
-  }
+  })
 }
-export const buildOrderByClause = (orderBy?: FilterProps['sort']) => {
+export const buildOrderByClause = (orderBy?: FilterState['sort']) => {
   switch (orderBy) {
     case 'newest':
       return { createdAt: 'desc' as const }

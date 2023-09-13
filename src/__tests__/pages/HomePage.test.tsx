@@ -43,7 +43,7 @@ describe('Home Page', () => {
   }))
 
   it('render HomePage with filter and without stamps', () => {
-    render(HomePage({ count: 0, stamps: [] }))
+    render(<HomePage count={0} stamps={[]} />)
 
     expect(screen.getByLabelText('Category')).toBeInTheDocument()
     expect(screen.getByText('No stamps found.')).toBeInTheDocument()
@@ -51,7 +51,7 @@ describe('Home Page', () => {
   })
 
   it('displays pagination and stamps on HomePage', () => {
-    render(HomePage({ count: 22, stamps }))
+    render(<HomePage count={22} stamps={stamps} />)
 
     expect(screen.getByText('UNIT-tester')).toBeInTheDocument()
     expect(screen.getByRole('navigation')).toBeInTheDocument()

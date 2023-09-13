@@ -6,8 +6,17 @@ import Grid from '@/components/Layout/Grid'
 import { Pagination } from '@/components/Pagination'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
-import { getStampsAndCount } from '@/lib/prisma/queries'
-import { StampWithRelations } from '@/types'
+import { filterSchema } from '@/lib/hooks/useFilter'
+import {
+  type StampWithRelations,
+  stampWithRelations,
+} from '@/lib/prisma/queries'
+import prisma from '@/lib/prisma/singleton'
+import {
+  buildFilterWhereClause,
+  buildOrderByClause,
+  stampsPerPage,
+} from '@/lib/utils'
 
 type HomePageProps = {
   count: number
@@ -18,18 +27,42 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
   query,
   res,
 }) => {
-  const [count, stamps] = await getStampsAndCount(query)
-
   res.setHeader(
     'Cache-Control',
     'public, s-maxage=15, stale-while-revalidate=59'
   )
 
-  return {
-    props: {
-      count,
-      stamps,
-    },
+  try {
+    const { page, sort, ...filter } = filterSchema.parse(query)
+    const pageNumber = parseInt(page || '1', 10)
+
+    const [count, stamps] = await prisma.$transaction([
+      prisma.stamp.count({
+        where: buildFilterWhereClause(filter),
+      }),
+      prisma.stamp.findMany({
+        include: stampWithRelations,
+        where: buildFilterWhereClause(filter),
+        orderBy: buildOrderByClause(sort),
+        skip: (pageNumber - 1) * stampsPerPage(),
+        take: stampsPerPage(),
+      }),
+    ])
+
+    return {
+      props: {
+        count,
+        stamps,
+      },
+    }
+  } catch (e) {
+    //TODO: error boundary + zod error/prisma error/server error
+    return {
+      props: {
+        count: 0,
+        stamps: [],
+      },
+    }
   }
 }
 
