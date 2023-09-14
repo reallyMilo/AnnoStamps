@@ -2,6 +2,8 @@ import { Prisma } from '@prisma/client'
 import { getUnixTime } from 'date-fns'
 import z from 'zod'
 
+import { Category, Region1800 } from '@/lib/game/1800/enum'
+
 export const stampWithRelations = {
   user: true,
   likedBy: true,
@@ -17,7 +19,31 @@ export type StampWithRelations = Omit<
   updatedAt: number
 }
 
+const createStampSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  userId: z.string(),
+  category: z.nativeEnum(Category),
+  region: z.nativeEnum(Region1800),
+  game: z.enum(['1800']),
+  good: z.string(),
+  capital: z.string(),
+  townhall: z.boolean(),
+  tradeUnion: z.boolean(),
+  modded: z.boolean(),
+  imageUrl: z.string(),
+  stampFileUrl: z.string(),
+}) satisfies z.Schema<Prisma.StampUncheckedCreateInput>
+
 export const stampExtensions = Prisma.defineExtension({
+  query: {
+    stamp: {
+      create({ args, query }) {
+        args.data = createStampSchema.parse(args.data)
+        return query(args)
+      },
+    },
+  },
   result: {
     stamp: {
       createdAt: {

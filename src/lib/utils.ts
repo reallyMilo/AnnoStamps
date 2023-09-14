@@ -37,7 +37,7 @@ export async function sendRequest(
 ) {
   return fetch(url, {
     method: 'POST',
-    body: JSON.stringify(arg),
+    body: arg,
   }).then((res) => res.json())
 }
 
@@ -95,5 +95,17 @@ export const buildOrderByClause = (orderBy?: FilterState['sort']) => {
       return { createdAt: 'desc' as const }
     default:
       return { downloads: 'desc' as const }
+  }
+}
+
+export const rawFileToAsset = (rawFile: File) => {
+  return {
+    size: rawFile.size / 1000,
+    createdAt: new Date(rawFile.lastModified).toISOString(),
+    name: rawFile.name,
+    url: URL.createObjectURL(rawFile),
+    ext: rawFile.name.split('.').pop(),
+    mime: rawFile.type,
+    rawFile,
   }
 }
