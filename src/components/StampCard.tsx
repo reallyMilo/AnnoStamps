@@ -64,7 +64,7 @@ const StampCard = ({
   const addLikeToStamp = async () => {
     if (!authUser) return displayAuthModal()
 
-    await trigger({ stampId: id, userId: authUser.id })
+    await trigger(JSON.stringify({ stampId: id, userId: authUser.id }))
     setIsLiked(true)
   }
 
