@@ -91,6 +91,9 @@ devDependencies:
   '@testing-library/user-event':
     specifier: ^14.5.0
     version: 14.5.0(@testing-library/dom@9.3.1)
+  '@types/formidable':
+    specifier: ^3.4.3
+    version: 3.4.3
   '@types/node':
     specifier: ^20.6.0
     version: 20.6.0
@@ -2598,6 +2601,15 @@ packages:
       {
         integrity: sha512-VOVRLM1mBxIRxydiViqPcKn6MIxZytrbMpd6RJLIWKxUNr3zux8no0Oc7kJx0WAPIitgZ0gkrDS+btlqQpubpw==,
       }
+    dev: true
+
+  /@types/formidable@3.4.3:
+    resolution:
+      {
+        integrity: sha512-FRB5KNIYgCLDvw/ho7daBVqdQRG9Ptk1tMlZ2B5ibAjxDfXFkO6fJaP+ojmS8ljqmnC5If9u24WdWcVPaN3thg==,
+      }
+    dependencies:
+      '@types/node': 20.6.0
     dev: true
 
   /@types/json-schema@7.0.12:
