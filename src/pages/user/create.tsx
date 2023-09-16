@@ -25,12 +25,10 @@ const Create = () => {
 
     const formData = new FormData(e.currentTarget)
 
-    try {
-      const res = await trigger(formData)
+    const res = await trigger(formData)
+    if (res.ok) {
       toast.success(res.message)
       router.push('/user/stamps')
-    } catch (e) {
-      toast.error(String(e))
     }
   }
 
@@ -66,9 +64,8 @@ const Create = () => {
             type="submit"
             className="rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
             disabled={isMutating}
-            data-testid="add-stamp-button"
           >
-            {isMutating ? 'Loading...' : 'Add Stamp'}
+            {isMutating ? 'Loading...' : 'Submit Stamp'}
           </button>
         </div>
       </form>

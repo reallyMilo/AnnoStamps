@@ -10,7 +10,7 @@ const FileUpload = () => {
           htmlFor="stamps"
           className="rounded-md bg-yellow-600 px-6 py-2 text-sm text-white hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 "
         >
-          Add Files
+          Add Stamps
           <input
             type="file"
             id="stamps"
