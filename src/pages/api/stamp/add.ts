@@ -1,9 +1,9 @@
 import formidable from 'formidable'
-
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 
 import prisma from '@/lib/prisma/singleton'
+import { generateResponsiveImages } from '@/lib/upload/image-manipulation'
 
 import { authOptions } from '../auth/[...nextauth]'
 
@@ -39,6 +39,13 @@ export default async function addStampHandler(
 
   try {
     const [fields, files] = await form.parse(req)
+    if (!files.images) {
+      return res.status(404).json({ message: 'no images' })
+    }
+
+    for (const file of files.images) {
+      const newImages = await generateResponsiveImages(file)
+    }
 
     return res.status(200).json({ message: 'stamps uploaded to public/tmp' })
   } catch (e) {
