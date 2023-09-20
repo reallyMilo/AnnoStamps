@@ -30,7 +30,7 @@ model Stamp {
   description  String
   category     String
   region       String
-  imageUrl     String
+  imageUrl     String?
   stampFileUrl String
   goodCategory String?
   good         String?
