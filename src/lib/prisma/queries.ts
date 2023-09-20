@@ -7,17 +7,18 @@ import { Category, Region1800 } from '@/lib/game/1800/enum'
 export const stampWithRelations = {
   user: true,
   likedBy: true,
+  images: true,
 } satisfies Prisma.StampInclude
 
 export type StampWithRelations = Omit<
   Prisma.StampGetPayload<{
     include: typeof stampWithRelations
   }>,
-  'createdAt' | 'updatedAt'
+  'createdAt' | 'updatedAt' | 'images'
 > & {
   createdAt: number
   updatedAt: number
-}
+} & { images: Image[] }
 
 const createStampSchema = z.object({
   title: z.string(),
@@ -33,6 +34,17 @@ const createStampSchema = z.object({
   modded: z.boolean(),
   imageUrl: z.string(),
   stampFileUrl: z.string(),
+  images: z.object({
+    create: z.array(
+      z.object({
+        originalUrl: z.string(),
+        thumbnailUrl: z.string(),
+        smallUrl: z.string(),
+        mediumUrl: z.string(),
+        largeUrl: z.string(),
+      })
+    ),
+  }),
 }) satisfies z.Schema<Prisma.StampUncheckedCreateInput>
 
 export const stampExtensions = Prisma.defineExtension({
@@ -40,6 +52,7 @@ export const stampExtensions = Prisma.defineExtension({
     stamp: {
       create({ args, query }) {
         args.data = createStampSchema.parse(args.data)
+        args.include = { images: true }
         return query(args)
       },
     },
@@ -110,6 +123,31 @@ export const userExtension = Prisma.defineExtension({
       emailVerified: {
         compute() {
           return null
+        },
+      },
+    },
+  },
+})
+
+/* -------------------------------------------------------------------------------------------------
+ * Image
+ * -----------------------------------------------------------------------------------------------*/
+
+type Image = Omit<Prisma.ImageGetPayload<object>, 'createdAt' | 'updatedAt'> & {
+  createdAt: number
+  updatedAt: number
+}
+export const imageExtension = Prisma.defineExtension({
+  result: {
+    image: {
+      createdAt: {
+        compute({ createdAt }) {
+          return getUnixTime(new Date(createdAt))
+        },
+      },
+      updatedAt: {
+        compute({ updatedAt }) {
+          return getUnixTime(new Date(updatedAt))
         },
       },
     },

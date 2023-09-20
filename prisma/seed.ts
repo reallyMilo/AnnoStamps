@@ -1,7 +1,7 @@
 import { PrismaClient, User } from '@prisma/client'
 
-import { GOOD_CATEGORIES_1800 } from '@/lib/game/1800/data'
-import { getGoodRegion } from '@/lib/game/1800/helpers'
+import { GOOD_CATEGORIES_1800 } from '../src/lib/game/1800/data'
+import { getGoodRegion } from '../src/lib/game/1800/helpers'
 
 const prisma = new PrismaClient()
 
@@ -46,8 +46,8 @@ async function seed() {
     return {
       userId: users[index % users.length].id,
       game: '1800',
-      title: `Stamp-${goodCategory}-${good}-${index}`,
-      description: `Stamp-${goodCategory}-${good}-${index}`,
+      title: `Stamp-${good}-${index}`,
+      description: `Stamp-${good}-${index}`,
       category: 'production',
       region: getGoodRegion(good),
       imageUrl: rndImage,
@@ -64,7 +64,7 @@ async function seed() {
     data: stampData,
   })
 
-  const insertedStamps = await prisma.stamp.findMany({ take: 250 })
+  const insertedStamps = await prisma.stamp.findMany()
 
   const updatedStamps = await Promise.all(
     insertedStamps.map((stamp) => {
@@ -72,6 +72,17 @@ async function seed() {
       return prisma.stamp.update({
         where: { id: stamp.id },
         data: {
+          images: {
+            createMany: {
+              data: [1, 2].map((image) => ({
+                originalUrl: `https://placehold.co/2000x2000.png?text=Original${image}\\n${stamp.id}`,
+                thumbnailUrl: `https://placehold.co/250x250.png?text=Thumbnail${image}\\n${stamp.id}`,
+                smallUrl: `https://placehold.co/500x500.png?text=Small${image}\\n${stamp.id}`,
+                mediumUrl: `https://placehold.co/750x750.png?text=Medium${image}\\n${stamp.id}`,
+                largeUrl: `https://placehold.ca/1000x1000.png?text=Large${image}\\n${stamp.id}`,
+              })),
+            },
+          },
           likedBy: {
             connect: { id: selectUser.id },
           },

@@ -1,9 +1,12 @@
 import { PrismaClient } from '@prisma/client'
 
-import { stampExtensions, userExtension } from './queries'
+import { imageExtension, stampExtensions, userExtension } from './queries'
 
 const prismaClientSingleton = () => {
-  return new PrismaClient().$extends(userExtension).$extends(stampExtensions)
+  return new PrismaClient()
+    .$extends(userExtension)
+    .$extends(stampExtensions)
+    .$extends(imageExtension)
 }
 
 export type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>
