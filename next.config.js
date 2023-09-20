@@ -11,6 +11,7 @@ module.exports = {
       'lh3.googleusercontent.com',
       'cdn.discordapp.com',
       'cdn.buymeacoffee.com',
+      'placehold.co',
     ],
   },
 }

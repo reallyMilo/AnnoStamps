@@ -9,6 +9,19 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model Image {
+  id           String   @id @default(cuid())
+  originalUrl  String   @unique
+  thumbnailUrl String?  @unique
+  smallUrl     String?  @unique
+  mediumUrl    String?  @unique
+  largeUrl     String?  @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  stamp        Stamp    @relation("StampImage", fields: [stampId], references: [id])
+  stampId      String
+}
+
 model Stamp {
   id           String   @id @default(cuid())
   userId       String
@@ -31,6 +44,7 @@ model Stamp {
   downloads    Int      @default(0)
   user         User     @relation("StampCreator", fields: [userId], references: [id], onDelete: Cascade)
   likedBy      User[]   @relation("StampLiker")
+  images       Image[]  @relation("StampImage")
 }
 
 model Account {
