@@ -30,6 +30,7 @@ const Create = () => {
       toast.success(res.message)
       router.push('/user/stamps')
     }
+    toast.error('Error creating stamp')
   }
 
   if (status === 'loading')

@@ -21,13 +21,17 @@ const generateImage = async (
   breakpoint: number,
   key: Breakpoint
 ) => {
-  const newImage = await sharp(file.filepath)
+  const directory = 'public'
+  const outputPath = `/tmp/${key}_${file.newFilename.split('.').shift()}.webp`
+
+  await sharp(file.filepath)
     .resize(breakpoint, breakpoint, {
       fit: 'inside',
     })
-    .toFile(`public/tmp/${key}_${file.newFilename.split('.').shift()}.webp`)
+    .toFile(directory + outputPath)
 
-  return newImage
+  const appendUrl = key + 'Url'
+  return { [appendUrl]: outputPath }
 }
 
 const breakpointSmaller = (breakpoint: number, width = 0, height = 0) => {
@@ -37,7 +41,7 @@ const breakpointSmaller = (breakpoint: number, width = 0, height = 0) => {
 export const generateResponsiveImages = async (file: formidable.File) => {
   const { width, height } = await getMetadata(file.filepath)
 
-  return Promise.all(
+  const result = Promise.all(
     breakpointKeys.map((key) => {
       const breakpoint = BREAKPOINTS[key]
 
@@ -47,4 +51,8 @@ export const generateResponsiveImages = async (file: formidable.File) => {
       return undefined
     })
   )
+
+  return (await result).reduce((result, currentObj) => {
+    return { ...result, ...currentObj }
+  }, {})
 }
