@@ -51,7 +51,7 @@ const StampCard = ({
   const authUser = session?.user
   const { data, trigger } = useSWRMutation('/api/stamp/like', sendRequest)
   const [isLiked, setIsLiked] = useState(false)
-  const { thumbnailUrl, originalUrl } = images[0]
+  const { thumbnailUrl, originalUrl } = images[0] ?? {}
   const { icon, color } = categoryMap[category ?? 'general']
 
   //TODO: Query user on likedStamps and see if stamp id exists

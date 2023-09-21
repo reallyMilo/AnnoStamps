@@ -1,28 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
+import { stampsMock } from '@/__mocks__/data'
 import HomePage from '@/pages'
 
-const stamps = [
-  {
-    id: 'clll7fyxp002sem82uejwfey5',
-    title: 'Stamp-Agricultural Products-Indigo Dye-0',
-    category: 'production',
-    region: 'old world',
-    imageUrl: '/stamp-highlight.jpg',
-    modded: true,
-    user: {
-      id: '1',
-      username: 'UNIT-tester',
-      usernameURL: 'unit-tester',
-      image: null,
-    },
-    likedBy: [
-      {
-        id: 'clll7fytx0017em827ji8ry6b',
-      },
-    ],
-  },
-]
 describe('Home Page', () => {
   vi.mock('next/router', () => ({
     useRouter() {
@@ -51,9 +31,9 @@ describe('Home Page', () => {
   })
 
   it('displays pagination and stamps on HomePage', () => {
-    render(<HomePage count={22} stamps={stamps} />)
+    render(<HomePage count={22} stamps={stampsMock} />)
 
-    expect(screen.getByText('UNIT-tester')).toBeInTheDocument()
+    expect(screen.getByText('user100')).toBeInTheDocument()
     expect(screen.getByRole('navigation')).toBeInTheDocument()
   })
 })
