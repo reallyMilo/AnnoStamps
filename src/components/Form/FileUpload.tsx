@@ -28,22 +28,30 @@ const FileUpload = () => {
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <table className="min-w-full divide-y divide-gray-300">
               <tbody className="divide-y divide-gray-200">
-                {files.map((file) => (
-                  <tr key={file.url}>
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                      {file.name}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {file.size} kB
-                    </td>
-                    <td
-                      onClick={() => handleRemove(file)}
-                      className="relative cursor-pointer whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
-                    >
-                      Remove<span className="sr-only">, {file.name}</span>
+                {files.length === 0 ? (
+                  <tr>
+                    <td className="whitespace-nowrap bg-gray-200 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                      Add multiple stamps
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  files.map((file) => (
+                    <tr key={file.url}>
+                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                        {file.name}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {file.size} kB
+                      </td>
+                      <td
+                        onClick={() => handleRemove(file)}
+                        className="relative cursor-pointer whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
+                      >
+                        Remove<span className="sr-only">, {file.name}</span>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

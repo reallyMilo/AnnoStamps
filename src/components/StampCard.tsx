@@ -38,12 +38,12 @@ const categoryMap: Record<string, CategoryInfo> = {
 
 const StampCard = ({
   id,
-  imageUrl,
   title,
   category,
   region,
   modded,
   likedBy,
+  images,
   user,
 }: StampWithRelations) => {
   const likes = likedBy ? likedBy.length : 0
@@ -51,7 +51,7 @@ const StampCard = ({
   const authUser = session?.user
   const { data, trigger } = useSWRMutation('/api/stamp/like', sendRequest)
   const [isLiked, setIsLiked] = useState(false)
-
+  const { thumbnailUrl, originalUrl } = images[0]
   const { icon, color } = categoryMap[category ?? 'general']
 
   //TODO: Query user on likedStamps and see if stamp id exists
@@ -73,28 +73,26 @@ const StampCard = ({
       <Link href={`/stamp/${id}`} data-testid="stamp-card-link">
         <div className="relative">
           <div className="aspect-h-9 aspect-w-16 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
-            {imageUrl && (
-              <div>
-                <Image
-                  src={imageUrl}
-                  alt={title ?? 'image alt'}
-                  className="transition hover:opacity-80"
-                  fill
-                  sizes="(max-width: 320px) 700px
+            <div>
+              <Image
+                src={thumbnailUrl ?? originalUrl}
+                alt={title ?? 'image alt'}
+                className="transition hover:opacity-80"
+                fill
+                sizes="(max-width: 320px) 700px
                 (max-width: 768px) 390px,
                 (max-width: 1200px) 290px"
-                  style={{
-                    objectFit: 'cover',
-                  }}
-                />
-                {modded && (
-                  <span className="absolute right-2 top-2 flex flex-row items-center rounded-full bg-[#6DD3C0] px-2 py-1 text-xs text-black">
-                    <WrenchIcon className="mr-1 h-3 w-3" />
-                    mods
-                  </span>
-                )}
-              </div>
-            )}
+                style={{
+                  objectFit: 'cover',
+                }}
+              />
+              {modded && (
+                <span className="absolute right-2 top-2 flex flex-row items-center rounded-full bg-[#6DD3C0] px-2 py-1 text-xs text-black">
+                  <WrenchIcon className="mr-1 h-3 w-3" />
+                  mods
+                </span>
+              )}
+            </div>
           </div>
         </div>
         <div className="flex flex-col flex-nowrap p-4">
