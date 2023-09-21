@@ -10,7 +10,7 @@ export const filterSchema = z
     page: z.string(),
     region: z.string(),
     search: z.string(),
-    sort: z.enum(['newest']),
+    sort: z.string(),
     townhall: z.string(),
     tradeUnion: z.string(),
   })
@@ -24,7 +24,7 @@ type Action =
   | { payload: string; type: 'CAPITAL' }
   | { payload: string; type: 'TOWNHALL' }
   | { payload: string; type: 'TRADEUNION' }
-  | { payload: FilterState['sort']; type: 'SORT' }
+  | { payload: string; type: 'SORT' }
   | { payload: string; type: 'SEARCH' }
 
 const useFilterReducer = () => {
