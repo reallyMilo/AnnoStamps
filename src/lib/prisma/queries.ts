@@ -106,8 +106,8 @@ export type UserWithStamps = Omit<
   Prisma.UserGetPayload<{
     include: typeof userWithStamps
   }>,
-  'listedStamps' | 'images'
-> & { listedStamps: Omit<StampWithRelations, 'user'>[] } & { images: Image[] }
+  'listedStamps'
+> & { listedStamps: Omit<StampWithRelations, 'user'>[] }
 
 const userProfileSchema = z
   .object({
@@ -151,7 +151,10 @@ export const userExtension = Prisma.defineExtension({
  * Image
  * -----------------------------------------------------------------------------------------------*/
 
-type Image = Omit<Prisma.ImageGetPayload<object>, 'createdAt' | 'updatedAt'> & {
+type Image = Omit<
+  Prisma.ImageGetPayload<Prisma.ImageDefaultArgs>,
+  'createdAt' | 'updatedAt'
+> & {
   createdAt: number
   updatedAt: number
 }
