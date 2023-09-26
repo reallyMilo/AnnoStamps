@@ -24,6 +24,38 @@ type FieldInput = Pick<
   'category' | 'region' | 'description' | 'title' | 'modded'
 >
 
+const uploadFiles = (
+  req: NextApiRequest
+): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
+  const options: formidable.Options = {
+    keepExtensions: true,
+    maxFiles: 20,
+    maxFileSize: 1024 * 1024, // 1 MB
+    filter: (part) => {
+      if (part.name === 'images' && part.mimetype) {
+        return part.mimetype.includes('image')
+      }
+      if (part.name === 'stamps') {
+        // http://www.faqs.org/rfcs/rfc1950.html zlib compressed
+        return true
+      }
+      return false
+    },
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    options.uploadDir = 'public/tmp/'
+  }
+  const form = formidable(options)
+
+  return new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if (err) reject(err)
+      resolve({ fields, files })
+    })
+  })
+}
+
 export default async function addStampHandler(
   req: NextApiRequest,
   res: NextApiResponse<Response>
@@ -41,15 +73,8 @@ export default async function addStampHandler(
     })
   }
 
-  const form = formidable({
-    keepExtensions: true,
-    maxFiles: 20,
-    maxFileSize: 1024 * 1024, // 1 MB
-    uploadDir: 'public/tmp/',
-  })
-
   try {
-    const [fields, files] = await form.parse(req)
+    const { fields, files } = await uploadFiles(req)
 
     if (!files.images || !files.stamps) {
       return res.status(404).json({ ok: false, message: 'no images or stamps' })
