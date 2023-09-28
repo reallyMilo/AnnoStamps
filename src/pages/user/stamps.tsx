@@ -1,29 +1,13 @@
 import { PencilSquareIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
-import useSWR from 'swr'
 
 import Grid from '@/components/Layout/Grid'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
-import type { UserWithStamps } from '@/lib/prisma/queries'
-import { displayAuthModal, fetcher } from '@/lib/utils'
-const Stamps = () => {
-  const { data: session, status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      displayAuthModal()
-    },
-  })
-  const {
-    data: userStamps,
-    isLoading,
-    error,
-  } = useSWR<UserWithStamps>(
-    status === 'authenticated' ? '/api/user' : null,
-    fetcher
-  )
+import { useUserStamps } from '@/lib/hooks/useUserStamps'
 
+const Stamps = () => {
+  const { isLoading, error, userStamps } = useUserStamps()
   if (error) {
     return (
       <Container>
@@ -53,7 +37,7 @@ const Stamps = () => {
                 className="mb-1 ml-auto flex rounded-md bg-[#6DD3C0] px-4 py-2 text-sm font-bold text-[#222939] transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-500 focus:ring-opacity-50"
                 href={{
                   pathname: `/user/[stamp]`,
-                  query: { stamp: stamp.id, author: session?.user.id },
+                  query: { stamp: stamp.id },
                 }}
               >
                 <PencilSquareIcon className="mr-2 h-5 w-5" /> Edit Stamp{' '}
