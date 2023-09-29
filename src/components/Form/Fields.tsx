@@ -6,10 +6,13 @@ import { getGoods } from '@/lib/game/1800/helpers'
 import { cn } from '@/lib/utils'
 
 import Select, { selectVariantStyles } from '../ui/Select'
+import { useStampFormContext } from './StampForm'
 
 const items = getGoods()
 
 const Fields = () => {
+  //TODO: intial state/controlled
+  const { stamp } = useStampFormContext()
   const [category, setCategory] = useState('')
 
   return (
@@ -59,7 +62,7 @@ const Fields = () => {
       </div>
       {category === 'production' && (
         <div className="grid grid-cols-3 gap-x-4">
-          <Downshift
+          {/* <Downshift
             itemToString={(item) => (item ? item.value.toLowerCase() : '')}
           >
             {({
@@ -118,7 +121,7 @@ const Fields = () => {
                 </ul>
               </div>
             )}
-          </Downshift>
+          </Downshift> */}
           <div className="flex flex-col space-y-1">
             <label className="text-gray-600" htmlFor="trade-union">
               Trade Union
