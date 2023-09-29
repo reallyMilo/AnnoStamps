@@ -1,6 +1,5 @@
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
-import type { Image } from '@prisma/client'
 import * as React from 'react'
 import useSWRMutation from 'swr/mutation'
 
@@ -127,9 +126,7 @@ const File = () => {
     </div>
   )
 }
-type SubmitProps = {
-  children: React.ReactNode
-}
+
 const Submit = () => {
   const { isMutating } = useStampFormContext()
   return (
@@ -142,9 +139,7 @@ const Submit = () => {
     </button>
   )
 }
-type ImagesProps = {
-  images?: Image[]
-}
+
 const Images = () => {
   const [isError, setIsError] = React.useState(false)
   const { images, setImages } = useStampFormContext()
@@ -254,15 +249,21 @@ const Header = ({ title, subTitle }: HeaderProps) => {
 }
 
 type RootProps = {
+  action: 'update' | 'create'
   children: React.ReactNode
   stamp?: Stamp
 }
 
-const Root = ({ children, stamp }: RootProps) => {
+const Root = ({ children, action, stamp }: RootProps) => {
   const [images, setImages] = React.useState(stamp?.images ?? [])
+
+  // stampFilesUrl will be zip, extract set default so users can add/update/delete files
   const [files, setFiles] = React.useState<any[]>([])
 
-  const { trigger, isMutating } = useSWRMutation('/api/stamp/add', sendRequest)
+  const { trigger, isMutating } = useSWRMutation(
+    '/api/stamp/' + action,
+    sendRequest
+  )
 
   const handleOnSubmit = React.useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -271,6 +272,7 @@ const Root = ({ children, stamp }: RootProps) => {
       const formData = new FormData(e.currentTarget)
 
       const res = await trigger(formData)
+
       return res
     },
     [trigger]
@@ -289,9 +291,17 @@ const Root = ({ children, stamp }: RootProps) => {
     [isMutating, handleOnSubmit, files, setFiles, images, setImages, stamp]
   )
 
+  //TODO: noValidate handle form validation
   return (
     <StampFormContext.Provider value={context}>
-      {children}
+      <form
+        className="mt-8 space-y-8"
+        onSubmit={handleOnSubmit}
+        encType="multipart/form-data"
+        noValidate
+      >
+        {children}
+      </form>
     </StampFormContext.Provider>
   )
 }
