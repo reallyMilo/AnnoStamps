@@ -39,14 +39,14 @@ const EditStampPage = () => {
   return (
     <Container className="md:max-w-5xl">
       {stamp ? (
-        <StampForm.Root stamp={stamp}>
+        <StampForm.Root stamp={stamp} action="update">
           <StampForm.Header
             title="Edit your stamp"
             subTitle="Fill out the form below to update your stamp."
           />
           <StampForm.Images />
           <StampForm.File />
-
+          <StampForm.Fields />
           <StampForm.Submit />
         </StampForm.Root>
       ) : (
