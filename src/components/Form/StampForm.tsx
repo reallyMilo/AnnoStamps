@@ -1,10 +1,10 @@
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
+import JSZip from 'jszip'
 import * as React from 'react'
-import useSWRMutation from 'swr/mutation'
 
 import { UserWithStamps } from '@/lib/prisma/queries'
-import { rawFileToAsset, sendRequest } from '@/lib/utils'
+import { Asset, fileToAsset } from '@/lib/utils'
 
 import Grid from '../Layout/Grid'
 import Fields from './Fields'
@@ -12,17 +12,20 @@ import Fields from './Fields'
 const sizeLimit = 1028 * 1028 //1 mb
 const fileLimit = 10
 
-type RawFile = ReturnType<typeof rawFileToAsset>
 type Stamp = UserWithStamps['listedStamps'][0]
+type Image = Stamp['images'][0]
 
-type StampFormContextValue = {
-  files: any[]
+type StampFormContextValue<
+  T extends Asset | Image = Asset | Image,
+  U extends Asset = Asset
+> = {
+  files: U[]
   handleOnSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<any>
-  images: any[]
-  isMutating: boolean
-  setFiles: React.Dispatch<React.SetStateAction<any[]>>
-  setImages: React.Dispatch<React.SetStateAction<any[]>>
-  stamp: Stamp | undefined
+  images: T[]
+  setFiles: React.Dispatch<React.SetStateAction<U[]>>
+  setImages: React.Dispatch<React.SetStateAction<T[]>>
+  stamp?: Stamp
+  status: 'idle' | 'loading' | 'error' | 'success'
 }
 
 const StampFormContext = React.createContext<StampFormContextValue | null>(null)
@@ -40,11 +43,12 @@ const File = () => {
   const [isError, setIsError] = React.useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target?.files) {
+    const files = e.currentTarget.files
+    if (!files) {
       return
     }
-    const files = e.target.files
-    const assets: RawFile[] = []
+
+    const assets: Asset[] = []
 
     for (let i = 0; i < files.length; i++) {
       const file = files.item(i)
@@ -53,13 +57,13 @@ const File = () => {
         return
       }
 
-      const asset = rawFileToAsset(file)
+      const asset = fileToAsset(file)
       assets.push(asset)
     }
     setFiles((prev) => prev.concat(assets))
   }
 
-  const handleRemove = (fileToRemove: RawFile) => {
+  const handleRemove = (fileToRemove: Asset) => {
     const newFiles = files.filter((file) => file !== fileToRemove)
     setFiles(newFiles)
   }
@@ -128,7 +132,8 @@ const File = () => {
 }
 
 const Submit = () => {
-  const { isMutating } = useStampFormContext()
+  const { status } = useStampFormContext()
+  const isMutating = status === 'loading'
   return (
     <button
       type="submit"
@@ -140,17 +145,20 @@ const Submit = () => {
   )
 }
 
+const isImage = (b: Asset | Image): b is Image => {
+  return (b as Image).id !== undefined
+}
 const Images = () => {
   const [isError, setIsError] = React.useState(false)
   const { images, setImages } = useStampFormContext()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const current = e.currentTarget
-    if (!current.files) {
+    const files = e.currentTarget.files
+    if (!files) {
       return
     }
-    const files = current.files
-    const assets: RawFile[] = []
+
+    const assets: Asset[] = []
 
     for (let i = 0; i < files.length; i++) {
       const file = files.item(i)
@@ -159,13 +167,13 @@ const Images = () => {
         return
       }
 
-      const asset = rawFileToAsset(file)
+      const asset = fileToAsset(file)
       assets.push(asset)
     }
     setImages((prev) => prev.concat(assets))
   }
 
-  const handleRemove = (fileToRemove: RawFile) => {
+  const handleRemove = (fileToRemove: Asset | Image) => {
     const newFiles = images.filter((file) => file !== fileToRemove)
     setImages(newFiles)
   }
@@ -209,26 +217,31 @@ const Images = () => {
         </label>
       ) : (
         <Grid>
-          {images.map((file) => (
-            <div key={file.thumbnailUrl ?? file.url} className="relative">
-              <TrashIcon
-                onClick={() => handleRemove(file)}
-                className="absolute right-0 top-0 z-10 mr-2 mt-2 h-6 w-6 cursor-pointer rounded-md bg-white"
-              />
-              <div className="aspect-h-9 aspect-w-16 overflow-hidden">
-                <img
-                  className="object-cover"
-                  alt="stamp image preview"
-                  src={file.thumbnailUrl ?? file.url}
+          {images.map((image) => {
+            const url = isImage(image)
+              ? image.thumbnailUrl ?? image.originalUrl
+              : image.url
+            return (
+              <div key={url} className="relative">
+                <TrashIcon
+                  onClick={() => handleRemove(image)}
+                  className="absolute right-0 top-0 z-10 mr-2 mt-2 h-6 w-6 cursor-pointer rounded-md bg-white"
                 />
+                <div className="aspect-h-9 aspect-w-16 overflow-hidden">
+                  <img
+                    className="object-cover"
+                    alt="stamp image preview"
+                    src={url}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </Grid>
       )}
       {isError && (
         <span className="text-sm text-red-600">
-          File size exceeds 1MB or is not .png .jpp .jpeg .webp
+          File size exceeds 1MB or is not .png .jpg .jpeg .webp
         </span>
       )}
     </div>
@@ -249,38 +262,60 @@ const Header = ({ title, subTitle }: HeaderProps) => {
 }
 
 type RootProps = {
-  action: 'update' | 'create'
   children: React.ReactNode
   stamp?: Stamp
+  zip?: any
 }
 
-const Root = ({ children, action, stamp }: RootProps) => {
-  const [images, setImages] = React.useState(stamp?.images ?? [])
+const Root = ({ children, stamp, zip }: RootProps) => {
+  const [status, setStatus] =
+    React.useState<StampFormContextValue['status']>('idle')
 
-  // stampFilesUrl will be zip, extract set default so users can add/update/delete files
-  const [files, setFiles] = React.useState<any[]>([])
-
-  const { trigger, isMutating } = useSWRMutation(
-    '/api/stamp/' + action,
-    sendRequest
+  const [images, setImages] = React.useState<StampFormContextValue['images']>(
+    stamp?.images ?? []
   )
+
+  const [files, setFiles] = React.useState<>([])
 
   const handleOnSubmit = React.useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
+      const path = stamp ? 'update' : 'create'
+      setStatus('loading')
 
       const formData = new FormData(e.currentTarget)
 
-      const res = await trigger(formData)
+      const zip = new JSZip()
+      for (const file of files) {
+        zip.file(file.name, file.rawFile)
+      }
+      formData.set('stamps', await zip.generateAsync({ type: 'blob' }))
 
-      return res
+      formData.delete('images')
+
+      for (const image of images) {
+        if (isImage(image)) {
+          continue
+        }
+        formData.append('images', image.rawFile)
+      }
+
+      const res = await fetch('/api/stamp/' + path, {
+        method: 'POST',
+        body: formData,
+      })
+      if (res.ok) {
+        setStatus('success')
+        return
+      }
+      setStatus('error')
     },
-    [trigger]
+    [files, images, stamp]
   )
 
   const context = React.useMemo(
     () => ({
-      isMutating,
+      status,
       handleOnSubmit,
       stamp,
       files,
@@ -288,7 +323,7 @@ const Root = ({ children, action, stamp }: RootProps) => {
       images,
       setImages,
     }),
-    [isMutating, handleOnSubmit, files, setFiles, images, setImages, stamp]
+    [status, handleOnSubmit, files, setFiles, images, setImages, stamp]
   )
 
   //TODO: noValidate handle form validation
