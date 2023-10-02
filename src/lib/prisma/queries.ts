@@ -72,6 +72,10 @@ export const stampExtensions = Prisma.defineExtension({
         args.data = createStampSchema.parse(args.data)
         return query(args)
       },
+      update({ args, query }) {
+        args.data = createStampSchema.parse(args.data)
+        return query(args)
+      },
     },
   },
   result: {
