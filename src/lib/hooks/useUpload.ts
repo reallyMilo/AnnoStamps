@@ -1,23 +1,23 @@
 import { useState } from 'react'
 
-import { rawFileToAsset } from '../utils'
-
-type RawFile = ReturnType<typeof rawFileToAsset>
+import { Asset, fileToAsset } from '../utils'
 
 const sizeLimit = 1028 * 1028 //1 mb
 const fileLimit = 10
 
-const useUpload = (initialState = []) => {
+const useUpload = <T>(
+  files: T[],
+  setFiles: React.Dispatch<React.SetStateAction<T[]>>
+) => {
   const [isError, setIsError] = useState(false)
 
-  const [files, setFiles] = useState<RawFile[]>(initialState)
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target?.files) {
+    const files = e.currentTarget.files
+    if (!files) {
       return
     }
-    const files = e.target.files
-    const assets: RawFile[] = []
+
+    const assets: Asset[] = []
 
     for (let i = 0; i < files.length; i++) {
       const file = files.item(i)
@@ -26,20 +26,19 @@ const useUpload = (initialState = []) => {
         return
       }
 
-      const asset = rawFileToAsset(file)
+      const asset = fileToAsset(file)
       assets.push(asset)
     }
-    setFiles((prev) => prev.concat(assets))
+    setFiles((prev) => prev.concat(assets as T[]))
   }
 
-  const handleRemove = (fileToRemove: RawFile) => {
+  const handleRemove = (fileToRemove: T) => {
     const newFiles = files.filter((file) => file !== fileToRemove)
     setFiles(newFiles)
   }
 
   return {
     isError,
-    files,
     handleChange,
     handleRemove,
   }

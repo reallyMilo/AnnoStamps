@@ -2,11 +2,22 @@ import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 
 import { useUpload } from '@/lib/hooks/useUpload'
+import type { Image } from '@/lib/prisma/queries'
+import { Asset } from '@/lib/utils'
 
 import Grid from '../Layout/Grid'
+import { useStampFormContext } from './StampForm'
+
+const isImage = (b: Asset | Image): b is Image => {
+  return (b as Image).id !== undefined
+}
 
 const ImageUpload = () => {
-  const { isError, files, handleChange, handleRemove } = useUpload()
+  const { images, setImages } = useStampFormContext()
+  const { isError, handleChange, handleRemove } = useUpload<Asset | Image>(
+    images,
+    setImages
+  )
   return (
     <div className="flex flex-col space-y-2">
       <div className="flex flex-row justify-between">
@@ -34,7 +45,7 @@ const ImageUpload = () => {
         hidden
         required
       />
-      {files.length === 0 ? (
+      {images.length === 0 ? (
         <label
           htmlFor="image"
           className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -47,26 +58,31 @@ const ImageUpload = () => {
         </label>
       ) : (
         <Grid>
-          {files.map((file) => (
-            <div key={file.url} className="relative">
-              <TrashIcon
-                onClick={() => handleRemove(file)}
-                className="absolute right-0 top-0 z-10 mr-2 mt-2 h-6 w-6 cursor-pointer rounded-md bg-white"
-              />
-              <div className="aspect-h-9 aspect-w-16 overflow-hidden">
-                <img
-                  className="object-cover"
-                  alt="stamp image preview"
-                  src={file.url}
+          {images.map((image) => {
+            const url = isImage(image)
+              ? image.thumbnailUrl ?? image.originalUrl
+              : image.url
+            return (
+              <div key={url} className="relative">
+                <TrashIcon
+                  onClick={() => handleRemove(image)}
+                  className="absolute right-0 top-0 z-10 mr-2 mt-2 h-6 w-6 cursor-pointer rounded-md bg-white"
                 />
+                <div className="aspect-h-9 aspect-w-16 overflow-hidden">
+                  <img
+                    className="object-cover"
+                    alt="stamp image preview"
+                    src={url}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </Grid>
       )}
       {isError && (
         <span className="text-sm text-red-600">
-          File size exceeds 1MB or is not .png .jpp .jpeg .webp
+          File size exceeds 1MB or is not .png .jpg .jpeg .webp
         </span>
       )}
     </div>

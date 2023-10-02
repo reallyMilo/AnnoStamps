@@ -1,7 +1,19 @@
-import { useUpload } from '@/lib/hooks/useUpload'
+import { JSZipObject } from 'jszip'
 
-const FileUpload = () => {
-  const { isError, files, handleChange, handleRemove } = useUpload()
+import { useUpload } from '@/lib/hooks/useUpload'
+import type { Asset } from '@/lib/utils'
+
+import { useStampFormContext } from './StampForm'
+
+const isJSZip = (b: Asset | JSZipObject): b is JSZipObject => {
+  return (b as JSZipObject).name !== undefined
+}
+const Files = () => {
+  const { files, setFiles } = useStampFormContext()
+  const { isError, handleChange, handleRemove } = useUpload<
+    Asset | JSZipObject
+  >(files, setFiles)
+
   return (
     <div className="space-y-2">
       <div className="flex flex-row justify-between">
@@ -35,13 +47,13 @@ const FileUpload = () => {
                     </td>
                   </tr>
                 ) : (
-                  files.map((file) => (
-                    <tr key={file.url}>
+                  files.map((file, idx) => (
+                    <tr key={`${idx}_${file.name}`}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                         {file.name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {file.size} kB
+                        {!isJSZip(file) && file.size} kB
                       </td>
                       <td
                         onClick={() => handleRemove(file)}
@@ -65,4 +77,4 @@ const FileUpload = () => {
   )
 }
 
-export default FileUpload
+export default Files
