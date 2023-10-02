@@ -155,7 +155,7 @@ export const userExtension = Prisma.defineExtension({
  * Image
  * -----------------------------------------------------------------------------------------------*/
 
-type Image = Omit<
+export type Image = Omit<
   Prisma.ImageGetPayload<Prisma.ImageDefaultArgs>,
   'createdAt' | 'updatedAt'
 > & {
