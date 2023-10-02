@@ -35,9 +35,9 @@ const uploadFiles = (
       if (part.name === 'images' && part.mimetype) {
         return part.mimetype.includes('image')
       }
-      if (part.name === 'stamps') {
+      if (part.name === 'stamps' && part.mimetype) {
         // http://www.faqs.org/rfcs/rfc1950.html zlib compressed
-        return true
+        return part.mimetype.includes('zip')
       }
       return false
     },
@@ -91,7 +91,7 @@ export default async function addStampHandler(
       data: {
         userId: session.user.id,
         game: '1800',
-        stampFileUrl: '/stamp.zip',
+        stampFileUrl: '/tmp/' + files.stamps[0].newFilename,
         images: {
           create: images.map((responsiveUrls) => ({
             ...responsiveUrls,

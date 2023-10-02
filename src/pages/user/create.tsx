@@ -21,7 +21,7 @@ const CreateStampPage = () => {
 
   return (
     <Container className="md:max-w-5xl">
-      <StampForm.Root action="create">
+      <StampForm.Root>
         <StampForm.Header
           title="Upload stamp"
           subTitle="Fill out the form below to upload your stamp."
