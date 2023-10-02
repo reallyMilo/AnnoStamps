@@ -99,8 +99,8 @@ export const buildOrderByClause = (orderBy?: FilterState['sort']) => {
       return { downloads: 'desc' as const }
   }
 }
-
-export const rawFileToAsset = (rawFile: File) => {
+export type Asset = ReturnType<typeof fileToAsset>
+export const fileToAsset = (rawFile: File) => {
   return {
     size: rawFile.size / 1000,
     createdAt: new Date(rawFile.lastModified).toISOString(),

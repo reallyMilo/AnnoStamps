@@ -1,5 +1,7 @@
+import JSZip from 'jszip'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
+import useSWR from 'swr'
 
 import { StampForm } from '@/components/Form/StampForm'
 import Container from '@/components/ui/Container'
@@ -7,6 +9,7 @@ import { useUserStamps } from '@/lib/hooks/useUserStamps'
 import type { UserWithStamps } from '@/lib/prisma/queries'
 
 type Stamp = UserWithStamps['listedStamps'][0]
+
 const EditStampPage = () => {
   const { query } = useRouter()
 
@@ -18,6 +21,16 @@ const EditStampPage = () => {
     }
     return userStamps.listedStamps.find((stamp) => stamp.id === query.stamp)
   }, [userStamps, query.stamp])
+
+  const { data: zipFile } = useSWR(
+    stamp ? '/tmp/' + stamp.stampFileUrl.slice(-25) : null,
+    async (url: string) => {
+      const res = await fetch(url)
+      const blob = await res.blob()
+      const zip = await JSZip.loadAsync(blob)
+      return zip
+    }
+  )
 
   if (error) {
     return (
@@ -39,7 +52,7 @@ const EditStampPage = () => {
   return (
     <Container className="md:max-w-5xl">
       {stamp ? (
-        <StampForm.Root stamp={stamp} action="update">
+        <StampForm.Root stamp={stamp} zip={zipFile}>
           <StampForm.Header
             title="Edit your stamp"
             subTitle="Fill out the form below to update your stamp."
