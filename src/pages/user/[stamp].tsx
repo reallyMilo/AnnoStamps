@@ -31,7 +31,6 @@ const EditStampPage = () => {
       return zip
     }
   )
-  console.log(zipFile)
 
   if (error) {
     return (
@@ -53,7 +52,7 @@ const EditStampPage = () => {
   return (
     <Container className="md:max-w-5xl">
       {stamp ? (
-        <StampForm.Root stamp={stamp}>
+        <StampForm.Root stamp={stamp} zip={zipFile}>
           <StampForm.Header
             title="Edit your stamp"
             subTitle="Fill out the form below to update your stamp."

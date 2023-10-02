@@ -275,7 +275,9 @@ const Root = ({ children, stamp, zip }: RootProps) => {
     stamp?.images ?? []
   )
 
-  const [files, setFiles] = React.useState<>([])
+  const [files, setFiles] = React.useState<any[]>(
+    zip ? Object.values(zip.files) : []
+  )
 
   const handleOnSubmit = React.useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
