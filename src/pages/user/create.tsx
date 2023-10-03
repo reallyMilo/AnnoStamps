@@ -23,6 +23,7 @@ const CreateStampPage = () => {
       zip.file(file.name, file.rawFile)
     }
     formData.set('stamps', await zip.generateAsync({ type: 'blob' }))
+    formData.set('collection', files.length > 1 ? 'true' : 'false')
 
     formData.delete('images')
     for (const image of images as Asset[]) {

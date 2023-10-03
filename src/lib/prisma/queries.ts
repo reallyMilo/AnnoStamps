@@ -30,6 +30,7 @@ const createStampSchema = z
     game: z.enum(['1800']),
     good: z.string().optional(),
     capital: z.string().optional(),
+    collection: z.string().optional(),
     townhall: z.string().optional(),
     tradeUnion: z.string().optional(),
     modded: z.string(),
@@ -47,18 +48,20 @@ const createStampSchema = z
       ),
     }),
   })
-  .transform(({ modded, tradeUnion, townhall, ...schema }) => ({
+  .transform(({ modded, tradeUnion, townhall, collection, ...schema }) => ({
     modded: modded === 'true',
     tradeUnion: tradeUnion === 'true',
     townhall: townhall === 'true',
+    collection: collection === 'true',
     ...schema,
   })) satisfies z.Schema<
   Prisma.StampUncheckedCreateInput,
   z.ZodTypeDef,
   Omit<
     Prisma.StampUncheckedCreateInput,
-    'modded' | 'tradeUnion' | 'townhall'
+    'modded' | 'tradeUnion' | 'townhall' | 'collection'
   > & {
+    collection?: string
     modded: string
     townhall?: string
     tradeUnion?: string

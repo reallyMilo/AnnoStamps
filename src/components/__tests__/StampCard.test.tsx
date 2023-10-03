@@ -6,8 +6,8 @@ import { stampsMock } from '@/__mocks__/data'
 import type { StampWithRelations } from '@/lib/prisma/queries'
 
 import StampCard from '../StampCard'
-
-const stamp = stampsMock[0]
+//TODO:mock data from seed file
+const stamp = { ...stampsMock[0], collection: true }
 
 //FIXME: global use session mock
 const mocks = vi.hoisted(() => {
@@ -54,15 +54,17 @@ describe('Stamp Card', () => {
     )
     expect(screen.getByAltText('Stamp Title')).toBeInTheDocument()
     expect(screen.getByText('mods')).toBeInTheDocument()
+    expect(screen.getByText('Collection')).toBeInTheDocument()
     expect(screen.getByText('production')).toBeInTheDocument()
     expect(screen.getByText('old world')).toBeInTheDocument()
     expect(screen.getByText('stampCreator')).toBeInTheDocument()
     expect(screen.getByText('2')).toBeInTheDocument()
   })
 
-  it('hidden mod badge when modded is false', () => {
-    render({ modded: false })
+  it('hidden mod and collection badge when false', () => {
+    render({ modded: false, collection: false })
 
     expect(screen.queryByText('mods')).not.toBeInTheDocument()
+    expect(screen.queryByText('collection')).not.toBeInTheDocument()
   })
 })

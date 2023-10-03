@@ -36,6 +36,7 @@ model Stamp {
   good         String?
   population   String?
   capital      String?
+  collection   Boolean  @default(false)
   townhall     Boolean  @default(false)
   tradeUnion   Boolean  @default(false)
   createdAt    DateTime @default(now())
