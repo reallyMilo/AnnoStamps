@@ -46,6 +46,7 @@ const EditStampPage = () => {
     formData: FormData
   ) => {
     formData.delete('images')
+
     for (const image of images) {
       if (isAsset(image)) {
         formData.append('images', image.rawFile)
@@ -53,27 +54,21 @@ const EditStampPage = () => {
         // staging + prod we presignedURl and upload directly
         continue
       }
-      if (!stamp?.images.includes(image)) {
-        formData.append('removeImages', image.id)
-      }
+      formData.append('keepImages', image.id)
     }
 
-    const zip = stampZip as JSZip
-    const zipFiles = Object.values(zip.files)
+    const newZip = new JSZip()
     for (const file of files) {
       if (isAsset(file)) {
-        zip.file(file.name, file.rawFile)
-
+        newZip.file(file.name, file.rawFile)
         continue
       }
-
-      if (!zipFiles.includes(file)) {
-        zip.remove(file.name)
-      }
+      newZip.file(file.name, file.async('blob'))
     }
-    formData.set('stamps', await zip.generateAsync({ type: 'blob' }))
+    formData.set('stamps', await newZip.generateAsync({ type: 'blob' }))
+    formData.set('collection', files.length > 1 ? 'true' : 'false')
 
-    const res = await fetch('/api/stamp/update', {
+    const res = await fetch(`/api/stamp/${stamp?.id}`, {
       method: 'PUT',
       body: formData,
     })
