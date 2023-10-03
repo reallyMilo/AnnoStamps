@@ -42,6 +42,7 @@ const StampCard = ({
   category,
   region,
   modded,
+  collection,
   likedBy,
   images,
   user,
@@ -96,12 +97,19 @@ const StampCard = ({
           </div>
         </div>
         <div className="flex flex-col flex-nowrap p-4">
-          <p
-            id="stamp-region"
-            className="pb-2 text-sm capitalize text-[#B11E47]"
-          >
-            {region}
-          </p>
+          <div className="flex justify-between">
+            <span
+              id="stamp-region"
+              className="pb-2 text-sm capitalize text-[#B11E47]"
+            >
+              {region}
+            </span>
+            {collection && (
+              <span className="flex w-fit items-center gap-1 rounded-full bg-[#6DD3C0] py-1 pl-2 pr-3 text-xs capitalize text-black">
+                Collection
+              </span>
+            )}
+          </div>
 
           <h2
             id="stamp-title"

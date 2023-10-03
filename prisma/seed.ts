@@ -52,6 +52,7 @@ async function seed() {
       region: getGoodRegion(good),
       imageUrl: rndImage,
       stampFileUrl: '/stamp.zip',
+      collection: index % 2 ? false : true,
       townhall: index % 2 ? false : true,
       tradeUnion: index % 2 ? true : false,
       goodCategory: goodCategory.toLowerCase(),
