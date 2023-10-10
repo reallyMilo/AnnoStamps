@@ -25,7 +25,7 @@ export default async function presignedHandler(req: Req, res: NextApiResponse) {
     Key: fileName,
     ContentType: fileType,
   })
-  //@ts-expect-error client type error
+
   const url = await getSignedUrl(client, command, { expiresIn: 3600 })
 
   return res.status(200).json({ url })
