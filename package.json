@@ -25,8 +25,8 @@
     "*": "prettier --ignore-unknown --write"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.413.0",
-    "@aws-sdk/s3-request-presigner": "^3.421.0",
+    "@aws-sdk/client-s3": "^3.427.0",
+    "@aws-sdk/s3-request-presigner": "^3.427.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@next-auth/prisma-adapter": "^1.0.7",

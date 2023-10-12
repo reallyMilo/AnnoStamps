@@ -4,7 +4,9 @@ import { useSession } from 'next-auth/react'
 import type { StampFormContextValue } from '@/components/Form/StampForm'
 import { StampForm } from '@/components/Form/StampForm'
 import Container from '@/components/ui/Container'
+import { upload } from '@/lib/upload'
 import { Asset, displayAuthModal } from '@/lib/utils'
+
 const CreateStampPage = () => {
   const { status } = useSession({
     required: true,
@@ -18,23 +20,31 @@ const CreateStampPage = () => {
     files: StampFormContextValue['files'],
     formData: FormData
   ) => {
+    formData.delete('images')
+    formData.delete('stamps')
+
     const zip = new JSZip()
     for (const file of files as Asset[]) {
       zip.file(file.name, file.rawFile)
     }
-    formData.set('stamps', await zip.generateAsync({ type: 'blob' }))
+    const zipped = await zip.generateAsync({ type: 'blob' })
+
+    const zipPath = await upload(zipped, 'zip')
+
+    formData.set('filePath', zipPath ?? '')
     formData.set('collection', files.length > 1 ? 'true' : 'false')
 
-    formData.delete('images')
     for (const image of images as Asset[]) {
-      formData.append('images', image.rawFile)
-      // on local we send in request body
-      // staging + prod get presignedURl and upload directly
+      const imagePath = await upload(image.rawFile, image.mime, image.name)
+      formData.append('imagePaths', imagePath ?? '')
     }
 
     const res = await fetch('/api/stamp/create', {
       method: 'POST',
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(Object.fromEntries(formData)),
     })
 
     return res
