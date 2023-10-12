@@ -87,12 +87,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
 
   //TODO: noValidate handle form validation
   return (
-    <form
-      className="mt-8 space-y-8"
-      onSubmit={handleOnSubmit}
-      encType="multipart/form-data"
-      noValidate
-    >
+    <form className="mt-8 space-y-8" onSubmit={handleOnSubmit} noValidate>
       {children}
     </form>
   )
