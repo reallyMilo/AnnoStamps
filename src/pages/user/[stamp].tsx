@@ -30,16 +30,14 @@ const EditStampPage = () => {
   }, [userStamps, query.stamp])
 
   const { data: stampZip, isLoading: isStampLoading } = useSWR(
-    stamp ? '/tmp/' + stamp.stampFileUrl.slice(-25) : null,
+    stamp ? stamp.stampFileUrl : null,
     async (url: string) => {
       const res = await fetch(url)
       const blob = await res.blob()
       const zip = await JSZip.loadAsync(blob)
-
       return zip
     }
   )
-
   const handleOnSubmit = async (
     images: StampFormContextValue['images'],
     files: StampFormContextValue['files'],
