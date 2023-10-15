@@ -1,4 +1,3 @@
-import formidable from 'formidable'
 import sharp from 'sharp'
 
 const BREAKPOINTS = {
@@ -17,14 +16,15 @@ const getMetadata = async (filepath: string) => {
 }
 
 const generateImage = async (
-  file: formidable.File,
+  filepath: string,
+  filename: string,
   breakpoint: number,
   key: Breakpoint
 ) => {
   const directory = 'public'
-  const outputPath = `/tmp/${key}_${file.newFilename.split('.').shift()}.webp`
+  const outputPath = `/tmp/${key}_${filename}`
 
-  await sharp(file.filepath)
+  await sharp(filepath)
     .resize(breakpoint, breakpoint, {
       fit: 'inside',
     })
@@ -38,15 +38,18 @@ const breakpointSmaller = (breakpoint: number, width = 0, height = 0) => {
   return breakpoint < width || breakpoint < height
 }
 
-export const generateResponsiveImages = async (file: formidable.File) => {
-  const { width, height } = await getMetadata(file.filepath)
+export const generateResponsiveImages = async (
+  filepath: string,
+  filename: string
+) => {
+  const { width, height } = await getMetadata(filepath)
 
   const result = Promise.all(
     breakpointKeys.map((key) => {
       const breakpoint = BREAKPOINTS[key]
 
       if (breakpointSmaller(breakpoint, width, height)) {
-        return generateImage(file, breakpoint, key)
+        return generateImage(filepath, filename, breakpoint, key)
       }
       return undefined
     })

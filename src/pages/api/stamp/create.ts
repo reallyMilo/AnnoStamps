@@ -36,7 +36,7 @@ export default async function createStampHandler(
   try {
     const { filePath, imagePaths, ...fields }: FieldInput = req.body
 
-    const images =
+    const images: Prisma.ImageCreateWithoutStampInput[] =
       typeof imagePaths === 'string'
         ? [{ originalUrl: imagePaths }]
         : imagePaths.map((image) => ({
