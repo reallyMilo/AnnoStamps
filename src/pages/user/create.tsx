@@ -1,3 +1,4 @@
+import { createId } from '@paralleldrive/cuid2'
 import JSZip from 'jszip'
 import { useSession } from 'next-auth/react'
 
@@ -20,6 +21,8 @@ const CreateStampPage = () => {
     files: StampFormContextValue['files'],
     formData: FormData
   ) => {
+    const stampId = createId()
+    formData.set('stampId', stampId)
     formData.delete('images')
     formData.delete('stamps')
 
@@ -29,13 +32,18 @@ const CreateStampPage = () => {
     }
     const zipped = await zip.generateAsync({ type: 'blob' })
 
-    const zipPath = await upload(zipped, 'zip')
+    const zipPath = await upload(stampId, zipped, 'zip')
 
     formData.set('filePath', zipPath ?? '')
     formData.set('collection', files.length > 1 ? 'true' : 'false')
 
     for (const image of images as Asset[]) {
-      const imagePath = await upload(image.rawFile, image.mime, image.name)
+      const imagePath = await upload(
+        stampId,
+        image.rawFile,
+        image.mime,
+        image.name
+      )
       formData.append('imagePaths', imagePath ?? '')
     }
 

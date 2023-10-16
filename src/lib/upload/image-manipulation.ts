@@ -21,17 +21,17 @@ const generateImage = async (
   breakpoint: number,
   key: Breakpoint
 ) => {
-  const directory = 'public'
-  const outputPath = `/tmp/${key}_${filename}`
+  const folderPath = filepath.slice(0, -filename.length)
+  const outputPath = `${folderPath}${key}_${filename}`
 
   await sharp(filepath)
     .resize(breakpoint, breakpoint, {
       fit: 'inside',
     })
-    .toFile(directory + outputPath)
+    .toFile(outputPath)
 
   const appendUrl = key + 'Url'
-  return { [appendUrl]: outputPath }
+  return { [appendUrl]: outputPath.slice(0, 5) }
 }
 
 const breakpointSmaller = (breakpoint: number, width = 0, height = 0) => {
