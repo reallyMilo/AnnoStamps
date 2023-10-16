@@ -14,7 +14,7 @@ type Response = {
 type FieldInput = Pick<
   Prisma.StampUncheckedCreateInput,
   'category' | 'region' | 'description' | 'title' | 'modded' | 'collection'
-> & { filePath: string; imagePaths: string[] | string }
+> & { filePath: string; imagePaths: string[] | string; stampId: string }
 
 export default async function createStampHandler(
   req: NextApiRequest,
@@ -34,7 +34,7 @@ export default async function createStampHandler(
   }
 
   try {
-    const { filePath, imagePaths, ...fields }: FieldInput = req.body
+    const { stampId, filePath, imagePaths, ...fields }: FieldInput = req.body
 
     const images: Prisma.ImageCreateWithoutStampInput[] =
       typeof imagePaths === 'string'
@@ -45,6 +45,7 @@ export default async function createStampHandler(
 
     const createStamp = await prisma.stamp.create({
       data: {
+        id: stampId,
         userId: session.user.id,
         game: '1800',
         stampFileUrl: filePath,

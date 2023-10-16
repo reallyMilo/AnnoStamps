@@ -1,4 +1,5 @@
 export const upload = async (
+  stampId: string,
   body: Blob | File,
   mime: string,
   name?: string
@@ -18,7 +19,7 @@ export const upload = async (
 
     const fileResult = (await reader(body as File)) as FileReader
     const localRes = await fetch(
-      `/api/upload/local?filename=${filename}&fileType=${fileType}`,
+      `/api/upload/local?stampId=${stampId}&filename=${filename}&fileType=${fileType}`,
       {
         method: 'POST',
         body: fileResult.result,
@@ -29,11 +30,11 @@ export const upload = async (
       return '/tmp/' + filename
     }
 
-    return ''
+    return undefined
   }
 
   const presigned = await fetch(
-    `/api/upload/presigned?filename=${filename}&fileType=${fileType}`
+    `/api/upload/presigned?stampId=${stampId}&filename=${filename}&fileType=${fileType}`
   )
   const { url, path }: { path: string; url: string } = await presigned.json()
 
