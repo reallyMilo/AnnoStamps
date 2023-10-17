@@ -23,7 +23,7 @@ model Image {
 }
 
 model Stamp {
-  id           String   @id @default(cuid())
+  id           String   @id
   userId       String
   game         String
   title        String
