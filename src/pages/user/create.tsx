@@ -37,7 +37,7 @@ const CreateStampPage = () => {
     formData.set('stampFileUrl', zipPath ?? '')
     formData.set('collection', files.length > 1 ? 'true' : 'false')
 
-    const imagePaths = []
+    const addImages = []
     for (const image of images as Asset[]) {
       const imagePath = await upload(
         stampId,
@@ -45,7 +45,7 @@ const CreateStampPage = () => {
         image.mime,
         image.name
       )
-      imagePaths.push(imagePath)
+      addImages.push({ originalUrl: imagePath })
     }
 
     const res = await fetch('/api/stamp/create', {
@@ -55,7 +55,7 @@ const CreateStampPage = () => {
       },
       body: JSON.stringify({
         ...Object.fromEntries(formData),
-        images: imagePaths,
+        addImages,
       }),
     })
 

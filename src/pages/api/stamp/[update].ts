@@ -1,52 +1,82 @@
+import { Prisma } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 
+import { Image } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
 import { authOptions } from '../auth/[...nextauth]'
 
-type Req = {
+interface Req extends NextApiRequest {
+  body: Pick<
+    Prisma.StampUncheckedCreateInput,
+    | 'category'
+    | 'region'
+    | 'description'
+    | 'title'
+    | 'modded'
+    | 'collection'
+    | 'stampFileUrl'
+  > & { addImages: Pick<Image, 'originalUrl'>[]; deleteImages: string[] }
   query: {
     update: string
   }
-} & NextApiRequest
+}
 
 export default async function updateStampHandler(
   req: Req,
   res: NextApiResponse
 ) {
   const { update: stampId } = req.query
+  const { addImages, deleteImages, ...fields } = req.body
+
   const session = await getServerSession(req, res, authOptions)
 
   if (!session?.user.id) {
-    return res.status(401).json({ message: 'Unauthorized.' })
+    return res.status(401).json({ ok: false, message: 'Unauthorized.' })
   }
 
   if (req.method !== 'PUT') {
-    return res
-      .status(405)
-      .json({ message: `HTTP method ${req.method} is not supported.` })
+    return res.status(405).json({
+      ok: false,
+      message: `HTTP method ${req.method} is not supported.`,
+    })
   }
 
-  const getStamp = await prisma.stamp.findUnique({
-    where: {
-      id: stampId,
-    },
-  })
-  if (getStamp?.userId !== session.user.id) {
-    return res.status(401).json({ message: 'Not stamp author' })
+  if (deleteImages.length > 0) {
+    try {
+      await prisma.image.deleteMany({
+        where: {
+          id: {
+            in: deleteImages,
+          },
+        },
+      })
+    } catch (e) {
+      return res
+        .status(500)
+        .json({ ok: false, message: 'error deleting images' })
+    }
   }
 
   try {
     await prisma.stamp.update({
       where: {
-        id: getStamp.id,
+        id: stampId,
       },
-      data: {},
+      data: {
+        id: stampId,
+        userId: session.user.id,
+        game: '1800',
+        images: {
+          create: addImages.map((image) => image),
+        },
+        ...fields,
+      },
     })
 
-    return res.status(200).json({ message: 'successfully updated' })
+    return res.status(200).json({ ok: true, message: 'successfully updated' })
   } catch (e) {
-    return res.status(500).json({ message: 'something went wrong' })
+    return res.status(500).json({ ok: false, message: e })
   }
 }
