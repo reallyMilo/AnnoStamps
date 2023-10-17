@@ -22,6 +22,7 @@ export type StampWithRelations = Omit<
 
 const createStampSchema = z
   .object({
+    id: z.string(),
     title: z.string(),
     description: z.string(),
     userId: z.string(),

@@ -1,3 +1,4 @@
+import { createId } from '@paralleldrive/cuid2'
 import { PrismaClient, User } from '@prisma/client'
 
 import { GOOD_CATEGORIES_1800 } from '../src/lib/game/1800/data'
@@ -44,6 +45,7 @@ async function seed() {
     const rndImage =
       folderImagePaths[Math.floor(Math.random() * folderImagePaths.length)]
     return {
+      id: createId(),
       userId: users[index % users.length].id,
       game: '1800',
       title: `Stamp-${good}-${index}`,

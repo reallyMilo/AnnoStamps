@@ -45,11 +45,11 @@ const EditStampPage = () => {
     formData: FormData
   ) => {
     if (!stamp) {
-      return
+      throw new Error('no stamp')
     }
     const ownership = await fetch(`/api/stamp/ownership?id=${stamp.id}`)
     if (!ownership.ok) {
-      return
+      return ownership
     }
     const { id }: StampWithRelations = await ownership.json()
     formData.delete('images')
@@ -70,7 +70,12 @@ const EditStampPage = () => {
     formData.set('stampFileUrl', zipPath ?? '')
     formData.set('collection', files.length > 1 ? 'true' : 'false')
 
+    //TODO: image drag / re-ordering
+    // since we assign first image as thumbnail order is important
+    // without ability to drag/move around the order of images, users will
+    // delete existing, upload new and re-upload previous
     const imagePaths = []
+    const currentImages = stamp.images
     for (const image of images) {
       if (isAsset(image)) {
         const imagePath = await upload(
@@ -79,10 +84,11 @@ const EditStampPage = () => {
           image.mime,
           image.name
         )
-        imagePaths.push(imagePath)
+        imagePaths.push({ originalUrl: imagePath })
         continue
       }
-      imagePaths.push(image)
+      const index = currentImages.findIndex((oldImg) => oldImg.id === image.id)
+      currentImages.splice(index, 1)
     }
 
     const res = await fetch(`/api/stamp/${id}`, {
@@ -92,7 +98,8 @@ const EditStampPage = () => {
       },
       body: JSON.stringify({
         ...Object.fromEntries(formData),
-        images: imagePaths,
+        addImages: imagePaths,
+        deleteImages: currentImages.map((image) => image.id),
       }),
     })
 
