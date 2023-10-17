@@ -41,7 +41,8 @@ export default async function createStampHandler(
 
   try {
     const { images, stampId, stampFileUrl, ...fields }: FieldInput = req.body
-
+    console.log(fields)
+    console.log(stampId)
     const createStamp = await prisma.stamp.create({
       data: {
         id: stampId,
@@ -56,6 +57,7 @@ export default async function createStampHandler(
         ...fields,
       },
     })
+    console.log(createStamp)
     return res
       .status(200)
       .json({ ok: true, message: 'stamps uploaded to public/tmp' })

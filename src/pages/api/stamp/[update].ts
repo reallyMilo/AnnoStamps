@@ -28,22 +28,14 @@ export default async function updateStampHandler(
       .json({ message: `HTTP method ${req.method} is not supported.` })
   }
 
-  const getStamp = await prisma.stamp.findUnique({
-    where: {
-      id: stampId,
-    },
-  })
-  if (getStamp?.userId !== session.user.id) {
-    return res.status(401).json({ message: 'Not stamp author' })
-  }
-
+  console.log(req.body)
   try {
-    await prisma.stamp.update({
-      where: {
-        id: getStamp.id,
-      },
-      data: {},
-    })
+    // await prisma.stamp.update({
+    //   where: {
+    //     id: getStamp.id,
+    //   },
+    //   data: {},
+    // })
 
     return res.status(200).json({ message: 'successfully updated' })
   } catch (e) {

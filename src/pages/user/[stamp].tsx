@@ -7,8 +7,9 @@ import type { StampFormContextValue } from '@/components/Form/StampForm'
 import { StampForm } from '@/components/Form/StampForm'
 import Container from '@/components/ui/Container'
 import { useUserStamps } from '@/lib/hooks/useUserStamps'
-import type { UserWithStamps } from '@/lib/prisma/queries'
+import type { StampWithRelations, UserWithStamps } from '@/lib/prisma/queries'
 import type { Image } from '@/lib/prisma/queries'
+import { upload } from '@/lib/upload'
 import { Asset } from '@/lib/utils'
 
 type Stamp = UserWithStamps['listedStamps'][0]
@@ -43,32 +44,56 @@ const EditStampPage = () => {
     files: StampFormContextValue['files'],
     formData: FormData
   ) => {
-    formData.delete('images')
-
-    for (const image of images) {
-      if (isAsset(image)) {
-        formData.append('images', image.rawFile)
-        // on local we send in request body
-        // staging + prod we presignedURl and upload directly
-        continue
-      }
-      formData.append('keepImages', image.id)
+    if (!stamp) {
+      return
     }
+    const ownership = await fetch(`/api/stamp/ownership?id=${stamp.id}`)
+    if (!ownership.ok) {
+      return
+    }
+    const { id }: StampWithRelations = await ownership.json()
+    formData.delete('images')
+    formData.delete('stamps')
 
-    const newZip = new JSZip()
+    const zip = new JSZip()
     for (const file of files) {
       if (isAsset(file)) {
-        newZip.file(file.name, file.rawFile)
+        zip.file(file.name, file.rawFile)
         continue
       }
-      newZip.file(file.name, file.async('blob'))
+      zip.file(file.name, file.async('blob'))
     }
-    formData.set('stamps', await newZip.generateAsync({ type: 'blob' }))
+    const zipped = await zip.generateAsync({ type: 'blob' })
+
+    const zipPath = await upload(id, zipped, 'zip')
+
+    formData.set('stampFileUrl', zipPath ?? '')
     formData.set('collection', files.length > 1 ? 'true' : 'false')
 
-    const res = await fetch(`/api/stamp/${stamp?.id}`, {
+    const imagePaths = []
+    for (const image of images) {
+      if (isAsset(image)) {
+        const imagePath = await upload(
+          id,
+          image.rawFile,
+          image.mime,
+          image.name
+        )
+        imagePaths.push(imagePath)
+        continue
+      }
+      imagePaths.push(image)
+    }
+
+    const res = await fetch(`/api/stamp/${id}`, {
       method: 'PUT',
-      body: formData,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...Object.fromEntries(formData),
+        images: imagePaths,
+      }),
     })
 
     return res
