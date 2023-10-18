@@ -22,9 +22,9 @@ export default async function presignedHandler(req: Req, res: NextApiResponse) {
 
   const type = fileType === 'zip' ? 'stamps' : 'images'
 
-  const path = `${AWS_S3_BUCKET_FOLDER}/${
+  const path = `${AWS_S3_BUCKET_FOLDER}/${type}/${
     session.user.id
-  }/${stampId}/${type}/${createId()}`
+  }/${stampId}/${createId()}`
 
   const client = new S3Client({ region: AWS_S3_REGION })
   const command = new PutObjectCommand({
