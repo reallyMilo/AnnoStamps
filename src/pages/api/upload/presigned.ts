@@ -31,7 +31,7 @@ export default async function presignedHandler(req: Req, res: NextApiResponse) {
     Bucket: AWS_S3_BUCKET,
     Key: path,
     ContentType: fileType,
-    Metadata: { filename, type },
+    Metadata: { filename },
   })
 
   const url = await getSignedUrl(client, command, { expiresIn: 3600 })
