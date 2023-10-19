@@ -81,7 +81,7 @@ const EditStampPage = () => {
         const imagePath = await upload(
           id,
           image.rawFile,
-          image.mime,
+          image.rawFile.type,
           image.name
         )
         imagePaths.push({ originalUrl: imagePath })

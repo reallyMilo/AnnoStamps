@@ -24,7 +24,7 @@ export default async function presignedHandler(req: Req, res: NextApiResponse) {
 
   const path = `${AWS_S3_BUCKET_FOLDER}/${type}/${
     session.user.id
-  }/${stampId}/${createId()}`
+  }/${stampId}/${createId()}.${fileType}`
 
   const client = new S3Client({ region: AWS_S3_REGION })
   const command = new PutObjectCommand({

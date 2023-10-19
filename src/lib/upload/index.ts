@@ -1,11 +1,11 @@
 export const upload = async (
   stampId: string,
   body: Blob | File,
-  mime: string,
+  type: string,
   name?: string
 ) => {
   const filename = name && encodeURIComponent(name)
-  const fileType = encodeURIComponent(mime)
+  const fileType = encodeURIComponent(type)
 
   //TODO: Localstack or aws sandbox can remove this
   if (process.env.NODE_ENV === 'development') {

@@ -42,7 +42,7 @@ const CreateStampPage = () => {
       const imagePath = await upload(
         stampId,
         image.rawFile,
-        image.mime,
+        image.rawFile.type,
         image.name
       )
       addImages.push({ originalUrl: imagePath })
