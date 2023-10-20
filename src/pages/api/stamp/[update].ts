@@ -2,7 +2,6 @@ import { Prisma } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 
-import { Image } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
 import { authOptions } from '../auth/[...nextauth]'
@@ -17,7 +16,7 @@ interface Req extends NextApiRequest {
     | 'modded'
     | 'collection'
     | 'stampFileUrl'
-  > & { addImages: Pick<Image, 'originalUrl'>[]; deleteImages: string[] }
+  > & { addImages: string[]; deleteImages: string[] }
   query: {
     update: string
   }
@@ -69,7 +68,15 @@ export default async function updateStampHandler(
         userId: session.user.id,
         game: '1800',
         images: {
-          create: addImages.map((image) => image),
+          create: addImages.map((image) => {
+            const start = image.lastIndexOf('/')
+            const end = image.lastIndexOf('.')
+            const id = image.slice(start + 1, end)
+            return {
+              id,
+              originalUrl: image,
+            }
+          }),
         },
         ...fields,
       },
