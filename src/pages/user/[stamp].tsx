@@ -84,7 +84,7 @@ const EditStampPage = () => {
           image.rawFile.type,
           image.name
         )
-        imagePaths.push({ originalUrl: imagePath })
+        imagePaths.push(imagePath)
         continue
       }
       const index = currentImages.findIndex((oldImg) => oldImg.id === image.id)

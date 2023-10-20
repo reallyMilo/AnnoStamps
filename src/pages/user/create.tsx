@@ -45,7 +45,7 @@ const CreateStampPage = () => {
         image.rawFile.type,
         image.name
       )
-      addImages.push({ originalUrl: imagePath })
+      addImages.push(imagePath)
     }
 
     const res = await fetch('/api/stamp/create', {

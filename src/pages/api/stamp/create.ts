@@ -2,7 +2,6 @@ import { Prisma } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 
-import { Image } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
 import { authOptions } from '../auth/[...nextauth]'
@@ -21,7 +20,7 @@ type FieldInput = Pick<
   | 'modded'
   | 'collection'
   | 'stampFileUrl'
-> & { addImages: Pick<Image, 'originalUrl'>[]; stampId: string }
+> & { addImages: string[]; stampId: string }
 
 export default async function createStampHandler(
   req: NextApiRequest,
@@ -50,7 +49,15 @@ export default async function createStampHandler(
         game: '1800',
         stampFileUrl,
         images: {
-          create: addImages.map((image) => image),
+          create: addImages.map((image) => {
+            const start = image.lastIndexOf('/')
+            const end = image.lastIndexOf('.')
+            const id = image.slice(start + 1, end)
+            return {
+              id,
+              originalUrl: image,
+            }
+          }),
         },
         ...fields,
       },
