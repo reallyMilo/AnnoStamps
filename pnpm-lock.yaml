@@ -38,9 +38,6 @@ dependencies:
   downshift:
     specifier: 8.1.0
     version: 8.1.0(react@18.2.0)
-  formidable:
-    specifier: ^3.5.1
-    version: 3.5.1
   fs-extra:
     specifier: ^11.1.1
     version: 11.1.1
@@ -100,9 +97,6 @@ devDependencies:
   '@testing-library/user-event':
     specifier: ^14.5.0
     version: 14.5.0(@testing-library/dom@9.3.3)
-  '@types/formidable':
-    specifier: ^3.4.3
-    version: 3.4.3
   '@types/fs-extra':
     specifier: ^11.0.2
     version: 11.0.2
@@ -2804,15 +2798,6 @@ packages:
       }
     dev: true
 
-  /@types/formidable@3.4.3:
-    resolution:
-      {
-        integrity: sha512-FRB5KNIYgCLDvw/ho7daBVqdQRG9Ptk1tMlZ2B5ibAjxDfXFkO6fJaP+ojmS8ljqmnC5If9u24WdWcVPaN3thg==,
-      }
-    dependencies:
-      '@types/node': 20.6.0
-    dev: true
-
   /@types/fs-extra@11.0.2:
     resolution:
       {
@@ -3500,13 +3485,6 @@ packages:
       is-array-buffer: 3.0.2
       is-shared-array-buffer: 1.0.2
     dev: true
-
-  /asap@2.0.6:
-    resolution:
-      {
-        integrity: sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==,
-      }
-    dev: false
 
   /asn1@0.2.6:
     resolution:
@@ -4419,16 +4397,6 @@ packages:
         integrity: sha512-UX6sGumvvqSaXgdKGUsgZWqcUyIXZ/vZTrlRT/iobiKhGL0zL4d3osHj3uqllWJK+i+sixDS/3COVEOFbupFyw==,
       }
     engines: { node: '>=8' }
-    dev: false
-
-  /dezalgo@1.0.4:
-    resolution:
-      {
-        integrity: sha512-rXSP0bf+5n0Qonsb+SVVfNfIsimO4HEtmnIpPHY8Q1UCzKlQrDMfdobr8nJOOsRgWCyMRqeSBQzmWUMq7zvVig==,
-      }
-    dependencies:
-      asap: 2.0.6
-      wrappy: 1.0.2
     dev: false
 
   /didyoumean@1.2.2:
@@ -5449,17 +5417,6 @@ packages:
       mime-types: 2.1.35
     dev: true
 
-  /formidable@3.5.1:
-    resolution:
-      {
-        integrity: sha512-WJWKelbRHN41m5dumb0/k8TeAx7Id/y3a+Z7QfhxP/htI9Js5zYaEDtG8uMgG0vM0lOlqnmjE99/kfpOYi/0Og==,
-      }
-    dependencies:
-      dezalgo: 1.0.4
-      hexoid: 1.0.0
-      once: 1.4.0
-    dev: false
-
   /fraction.js@4.3.6:
     resolution:
       {
@@ -5868,14 +5825,6 @@ packages:
     engines: { node: '>= 0.4.0' }
     dependencies:
       function-bind: 1.1.1
-
-  /hexoid@1.0.0:
-    resolution:
-      {
-        integrity: sha512-QFLV0taWQOZtvIRIAdBChesmogZrtuXvVWsFHZTk2SU+anspqZ2vMnoLg7IE1+Uk16N19APic1BuF8bC8c2m5g==,
-      }
-    engines: { node: '>=8' }
-    dev: false
 
   /html-encoding-sniffer@3.0.0:
     resolution:
