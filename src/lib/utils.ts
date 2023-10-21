@@ -1,6 +1,5 @@
 import { Prisma } from '@prisma/client'
 import { ClassValue, clsx } from 'clsx'
-import formidable from 'formidable'
 import { twMerge } from 'tailwind-merge'
 
 import { FilterState } from './hooks/useFilter'
@@ -110,15 +109,4 @@ export const fileToAsset = (rawFile: File) => {
     mime: rawFile.type,
     rawFile,
   }
-}
-
-export const firstValues = (fields: formidable.Fields) => {
-  return Object.fromEntries(
-    Object.entries(fields).map(([key, value]) => {
-      if (!value) {
-        return [key, undefined]
-      }
-      return [key, value[0]]
-    })
-  )
 }
