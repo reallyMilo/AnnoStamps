@@ -1,7 +1,10 @@
-import { JSZipObject } from 'jszip'
+import { createId } from '@paralleldrive/cuid2'
+import JSZip, { JSZipObject } from 'jszip'
+import { useRouter } from 'next/router'
 import * as React from 'react'
 
 import { UserWithStamps } from '@/lib/prisma/queries'
+import { upload } from '@/lib/upload'
 import { Asset } from '@/lib/utils'
 
 import Fields from './Fields'
@@ -20,7 +23,7 @@ export type StampFormContextValue = {
     React.SetStateAction<StampFormContextValue['status']>
   >
   stamp?: Stamp
-  status: 'idle' | 'loading' | 'error' | 'success'
+  status: 'idle' | 'loading' | 'error' | 'success' | 'zip' | 'images'
 }
 
 const StampFormContext = React.createContext<StampFormContextValue | null>(null)
@@ -33,7 +36,7 @@ const useStampFormContext = () => {
   return context
 }
 
-const Submit = () => {
+const Submit = ({ children }: { children: React.ReactNode }) => {
   const { status } = useStampFormContext()
   const isMutating = status === 'loading'
   return (
@@ -42,7 +45,7 @@ const Submit = () => {
       className="ml-auto rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
       disabled={isMutating}
     >
-      {isMutating ? 'Loading...' : 'Submit Stamp'}
+      {isMutating ? 'Loading...' : children}
     </button>
   )
 }
@@ -63,26 +66,79 @@ const Header = ({ title, subTitle }: HeaderProps) => {
 export type FormProps = {
   children: React.ReactNode
   onSubmit: (
-    images: StampFormContextValue['images'],
-    files: StampFormContextValue['files'],
-    formData: FormData
+    formData: FormData,
+    addImages: string[],
+    removeImages?: string[]
   ) => Promise<Response>
 }
+
+const isAsset = (b: Asset | JSZipObject | Image): b is Asset => {
+  return (b as Asset).rawFile !== undefined
+}
+
 const Form = ({ children, onSubmit }: FormProps) => {
-  const { images, files, setStatus } = useStampFormContext()
+  const { stamp, images, files, setStatus } = useStampFormContext()
+  const router = useRouter()
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setStatus('loading')
 
     const formData = new FormData(e.currentTarget)
+    formData.delete('images')
+    formData.delete('stamps')
+    const stampId = stamp?.id ?? createId()
+    formData.set('stampId', stampId)
 
-    const res = await onSubmit(images, files, formData)
-    if (res.ok) {
-      setStatus('success')
+    const addImages = []
+    const currentImages = stamp?.images ?? []
+    for (const image of images) {
+      if (isAsset(image)) {
+        const imagePath = await upload(
+          stampId,
+          image.rawFile,
+          image.rawFile.type,
+          image.name
+        )
+        if (!imagePath) {
+          setStatus('images')
+          return
+        }
+        addImages.push(imagePath)
+        continue
+      }
+      const index = currentImages.findIndex((oldImg) => oldImg.id === image.id)
+      currentImages.splice(index, 1)
+    }
+
+    const zip = new JSZip()
+    for (const file of files) {
+      if (isAsset(file)) {
+        zip.file(file.name, file.rawFile)
+        continue
+      }
+      zip.file(file.name, file.async('blob'))
+    }
+    const zipped = await zip.generateAsync({ type: 'blob' })
+
+    const zipPath = await upload(stampId, zipped, 'zip')
+    if (!zipPath) {
+      setStatus('zip')
       return
     }
-    setStatus('error')
+    formData.set('stampFileUrl', zipPath)
+    formData.set('collection', files.length > 1 ? 'true' : 'false')
+
+    const removeImageIds = currentImages.map((image) => image.id)
+
+    try {
+      await onSubmit(formData, addImages, removeImageIds)
+      setStatus('success')
+      router.push('/user/stamps')
+      return
+    } catch (e) {
+      setStatus('error')
+    }
   }
 
   //TODO: noValidate handle form validation

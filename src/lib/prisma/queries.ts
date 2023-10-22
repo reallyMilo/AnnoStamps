@@ -40,6 +40,7 @@ const createStampSchema = z
     images: z.object({
       create: z.array(
         z.object({
+          id: z.string(),
           originalUrl: z.string(),
           thumbnailUrl: z.string().optional(),
           smallUrl: z.string().optional(),
