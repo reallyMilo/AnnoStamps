@@ -62,7 +62,7 @@ const Fields = () => {
       </div>
       {category === 'production' && (
         <div className="grid grid-cols-3 gap-x-4">
-          {/* <Downshift
+          <Downshift
             itemToString={(item) => (item ? item.value.toLowerCase() : '')}
           >
             {({
@@ -121,7 +121,7 @@ const Fields = () => {
                 </ul>
               </div>
             )}
-          </Downshift> */}
+          </Downshift>
           <div className="flex flex-col space-y-1">
             <label className="text-gray-600" htmlFor="trade-union">
               Trade Union
