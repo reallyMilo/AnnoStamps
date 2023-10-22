@@ -1,12 +1,8 @@
-import { createId } from '@paralleldrive/cuid2'
-import JSZip from 'jszip'
 import { useSession } from 'next-auth/react'
 
-import type { StampFormContextValue } from '@/components/Form/StampForm'
 import { StampForm } from '@/components/Form/StampForm'
 import Container from '@/components/ui/Container'
-import { upload } from '@/lib/upload'
-import { Asset, displayAuthModal } from '@/lib/utils'
+import { displayAuthModal } from '@/lib/utils'
 
 const CreateStampPage = () => {
   const { status } = useSession({
@@ -16,38 +12,7 @@ const CreateStampPage = () => {
     },
   })
 
-  const handleOnSubmit = async (
-    images: StampFormContextValue['images'],
-    files: StampFormContextValue['files'],
-    formData: FormData
-  ) => {
-    const stampId = createId()
-    formData.set('stampId', stampId)
-    formData.delete('images')
-    formData.delete('stamps')
-
-    const zip = new JSZip()
-    for (const file of files as Asset[]) {
-      zip.file(file.name, file.rawFile)
-    }
-    const zipped = await zip.generateAsync({ type: 'blob' })
-
-    const zipPath = await upload(stampId, zipped, 'zip')
-
-    formData.set('stampFileUrl', zipPath ?? '')
-    formData.set('collection', files.length > 1 ? 'true' : 'false')
-
-    const addImages = []
-    for (const image of images as Asset[]) {
-      const imagePath = await upload(
-        stampId,
-        image.rawFile,
-        image.rawFile.type,
-        image.name
-      )
-      addImages.push(imagePath)
-    }
-
+  const handleOnSubmit = async (formData: FormData, addImages: string[]) => {
     const res = await fetch('/api/stamp/create', {
       method: 'POST',
       headers: {
@@ -80,7 +45,7 @@ const CreateStampPage = () => {
           <StampForm.Images />
           <StampForm.Files />
           <StampForm.Fields />
-          <StampForm.Submit />
+          <StampForm.Submit>Submit Stamp</StampForm.Submit>
         </StampForm.Form>
       </StampForm.Root>
     </Container>

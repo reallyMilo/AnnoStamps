@@ -9,7 +9,7 @@ const isJSZip = (b: Asset | JSZipObject): b is JSZipObject => {
   return (b as JSZipObject).name !== undefined
 }
 const Files = () => {
-  const { files, setFiles } = useStampFormContext()
+  const { status, files, setFiles } = useStampFormContext()
   const { isError, handleChange, handleRemove } = useUpload<
     Asset | JSZipObject
   >(files, setFiles)
@@ -30,7 +30,7 @@ const Files = () => {
             onChange={handleChange}
             multiple
             hidden
-            required
+            formNoValidate
           />
         </label>
       </div>
@@ -69,7 +69,9 @@ const Files = () => {
           </div>
         </div>
       </div>
-
+      {status === 'zip' && (
+        <span className="text-sm text-red-600">Please add stamps</span>
+      )}
       {isError && (
         <span className="text-sm text-red-600">File exceeds 1 MB</span>
       )}

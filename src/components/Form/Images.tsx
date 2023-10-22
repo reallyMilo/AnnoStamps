@@ -13,7 +13,7 @@ const isImage = (b: Asset | Image): b is Image => {
 }
 
 const ImageUpload = () => {
-  const { images, setImages } = useStampFormContext()
+  const { status, images, setImages } = useStampFormContext()
   const { isError, handleChange, handleRemove } = useUpload<Asset | Image>(
     images,
     setImages
@@ -43,7 +43,7 @@ const ImageUpload = () => {
         onChange={handleChange}
         multiple
         hidden
-        required
+        formNoValidate
       />
       {images.length === 0 ? (
         <label
@@ -79,6 +79,9 @@ const ImageUpload = () => {
             )
           })}
         </Grid>
+      )}
+      {status === 'images' && (
+        <span className="text-sm text-red-600">Please add images</span>
       )}
       {isError && (
         <span className="text-sm text-red-600">
