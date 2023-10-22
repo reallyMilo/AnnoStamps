@@ -23,7 +23,7 @@ export type StampFormContextValue = {
     React.SetStateAction<StampFormContextValue['status']>
   >
   stamp?: Stamp
-  status: 'idle' | 'loading' | 'error' | 'success' | 'zip' | 'images'
+  status: 'idle' | 'loading' | 'error' | 'success' | 'images' | 'zip'
 }
 
 const StampFormContext = React.createContext<StampFormContextValue | null>(null)
@@ -82,6 +82,15 @@ const Form = ({ children, onSubmit }: FormProps) => {
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (images.length === 0) {
+      setStatus('images')
+      return
+    }
+    if (files.length === 0) {
+      setStatus('zip')
+      return
+    }
+
     setStatus('loading')
 
     const formData = new FormData(e.currentTarget)
@@ -101,7 +110,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
           image.name
         )
         if (!imagePath) {
-          setStatus('images')
+          setStatus('error')
           return
         }
         addImages.push(imagePath)
@@ -123,7 +132,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
 
     const zipPath = await upload(stampId, zipped, 'zip')
     if (!zipPath) {
-      setStatus('zip')
+      setStatus('error')
       return
     }
     formData.set('stampFileUrl', zipPath)
@@ -141,9 +150,8 @@ const Form = ({ children, onSubmit }: FormProps) => {
     }
   }
 
-  //TODO: noValidate handle form validation
   return (
-    <form className="mt-8 space-y-8" onSubmit={handleOnSubmit} noValidate>
+    <form className="mt-8 space-y-8" onSubmit={handleOnSubmit}>
       {children}
     </form>
   )
