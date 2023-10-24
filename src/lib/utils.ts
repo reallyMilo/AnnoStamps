@@ -51,8 +51,6 @@ export const triggerDownload = (data: Blob, filename: string) => {
   tempLink.href = blobUrl
   tempLink.setAttribute('download', filename)
 
-  tempLink.type = 'application/octet-stream'
-
   document.body.appendChild(tempLink)
   tempLink.click()
 

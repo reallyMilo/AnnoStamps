@@ -6,13 +6,12 @@ import { getGoods } from '@/lib/game/1800/helpers'
 import { cn } from '@/lib/utils'
 
 import Select, { selectVariantStyles } from '../ui/Select'
-import { useStampFormContext } from './StampForm'
 
 const items = getGoods()
 
 const Fields = () => {
   //TODO: intial state/controlled
-  const { stamp } = useStampFormContext()
+
   const [category, setCategory] = useState('')
 
   return (
