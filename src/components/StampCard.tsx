@@ -1,10 +1,5 @@
 import {
-  CogIcon,
-  GlobeEuropeAfricaIcon,
   HandThumbUpIcon,
-  HomeIcon,
-  SparklesIcon,
-  TagIcon,
   UserCircleIcon,
   WrenchIcon,
 } from '@heroicons/react/24/solid'
@@ -17,24 +12,7 @@ import useSWRMutation from 'swr/mutation'
 import type { StampWithRelations } from '@/lib/prisma/queries'
 import { cn, displayAuthModal, sendRequest } from '@/lib/utils'
 
-type CategoryInfo = {
-  color: string
-  icon: React.ReactNode
-}
-
-const categoryMap: Record<string, CategoryInfo> = {
-  housing: { icon: <HomeIcon className="h-5 w-5" />, color: 'bg-[#8B6834]' },
-  production: { icon: <CogIcon className="h-5 w-5" />, color: 'bg-[#18806D]' },
-  cosmetic: {
-    icon: <SparklesIcon className="h-5 w-5" />,
-    color: 'bg-[#C34E27]',
-  },
-  island: {
-    icon: <GlobeEuropeAfricaIcon className="h-5 w-5" />,
-    color: 'bg-[#2B4162]',
-  },
-  general: { icon: <TagIcon className="h-5 w-5" />, color: 'bg-[#D72455]' },
-}
+import Category from './Category'
 
 const StampCard = ({
   id,
@@ -53,7 +31,6 @@ const StampCard = ({
   const { data, trigger } = useSWRMutation('/api/stamp/like', sendRequest)
   const [isLiked, setIsLiked] = useState(false)
   const { thumbnailUrl, originalUrl } = images[0] ?? {}
-  const { icon, color } = categoryMap[category ?? 'general']
 
   //TODO: Query user on likedStamps and see if stamp id exists
   const userLikedPost = () => {
@@ -130,14 +107,8 @@ const StampCard = ({
       )}
       <div className="flex flex-col flex-nowrap self-end p-4">
         <ol className="relative flex flex-row justify-between pt-4 text-gray-500">
-          <li
-            className={cn(
-              'flex w-fit items-center gap-1 rounded-full py-1 pl-2 pr-3 text-xs capitalize text-white',
-              color
-            )}
-          >
-            {icon}
-            {category}
+          <li>
+            <Category category={category} />
           </li>
 
           <li
