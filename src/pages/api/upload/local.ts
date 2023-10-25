@@ -4,14 +4,46 @@ import { createId } from '@paralleldrive/cuid2'
 import { outputFileSync } from 'fs-extra'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
-
-import { generateResponsiveImages } from '@/lib/upload/image-manipulation'
+import sharp from 'sharp'
 
 import { authOptions } from '../auth/[...nextauth]'
+
+const BREAKPOINTS = {
+  large: 1024,
+  medium: 768,
+  small: 640,
+  thumbnail: 250,
+} as const
+
+type Breakpoint = keyof typeof BREAKPOINTS
+
+const breakpointKeys = Object.keys(BREAKPOINTS) as Breakpoint[]
+
+const generateResponsiveImages = async (filepath: string, filename: string) => {
+  const { width, height } = await sharp(filepath).metadata()
+  if (!width || !height) {
+    return
+  }
+  for (const key of breakpointKeys) {
+    const breakpoint = BREAKPOINTS[key]
+
+    if (breakpoint < width || breakpoint < height) {
+      const folderPath = filepath.slice(0, -filename.length)
+      const outputPath = `${folderPath}${key}_${filename}`
+
+      await sharp(filepath)
+        .resize(breakpoint, null, {
+          fit: 'inside',
+        })
+        .toFile(outputPath)
+    }
+  }
+}
 
 interface Req extends NextApiRequest {
   query: { fileType: string; filename: string; stampId: string }
 }
+
 export default async function localHandler(req: Req, res: NextApiResponse) {
   if (process.env.NODE_ENV !== 'development') {
     return res.status(500).json('only on local')
