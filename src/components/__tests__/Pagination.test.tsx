@@ -1,17 +1,7 @@
-import { render, screen } from '@testing-library/react'
-
+import { render, screen } from '../../__tests__/test-utils'
 import { Pagination } from '../Pagination'
+
 describe('Pagination', () => {
-  vi.mock('next/router', () => ({
-    useRouter() {
-      return {
-        route: '/',
-        pathname: '',
-        query: {},
-        asPath: '',
-      }
-    },
-  }))
   it('renders with provided props', () => {
     render(<Pagination count={3000} />)
 

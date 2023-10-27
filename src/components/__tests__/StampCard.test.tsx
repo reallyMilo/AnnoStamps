@@ -1,42 +1,19 @@
-import { render as renderRTL, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useSession } from 'next-auth/react'
 
-import { stampsMock } from '@/__mocks__/data'
-import type { StampWithRelations } from '@/lib/prisma/queries'
+import { stampMock } from '@/__mocks__/data'
+import { StampWithRelations } from '@/lib/prisma/queries'
 
+import { render as renderRTL, screen } from '../../__tests__/test-utils'
 import StampCard from '../StampCard'
-//TODO:mock data from seed file
-const stamp = { ...stampsMock[0], collection: true }
 
-//FIXME: global use session mock
-const mocks = vi.hoisted(() => {
-  return {
-    useSession: vi.fn(),
-  }
-})
+const stamp = stampMock[0]
 
-vi.mock('next-auth/react', () => {
-  return {
-    SessionProvider: ({ children }: { children: React.ReactNode }) => (
-      <div>{children}</div>
-    ),
-    useSession: mocks.useSession,
-  }
-})
-
-vi.mocked(useSession).mockReturnValue({
-  update: vi.fn(),
-  data: null,
-  status: 'unauthenticated',
+const render = (props?: Partial<StampWithRelations>) => ({
+  ...renderRTL(<StampCard {...stamp} {...props} />),
+  user: userEvent.setup(),
 })
 
 describe('Stamp Card', () => {
-  const render = (props?: Partial<StampWithRelations>) => ({
-    ...renderRTL(<StampCard {...stamp} {...props} />),
-    user: userEvent.setup(),
-  })
-
   it('renders with all provided props', () => {
     render({
       id: 'urlID',
