@@ -1,9 +1,8 @@
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 
-import { useUpload } from '@/lib/hooks/useUpload'
-import type { Image } from '@/lib/prisma/queries'
-import { Asset } from '@/lib/utils'
+import { Asset, useUpload } from '@/lib/hooks/useUpload'
+import { Image } from '@/lib/prisma/queries'
 
 import Grid from '../Layout/Grid'
 import { useStampFormContext } from './StampForm'

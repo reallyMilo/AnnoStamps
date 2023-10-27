@@ -7,10 +7,7 @@ import { Pagination } from '@/components/Pagination'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import { filterSchema } from '@/lib/hooks/useFilter'
-import {
-  type StampWithRelations,
-  stampWithRelations,
-} from '@/lib/prisma/queries'
+import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 import {
   buildFilterWhereClause,
@@ -41,7 +38,7 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
         where: buildFilterWhereClause(filter),
       }),
       prisma.stamp.findMany({
-        include: stampWithRelations,
+        include: stampIncludeStatement,
         where: buildFilterWhereClause(filter),
         orderBy: buildOrderByClause(sort),
         skip: (pageNumber - 1) * stampsPerPage(),
