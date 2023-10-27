@@ -78,6 +78,15 @@ const Carousel = ({ images }: Pick<StampWithRelations, 'images'>) => {
 }
 const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
   const router = useRouter()
+
+  if (router.isFallback) {
+    return (
+      <Container>
+        <p>Loading...</p>
+      </Container>
+    )
+  }
+
   const {
     title,
     category,
@@ -104,14 +113,6 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
 
     triggerDownload(file, formattedTitle)
     await fetch(`/api/stamp/download/${stamp.id}`)
-  }
-
-  if (router.isFallback) {
-    return (
-      <Container>
-        <p>Loading...</p>
-      </Container>
-    )
   }
 
   return (
