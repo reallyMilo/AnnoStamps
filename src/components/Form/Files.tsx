@@ -1,7 +1,6 @@
 import { JSZipObject } from 'jszip'
 
-import { useUpload } from '@/lib/hooks/useUpload'
-import type { Asset } from '@/lib/utils'
+import { Asset, useUpload } from '@/lib/hooks/useUpload'
 
 import { useStampFormContext } from './StampForm'
 

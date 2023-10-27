@@ -3,9 +3,9 @@ import JSZip, { JSZipObject } from 'jszip'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 
+import { Asset } from '@/lib/hooks/useUpload'
 import { UserWithStamps } from '@/lib/prisma/queries'
 import { upload } from '@/lib/upload'
-import { Asset } from '@/lib/utils'
 
 import Fields from './Fields'
 import Files from './Files'

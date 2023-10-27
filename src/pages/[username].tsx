@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import Grid from '@/components/Layout/Grid'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
-import { UserWithStamps, userWithStamps } from '@/lib/prisma/queries'
+import { userIncludeStatement, UserWithStamps } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
 type UsernamePageProps = {
@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps<
       throw new Error('invalid input')
     }
     const user = await prisma.user.findUnique({
-      include: userWithStamps,
+      include: userIncludeStatement,
       where: { usernameURL: query.username },
     })
 

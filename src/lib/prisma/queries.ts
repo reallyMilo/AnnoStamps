@@ -4,7 +4,10 @@ import z from 'zod'
 
 import { Category, Region1800 } from '@/lib/game/1800/enum'
 
-export const stampWithRelations = {
+//Exception: you cannot mutate include or select because that would change the
+//expected output type and break type safety. Will have to keep exporting this
+//unfortunately or every statement call would have to be cast
+export const stampIncludeStatement = {
   user: true,
   likedBy: true,
   images: true,
@@ -12,7 +15,7 @@ export const stampWithRelations = {
 
 export type StampWithRelations = Omit<
   Prisma.StampGetPayload<{
-    include: typeof stampWithRelations
+    include: typeof stampIncludeStatement
   }>,
   'createdAt' | 'updatedAt' | 'images'
 > & {
@@ -102,7 +105,7 @@ export const stampExtensions = Prisma.defineExtension({
 /* -------------------------------------------------------------------------------------------------
  * User
  * -----------------------------------------------------------------------------------------------*/
-export const userWithStamps = {
+export const userIncludeStatement = {
   listedStamps: {
     include: {
       likedBy: true,
@@ -113,7 +116,7 @@ export const userWithStamps = {
 
 export type UserWithStamps = Omit<
   Prisma.UserGetPayload<{
-    include: typeof userWithStamps
+    include: typeof userIncludeStatement
   }>,
   'listedStamps'
 > & { listedStamps: Omit<StampWithRelations, 'user'>[] }

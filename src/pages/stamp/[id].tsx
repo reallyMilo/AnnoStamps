@@ -5,12 +5,8 @@ import { useRouter } from 'next/router'
 
 import Category from '@/components/Category'
 import Container from '@/components/ui/Container'
-import {
-  type StampWithRelations,
-  stampWithRelations,
-} from '@/lib/prisma/queries'
+import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
-import { triggerDownload } from '@/lib/utils'
 
 export async function getStaticPaths() {
   const stamps = await prisma.stamp.findMany({
@@ -34,7 +30,7 @@ type Params = {
 
 export async function getStaticProps({ params }: Params) {
   const stamp = await prisma.stamp.findUnique({
-    include: stampWithRelations,
+    include: stampIncludeStatement,
     where: { id: params.id },
   })
 
@@ -43,6 +39,25 @@ export async function getStaticProps({ params }: Params) {
       stamp,
     },
   }
+}
+
+const triggerDownload = (data: Blob, filename: string) => {
+  const blobUrl =
+    window.URL && window.URL.createObjectURL
+      ? window.URL.createObjectURL(data)
+      : window.webkitURL.createObjectURL(data)
+  const tempLink = document.createElement('a')
+  tempLink.style.display = 'none'
+  tempLink.href = blobUrl
+  tempLink.setAttribute('download', filename)
+
+  document.body.appendChild(tempLink)
+  tempLink.click()
+
+  setTimeout(() => {
+    document.body.removeChild(tempLink)
+    window.URL.revokeObjectURL(blobUrl)
+  }, 200)
 }
 
 //TODO: carousel for images

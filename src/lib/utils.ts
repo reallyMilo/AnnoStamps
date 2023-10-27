@@ -41,25 +41,6 @@ export async function sendRequest(
   }).then((res) => res.json())
 }
 
-export const triggerDownload = (data: Blob, filename: string) => {
-  const blobUrl =
-    window.URL && window.URL.createObjectURL
-      ? window.URL.createObjectURL(data)
-      : window.webkitURL.createObjectURL(data)
-  const tempLink = document.createElement('a')
-  tempLink.style.display = 'none'
-  tempLink.href = blobUrl
-  tempLink.setAttribute('download', filename)
-
-  document.body.appendChild(tempLink)
-  tempLink.click()
-
-  setTimeout(() => {
-    document.body.removeChild(tempLink)
-    window.URL.revokeObjectURL(blobUrl)
-  }, 200)
-}
-
 export const displayAuthModal = () => {
   window.dispatchEvent(new Event('open-auth-modal'))
 }
@@ -94,17 +75,5 @@ export const buildOrderByClause = (orderBy?: FilterState['sort']) => {
       return { createdAt: 'desc' as const }
     default:
       return { downloads: 'desc' as const }
-  }
-}
-export type Asset = ReturnType<typeof fileToAsset>
-export const fileToAsset = (rawFile: File) => {
-  return {
-    size: rawFile.size / 1000,
-    createdAt: new Date(rawFile.lastModified).toISOString(),
-    name: rawFile.name,
-    url: URL.createObjectURL(rawFile),
-    ext: rawFile.name.split('.').pop(),
-    mime: rawFile.type,
-    rawFile,
   }
 }

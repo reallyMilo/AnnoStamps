@@ -2,7 +2,7 @@ import { User } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 
-import { userWithStamps } from '@/lib/prisma/queries'
+import { userIncludeStatement } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
 import { authOptions } from './auth/[...nextauth]'
@@ -25,7 +25,7 @@ export default async function usernameHandler(
   if (req.method === 'GET') {
     try {
       const user = await prisma.user.findUnique({
-        include: userWithStamps,
+        include: userIncludeStatement,
         where: {
           id: session.user.id,
         },
