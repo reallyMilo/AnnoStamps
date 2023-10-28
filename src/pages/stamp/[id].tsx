@@ -1,7 +1,11 @@
+import 'swiper/css'
+import 'swiper/css/navigation'
+
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { Navigation } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 import Category from '@/components/Category'
 import Container from '@/components/ui/Container'
@@ -60,20 +64,22 @@ const triggerDownload = (data: Blob, filename: string) => {
   }, 200)
 }
 
-//TODO: carousel for images
 const Carousel = ({ images }: Pick<StampWithRelations, 'images'>) => {
   if (images.length === 0) {
     return null
   }
   return (
-    <Image
-      src={images[0].largeUrl ?? images[0].originalUrl}
-      alt="Preview of stamp"
-      fill
-      style={{
-        objectFit: 'cover',
-      }}
-    />
+    <Swiper navigation={true} modules={[Navigation]} className="">
+      {images.map((image) => (
+        <SwiperSlide key={image.id}>
+          <img
+            src={image.largeUrl ?? image.originalUrl}
+            alt="anno stamp image"
+            className="object-cover object-center"
+          />
+        </SwiperSlide>
+      ))}
+    </Swiper>
   )
 }
 const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
@@ -88,6 +94,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
   }
 
   const {
+    id,
     title,
     category,
     region,
@@ -108,16 +115,16 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
     }
     const file = await res.blob()
 
-    const fileNameWithRegion = stamp.title + '_' + stamp.region
+    const fileNameWithRegion = title + '_' + region
     const formattedTitle = fileNameWithRegion.replace(/[^\w\s.]/g, '_')
 
     triggerDownload(file, formattedTitle)
-    await fetch(`/api/stamp/download/${stamp.id}`)
+    await fetch(`/api/stamp/download/${id}`)
   }
 
   return (
-    <Container className="h-screen space-y-6">
-      <div className="relative h-1/2 overflow-hidden rounded-lg shadow-md">
+    <Container className="max-w-5xl space-y-6">
+      <div className="overflow-hidden rounded-lg shadow-md">
         <Carousel images={images} />
       </div>
 

@@ -63,9 +63,9 @@ export const seedImages = () => {
       id,
       originalUrl: `https://placehold.co/2000x2000.png?text=Original${image}\\n${id}`,
       thumbnailUrl: `https://placehold.co/250x250.png?text=Thumbnail${image}\\n${id}`,
-      smallUrl: `https://placehold.co/500x500.png?text=Small${image}\\n${id}`,
-      mediumUrl: `https://placehold.co/750x750.png?text=Medium${image}\\n${id}`,
-      largeUrl: `https://placehold.co/1000x1000.png?text=Large${image}\\n${id}`,
+      smallUrl: `https://placehold.co/500x281.png?text=Small${image}\\n${id}`,
+      mediumUrl: `https://placehold.co/750x421.png?text=Medium${image}\\n${id}`,
+      largeUrl: `https://placehold.co/1024x576.png?text=Large${image}\\n${id}`,
     }
   })
 }
