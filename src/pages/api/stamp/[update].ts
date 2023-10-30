@@ -64,9 +64,6 @@ export default async function updateStampHandler(
         id: stampId,
       },
       data: {
-        id: stampId,
-        userId: session.user.id,
-        game: '1800',
         images: {
           create: addImages.map((image) => {
             const start = image.lastIndexOf('/')

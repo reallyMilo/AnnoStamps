@@ -23,36 +23,39 @@ export type StampWithRelations = Omit<
   updatedAt: number
 } & { images: Image[] }
 
-const createStampSchema = z
-  .object({
-    id: z.string(),
-    title: z.string(),
-    description: z.string(),
-    userId: z.string(),
-    category: z.nativeEnum(Category),
-    region: z.nativeEnum(Region1800),
-    game: z.enum(['1800']),
-    good: z.string().optional(),
-    capital: z.string().optional(),
-    collection: z.string().optional(),
-    townhall: z.string().optional(),
-    tradeUnion: z.string().optional(),
-    modded: z.string(),
-    imageUrl: z.string().optional(),
-    stampFileUrl: z.string(),
-    images: z.object({
-      create: z.array(
-        z.object({
-          id: z.string(),
-          originalUrl: z.string(),
-          thumbnailUrl: z.string().optional(),
-          smallUrl: z.string().optional(),
-          mediumUrl: z.string().optional(),
-          largeUrl: z.string().optional(),
-        })
-      ),
-    }),
-  })
+const stampSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  userId: z.string(),
+  category: z.nativeEnum(Category),
+  region: z.nativeEnum(Region1800),
+  game: z.enum(['1800']),
+  good: z.string().optional(),
+  capital: z.string().optional(),
+  collection: z.string().optional(),
+  downloads: z.object({ increment: z.number() }).optional(),
+  townhall: z.string().optional(),
+  tradeUnion: z.string().optional(),
+  modded: z.string(),
+  imageUrl: z.string().optional(),
+  stampFileUrl: z.string(),
+  images: z.object({
+    create: z.array(
+      z.object({
+        id: z.string(),
+        originalUrl: z.string(),
+        thumbnailUrl: z.string().optional(),
+        smallUrl: z.string().optional(),
+        mediumUrl: z.string().optional(),
+        largeUrl: z.string().optional(),
+      })
+    ),
+  }),
+})
+
+const createStampSchema = stampSchema
+  .omit({ downloads: true })
   .transform(({ modded, tradeUnion, townhall, collection, ...schema }) => ({
     modded: modded === 'true',
     tradeUnion: tradeUnion === 'true',
@@ -73,6 +76,28 @@ const createStampSchema = z
   }
 >
 
+const updateStampSchema = stampSchema
+  .partial()
+  .transform(({ modded, tradeUnion, townhall, collection, ...schema }) => ({
+    modded: modded === 'true',
+    tradeUnion: tradeUnion === 'true',
+    townhall: townhall === 'true',
+    collection: collection === 'true',
+    ...schema,
+  })) satisfies z.Schema<
+  Prisma.StampUncheckedUpdateInput,
+  z.ZodTypeDef,
+  Omit<
+    Prisma.StampUncheckedUpdateInput,
+    'modded' | 'tradeUnion' | 'townhall' | 'collection'
+  > & {
+    collection?: string
+    modded?: string
+    townhall?: string
+    tradeUnion?: string
+  }
+>
+
 export const stampExtensions = Prisma.defineExtension({
   query: {
     stamp: {
@@ -81,7 +106,7 @@ export const stampExtensions = Prisma.defineExtension({
         return query(args)
       },
       update({ args, query }) {
-        args.data = createStampSchema.parse(args.data)
+        args.data = updateStampSchema.parse(args.data)
         return query(args)
       },
     },
