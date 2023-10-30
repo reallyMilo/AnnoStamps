@@ -45,25 +45,6 @@ export async function getStaticProps({ params }: Params) {
   }
 }
 
-const triggerDownload = (data: Blob, filename: string) => {
-  const blobUrl =
-    window.URL && window.URL.createObjectURL
-      ? window.URL.createObjectURL(data)
-      : window.webkitURL.createObjectURL(data)
-  const tempLink = document.createElement('a')
-  tempLink.style.display = 'none'
-  tempLink.href = blobUrl
-  tempLink.setAttribute('download', filename)
-
-  document.body.appendChild(tempLink)
-  tempLink.click()
-
-  setTimeout(() => {
-    document.body.removeChild(tempLink)
-    window.URL.revokeObjectURL(blobUrl)
-  }, 200)
-}
-
 const Carousel = ({ images }: Pick<StampWithRelations, 'images'>) => {
   if (images.length === 0) {
     return null
@@ -107,20 +88,6 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
     user,
     collection,
   } = stamp
-
-  const handleDownload = async () => {
-    const res = await fetch(stampFileUrl)
-    if (!res.ok) {
-      return
-    }
-    const file = await res.blob()
-
-    const fileNameWithRegion = title + '_' + region
-    const formattedTitle = fileNameWithRegion.replace(/[^\w\s.]/g, '_')
-
-    triggerDownload(file, formattedTitle)
-    await fetch(`/api/stamp/download/${id}`)
-  }
 
   return (
     <Container className="max-w-5xl space-y-6">
@@ -167,14 +134,15 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
         </div>
 
         {collection && <div className="self-center">Collection</div>}
-        <button
+        <a
+          href={stampFileUrl}
           data-testid="stamp-download"
           className="inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
-          onClick={handleDownload}
+          onClick={() => fetch(`/api/stamp/download/${id}`)}
         >
           <ArrowDownTrayIcon className="mr-2 inline-block h-6 w-6" />
           Download
-        </button>
+        </a>
       </div>
 
       <p className="col-span-3 break-words text-lg">{description}</p>
