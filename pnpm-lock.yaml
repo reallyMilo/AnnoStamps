@@ -35,9 +35,6 @@ dependencies:
   date-fns:
     specifier: ^2.30.0
     version: 2.30.0
-  downshift:
-    specifier: 8.1.0
-    version: 8.1.0(react@18.2.0)
   fs-extra:
     specifier: ^11.1.1
     version: 11.1.1
@@ -4148,13 +4145,6 @@ packages:
     engines: { node: '>=4.0.0' }
     dev: true
 
-  /compute-scroll-into-view@2.0.4:
-    resolution:
-      {
-        integrity: sha512-y/ZA3BGnxoM/QHHQ2Uy49CLtnWPbt4tTPpEEZiEmmiWBFKjej7nEyH8Ryz54jH0MLXflUYA3Er2zUxPSJu5R+g==,
-      }
-    dev: false
-
   /concat-map@0.0.1:
     resolution:
       {
@@ -4549,22 +4539,6 @@ packages:
     dependencies:
       webidl-conversions: 7.0.0
     dev: true
-
-  /downshift@8.1.0(react@18.2.0):
-    resolution:
-      {
-        integrity: sha512-e9EBBLZvB2G73qT272x3hExttGCH1q1usbjirm+1aMcFXuzSWhgBdbnAHPlFI2rEq61cU/kDrEIMrY+ozMhvmg==,
-      }
-    peerDependencies:
-      react: '>=16.12.0'
-    dependencies:
-      '@babel/runtime': 7.22.15
-      compute-scroll-into-view: 2.0.4
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-is: 17.0.2
-      tslib: 2.6.2
-    dev: false
 
   /eastasianwidth@0.2.0:
     resolution:
@@ -7958,6 +7932,7 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
+    dev: true
 
   /proxy-from-env@1.0.0:
     resolution:
@@ -8067,12 +8042,14 @@ packages:
       {
         integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==,
       }
+    dev: true
 
   /react-is@17.0.2:
     resolution:
       {
         integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==,
       }
+    dev: true
 
   /react-is@18.2.0:
     resolution:
