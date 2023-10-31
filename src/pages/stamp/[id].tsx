@@ -8,6 +8,7 @@ import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import Category from '@/components/Category'
+import LikeButton from '@/components/LikeButton'
 import Container from '@/components/ui/Container'
 import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
@@ -87,6 +88,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
     images,
     user,
     collection,
+    likedBy,
   } = stamp
 
   return (
@@ -123,6 +125,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
             </span>
           )}
 
+          {collection && <div className="self-center">Collection</div>}
           {/* TODO: views */}
           {/* <div className="self-center">
             <EyeIcon className="mr-2 inline-block h-5 w-5" /> Views
@@ -131,9 +134,9 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
             <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5" />
             {downloads}
           </div>
+          <LikeButton id={id} likedBy={likedBy} />
         </div>
 
-        {collection && <div className="self-center">Collection</div>}
         <a
           href={stampFileUrl}
           data-testid="stamp-download"
