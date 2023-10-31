@@ -13,15 +13,17 @@ export const stampIncludeStatement = {
   images: true,
 } satisfies Prisma.StampInclude
 
-export type StampWithRelations = Omit<
-  Prisma.StampGetPayload<{
-    include: typeof stampIncludeStatement
-  }>,
-  'createdAt' | 'updatedAt' | 'images'
-> & {
+export interface StampWithRelations
+  extends Omit<
+    Prisma.StampGetPayload<{
+      include: typeof stampIncludeStatement
+    }>,
+    'createdAt' | 'updatedAt' | 'images'
+  > {
   createdAt: number
+  images: Image[]
   updatedAt: number
-} & { images: Image[] }
+}
 
 const stampSchema = z.object({
   id: z.string(),
@@ -52,10 +54,17 @@ const stampSchema = z.object({
       })
     ),
   }),
+  likedBy: z
+    .object({
+      connect: z.object({
+        id: z.string(),
+      }),
+    })
+    .optional(),
 })
 
 const createStampSchema = stampSchema
-  .omit({ downloads: true })
+  .omit({ downloads: true, likedBy: true })
   .transform(({ modded, tradeUnion, townhall, collection, ...schema }) => ({
     modded: modded === 'true',
     tradeUnion: tradeUnion === 'true',
@@ -139,12 +148,15 @@ export const userIncludeStatement = {
   },
 } satisfies Prisma.UserInclude
 
-export type UserWithStamps = Omit<
-  Prisma.UserGetPayload<{
-    include: typeof userIncludeStatement
-  }>,
-  'listedStamps'
-> & { listedStamps: Omit<StampWithRelations, 'user'>[] }
+export interface UserWithStamps
+  extends Omit<
+    Prisma.UserGetPayload<{
+      include: typeof userIncludeStatement
+    }>,
+    'listedStamps'
+  > {
+  listedStamps: Omit<StampWithRelations, 'user'>[]
+}
 
 const userProfileSchema = z
   .object({
@@ -170,6 +182,11 @@ export const userExtension = Prisma.defineExtension({
   },
   result: {
     user: {
+      name: {
+        compute() {
+          return null
+        },
+      },
       email: {
         compute() {
           return null
