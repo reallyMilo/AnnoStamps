@@ -58,7 +58,6 @@ const UserMenu = () => {
         type="button"
         onClick={handleOnClick}
         className="ml-4 rounded-md bg-[#6DD3C0] px-4 py-2 text-sm font-bold text-[#222939] transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-500 focus:ring-opacity-50"
-        data-testid="login-button"
       >
         Add Stamp
       </button>
@@ -97,10 +96,16 @@ const UserMenu = () => {
               )}
             </div>
             <div className="flex flex-col truncate">
-              <span id="user-name">{user?.name}</span>
-              <span id="user-email" className="text-sm text-gray-500">
-                {user?.email}
-              </span>
+              {user?.username ? (
+                <span id="user-name">{user?.username}</span>
+              ) : (
+                <Link
+                  href={'/user/account'}
+                  className="text-blue-500 underline"
+                >
+                  Set username!
+                </Link>
+              )}
             </div>
           </div>
 
