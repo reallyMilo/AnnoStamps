@@ -1,9 +1,11 @@
-import userEvent from '@testing-library/user-event'
-
 import { stampMock } from '@/__mocks__/data'
 import { StampWithRelations } from '@/lib/prisma/queries'
 
-import { render as renderRTL, screen } from '../../__tests__/test-utils'
+import {
+  render as renderRTL,
+  screen,
+  userEvent,
+} from '../../__tests__/test-utils'
 import StampCard from '../StampCard'
 
 const stamp = stampMock[0]

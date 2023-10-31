@@ -1,18 +1,11 @@
-import {
-  HandThumbUpIcon,
-  UserCircleIcon,
-  WrenchIcon,
-} from '@heroicons/react/24/solid'
+import { UserCircleIcon, WrenchIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
-import { useState } from 'react'
-import useSWRMutation from 'swr/mutation'
 
 import type { StampWithRelations } from '@/lib/prisma/queries'
-import { cn, displayAuthModal, sendRequest } from '@/lib/utils'
 
 import Category from './Category'
+import LikeButton from './LikeButton'
 
 const StampCard = ({
   id,
@@ -25,26 +18,7 @@ const StampCard = ({
   images,
   user,
 }: StampWithRelations) => {
-  const likes = likedBy ? likedBy.length : 0
-  const { data: session } = useSession()
-  const authUser = session?.user
-  const { data, trigger } = useSWRMutation('/api/stamp/like', sendRequest)
-  const [isLiked, setIsLiked] = useState(false)
   const { thumbnailUrl, originalUrl } = images[0] ?? {}
-
-  //TODO: Query user on likedStamps and see if stamp id exists
-  const userLikedPost = () => {
-    if (!likedBy || !authUser) return false
-    if (likedBy.some((liked) => liked.id === authUser.id)) return true
-    return false
-  }
-
-  const addLikeToStamp = async () => {
-    if (!authUser) return displayAuthModal()
-
-    await trigger(JSON.stringify({ stampId: id, userId: authUser.id }))
-    setIsLiked(true)
-  }
 
   return (
     <article className="grid w-full grid-flow-row rounded-lg bg-white shadow-md">
@@ -111,18 +85,8 @@ const StampCard = ({
             <Category category={category} />
           </li>
 
-          <li
-            data-testid="stamp-card-like"
-            onClick={addLikeToStamp}
-            className="flex cursor-pointer items-center gap-1 text-sm"
-          >
-            <HandThumbUpIcon
-              className={cn(
-                'h-6 w-6',
-                (userLikedPost() || isLiked) && 'text-[#6DD3C0]'
-              )}
-            />
-            {data?.stamp ? data.stamp.likedBy.length : likes}
+          <li>
+            <LikeButton id={id} likedBy={likedBy} />
           </li>
         </ol>
       </div>
