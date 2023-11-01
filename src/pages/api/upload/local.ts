@@ -32,7 +32,7 @@ const generateResponsiveImages = async (filepath: string, filename: string) => {
       const outputPath = `${folderPath}${key}_${filename}`
 
       await sharp(filepath)
-        .resize(breakpoint, null, {
+        .resize(breakpoint, breakpoint, {
           fit: 'inside',
         })
         .toFile(outputPath)
@@ -58,7 +58,7 @@ export default async function localHandler(req: Req, res: NextApiResponse) {
 
   const base64Image = req.body.split('base64,')?.[1]
   const buffer = Buffer.from(base64Image, 'base64')
-  const name = fileType === 'zip' ? createId() + '.zip' : filename
+  const name = fileType === 'zip' ? createId() + '.zip' : createId() + filename
   const filepath = `public/tmp/${stampId}/${name}`
   outputFileSync(filepath, buffer)
   if (fileType !== 'zip') {

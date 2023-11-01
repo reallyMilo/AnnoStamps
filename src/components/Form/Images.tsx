@@ -23,7 +23,7 @@ const ImageUpload = () => {
         <div>
           <h2 className="py-1 font-bold"> Upload Images </h2>
           <p className="text-sm text-gray-500">
-            First Image will be the Thumbnail
+            First Image will be the Thumbnail, 4:3 aspect ratio
           </p>
         </div>
 
@@ -67,9 +67,9 @@ const ImageUpload = () => {
                   onClick={() => handleRemove(image)}
                   className="absolute right-0 top-0 z-10 mr-2 mt-2 h-6 w-6 cursor-pointer rounded-md bg-white"
                 />
-                <div className="aspect-h-9 aspect-w-16 overflow-hidden">
+                <div className="aspect-h-3 aspect-w-4 overflow-hidden border-2 shadow-md">
                   <img
-                    className="object-cover"
+                    className="object-contain"
                     alt="stamp image preview"
                     src={url}
                   />

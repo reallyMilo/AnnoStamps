@@ -39,11 +39,12 @@ const useStampFormContext = () => {
 const Submit = ({ children }: { children: React.ReactNode }) => {
   const { status } = useStampFormContext()
   const isMutating = status === 'loading'
+  const isDisabled = status === 'error' || isMutating
   return (
     <button
       type="submit"
       className="ml-auto rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
-      disabled={isMutating}
+      disabled={isDisabled}
     >
       {isMutating ? 'Loading...' : children}
     </button>
@@ -78,10 +79,13 @@ const isAsset = (b: Asset | JSZipObject | Image): b is Asset => {
 
 const Form = ({ children, onSubmit }: FormProps) => {
   const { stamp, images, files, setStatus } = useStampFormContext()
+  const [errorMessage, setErrorMessage] = React.useState<object | null>(null)
   const router = useRouter()
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setStatus('loading')
+
     if (images.length === 0) {
       setStatus('images')
       return
@@ -90,8 +94,6 @@ const Form = ({ children, onSubmit }: FormProps) => {
       setStatus('zip')
       return
     }
-
-    setStatus('loading')
 
     const formData = new FormData(e.currentTarget)
     formData.delete('images')
@@ -110,6 +112,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
           image.name
         )
         if (!imagePath) {
+          setErrorMessage({ images: 'error uploading:' + image.name })
           setStatus('error')
           return
         }
@@ -132,6 +135,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
 
     const zipPath = await upload(stampId, zipped, 'zip')
     if (!zipPath) {
+      setErrorMessage({ zip: 'error uploading zip' })
       setStatus('error')
       return
     }
@@ -140,19 +144,27 @@ const Form = ({ children, onSubmit }: FormProps) => {
 
     const removeImageIds = currentImages.map((image) => image.id)
 
-    try {
-      await onSubmit(formData, addImages, removeImageIds)
-      setStatus('success')
-      router.push('/user/stamps')
-      return
-    } catch (e) {
+    const res = await onSubmit(formData, addImages, removeImageIds)
+
+    if (!res.ok) {
+      const json = (await res.json()) as { message: object; ok: boolean }
+      setErrorMessage(json.message)
       setStatus('error')
+      return
     }
+    setStatus('success')
+    router.push('/user/stamps')
+    return
   }
 
   return (
     <form className="mt-8 space-y-8" onSubmit={handleOnSubmit}>
       {children}
+      {errorMessage && (
+        <pre>
+          post this to the discord {JSON.stringify(errorMessage, undefined, 2)}
+        </pre>
+      )}
     </form>
   )
 }
