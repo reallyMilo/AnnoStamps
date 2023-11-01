@@ -57,7 +57,7 @@ const Carousel = ({ images }: Pick<StampWithRelations, 'images'>) => {
           <img
             src={image.largeUrl ?? image.originalUrl}
             alt="anno stamp image"
-            className="object-cover object-center"
+            className="max-h-[768px] w-full object-contain object-center"
           />
         </SwiperSlide>
       ))}
@@ -92,10 +92,8 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
   } = stamp
 
   return (
-    <Container className="max-w-5xl space-y-6">
-      <div className="overflow-hidden rounded-lg shadow-md">
-        <Carousel images={images} />
-      </div>
+    <Container className="max-w-5xl space-y-6 px-0">
+      <Carousel images={images} />
 
       <h1 className=" truncate text-2xl font-semibold">{title} </h1>
 
@@ -134,8 +132,8 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
             <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5" />
             {downloads}
           </div>
-          <LikeButton id={id} likedBy={likedBy} />
         </div>
+        <LikeButton id={id} likedBy={likedBy} />
 
         <a
           href={stampFileUrl}
