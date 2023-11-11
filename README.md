@@ -21,7 +21,7 @@ create .env in root
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/annostamps"
 ```
 
-Finally run the following commands
+Finally run the following commands.
 
 ```sh
 pnpm i
