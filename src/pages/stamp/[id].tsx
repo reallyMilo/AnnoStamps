@@ -43,6 +43,7 @@ export async function getStaticProps({ params }: Params) {
     props: {
       stamp,
     },
+    revalidate: 30,
   }
 }
 
