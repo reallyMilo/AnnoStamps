@@ -8,9 +8,11 @@ module.exports = {
     domains: [
       'zvzegsqprutvkaafnfdh.supabase.in',
       'bxeklzgnntgnhkipxvol.supabase.in',
+      'd16532dqapk4x.cloudfront.net',
       'lh3.googleusercontent.com',
       'cdn.discordapp.com',
       'cdn.buymeacoffee.com',
+      'placehold.co',
     ],
   },
 }

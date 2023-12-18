@@ -5,20 +5,20 @@ describe('Create stamp', () => {
     cy.wait('@session')
   })
 
-  it('upload image and preview', () => {
-    cy.get('#image').selectFile('cypress/fixtures/cypress-test-image.png', {
+  it('user can submit a stamp with all fields filled', () => {
+    cy.findByLabelText('Add Images').selectFile(
+      'cypress/fixtures/cypress-test-image.png',
+      {
+        force: true,
+      }
+    )
+    cy.findByAltText('stamp image preview').should('exist')
+
+    cy.findByText('Add Stamps').selectFile('cypress/fixtures/test-stamp', {
       force: true,
     })
-    cy.getBySel('image-upload').should('be.visible')
-    cy.get('#imgSrc').should('exist')
-  })
-  it('upload stamp', () => {
-    cy.get('#stamp').selectFile('cypress/fixtures/stamp', {
-      force: true,
-    })
-    cy.get('#fileSrc').should('exist')
-  })
-  it('can select fields and type inputs', () => {
+    cy.findByText('test-stamp').should('exist')
+
     cy.get('#category').select('general').should('have.value', 'general')
     cy.get('#region').select('arctic').should('have.value', 'arctic')
     cy.get('#modded').select('No').should('have.value', 'false')
@@ -28,5 +28,7 @@ describe('Create stamp', () => {
     cy.get('#description')
       .type('cypress test description')
       .should('have.value', 'cypress test description')
+
+    cy.findByText('Submit Stamp').should('exist')
   })
 })

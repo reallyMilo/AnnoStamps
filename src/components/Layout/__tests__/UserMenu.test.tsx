@@ -1,50 +1,36 @@
-import '@testing-library/jest-dom'
-
-import { render, screen } from '@testing-library/react'
-import { useSession } from 'next-auth/react'
-
+import { act, render, screen, userEvent } from '../../../__tests__/test-utils'
 import UserMenu from '../UserMenu'
 
-//FIXME: global use session mock
-const mocks = vi.hoisted(() => {
-  return {
-    useSession: vi.fn(),
-  }
-})
-
-vi.mock('next-auth/react', () => {
-  return {
-    SessionProvider: ({ children }: { children: React.ReactNode }) => (
-      <div>{children}</div>
-    ),
-    useSession: mocks.useSession,
-  }
-})
-
 describe('UserMenu', () => {
-  it('renders and has all links', () => {
-    vi.mocked(useSession).mockReturnValueOnce({
-      update: vi.fn(),
-      data: null,
-      status: 'unauthenticated',
-    })
+  it('renders for unauthenticated user', () => {
     render(<UserMenu />)
 
     expect(screen.getByText('Add Stamp')).toBeInTheDocument()
   })
 
-  it('displays user-menu for authenticated users', () => {
-    vi.mocked(useSession).mockReturnValueOnce({
-      update: vi.fn(),
-      data: {
-        expires: new Date(Date.now() + 2 * 86400).toISOString(),
-        user: { id: '1' },
-      },
-      status: 'authenticated',
+  it('user-menu for authenticated users with all menu items', async () => {
+    render(<UserMenu />, {
+      expires: new Date(Date.now() + 2 * 86400).toISOString(),
+      user: { id: '1' },
     })
 
-    render(<UserMenu />)
+    const button = screen.getByRole('button')
+    expect(button).toBeInTheDocument()
 
-    expect(screen.getByTestId('user-menu')).toBeInTheDocument()
+    await act(async () => await userEvent.click(button))
+    expect(screen.getByText('Set username!')).toBeInTheDocument()
+    expect(screen.getByText('My Account')).toBeInTheDocument()
+    expect(screen.getByText('My stamps')).toBeInTheDocument()
+    expect(screen.getByText('Add new stamp')).toBeInTheDocument()
+    expect(screen.getByText('Logout')).toBeInTheDocument()
+  })
+  it('displays username', async () => {
+    render(<UserMenu />, {
+      expires: new Date(Date.now() + 2 * 86400).toISOString(),
+      user: { id: '1', username: 'stampCreator' },
+    })
+
+    await act(async () => await userEvent.click(screen.getByRole('button')))
+    expect(screen.getByText('stampCreator')).toBeInTheDocument()
   })
 })

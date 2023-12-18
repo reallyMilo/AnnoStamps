@@ -1,8 +1,5 @@
 import { Capital1800, Category, Region1800 } from '@/lib/game/1800/enum'
-import useFilterReducer, {
-  filterSchema,
-  FilterState,
-} from '@/lib/hooks/useFilter'
+import useFilterReducer from '@/lib/hooks/useFilter'
 
 import Select from '../ui/Select'
 
@@ -67,10 +64,10 @@ const Filter = () => {
           <Select
             id="sort"
             name="sort"
-            options={filterSchema.shape.sort._def.innerType.options}
+            options={['newest']}
             onChange={(e) =>
               setFilter({
-                payload: e.target.value as FilterState['sort'],
+                payload: e.target.value,
                 type: 'SORT',
               })
             }

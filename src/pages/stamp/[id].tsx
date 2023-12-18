@@ -1,14 +1,17 @@
-import { ArrowDownTrayIcon } from '@heroicons/react/24/solid'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
+import 'swiper/css'
+import 'swiper/css/navigation'
 
+import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { Navigation } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+import Category from '@/components/Category'
+import LikeButton from '@/components/LikeButton'
 import Container from '@/components/ui/Container'
-import {
-  type StampWithRelations,
-  stampWithRelations,
-} from '@/lib/prisma/queries'
+import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
-import { triggerDownload } from '@/lib/utils'
 
 export async function getStaticPaths() {
   const stamps = await prisma.stamp.findMany({
@@ -32,7 +35,7 @@ type Params = {
 
 export async function getStaticProps({ params }: Params) {
   const stamp = await prisma.stamp.findUnique({
-    include: stampWithRelations,
+    include: stampIncludeStatement,
     where: { id: params.id },
   })
 
@@ -40,26 +43,31 @@ export async function getStaticProps({ params }: Params) {
     props: {
       stamp,
     },
+    revalidate: 30,
   }
 }
 
+const Carousel = ({ images }: Pick<StampWithRelations, 'images'>) => {
+  if (images.length === 0) {
+    return null
+  }
+  return (
+    <Swiper navigation={true} modules={[Navigation]} className="">
+      {images.map((image) => (
+        <SwiperSlide key={image.id}>
+          <img
+            src={image.largeUrl ?? image.originalUrl}
+            alt="anno stamp image"
+            className="max-h-[768px] w-full object-contain object-center"
+          />
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  )
+}
 const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
   const router = useRouter()
 
-  const handleDownload = async () => {
-    const res = await fetch(stamp?.stampFileUrl)
-    if (!res.ok) {
-      return
-    }
-    const file = await res.blob()
-    //FIXME: files responding with text/html
-    const newFile = file.slice(0, file.size, 'application/octet-stream')
-    const fileNameWithRegion = stamp.title + '_' + stamp.region
-    const formattedTitle = fileNameWithRegion.replace(/[^\w\s.]/g, '_')
-
-    triggerDownload(newFile, formattedTitle)
-    await fetch(`/api/stamp/download/${stamp.id}`)
-  }
   if (router.isFallback) {
     return (
       <Container>
@@ -68,52 +76,79 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
     )
   }
 
-  return (
-    <Container>
-      <div className="aspect-h-9 aspect-w-16 relative mx-5 mt-6 overflow-hidden rounded-lg bg-gray-200 shadow-md">
-        {stamp?.imageUrl && (
-          <Image
-            src={stamp.imageUrl}
-            alt={stamp.title}
-            fill
-            sizes="100vw"
-            style={{
-              objectFit: 'cover',
-            }}
-          />
-        )}
-      </div>
-      <h1 className="mx-5 mt-6 truncate text-2xl font-semibold">
-        {stamp?.title}
-      </h1>
-      <div className="mx-5 grid grid-cols-1 gap-10 pb-10 md:grid-cols-2">
-        <div>
-          <ol className="mb-2 mt-4 items-center text-gray-500">
-            <li className="capitalize">
-              <span className="font-bold">Category:</span> {stamp?.category}
-            </li>
-            <li className="capitalize">
-              <span className="font-bold">Region:</span> {stamp?.region}
-            </li>
-          </ol>
-          <button
-            data-testid="stamp-download"
-            className="mt-5 inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
-            onClick={handleDownload}
-          >
-            <ArrowDownTrayIcon className="mr-2 inline-block h-6 w-6" />
-            Download Stamp
-          </button>
-          <p className="flex cursor-default items-center gap-1 pt-3 text-sm">
-            Total Downloads:
-            <span className="flex cursor-default items-center gap-1 text-sm">
-              {stamp?.downloads}
-            </span>
-          </p>
-        </div>
+  const {
+    id,
+    title,
+    category,
+    region,
+    description,
+    stampFileUrl,
+    modded,
+    good,
+    downloads,
+    images,
+    user,
+    collection,
+    likedBy,
+  } = stamp
 
-        <p className="break-words text-lg">{stamp?.description}</p>
+  return (
+    <Container className="max-w-5xl space-y-6 px-0">
+      <Carousel images={images} />
+
+      <h1 className=" truncate text-2xl font-semibold">{title} </h1>
+
+      <div className="flex space-x-5">
+        {user.usernameURL && (
+          <Link
+            className="self-center hover:text-sky-700"
+            href={`/${user.usernameURL}`}
+          >
+            {user.username}
+          </Link>
+        )}
+
+        <Category category={category} />
+
+        <div className="hidden grow space-x-5 text-sm md:flex">
+          <div className="self-center capitalize text-[#B11E47]">{region}</div>
+
+          {category === 'production' && (
+            <div className="self-center capitalize text-gray-500">{good}</div>
+          )}
+
+          {modded && (
+            <span className="self-center rounded-full bg-[#6DD3C0] px-4 py-2 text-black">
+              <WrenchIcon className="mr-2 inline-block h-5 w-5" />
+              mods
+            </span>
+          )}
+
+          {collection && <div className="self-center">Collection</div>}
+          {/* TODO: views */}
+          {/* <div className="self-center">
+            <EyeIcon className="mr-2 inline-block h-5 w-5" /> Views
+          </div> */}
+          <div className="self-center">
+            <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5" />
+            {downloads}
+          </div>
+        </div>
+        <LikeButton id={id} likedBy={likedBy} />
+
+        <a
+          href={stampFileUrl}
+          data-testid="stamp-download"
+          className="inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
+          onClick={() => fetch(`/api/stamp/download/${id}`)}
+        >
+          <ArrowDownTrayIcon className="mr-2 inline-block h-6 w-6" />
+          Download
+        </a>
       </div>
+
+      <p className="col-span-3 break-words text-lg">{description}</p>
+      {/* TODO: list of mods used in stamp #70 */}
     </Container>
   )
 }

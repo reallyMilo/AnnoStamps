@@ -1,4 +1,4 @@
-import { buildFilterWhereClause } from '../utils'
+import { buildFilterWhereClause } from '../singleton'
 
 describe('buildFilterWhereClause', () => {
   it('returns only modded false as default when no filter properties are provided', () => {

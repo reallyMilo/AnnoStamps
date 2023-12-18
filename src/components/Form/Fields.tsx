@@ -1,29 +1,28 @@
-import Downshift from 'downshift'
 import { useState } from 'react'
 
 import { Capital1800, Category, Region1800 } from '@/lib/game/1800/enum'
-import { getGoods } from '@/lib/game/1800/helpers'
 import { cn } from '@/lib/utils'
 
 import Select, { selectVariantStyles } from '../ui/Select'
-
-const items = getGoods()
+import { useStampFormContext } from './StampForm'
 
 const Fields = () => {
-  const [category, setCategory] = useState('')
+  const { stamp } = useStampFormContext()
+
+  const [category, setCategory] = useState(stamp?.category)
 
   return (
     <>
       <div className="flex w-full space-x-4">
         <div>
           <label htmlFor="category">Category</label>
-          <br />
           <Select
             id="category"
             name="category"
             variant="primaryShadow"
             options={Object.values(Category)}
             onChange={(e) => setCategory(e.target.value)}
+            value={category}
             required
           >
             <option value="">-Select-</option>
@@ -31,12 +30,12 @@ const Fields = () => {
         </div>
         <div>
           <label htmlFor="region">Region</label>
-          <br />
           <Select
             id="region"
             name="region"
             required
             options={Object.values(Region1800)}
+            defaultValue={stamp?.region}
             variant="primaryShadow"
           >
             <option value="">-Select-</option>
@@ -44,11 +43,11 @@ const Fields = () => {
         </div>
         <div>
           <label htmlFor="modded">Uses Mods</label>
-          <br />
           <select
             name="modded"
             id="modded"
             className={selectVariantStyles.primaryShadow}
+            defaultValue={stamp?.modded.toString()}
             required
           >
             <option value="">-Select-</option>
@@ -59,66 +58,24 @@ const Fields = () => {
       </div>
       {category === 'production' && (
         <div className="grid grid-cols-3 gap-x-4">
-          <Downshift
-            itemToString={(item) => (item ? item.value.toLowerCase() : '')}
-          >
-            {({
-              getInputProps,
-              getItemProps,
-              getMenuProps,
-              getLabelProps,
-              inputValue,
-              isOpen,
-            }) => (
-              <div className="relative flex flex-col space-y-1">
-                <label
-                  {...getLabelProps()}
-                  htmlFor="good"
-                  className="text-gray-600"
-                >
-                  Enter Good
-                </label>
-                <input
-                  {...getInputProps({
-                    id: 'good',
-                    name: 'good',
-                    type: 'text',
-                    placeholder: 'Enter final good in chain',
-                    require,
-                  })}
-                  className={cn(
-                    selectVariantStyles.primaryShadow,
-                    'relative capitalize'
-                  )}
-                />
+          <div className="relative flex flex-col space-y-1">
+            <label htmlFor="good" className="text-gray-600">
+              Enter Good
+            </label>
+            <input
+              id="good"
+              name="good"
+              type="text"
+              placeholder="Enter final good in chain"
+              defaultValue={stamp?.good ?? undefined}
+              required
+              className={cn(
+                selectVariantStyles.primaryShadow,
+                'relative capitalize'
+              )}
+            />
+          </div>
 
-                <ul
-                  className="absolute end-0 right-0 top-20 max-h-80 w-44 list-none overflow-y-scroll bg-white p-0"
-                  {...getMenuProps()}
-                >
-                  {isOpen &&
-                    items
-                      .filter(
-                        (item) =>
-                          !inputValue ||
-                          item.value.includes(inputValue.toLowerCase())
-                      )
-                      .map((item, index) => (
-                        <li
-                          key={`${item.value}-${index}`}
-                          className="cursor-default select-none py-2 pl-3 pr-9 capitalize hover:bg-gray-100"
-                          {...getItemProps({
-                            item,
-                            index,
-                          })}
-                        >
-                          {item.name}
-                        </li>
-                      ))}
-                </ul>
-              </div>
-            )}
-          </Downshift>
           <div className="flex flex-col space-y-1">
             <label className="text-gray-600" htmlFor="trade-union">
               Trade Union
@@ -127,6 +84,7 @@ const Fields = () => {
               className={selectVariantStyles.primaryShadow}
               id="trade-union"
               name="trade-union"
+              defaultValue={stamp?.tradeUnion.toString()}
               required
             >
               <option value="">-Select-</option>
@@ -146,6 +104,7 @@ const Fields = () => {
               className={selectVariantStyles.primaryShadow}
               id="townhall"
               name="townhall"
+              defaultValue={stamp?.townhall.toString()}
               required
             >
               <option value="">-Select-</option>
@@ -166,6 +125,7 @@ const Fields = () => {
               name="capital"
               options={Object.values(Capital1800)}
               className={selectVariantStyles.primaryShadow}
+              defaultValue={stamp?.capital ?? undefined}
             >
               <option value="">-Select-</option>
             </Select>
@@ -183,6 +143,7 @@ const Fields = () => {
             type="text"
             placeholder="Enter stamp title"
             className={selectVariantStyles.primaryShadow}
+            defaultValue={stamp?.title}
             required
           />
         </div>
@@ -199,6 +160,7 @@ const Fields = () => {
             )}
             placeholder="Add some two letter fields for searching at the start of the description, see anno wiki
             production layouts for reference."
+            defaultValue={stamp?.description}
             rows={5}
             required
           />

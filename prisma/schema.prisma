@@ -9,20 +9,34 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model Image {
+  id           String   @id
+  originalUrl  String   @unique
+  thumbnailUrl String?  @unique
+  smallUrl     String?  @unique
+  mediumUrl    String?  @unique
+  largeUrl     String?  @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  stamp        Stamp    @relation("StampImage", fields: [stampId], references: [id])
+  stampId      String
+}
+
 model Stamp {
-  id           String   @id @default(cuid())
+  id           String   @id
   userId       String
   game         String
   title        String
   description  String
   category     String
   region       String
-  imageUrl     String
+  imageUrl     String?
   stampFileUrl String
   goodCategory String?
   good         String?
   population   String?
   capital      String?
+  collection   Boolean  @default(false)
   townhall     Boolean  @default(false)
   tradeUnion   Boolean  @default(false)
   createdAt    DateTime @default(now())
@@ -31,6 +45,7 @@ model Stamp {
   downloads    Int      @default(0)
   user         User     @relation("StampCreator", fields: [userId], references: [id], onDelete: Cascade)
   likedBy      User[]   @relation("StampLiker")
+  images       Image[]  @relation("StampImage")
 }
 
 model Account {

@@ -7,16 +7,9 @@ import { Pagination } from '@/components/Pagination'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import { filterSchema } from '@/lib/hooks/useFilter'
-import {
-  type StampWithRelations,
-  stampWithRelations,
-} from '@/lib/prisma/queries'
+import { StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
-import {
-  buildFilterWhereClause,
-  buildOrderByClause,
-  stampsPerPage,
-} from '@/lib/utils'
+import { stampsPerPage } from '@/lib/utils'
 
 type HomePageProps = {
   count: number
@@ -36,18 +29,11 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
     const { page, sort, ...filter } = filterSchema.parse(query)
     const pageNumber = parseInt(page || '1', 10)
 
-    const [count, stamps] = await prisma.$transaction([
-      prisma.stamp.count({
-        where: buildFilterWhereClause(filter),
-      }),
-      prisma.stamp.findMany({
-        include: stampWithRelations,
-        where: buildFilterWhereClause(filter),
-        orderBy: buildOrderByClause(sort),
-        skip: (pageNumber - 1) * stampsPerPage(),
-        take: stampsPerPage(),
-      }),
-    ])
+    const [count, stamps] = await prisma.stamp.filterFindManyWithCount(
+      filter,
+      sort,
+      { skip: (pageNumber - 1) * stampsPerPage(), take: stampsPerPage() }
+    )
 
     return {
       props: {

@@ -1,58 +1,31 @@
-import { render as renderRTL, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { useSession } from 'next-auth/react'
+import { stampMock } from '@/__mocks__/data'
+import { StampWithRelations } from '@/lib/prisma/queries'
 
-import type { StampWithRelations } from '@/types'
-
+import {
+  render as renderRTL,
+  screen,
+  userEvent,
+} from '../../__tests__/test-utils'
 import StampCard from '../StampCard'
 
-//FIXME: global use session mock
-const mocks = vi.hoisted(() => {
-  return {
-    useSession: vi.fn(),
-  }
-})
+const stamp = stampMock[0]
 
-vi.mock('next-auth/react', () => {
-  return {
-    SessionProvider: ({ children }: { children: React.ReactNode }) => (
-      <div>{children}</div>
-    ),
-    useSession: mocks.useSession,
-  }
-})
-
-vi.mocked(useSession).mockReturnValue({
-  update: vi.fn(),
-  data: null,
-  status: 'unauthenticated',
+const render = (props?: Partial<StampWithRelations>) => ({
+  ...renderRTL(<StampCard {...stamp} {...props} />),
+  user: userEvent.setup(),
 })
 
 describe('Stamp Card', () => {
-  const render = (props?: Partial<StampWithRelations>) => ({
-    ...renderRTL(
-      <StampCard
-        id="urlID"
-        title="Stamp Title"
-        category="production"
-        region="old world"
-        imageUrl="/stamp-highlight.jpg"
-        modded
-        likedBy={[{ id: '1' }, { id: '2' }]}
-        user={{
-          id: '1024',
-          username: 'stampCreator',
-          usernameURL: 'stampcreator',
-          image: null,
-        }}
-        {...props}
-      />
-    ),
-    user: userEvent.setup(),
-  })
-
   it('renders with all provided props', () => {
-    render()
+    render({
+      id: 'urlID',
+      title: 'Stamp Title',
+      category: 'production',
+      region: 'old world',
+      modded: true,
+      user: { ...stamp.user, username: 'stampCreator' },
+      likedBy: [{ ...stamp.likedBy[0] }, { ...stamp.likedBy[0] }],
+    })
 
     expect(screen.getByTestId('stamp-card-link')).toHaveAttribute(
       'href',
@@ -60,16 +33,17 @@ describe('Stamp Card', () => {
     )
     expect(screen.getByAltText('Stamp Title')).toBeInTheDocument()
     expect(screen.getByText('mods')).toBeInTheDocument()
-    expect(screen.getByText('Stamp Title')).toBeInTheDocument()
+    expect(screen.getByText('Collection')).toBeInTheDocument()
     expect(screen.getByText('production')).toBeInTheDocument()
     expect(screen.getByText('old world')).toBeInTheDocument()
     expect(screen.getByText('stampCreator')).toBeInTheDocument()
     expect(screen.getByText('2')).toBeInTheDocument()
   })
 
-  it('hidden mod badge when modded is false', () => {
-    render({ modded: false })
+  it('hidden mod and collection badge when false', () => {
+    render({ modded: false, collection: false })
 
     expect(screen.queryByText('mods')).not.toBeInTheDocument()
+    expect(screen.queryByText('collection')).not.toBeInTheDocument()
   })
 })

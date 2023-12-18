@@ -12,6 +12,7 @@
       "files": ["**/*.{ts,tsx}"],
       "rules": {
         "no-console": 2,
+        "@next/next/no-img-element": "off",
         "prefer-arrow-callback": "warn",
         "react/function-component-definition": [
           1,
