@@ -47,9 +47,19 @@ export async function getStaticProps({ params }: Params) {
   }
 }
 
-const Carousel = ({ images }: Pick<StampWithRelations, 'images'>) => {
+type CarouselProps = {
+  fallBack: string
+  images: StampWithRelations['images']
+}
+const Carousel = ({ images, fallBack }: CarouselProps) => {
   if (images.length === 0) {
-    return null
+    return (
+      <img
+        src={fallBack}
+        alt="anno stamp image"
+        className="max-h-[768px] w-full object-contain object-center"
+      />
+    )
   }
   return (
     <Swiper navigation={true} modules={[Navigation]} className="">
@@ -83,6 +93,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
     region,
     description,
     stampFileUrl,
+    imageUrl,
     modded,
     good,
     downloads,
@@ -94,7 +105,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
 
   return (
     <Container className="max-w-5xl space-y-6 px-0">
-      <Carousel images={images} />
+      <Carousel images={images} fallBack={imageUrl ?? ''} />
 
       <h1 className=" truncate text-2xl font-semibold">{title} </h1>
 
