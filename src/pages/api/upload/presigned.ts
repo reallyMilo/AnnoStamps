@@ -21,7 +21,9 @@ export default async function presignedHandler(req: Req, res: NextApiResponse) {
   const { filename, fileType, stampId } = req.query
 
   const type = fileType === 'zip' ? 'stamps' : 'images'
-  const ext = fileType.slice(-3)
+  const ext =
+    fileType === 'zip' ? 'zip' : decodeURIComponent(fileType).split('/')[1]
+
   const path = `${type}/${session.user.id}/${stampId}/${createId()}.${ext}`
 
   const client = new S3Client({ region: AWS_S3_REGION })
