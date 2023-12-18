@@ -16,15 +16,13 @@ export default async function presignedHandler(req: Req, res: NextApiResponse) {
     return res.status(401).json({ ok: false, message: 'Unauthorized.' })
   }
 
-  const { AWS_S3_REGION, AWS_S3_BUCKET, AWS_S3_BUCKET_FOLDER } = process.env
+  const { AWS_S3_REGION, AWS_S3_BUCKET } = process.env
 
   const { filename, fileType, stampId } = req.query
 
   const type = fileType === 'zip' ? 'stamps' : 'images'
   const ext = fileType.slice(-3)
-  const path = `${AWS_S3_BUCKET_FOLDER}/${type}/${
-    session.user.id
-  }/${stampId}/${createId()}.${ext}`
+  const path = `${type}/${session.user.id}/${stampId}/${createId()}.${ext}`
 
   const client = new S3Client({ region: AWS_S3_REGION })
   const command = new PutObjectCommand({
