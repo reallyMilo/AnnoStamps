@@ -13,12 +13,14 @@ const StampCard = ({
   category,
   region,
   modded,
+  imageUrl,
   collection,
   likedBy,
   images,
   user,
 }: StampWithRelations) => {
   const { thumbnailUrl, originalUrl } = images[0] ?? {}
+  const srcUrl = thumbnailUrl ?? originalUrl ?? imageUrl
 
   return (
     <article className="grid w-full grid-flow-row rounded-lg bg-white shadow-md">
@@ -27,7 +29,7 @@ const StampCard = ({
           <div className="aspect-h-9 aspect-w-16 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
             <div>
               <Image
-                src={thumbnailUrl ?? originalUrl}
+                src={srcUrl}
                 alt={title ?? 'image alt'}
                 className="transition hover:opacity-80"
                 fill
