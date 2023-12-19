@@ -29,13 +29,17 @@ export default async function webhookHandler(req: Req, res: NextApiResponse) {
 
   const { id, ...url } = req.body
 
-  try {
-    await prisma.image.update({
-      where: { id },
-      data: url,
-    })
-    return res.status(200).json({ message: 'updated image' })
-  } catch (e) {
-    return res.status(500).json({ message: e })
-  }
+  //TODO: lambda cannot be invoked before the stamp is created with original image
+  setTimeout(async () => {
+    try {
+      await prisma.image.update({
+        where: { id },
+        data: url,
+      })
+      return res.status(200).json({ message: 'updated image' })
+    } catch (e) {
+      return res.status(500).json({ message: e })
+    }
+    // vercel will timeout at 10 seconds
+  }, 7000)
 }
