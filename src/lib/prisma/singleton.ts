@@ -6,6 +6,7 @@ import {
   imageExtension,
   stampExtensions,
   stampIncludeStatement,
+  StampWithRelations,
   userExtension,
 } from './queries'
 
@@ -20,19 +21,30 @@ const prismaClientSingleton = () => {
           async filterFindManyWithCount(
             filter: Omit<FilterState, 'sort' | 'page'>,
             sort: FilterState['sort'],
-            args?: Pick<Prisma.StampFindManyArgs, 'take' | 'skip'>
-          ) {
-            return await prisma.$transaction([
-              prisma.stamp.count({
+            args?: Required<Pick<Prisma.StampFindManyArgs, 'take' | 'skip'>>
+          ): Promise<[number, StampWithRelations[]]> {
+            return prisma.$transaction(async (q) => {
+              const count = await q.stamp.count({
                 where: buildFilterWhereClause(filter),
-              }),
-              prisma.stamp.findMany({
+              })
+
+              if (args?.skip) {
+                const { skip } = args
+
+                if (skip >= count) {
+                  args.skip = 0
+                }
+              }
+
+              const stamps = await q.stamp.findMany({
                 include: stampIncludeStatement,
                 where: buildFilterWhereClause(filter),
                 orderBy: buildOrderByClause(sort),
                 ...args,
-              }),
-            ])
+              })
+
+              return [count, stamps]
+            })
           },
         },
       },
