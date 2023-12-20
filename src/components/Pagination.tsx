@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect } from 'react'
 
 import { cn, stampsPerPage } from '@/lib/utils'
 
@@ -22,42 +22,47 @@ const generatePageNumbers = (totalPageCount: number, currentPage: number) => {
 
 type PaginationProps = {
   count: number
-  initialPage: number
+  page: number
 }
 
-export const Pagination = ({ count, initialPage }: PaginationProps) => {
+export const Pagination = ({ count, page }: PaginationProps) => {
   const router = useRouter()
   const { query } = router
-  const [currentPage, setCurrentPage] = useState(initialPage)
+
+  useEffect(() => {
+    if (page === 1 && Number(query.page) !== 1 && query.page) {
+      router.replace({
+        query: { ...query, page: 1 },
+      })
+    }
+  })
   const totalPageCount = Math.ceil(count / stampsPerPage())
 
-  const pageNumbers = generatePageNumbers(totalPageCount, currentPage)
+  const pageNumbers = generatePageNumbers(totalPageCount, page)
 
   const incrementPage = () => {
-    if (currentPage + 1 > totalPageCount) return
-    setCurrentPage((prev) => prev + 1)
+    if (page + 1 > totalPageCount) return
     router.push({
       pathname: '/',
-      query: { ...query, page: currentPage + 1 },
+      query: { ...query, page: page + 1 },
     })
   }
   const decrementPage = () => {
-    if (currentPage - 1 < 1) return
-    setCurrentPage((prev) => prev - 1)
+    if (page - 1 < 1) return
     router.push({
       pathname: '/',
-      query: { ...query, page: currentPage - 1 },
+      query: { ...query, page: page - 1 },
     })
   }
   const changePage = (e: React.MouseEvent<HTMLLIElement>) => {
     const page = e.currentTarget.value
-    setCurrentPage(page)
+
     router.push({
       pathname: '/',
       query: { ...query, page: page },
     })
   }
-  const starting = (currentPage - 1) * stampsPerPage() + 1
+  const starting = (page - 1) * stampsPerPage() + 1
   const ending = Math.min(starting + stampsPerPage() - 1, count)
 
   return (
@@ -99,7 +104,7 @@ export const Pagination = ({ count, initialPage }: PaginationProps) => {
                   key={pageNum + '-pagination'}
                   className={cn(
                     'relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-indigo-400 focus:z-20 focus:outline-offset-0 md:inline-flex',
-                    pageNum === currentPage &&
+                    pageNum === page &&
                       'z-10 bg-indigo-600 text-white hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                   )}
                   value={pageNum}
