@@ -20,10 +20,15 @@ const generatePageNumbers = (totalPageCount: number, currentPage: number) => {
   }
 }
 
-export const Pagination = ({ count }: { count: number }) => {
+type PaginationProps = {
+  count: number
+  initialPage: number
+}
+
+export const Pagination = ({ count, initialPage }: PaginationProps) => {
   const router = useRouter()
   const { query } = router
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(initialPage)
   const totalPageCount = Math.ceil(count / stampsPerPage())
 
   const pageNumbers = generatePageNumbers(totalPageCount, currentPage)

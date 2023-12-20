@@ -13,6 +13,7 @@ import { stampsPerPage } from '@/lib/utils'
 
 type HomePageProps = {
   count: number
+  pageNumber: number
   stamps: StampWithRelations[]
 }
 
@@ -39,6 +40,7 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
       props: {
         count,
         stamps,
+        pageNumber,
       },
     }
   } catch (e) {
@@ -47,6 +49,7 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
       props: {
         count: 0,
         stamps: [],
+        pageNumber: 1,
       },
     }
   }
@@ -55,7 +58,10 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
 const HomePage = ({
   count,
   stamps,
+  pageNumber,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const initialPage = pageNumber * stampsPerPage() >= count ? 1 : pageNumber
+
   return (
     <Container>
       <Filter />
@@ -71,7 +77,7 @@ const HomePage = ({
               <StampCard key={stamp.id} {...stamp} />
             ))}
           </Grid>
-          <Pagination count={count} />
+          <Pagination count={count} initialPage={initialPage} />
         </>
       )}
     </Container>
