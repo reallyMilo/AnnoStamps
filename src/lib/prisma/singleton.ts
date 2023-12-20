@@ -80,6 +80,9 @@ export const buildFilterWhereClause = (
           title: {
             search,
           },
+          description: {
+            search,
+          },
         }
       : {}),
   } satisfies Prisma.StampWhereInput
