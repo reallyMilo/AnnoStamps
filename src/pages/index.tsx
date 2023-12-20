@@ -77,7 +77,7 @@ const HomePage = ({
               <StampCard key={stamp.id} {...stamp} />
             ))}
           </Grid>
-          <Pagination count={count} initialPage={initialPage} />
+          <Pagination count={count} page={initialPage} />
         </>
       )}
     </Container>
