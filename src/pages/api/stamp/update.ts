@@ -16,18 +16,15 @@ interface Req extends NextApiRequest {
     | 'modded'
     | 'collection'
     | 'stampFileUrl'
+    | 'id'
   > & { addImages: string[]; deleteImages: string[] }
-  query: {
-    update: string
-  }
 }
 
 export default async function updateStampHandler(
   req: Req,
   res: NextApiResponse
 ) {
-  const { update: stampId } = req.query
-  const { addImages, deleteImages, ...fields } = req.body
+  const { id: stampId, addImages, deleteImages, ...fields } = req.body
 
   const session = await getServerSession(req, res, authOptions)
 
