@@ -29,7 +29,7 @@ const StampCard = ({
           <div className="aspect-h-9 aspect-w-16 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
             <div>
               <Image
-                src={srcUrl}
+                src={srcUrl ?? 'https://placehold.co/250x250/png'}
                 alt={title ?? 'image alt'}
                 className="transition hover:opacity-80"
                 fill
