@@ -77,13 +77,13 @@ const Fields = () => {
           </div>
 
           <div className="flex flex-col space-y-1">
-            <label className="text-gray-600" htmlFor="trade-union">
+            <label className="text-gray-600" htmlFor="tradeUnion">
               Trade Union
             </label>
             <select
               className={selectVariantStyles.primaryShadow}
-              id="trade-union"
-              name="trade-union"
+              id="tradeUnion"
+              name="tradeUnion"
               defaultValue={stamp?.tradeUnion.toString()}
               required
             >
