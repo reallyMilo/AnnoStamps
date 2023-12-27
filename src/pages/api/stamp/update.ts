@@ -61,17 +61,19 @@ export default async function updateStampHandler(
         id: stampId,
       },
       data: {
-        images: {
-          create: addImages.map((image) => {
-            const start = image.lastIndexOf('/')
-            const end = image.lastIndexOf('.')
-            const id = image.slice(start + 1, end)
-            return {
-              id,
-              originalUrl: image,
-            }
-          }),
-        },
+        ...(addImages.length > 0 && {
+          images: {
+            create: addImages.map((image) => {
+              const start = image.lastIndexOf('/')
+              const end = image.lastIndexOf('.')
+              const id = image.slice(start + 1, end)
+              return {
+                id,
+                originalUrl: image,
+              }
+            }),
+          },
+        }),
         ...fields,
       },
     })
