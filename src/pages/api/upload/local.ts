@@ -40,13 +40,27 @@ const generateResponsiveImages = async (filepath: string, filename: string) => {
   }
 }
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '20mb',
+    },
+  },
+}
+
 interface Req extends NextApiRequest {
   query: { fileType: string; filename: string; stampId: string }
 }
-
-export default async function localHandler(req: Req, res: NextApiResponse) {
+type Response = {
+  message: string
+  ok: boolean
+}
+export default async function localHandler(
+  req: Req,
+  res: NextApiResponse<Response>
+) {
   if (process.env.NODE_ENV !== 'development') {
-    return res.status(500).json('only on local')
+    return res.status(500).json({ ok: false, message: 'only in dev mode' })
   }
   const session = await getServerSession(req, res, authOptions)
 
@@ -64,5 +78,5 @@ export default async function localHandler(req: Req, res: NextApiResponse) {
   if (fileType !== 'zip') {
     await generateResponsiveImages(filepath, name)
   }
-  return res.status(200).json(`${stampId}/${name}`)
+  return res.status(200).json({ ok: true, message: `${stampId}/${name}` })
 }
