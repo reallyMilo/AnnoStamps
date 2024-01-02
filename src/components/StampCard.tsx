@@ -19,8 +19,10 @@ const StampCard = ({
   images,
   user,
 }: StampWithRelations) => {
-  const { thumbnailUrl, originalUrl } = images[0] ?? {}
-  const srcUrl = thumbnailUrl ?? originalUrl ?? imageUrl
+  const srcUrl =
+    images.length === 0
+      ? imageUrl ?? 'https://placehold.co/250x250/png'
+      : images[0].thumbnailUrl ?? images[0].originalUrl
 
   return (
     <article className="grid w-full grid-flow-row rounded-lg bg-white shadow-md">
@@ -29,7 +31,7 @@ const StampCard = ({
           <div className="aspect-h-9 aspect-w-16 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
             <div>
               <Image
-                src={srcUrl ?? 'https://placehold.co/250x250/png'}
+                src={srcUrl}
                 alt={title ?? 'image alt'}
                 className="transition hover:opacity-80"
                 fill
