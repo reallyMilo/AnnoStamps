@@ -25,9 +25,10 @@ export const upload = async (
         body: fileResult.result,
       }
     )
+
     if (localRes.ok) {
-      const filename = await localRes.json()
-      return '/tmp/' + filename
+      const { message } = await localRes.json()
+      return '/tmp/' + message
     }
 
     return undefined
