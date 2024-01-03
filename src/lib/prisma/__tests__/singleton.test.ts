@@ -27,6 +27,9 @@ describe('buildFilterWhereClause', () => {
       title: {
         search: 'Cool stamp',
       },
+      description: {
+        search: 'Cool stamp',
+      },
     })
   })
 
@@ -40,6 +43,9 @@ describe('buildFilterWhereClause', () => {
     expect(result).toEqual({
       modded: true,
       title: {
+        search: 'Test',
+      },
+      description: {
         search: 'Test',
       },
     })
