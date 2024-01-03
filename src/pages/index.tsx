@@ -26,32 +26,21 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
     'public, s-maxage=15, stale-while-revalidate=59'
   )
 
-  try {
-    const { page, sort, ...filter } = filterSchema.parse(query)
-    const pageNumber = parseInt(page || '1', 10)
+  const { page, sort, ...filter } = filterSchema.parse(query)
+  const pageNumber = parseInt(page || '1', 10)
 
-    const [count, stamps] = await prisma.stamp.filterFindManyWithCount(
-      filter,
-      sort,
-      { skip: (pageNumber - 1) * stampsPerPage(), take: stampsPerPage() }
-    )
+  const [count, stamps] = await prisma.stamp.filterFindManyWithCount(
+    filter,
+    sort,
+    { skip: (pageNumber - 1) * stampsPerPage(), take: stampsPerPage() }
+  )
 
-    return {
-      props: {
-        count,
-        stamps,
-        pageNumber,
-      },
-    }
-  } catch (e) {
-    //TODO: error boundary + zod error/prisma error/server error
-    return {
-      props: {
-        count: 0,
-        stamps: [],
-        pageNumber: 1,
-      },
-    }
+  return {
+    props: {
+      count,
+      stamps,
+      pageNumber,
+    },
   }
 }
 
