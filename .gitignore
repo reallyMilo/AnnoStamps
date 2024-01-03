@@ -39,3 +39,5 @@ yarn-error.log*
 cypress.env.json
 /cypress/screenshots/
 /cypress/downloads/
+# Sentry Config File
+.sentryclirc
