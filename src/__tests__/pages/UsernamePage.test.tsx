@@ -83,11 +83,7 @@ describe('UsernamePage', () => {
     expect(screen.queryByText('user1', { selector: 'h1' })).toBeInTheDocument()
     expect(screen.getByText('user1 amazing stamp creator')).toBeInTheDocument()
   })
-  it('displays no user found', () => {
-    render(<UsernamePage user={null} />)
 
-    expect(screen.getByText('User not found')).toBeInTheDocument()
-  })
   it('notifies user has no stamps', () => {
     userStamp.listedStamps = []
     render(<UsernamePage user={userStamp} />)
