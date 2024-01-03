@@ -2,7 +2,6 @@ import { Popover } from '@headlessui/react'
 import { EnvelopeIcon } from '@heroicons/react/24/outline'
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 
 import Grid from '@/components/Layout/Grid'
 import StampCard from '@/components/StampCard'
@@ -11,55 +10,38 @@ import { userIncludeStatement, UserWithStamps } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
 type UsernamePageProps = {
-  user: UserWithStamps | null
+  user: UserWithStamps
 }
 
 export const getServerSideProps: GetServerSideProps<
   UsernamePageProps
 > = async ({ query, res }) => {
-  try {
-    if (typeof query.username !== 'string') {
-      throw new Error('invalid input')
-    }
-    const user = await prisma.user.findUnique({
-      include: userIncludeStatement,
-      where: { usernameURL: query.username },
-    })
+  const user = await prisma.user.findUnique({
+    include: userIncludeStatement,
+    where: { usernameURL: query.username as string },
+  })
 
-    res.setHeader(
-      'Cache-Control',
-      'public, s-maxage=15, stale-while-revalidate=59'
-    )
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=15, stale-while-revalidate=59'
+  )
 
+  if (!user) {
     return {
-      props: {
-        user,
-      },
+      notFound: true,
     }
-  } catch (e) {
-    return {
-      props: {
-        user: null,
-      },
-    }
+  }
+
+  return {
+    props: {
+      user,
+    },
   }
 }
 
 const UsernamePage = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const router = useRouter()
-  const { username: queryUsername } = router.query
-
-  if (!user) {
-    //TODO: 404 page
-    return (
-      <Container className="flex flex-col justify-center gap-4">
-        <h1 className="text-center text-2xl">{queryUsername}</h1>
-        <span className="text-center">User not found</span>
-      </Container>
-    )
-  }
   return (
     <>
       <div className="w-full bg-[#8B6834] text-white">
