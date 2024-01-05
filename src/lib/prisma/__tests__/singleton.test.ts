@@ -25,10 +25,10 @@ describe('buildFilterWhereClause', () => {
       category: 'production',
       townhall: true,
       title: {
-        search: 'Cool stamp',
+        search: 'Cool | stamp',
       },
       description: {
-        search: 'Cool stamp',
+        search: 'Cool | stamp',
       },
     })
   })
