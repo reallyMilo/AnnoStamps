@@ -68,6 +68,13 @@ export const buildFilterWhereClause = (
 ) => {
   const { modded, capital, region, category, townhall, tradeUnion, search } =
     filter
+
+  // https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search#postgresql
+  // increase chance that user search returns something with or matching
+  const parsedQuery = search
+    ? search.replace(/(\w)\s+(\w)/g, '$1 | $2')
+    : undefined
+
   return {
     ...(modded ? { modded: parseBoolean(modded) } : {}),
     ...(region ? { region } : {}),
@@ -75,13 +82,13 @@ export const buildFilterWhereClause = (
     ...(capital ? { capital } : {}),
     ...(parseBoolean(townhall) ? { townhall: true } : {}),
     ...(parseBoolean(tradeUnion) ? { tradeUnion: true } : {}),
-    ...(search
+    ...(parsedQuery
       ? {
           title: {
-            search,
+            search: parsedQuery,
           },
           description: {
-            search,
+            search: parsedQuery,
           },
         }
       : {}),
