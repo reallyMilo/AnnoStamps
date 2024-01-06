@@ -21,19 +21,15 @@ const prismaClientSingleton = () => {
           async filterFindManyWithCount(
             filter: Omit<FilterState, 'sort' | 'page'>,
             sort: FilterState['sort'],
-            args?: Required<Pick<Prisma.StampFindManyArgs, 'take' | 'skip'>>
-          ): Promise<[number, StampWithRelations[]]> {
+            args: Required<Pick<Prisma.StampFindManyArgs, 'take' | 'skip'>>
+          ): Promise<[number, StampWithRelations[], number]> {
             return prisma.$transaction(async (q) => {
               const count = await q.stamp.count({
                 where: buildFilterWhereClause(filter),
               })
 
-              if (args?.skip) {
-                const { skip } = args
-
-                if (skip >= count) {
-                  args.skip = 0
-                }
+              if (args.skip > count) {
+                args.skip = 0
               }
 
               const stamps = await q.stamp.findMany({
@@ -43,7 +39,7 @@ const prismaClientSingleton = () => {
                 ...args,
               })
 
-              return [count, stamps]
+              return [count, stamps, args.skip]
             })
           },
         },
