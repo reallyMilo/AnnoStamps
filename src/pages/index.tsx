@@ -27,14 +27,15 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
   )
 
   const { page, sort, ...filter } = filterSchema.parse(query)
-  const pageNumber = parseInt(page || '1', 10)
+  const queryPageNumber = parseInt(page || '1', 10)
 
-  const [count, stamps] = await prisma.stamp.filterFindManyWithCount(
+  const [count, stamps, resetPage] = await prisma.stamp.filterFindManyWithCount(
     filter,
     sort,
-    { skip: (pageNumber - 1) * stampsPerPage(), take: stampsPerPage() }
+    { skip: (queryPageNumber - 1) * stampsPerPage(), take: stampsPerPage() }
   )
 
+  const pageNumber = resetPage === 0 ? 1 : queryPageNumber
   return {
     props: {
       count,
@@ -49,8 +50,6 @@ const HomePage = ({
   stamps,
   pageNumber,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const initialPage = pageNumber * stampsPerPage() >= count ? 1 : pageNumber
-
   return (
     <Container>
       <Filter />
@@ -66,7 +65,7 @@ const HomePage = ({
               <StampCard key={stamp.id} {...stamp} />
             ))}
           </Grid>
-          <Pagination count={count} page={initialPage} />
+          <Pagination count={count} page={pageNumber} />
         </>
       )}
     </Container>
