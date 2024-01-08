@@ -5,6 +5,7 @@ import useFilterReducer from '@/lib/hooks/useFilter'
 const Search = () => {
   const [filter, setFilter] = useFilterReducer()
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     const val = e.target as HTMLFormElement
     const search = val.search as HTMLInputElement
 
