@@ -1,5 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { EnvelopeOpenIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import * as Sentry from '@sentry/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
@@ -8,8 +9,8 @@ import { toast } from 'react-hot-toast'
 
 import { cn } from '@/lib/utils'
 
-const Confirm = ({ email = '' }) => (
-  <Transition appear show={email !== ''} as={Fragment}>
+const Confirm = ({ email }: { email: string | null }) => (
+  <Transition appear show={email ? true : false} as={Fragment}>
     <div className="fixed inset-0 z-50">
       <Transition.Child
         as={Fragment}
@@ -42,7 +43,7 @@ const Confirm = ({ email = '' }) => (
             </h3>
 
             <p className="mt-4 text-center text-lg">
-              We emailed a magic link to <strong>{email ?? ''}</strong>.
+              We emailed a magic link to <strong>{email}</strong>.
               <br />
               Check your inbox and click the link in the email to login or sign
               up.
@@ -72,24 +73,20 @@ const AuthModal = () => {
   const signInWithEmail = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
-    let toastId
-    try {
-      toastId = toast.loading('Sending magic link...')
+    const sendingEmailToastId = toast.loading('Sending magic link...')
 
-      const response = await signIn('email', {
-        redirect: false,
-        callbackUrl: window.location.href,
-        email: formData.get('email'),
-      })
+    const response = await signIn('email', {
+      redirect: false,
+      callbackUrl: window.location.href,
+      email: formData.get('email'),
+    })
 
-      if (response?.error) {
-        throw new Error(response.error)
-      }
-      setEmail(formData.get('email') as string)
-      toast.dismiss(toastId)
-    } catch (err) {
-      toast.error('Unable to sign in', { id: toastId })
+    if (response?.error) {
+      toast.dismiss(sendingEmailToastId)
+      toast.error(response.error)
+      Sentry.captureException(response.error)
     }
+    setEmail(formData.get('email') as string)
   }
 
   const signInWithGoogle = () => {
@@ -248,7 +245,7 @@ const AuthModal = () => {
                         Sign in
                       </button>
 
-                      <Confirm email={email ?? ''} />
+                      <Confirm email={email} />
                     </form>
                   </div>
                 </div>
