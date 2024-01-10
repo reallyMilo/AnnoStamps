@@ -77,7 +77,6 @@ const AuthModal = () => {
 
     const response = await signIn('email', {
       redirect: false,
-      callbackUrl: window.location.href,
       email: formData.get('email'),
     })
 
@@ -85,6 +84,7 @@ const AuthModal = () => {
       toast.dismiss(sendingEmailToastId)
       toast.error(response.error)
       Sentry.captureException(response.error)
+      return
     }
     setEmail(formData.get('email') as string)
   }
@@ -92,17 +92,13 @@ const AuthModal = () => {
   const signInWithGoogle = () => {
     toast.loading('Redirecting...')
 
-    signIn('google', {
-      callbackUrl: window.location.href,
-    })
+    signIn('google')
   }
 
   const signInWithDiscord = () => {
     toast.loading('Redirecting...')
 
-    signIn('discord', {
-      callbackUrl: window.location.href,
-    })
+    signIn('discord')
   }
 
   return (
