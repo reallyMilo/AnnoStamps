@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import Link from 'next/link'
+
 const socials = [
   {
     name: 'discord',
@@ -19,8 +19,15 @@ const Footer = () => {
         <p className="text-sm font-bold text-white">Anno Stamps</p>
 
         <div className="flex items-center space-x-5 px-5">
+          <a
+            href="https://www.buymeacoffee.com/miloK"
+            target="_blank"
+            className="text-white"
+          >
+            Support the site
+          </a>
           {socials.map((social) => (
-            <Link
+            <a
               key={social.name}
               href={social.url}
               target="_blank"
@@ -36,7 +43,7 @@ const Footer = () => {
                   height: 'auto',
                 }}
               />{' '}
-            </Link>
+            </a>
           ))}
         </div>
       </div>
