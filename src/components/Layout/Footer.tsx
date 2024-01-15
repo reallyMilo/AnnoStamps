@@ -24,7 +24,7 @@ const Footer = () => {
             target="_blank"
             className="text-white"
           >
-            Support the site
+            Support AnnoStamps
           </a>
           {socials.map((social) => (
             <a
