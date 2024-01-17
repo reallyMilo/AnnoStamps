@@ -1,11 +1,14 @@
-import { UserCircleIcon, WrenchIcon } from '@heroicons/react/24/solid'
+import {
+  ArrowDownTrayIcon,
+  UserCircleIcon,
+  WrenchIcon,
+} from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import type { StampWithRelations } from '@/lib/prisma/queries'
 
 import Category from './Category'
-import LikeButton from './LikeButton'
 
 const StampCard = ({
   id,
@@ -14,8 +17,7 @@ const StampCard = ({
   region,
   modded,
   imageUrl,
-  collection,
-  likedBy,
+  downloads,
   images,
   user,
 }: StampWithRelations) => {
@@ -25,76 +27,65 @@ const StampCard = ({
       : images[0].thumbnailUrl ?? images[0].originalUrl
 
   return (
-    <article className="grid w-full grid-flow-row rounded-lg bg-white shadow-md">
+    <div className="rounded-lg bg-white shadow-md">
       <Link href={`/stamp/${id}`} data-testid="stamp-card-link">
-        <div className="relative">
-          <div className="aspect-h-9 aspect-w-16 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
-            <div>
-              <Image
-                src={srcUrl}
-                alt={title ?? 'image alt'}
-                className="transition hover:opacity-80"
-                fill
-                sizes="(max-width: 320px) 700px
+        <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
+          <Image
+            src={srcUrl}
+            alt={title ?? 'image alt'}
+            className="transition hover:opacity-80"
+            fill
+            sizes="(max-width: 320px) 700px
                 (max-width: 768px) 390px,
                 (max-width: 1200px) 290px"
-                style={{
-                  objectFit: 'cover',
-                }}
-              />
-              {modded && (
-                <span className="absolute right-2 top-2 flex flex-row items-center rounded-full bg-[#6DD3C0] px-2 py-1 text-xs text-black">
-                  <WrenchIcon className="mr-1 h-3 w-3" />
-                  mods
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col flex-nowrap p-4">
-          <div className="flex justify-between">
-            <span
-              id="stamp-region"
-              className="pb-2 text-sm capitalize text-[#B11E47]"
-            >
-              {region}
+            style={{
+              objectFit: 'cover',
+            }}
+          />
+          {modded && (
+            <span className="absolute right-2 top-2 flex h-fit w-fit flex-row items-center rounded-full bg-[#6DD3C0] px-2 py-1 text-xs text-black">
+              <WrenchIcon className="mr-1 h-3 w-3" />
+              mods
             </span>
-            {collection && (
-              <span className="flex w-fit items-center gap-1 rounded-full bg-[#6DD3C0] py-1 pl-2 pr-3 text-xs capitalize text-black">
-                Collection
-              </span>
-            )}
-          </div>
+          )}
+        </div>
+      </Link>
+      <div className="flex flex-col flex-nowrap gap-y-2 p-4">
+        <Link href={`/stamp/${id}`}>
+          <h4 id="stamp-region" className=" text-[#B11E47]">
+            {region}
+          </h4>
 
           <h2
             id="stamp-title"
-            className="mt-2 w-full text-lg font-semibold leading-tight text-gray-700"
+            className="line-clamp-2 min-h-[45px] w-full overflow-hidden text-ellipsis text-lg font-semibold leading-tight text-gray-700"
           >
             {title}
           </h2>
-        </div>
-      </Link>
-      {user?.username && (
-        <Link
-          href={`/${user.usernameURL}`}
-          className="flex items-center gap-1 p-4 py-2 text-slate-500"
-        >
-          <UserCircleIcon className="h-4 w-4" />
-          <span className="hover:text-sky-700">{user.username}</span>
         </Link>
-      )}
-      <div className="flex flex-col flex-nowrap self-end p-4">
-        <ol className="relative flex flex-row justify-between pt-4 text-gray-500">
-          <li>
-            <Category category={category} />
-          </li>
 
-          <li>
-            <LikeButton id={id} likedBy={likedBy} />
-          </li>
-        </ol>
+        {user?.username ? (
+          <Link
+            href={`/${user.usernameURL}`}
+            className="flex h-11 items-center gap-1 text-slate-500"
+          >
+            <UserCircleIcon className="h-4 w-4" />
+            <span className="hover:text-sky-700">{user.username}</span>
+          </Link>
+        ) : (
+          <Link href={`/stamp/${id}`} className="h-11" />
+        )}
+        <Link href={`/stamp/${id}`}>
+          <div className="flex justify-between">
+            <Category category={category} />
+            <div className="flex items-end">
+              <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5 self-center" />
+              {downloads}
+            </div>
+          </div>
+        </Link>
       </div>
-    </article>
+    </div>
   )
 }
 
