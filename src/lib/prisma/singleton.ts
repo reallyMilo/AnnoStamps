@@ -90,11 +90,15 @@ export const buildFilterWhereClause = (
       : {}),
   } satisfies Prisma.StampWhereInput
 }
-export const buildOrderByClause = (orderBy?: FilterState['sort']) => {
+export const buildOrderByClause = (
+  orderBy?: FilterState['sort']
+): Prisma.StampOrderByWithRelationAndSearchRelevanceInput => {
   switch (orderBy) {
+    case 'likes':
+      return { likedBy: { _count: 'desc' } }
     case 'newest':
-      return { createdAt: 'desc' as const }
+      return { createdAt: 'desc' }
     default:
-      return { downloads: 'desc' as const }
+      return { downloads: 'desc' }
   }
 }
