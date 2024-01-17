@@ -22,6 +22,7 @@ describe('Stamp Card', () => {
       title: 'Stamp Title',
       category: 'production',
       region: 'old world',
+      downloads: 123,
       modded: true,
       user: { ...stamp.user, username: 'stampCreator' },
       likedBy: [{ ...stamp.likedBy[0] }, { ...stamp.likedBy[0] }],
@@ -33,11 +34,10 @@ describe('Stamp Card', () => {
     )
     expect(screen.getByAltText('Stamp Title')).toBeInTheDocument()
     expect(screen.getByText('mods')).toBeInTheDocument()
-    expect(screen.getByText('Collection')).toBeInTheDocument()
+    expect(screen.getByText('123')).toBeInTheDocument()
     expect(screen.getByText('production')).toBeInTheDocument()
     expect(screen.getByText('old world')).toBeInTheDocument()
     expect(screen.getByText('stampCreator')).toBeInTheDocument()
-    expect(screen.getByText('2')).toBeInTheDocument()
   })
 
   it('hidden mod and collection badge when false', () => {
