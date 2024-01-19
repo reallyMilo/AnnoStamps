@@ -29,12 +29,14 @@ const generateResponsiveImages = async (filepath: string, filename: string) => {
 
     if (breakpoint < width || breakpoint < height) {
       const folderPath = filepath.slice(0, -filename.length)
-      const outputPath = `${folderPath}${key}_${filename}`
+      const outputPath = `${folderPath}${key}_${filename.split('.')[0]}.webp`
 
       await sharp(filepath)
         .resize(breakpoint, breakpoint, {
           fit: 'inside',
         })
+        .sharpen()
+        .toFormat('webp', { quality: 100 })
         .toFile(outputPath)
     }
   }
