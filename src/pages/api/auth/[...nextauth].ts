@@ -93,11 +93,6 @@ export const authOptions: NextAuthOptions = {
         session.user.id = user.id
         session.user.username = user.username
         session.user.biography = user.biography
-        session.user.discord = user.discord
-        session.user.emailContact = user.emailContact
-        session.user.reddit = user.reddit
-        session.user.twitch = user.twitch
-        session.user.twitter = user.twitter
       }
       return session
     },
