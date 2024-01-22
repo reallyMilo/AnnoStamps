@@ -13,18 +13,14 @@ export const useUserStamps = () => {
     },
   })
 
-  const {
-    data: userStamps,
-    isLoading,
-    error,
-  } = useSWR<UserWithStamps>(
+  const { data, isLoading, error } = useSWR<{ data: UserWithStamps }>(
     status === 'authenticated' ? '/api/user' : null,
     fetcher
   )
 
   return {
     status,
-    userStamps,
+    userStamps: data?.data,
     isLoading,
     error,
   }

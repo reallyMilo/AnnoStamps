@@ -1,21 +1,20 @@
-import { User } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 
-import { userIncludeStatement } from '@/lib/prisma/queries'
+import { userIncludeStatement, UserWithStamps } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
 import { authOptions } from './auth/[...nextauth]'
 
-type ResponseData =
-  | {
-      message?: string
-    }
-  | Partial<User>
+type Response = {
+  data?: Partial<UserWithStamps>
+  message: string
+}
 
 export default async function usernameHandler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse<Response>
 ) {
   const session = await getServerSession(req, res, authOptions)
 
@@ -34,7 +33,7 @@ export default async function usernameHandler(
       if (!user) {
         return res.status(404).json({ message: 'No stamps found' })
       }
-      return res.status(200).json(user)
+      return res.status(200).json({ message: 'user stamps', data: user })
     } catch (e) {
       return res.status(500).json({ message: 'zod/prisma/server error' })
     }
@@ -42,22 +41,29 @@ export default async function usernameHandler(
 
   if (req.method === 'PUT') {
     try {
-      const { username, ...profile } = req.body
+      const { username, biography } = req.body
 
       const updateData = session.user.username
-        ? profile
+        ? biography
         : {
             username,
             usernameURL: username.toLowerCase(),
-            ...profile,
+            biography,
           }
-      const user = await prisma.user.update({
+
+      await prisma.user.update({
         data: updateData,
         where: { id: session.user.id },
       })
-      return res.status(200).json(user)
+
+      return res.status(200).json({ message: 'updated user info' })
     } catch (e) {
-      return res.status(500).json({ message: 'zod/prisma/server error' })
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          return res.status(400).json({ message: 'username already taken.' })
+        }
+      }
+      return res.status(500).json({ message: 'zod/server error' })
     }
   }
 
