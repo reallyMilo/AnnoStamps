@@ -2,6 +2,10 @@ import UsernamePage from '@/pages/[username]'
 
 import { render, screen } from '../test-utils'
 
+const stats = {
+  downloads: 10,
+  likes: 5,
+}
 const userStamp = {
   id: 'clmsefb2r0000k9xxwsnklpvm',
   name: 'User 1',
@@ -78,7 +82,7 @@ const userStamp = {
 }
 describe('UsernamePage', () => {
   it('renders and all provided fields', () => {
-    render(<UsernamePage user={userStamp} />)
+    render(<UsernamePage user={userStamp} stats={stats} />)
 
     expect(screen.queryByText('user1', { selector: 'h1' })).toBeInTheDocument()
     expect(screen.getByText('user1 amazing stamp creator')).toBeInTheDocument()
@@ -86,7 +90,7 @@ describe('UsernamePage', () => {
 
   it('notifies user has no stamps', () => {
     userStamp.listedStamps = []
-    render(<UsernamePage user={userStamp} />)
+    render(<UsernamePage user={userStamp} stats={stats} />)
 
     expect(screen.getByText('user1')).toBeInTheDocument()
     expect(screen.getByText('User has no stamps')).toBeInTheDocument()
