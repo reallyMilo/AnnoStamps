@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
-import toast from 'react-hot-toast'
 
 import Container from '@/components/ui/Container'
 import { displayAuthModal } from '@/lib/utils'
@@ -16,32 +15,35 @@ const Account = () => {
   })
 
   const username = session?.user.username
-  const [isError, setIsError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.validity.patternMismatch) {
-      setIsError(true)
+      setErrorMessage(
+        'Only alphanumeric, dashes(-) and underscores(_) accepted.'
+      )
       return
     }
 
-    setIsError(false)
+    setErrorMessage(null)
   }
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
 
-    try {
-      await fetch(`/api/user`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(Object.fromEntries(formData)),
-      })
-      router.reload()
-    } catch (e) {
-      toast.error('Failed to update data!')
+    const updateRes = await fetch(`/api/user`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(Object.fromEntries(formData)),
+    })
+    if (!updateRes.ok) {
+      const updateJson = await updateRes.json()
+      setErrorMessage(updateJson.message)
+      return
     }
+    router.reload()
   }
   if (status === 'loading') {
     return (
@@ -93,9 +95,9 @@ const Account = () => {
                     />
                   </div>
                 </div>
-                {isError && (
+                {errorMessage && (
                   <p className="mt-2 text-sm text-red-600" id="username-error">
-                    Only alphanumeric, dashes(-) and underscores(_) accepted.
+                    {errorMessage}
                   </p>
                 )}
                 {session.user?.username && (
@@ -128,126 +130,12 @@ const Account = () => {
               </div>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
-            <div>
-              <h2 className="text-base font-semibold leading-7 text-gray-900">
-                Socials
-              </h2>
-              <p className="mt-1 text-sm leading-6 text-gray-600">
-                Social contacts that you add will be displayed on your
-                annostamps.com/username page for users to contact you.
-              </p>
-            </div>
-
-            <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="emailContact"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Email Contact
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="emailContact"
-                    name="emailContact"
-                    type="email"
-                    autoComplete="email"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder="Email contact to be displayed"
-                    defaultValue={session.user?.emailContact}
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-4">
-                {/* Discord */}
-                <label
-                  htmlFor="discord"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Discord
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="discord"
-                    name="discord"
-                    type="text"
-                    autoComplete="off"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder="Discord username"
-                    defaultValue={session.user?.discord}
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-4">
-                {/* Twitter */}
-                <label
-                  htmlFor="twitter"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Twitter
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="twitter"
-                    name="twitter"
-                    type="text"
-                    autoComplete="off"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder="Twitter handle"
-                    defaultValue={session.user?.twitter}
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-4">
-                {/* Reddit */}
-                <label
-                  htmlFor="reddit"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Reddit
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="reddit"
-                    name="reddit"
-                    type="text"
-                    autoComplete="off"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder="Reddit username"
-                    defaultValue={session.user?.reddit}
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-4">
-                {/* Twitch */}
-                <label
-                  htmlFor="twitch"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Twitch
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="twitch"
-                    name="twitch"
-                    type="text"
-                    autoComplete="off"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    placeholder="Twitch username"
-                    defaultValue={session.user?.twitch}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="submit"
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            disabled={isError}
+            disabled={errorMessage ? true : false}
           >
             Save
           </button>
