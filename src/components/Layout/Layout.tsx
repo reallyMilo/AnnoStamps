@@ -1,6 +1,5 @@
 import Head from 'next/head'
 
-import AuthModal from '../Auth/AuthModal'
 import Footer from './Footer'
 import Navbar from './Navbar'
 
@@ -20,7 +19,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <AuthModal />
+
       <div className="flex min-h-screen flex-col bg-[#F0F3F4]">
         <Navbar />
 
