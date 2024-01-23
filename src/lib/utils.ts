@@ -38,8 +38,4 @@ export async function sendRequest(
   }).then((res) => res.json())
 }
 
-export const displayAuthModal = () => {
-  window.dispatchEvent(new Event('open-auth-modal'))
-}
-
 export const parseBoolean = (value?: string) => value === 'true'

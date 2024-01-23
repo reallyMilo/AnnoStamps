@@ -11,8 +11,6 @@ import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { Fragment } from 'react'
 
-import { displayAuthModal } from '@/lib/utils'
-
 const menuItems = [
   {
     label: 'My Account',
@@ -45,22 +43,17 @@ const UserMenu = () => {
   const { data: session, status } = useSession()
   const user = session?.user
 
-  const handleOnClick = () => {
-    displayAuthModal()
-  }
-
   if (status === 'loading')
     return <div className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200" />
 
   if (!user)
     return (
-      <button
-        type="button"
-        onClick={handleOnClick}
+      <Link
+        href="/auth/signin"
         className="ml-4 rounded-md bg-[#6DD3C0] px-4 py-2 text-sm font-bold text-[#222939] transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-500 focus:ring-opacity-50"
       >
         Add Stamp
-      </button>
+      </Link>
     )
   return (
     <Menu as="div" data-testid="user-menu" className="relative z-50">
@@ -129,7 +122,7 @@ const UserMenu = () => {
                     <button
                       data-testid="logout-button"
                       className="flex w-full items-center space-x-2 rounded-md px-4 py-2 hover:bg-gray-100"
-                      onClick={() => signOut()}
+                      onClick={() => signOut({ callbackUrl: '/' })}
                     >
                       <Icon className="h-5 w-5 shrink-0 text-gray-500" />
                       <span>{label}</span>
