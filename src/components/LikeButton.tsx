@@ -1,14 +1,16 @@
 import { HandThumbUpIcon } from '@heroicons/react/24/solid'
+import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import useSWRMutation from 'swr/mutation'
 
 import { StampWithRelations } from '@/lib/prisma/queries'
-import { cn, displayAuthModal } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 
 type LikeButtonProps = Pick<StampWithRelations, 'likedBy' | 'id'>
 
 const LikeButton = ({ id, likedBy }: LikeButtonProps) => {
+  const router = useRouter()
   const { data: session } = useSession()
   const authUser = session?.user
   const [isLiked, setIsLiked] = useState(false)
@@ -30,7 +32,10 @@ const LikeButton = ({ id, likedBy }: LikeButtonProps) => {
     }
   )
   const addLikeToStamp = async () => {
-    if (!authUser) return displayAuthModal()
+    //TODO: set signin callback to stamp user tried to like
+    if (!authUser) {
+      router.push('/auth/signin')
+    }
 
     const { ok } = await trigger()
     if (!ok) {
