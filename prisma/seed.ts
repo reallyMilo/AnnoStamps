@@ -15,12 +15,7 @@ export const seedUserData = (
     email: `user${index + 1}@example.com`,
     username: `user${index + 1}`,
     usernameURL: `user${index + 1}`,
-    emailContact: `user${index + 1}@example.com`,
     biography: `user${index + 1} amazing stamp creator`,
-    discord: `user${index + 1}`,
-    reddit: `user${index + 1}`,
-    twitter: `user${index + 1}`,
-    twitch: `user${index + 1}`,
   }))
 }
 
