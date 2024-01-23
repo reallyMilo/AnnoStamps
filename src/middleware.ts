@@ -5,13 +5,17 @@ export default withAuth({
     signIn: '/auth/signin',
     signOut: '/',
     error: '/auth/error',
-    verifyRequest: '/auth/verify-request',
+    verifyRequest: '/',
   },
   callbacks: {
     authorized: ({ req }) => {
-      // verify token and return a boolean
-      const sessionToken = req.cookies.get('next-auth.session-token')
-      if (sessionToken) return true
+      //FIXME: Hack for fixing production middleware issues.
+      // could be env variables in production NEXTAUTH_URL
+      const localSessionToken = req.cookies.get('next-auth.session-token')
+      const prodSessionToken = req.cookies.get(
+        '__Secure-next-auth.session-token'
+      )
+      if (localSessionToken || prodSessionToken) return true
       else return false
     },
   },
