@@ -2,9 +2,8 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { PrismaClient } from '@prisma/client'
 import { readFileSync } from 'fs'
 import Handlebars from 'handlebars'
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import NextAuth, { NextAuthOptions, User } from 'next-auth'
 import DiscordProvider from 'next-auth/providers/discord'
-import EmailProvider from 'next-auth/providers/email'
 import GoogleProvider from 'next-auth/providers/google'
 import nodemailer from 'nodemailer'
 import path from 'path'
@@ -23,25 +22,8 @@ const transporter = nodemailer.createTransport({
 })
 
 const emailsDir = path.resolve(process.cwd(), 'emails')
-//@ts-expect-error any type for props
-const sendVerificationRequest = async ({ identifier, url }) => {
-  const emailFile = readFileSync(path.join(emailsDir, 'confirm-email.html'), {
-    encoding: 'utf8',
-  })
-  const emailTemplate = Handlebars.compile(emailFile)
-  await transporter.sendMail({
-    from: `"Anno Stamps" ${process.env.EMAIL_FROM}`,
-    to: identifier,
-    subject: 'Your sign-in link for Anno Stamps',
-    html: emailTemplate({
-      base_url: process.env.NEXTAUTH_URL,
-      signin_url: url,
-      email: identifier,
-    }),
-  })
-}
-//@ts-expect-error any type for props
-const sendWelcomeEmail = async ({ user }) => {
+
+const sendWelcomeEmail = async ({ user }: { user: User }) => {
   const { email } = user
 
   try {
@@ -51,7 +33,7 @@ const sendWelcomeEmail = async ({ user }) => {
     const emailTemplate = Handlebars.compile(emailFile)
     await transporter.sendMail({
       from: `"Anno Stamps" ${process.env.EMAIL_FROM}`,
-      to: email,
+      to: email as string,
       subject: 'Welcome to Anno Stamps! 🎉',
       html: emailTemplate({
         base_url: process.env.NEXTAUTH_URL,
@@ -66,16 +48,12 @@ const sendWelcomeEmail = async ({ user }) => {
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/',
+    signIn: '/auth/signin',
     signOut: '/',
     error: '/auth/error',
     verifyRequest: '/',
   },
   providers: [
-    EmailProvider({
-      maxAge: 10 * 60,
-      sendVerificationRequest,
-    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_ID ?? '',
       clientSecret: process.env.GOOGLE_SECRET ?? '',
