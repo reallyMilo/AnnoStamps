@@ -1,5 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid'
+import {
+  PencilSquareIcon,
+  PlusIcon,
+  TrashIcon,
+} from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Fragment, useState } from 'react'
@@ -96,13 +100,33 @@ const StampDeleteModal = ({
     </>
   )
 }
+const DisplayUsername = ({
+  username,
+}: {
+  username: string | null | undefined
+}) => {
+  if (!username) {
+    return (
+      <Link
+        href="/user/account"
+        className="text-xl font-bold text-blue-500 underline"
+      >
+        Set username!
+      </Link>
+    )
+  }
 
+  return <h1 className="text-xl font-bold text-gray-800">{username} Stamps</h1>
+}
 const Stamps = () => {
   const { isLoading, error, userStamps } = useUserStamps()
+
   if (error) {
     return (
       <Container>
-        <h1 className="text-xl font-bold text-gray-800">Your Stamps</h1>
+        <h1 className="text-xl font-bold text-gray-800">
+          Error fetching stamps
+        </h1>
         <p>{error.info.message}</p>
       </Container>
     )
@@ -110,38 +134,57 @@ const Stamps = () => {
   if (isLoading) {
     return (
       <Container>
-        <h1 className="text-xl font-bold text-gray-800">Your Stamps</h1>
         <div className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200" />{' '}
+      </Container>
+    )
+  }
+  if (userStamps?.listedStamps.length === 0) {
+    return (
+      <Container>
+        <DisplayUsername username={userStamps.username} />
+        <div className="text-center">
+          <h3 className="mt-2 text-sm font-semibold text-gray-900">
+            No stamps
+          </h3>
+          <p className="mt-1 text-sm text-gray-500">
+            Get started by creating a new stamp.
+          </p>
+          <div className="mt-6">
+            <Link
+              href="/user/create"
+              className="inline-flex items-center rounded-md bg-[#6DD3C0]  px-3 py-2 text-sm font-semibold text-black shadow-sm hover:opacity-75"
+            >
+              <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+              New Stamp
+            </Link>
+          </div>
+        </div>
       </Container>
     )
   }
   return (
     <Container>
-      <h1 className="text-xl font-bold text-gray-800">Your Stamps</h1>
+      <DisplayUsername username={userStamps?.username} />
       <Grid>
-        {userStamps?.listedStamps.length === 0 ? (
-          <p> You got no stamps</p>
-        ) : (
-          userStamps?.listedStamps.map((stamp) => (
-            <div key={stamp.id} className="flex flex-col">
-              <div className="mb-1 flex">
-                <StampDeleteModal {...stamp} />
+        {userStamps?.listedStamps.map((stamp) => (
+          <div key={stamp.id} className="flex flex-col">
+            <div className="mb-1 flex">
+              <StampDeleteModal {...stamp} />
 
-                <Link
-                  className="mb-1 ml-auto flex rounded-md bg-[#6DD3C0] px-4 py-2 text-sm font-bold text-[#222939] transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-500 focus:ring-opacity-50"
-                  href={{
-                    pathname: `/user/[stamp]`,
-                    query: { stamp: stamp.id },
-                  }}
-                >
-                  <PencilSquareIcon className="mr-2 h-5 w-5" /> Edit Stamp{' '}
-                </Link>
-              </div>
-
-              <StampCard user={userStamps} {...stamp} />
+              <Link
+                className="mb-1 ml-auto flex rounded-md bg-[#6DD3C0] px-4 py-2 text-sm font-bold text-[#222939] transition hover:bg-rose-500 focus:outline-none focus:ring-4 focus:ring-rose-500 focus:ring-opacity-50"
+                href={{
+                  pathname: `/user/[stamp]`,
+                  query: { stamp: stamp.id },
+                }}
+              >
+                <PencilSquareIcon className="mr-2 h-5 w-5" /> Edit Stamp{' '}
+              </Link>
             </div>
-          ))
-        )}
+
+            <StampCard user={userStamps} {...stamp} />
+          </div>
+        ))}
       </Grid>
     </Container>
   )
