@@ -5,7 +5,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { Fragment, useEffect, useState } from 'react'
-import { toast } from 'react-hot-toast'
 
 import { cn } from '@/lib/utils'
 
@@ -73,7 +72,6 @@ const AuthModal = () => {
   const signInWithEmail = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
-    const sendingEmailToastId = toast.loading('Sending magic link...')
 
     const response = await signIn('email', {
       redirect: false,
@@ -81,8 +79,6 @@ const AuthModal = () => {
     })
 
     if (response?.error) {
-      toast.dismiss(sendingEmailToastId)
-      toast.error(response.error)
       Sentry.captureException(response.error)
       return
     }
@@ -90,14 +86,10 @@ const AuthModal = () => {
   }
 
   const signInWithGoogle = () => {
-    toast.loading('Redirecting...')
-
     signIn('google')
   }
 
   const signInWithDiscord = () => {
-    toast.loading('Redirecting...')
-
     signIn('discord')
   }
 

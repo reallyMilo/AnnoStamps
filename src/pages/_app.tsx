@@ -3,7 +3,6 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Script from 'next/script'
 import { SessionProvider } from 'next-auth/react'
-import { Toaster } from 'react-hot-toast'
 
 import Layout from '@/components/Layout/Layout'
 const StampsApp = ({
@@ -31,7 +30,6 @@ const StampsApp = ({
       <SessionProvider session={session}>
         <Layout>
           <Component {...pageProps} className="font-sans" />
-          <Toaster />
         </Layout>
       </SessionProvider>
     </>
