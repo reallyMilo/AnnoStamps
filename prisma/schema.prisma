@@ -43,7 +43,7 @@ model Stamp {
   updatedAt    DateTime @updatedAt
   modded       Boolean  @default(false)
   downloads    Int      @default(0)
-  user         User     @relation("StampCreator", fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation("StampCreator", fields: [userId], references: [id], onDelete: NoAction)
   likedBy      User[]   @relation("StampLiker")
   images       Image[]  @relation("StampImage")
 }
@@ -63,7 +63,7 @@ model Account {
   session_state      String?
   oauth_token_secret String?
   oauth_token        String?
-  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user               User    @relation(fields: [userId], references: [id], onDelete: NoAction)
 
   @@unique([provider, providerAccountId])
 }
@@ -73,7 +73,7 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: NoAction)
 }
 
 model User {
@@ -85,11 +85,6 @@ model User {
   username      String?   @unique
   usernameURL   String?   @unique
   biography     String?
-  discord       String?
-  reddit        String?
-  emailContact  String?
-  twitch        String?
-  twitter       String?
   accounts      Account[]
   sessions      Session[]
   listedStamps  Stamp[]   @relation("StampCreator")
