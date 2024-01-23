@@ -3,16 +3,10 @@ import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 
 import Container from '@/components/ui/Container'
-import { displayAuthModal } from '@/lib/utils'
 
 const Account = () => {
   const router = useRouter()
-  const { data: session, status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      displayAuthModal()
-    },
-  })
+  const { data: session } = useSession()
 
   const username = session?.user.username
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -44,13 +38,6 @@ const Account = () => {
       return
     }
     router.reload()
-  }
-  if (status === 'loading') {
-    return (
-      <Container>
-        <p>login please</p>
-      </Container>
-    )
   }
 
   return (
@@ -100,7 +87,7 @@ const Account = () => {
                     {errorMessage}
                   </p>
                 )}
-                {session.user?.username && (
+                {session?.user?.username && (
                   <p className="mt-2 text-xs">
                     If you wish to change your username please contact us via
                     the discord server.
@@ -121,7 +108,7 @@ const Account = () => {
                     name="biography"
                     rows={3}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    defaultValue={session.user?.biography}
+                    defaultValue={session?.user?.biography}
                   />
                 </div>
                 <p className="mt-3 text-sm leading-6 text-gray-600">
