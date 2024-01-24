@@ -6,7 +6,12 @@ import Container from '@/components/ui/Container'
 
 const Account = () => {
   const router = useRouter()
-  const { data: session } = useSession()
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/auth/signin')
+    },
+  })
 
   const username = session?.user.username
   const [errorMessage, setErrorMessage] = useState<string | null>(null)

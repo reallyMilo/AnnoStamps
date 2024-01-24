@@ -1,7 +1,17 @@
+import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
+
 import { StampForm } from '@/components/Form/StampForm'
 import Container from '@/components/ui/Container'
 
 const CreateStampPage = () => {
+  const router = useRouter()
+  useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/auth/signin')
+    },
+  })
   const handleOnSubmit = async (formData: FormData, addImages: string[]) => {
     const res = await fetch('/api/stamp/create', {
       method: 'POST',
