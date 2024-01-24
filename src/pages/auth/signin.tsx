@@ -71,6 +71,10 @@ const SignInPage = ({
             </button>
           ))}
       </div>
+      <p className="mt-4">
+        Please contact us on Discord to transfer your Stamps made with email
+        login.
+      </p>
     </Container>
   )
 }
