@@ -2,6 +2,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Navigation } from 'swiper/modules'
@@ -54,10 +55,12 @@ type CarouselProps = {
 const Carousel = ({ images, fallBack }: CarouselProps) => {
   if (images.length === 0) {
     return (
-      <img
+      <Image
         src={fallBack}
         alt="anno stamp image"
         className="max-h-[768px] w-full object-contain object-center"
+        height={768}
+        width={1024}
       />
     )
   }
@@ -65,10 +68,12 @@ const Carousel = ({ images, fallBack }: CarouselProps) => {
     <Swiper navigation={true} modules={[Navigation]} className="">
       {images.map((image) => (
         <SwiperSlide key={image.id}>
-          <img
+          <Image
             src={image.largeUrl ?? image.originalUrl}
             alt="anno stamp image"
             className="max-h-[768px] w-full object-contain object-center"
+            height={768}
+            width={1024}
           />
         </SwiperSlide>
       ))}
