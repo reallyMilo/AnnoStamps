@@ -24,7 +24,7 @@ const StampCard = ({
   const srcUrl =
     images.length === 0
       ? imageUrl ?? 'https://placehold.co/250x250/png'
-      : images[0].thumbnailUrl ?? images[0].originalUrl
+      : images[0].smallUrl ?? images[0].originalUrl
 
   return (
     <div className="rounded-lg bg-white shadow-md">
