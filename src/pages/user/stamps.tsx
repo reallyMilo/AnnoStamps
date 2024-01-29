@@ -140,7 +140,7 @@ const Stamps = () => {
   }
   if (userStamps?.listedStamps.length === 0) {
     return (
-      <Container>
+      <Container className="space-y-6">
         <DisplayUsername username={userStamps.username} />
         <div className="text-center">
           <h3 className="mt-2 text-sm font-semibold text-gray-900">
@@ -163,7 +163,7 @@ const Stamps = () => {
     )
   }
   return (
-    <Container>
+    <Container className="space-y-6">
       <DisplayUsername username={userStamps?.username} />
       <Grid>
         {userStamps?.listedStamps.map((stamp) => (
