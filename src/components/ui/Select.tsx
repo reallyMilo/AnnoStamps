@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 
 interface SelectProps extends React.ComponentPropsWithRef<'select'> {
-  children: React.ReactElement<'option'>
+  children?: React.ReactElement<'option'>
   className?: string
   options?: string[]
   variant?: keyof typeof selectVariantStyles
@@ -24,7 +24,7 @@ const Select = ({
 }: SelectProps) => {
   return (
     <select
-      className={cn(selectVariantStyles[variant], className)}
+      className={cn(selectVariantStyles[variant], className, 'capitalize')}
       ref={ref}
       {...props}
     >

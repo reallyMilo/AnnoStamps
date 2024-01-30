@@ -98,6 +98,8 @@ export const buildOrderByClause = (
       return { likedBy: { _count: 'desc' } }
     case 'newest':
       return { createdAt: 'desc' }
+    case 'downloads':
+      return { downloads: 'desc' }
     default:
       return { downloads: 'desc' }
   }
