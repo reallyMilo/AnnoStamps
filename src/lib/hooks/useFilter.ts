@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import { useImmerReducer } from 'use-immer'
 import { z } from 'zod'
 
 export const filterSchema = z
@@ -27,64 +26,55 @@ type Action =
   | { payload: string; type: 'SORT' }
   | { payload: string; type: 'SEARCH' }
 
-const useFilterReducer = () => {
+const useFilter = () => {
   const router = useRouter()
   const { query } = router
-  const initialFilterState = filterSchema.parse(query)
 
-  const filterReducer = (draft: FilterState, action: Action) => {
+  const setFilter = (action: Action) => {
     switch (action.type) {
       case 'CATEGORY':
-        draft.category = action.payload
         router.push({
           pathname: '/',
           query: { ...query, category: action.payload },
         })
         break
       case 'REGION':
-        draft.region = action.payload
         router.push({
           pathname: '/',
           query: { ...query, region: action.payload },
         })
         break
       case 'MODDED':
-        draft.modded = action.payload
         router.push({
           pathname: '/',
           query: { ...query, modded: action.payload },
         })
         break
       case 'CAPITAL':
-        draft.capital = action.payload
         router.push({
           pathname: '/',
           query: { ...query, capital: action.payload },
         })
         break
       case 'TOWNHALL':
-        draft.townhall = action.payload
         router.push({
           pathname: '/',
           query: { ...query, townhall: action.payload },
         })
         break
       case 'TRADEUNION':
-        draft.tradeUnion = action.payload
         router.push({
           pathname: '/',
           query: { ...query, tradeUnion: action.payload },
         })
         break
       case 'SORT':
-        draft.sort = action.payload
         router.push({
           pathname: '/',
           query: { ...query, sort: action.payload },
         })
         break
       case 'SEARCH':
-        draft.search = action.payload
         router.push({
           pathname: '/',
           query: { ...query, search: action.payload },
@@ -94,10 +84,9 @@ const useFilterReducer = () => {
         break
     }
   }
-
-  const [filter, setFilter] = useImmerReducer(filterReducer, initialFilterState)
+  const filter = query as FilterState
 
   return [filter, setFilter] as const
 }
 
-export default useFilterReducer
+export default useFilter

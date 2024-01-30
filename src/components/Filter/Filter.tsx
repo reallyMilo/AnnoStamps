@@ -1,10 +1,10 @@
 import { Capital1800, Category, Region1800 } from '@/lib/game/1800/enum'
-import useFilterReducer from '@/lib/hooks/useFilter'
+import useFilter from '@/lib/hooks/useFilter'
 
 import Select from '../ui/Select'
 
 const Filter = () => {
-  const [filter, setFilter] = useFilterReducer()
+  const [filter, setFilter] = useFilter()
 
   return (
     <div className="flex flex-col pb-10">
@@ -65,6 +65,7 @@ const Filter = () => {
             id="sort"
             name="sort"
             options={['newest', 'likes']}
+            value={filter.sort}
             onChange={(e) =>
               setFilter({
                 payload: e.target.value,
