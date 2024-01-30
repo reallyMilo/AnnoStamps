@@ -31,51 +31,63 @@ const useFilter = () => {
   const { query } = router
 
   const setFilter = (action: Action) => {
+    if (!action.payload) {
+      if (
+        Object.prototype.hasOwnProperty.call(query, action.type.toLowerCase())
+      ) {
+        delete query[action.type.toLowerCase()]
+      }
+      router.replace({
+        pathname: '/',
+        query,
+      })
+      return
+    }
     switch (action.type) {
       case 'CATEGORY':
-        router.push({
+        router.replace({
           pathname: '/',
           query: { ...query, category: action.payload },
         })
         break
       case 'REGION':
-        router.push({
+        router.replace({
           pathname: '/',
           query: { ...query, region: action.payload },
         })
         break
       case 'MODDED':
-        router.push({
+        router.replace({
           pathname: '/',
           query: { ...query, modded: action.payload },
         })
         break
       case 'CAPITAL':
-        router.push({
+        router.replace({
           pathname: '/',
           query: { ...query, capital: action.payload },
         })
         break
       case 'TOWNHALL':
-        router.push({
+        router.replace({
           pathname: '/',
           query: { ...query, townhall: action.payload },
         })
         break
       case 'TRADEUNION':
-        router.push({
+        router.replace({
           pathname: '/',
           query: { ...query, tradeUnion: action.payload },
         })
         break
       case 'SORT':
-        router.push({
+        router.replace({
           pathname: '/',
           query: { ...query, sort: action.payload },
         })
         break
       case 'SEARCH':
-        router.push({
+        router.replace({
           pathname: '/',
           query: { ...query, search: action.payload },
         })
