@@ -1,9 +1,9 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 
-import useFilterReducer from '@/lib/hooks/useFilter'
+import useFilter from '@/lib/hooks/useFilter'
 
 const Search = () => {
-  const [filter, setFilter] = useFilterReducer()
+  const [filter, setFilter] = useFilter()
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const val = e.target as HTMLFormElement
