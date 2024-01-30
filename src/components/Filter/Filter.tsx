@@ -17,7 +17,7 @@ const Filter = () => {
             id="category"
             name="category"
             options={Object.values(Category)}
-            value={filter.category}
+            defaultValue={filter.category}
             onChange={(e) =>
               setFilter({ payload: e.target.value, type: 'CATEGORY' })
             }
@@ -33,7 +33,7 @@ const Filter = () => {
             id="region"
             name="region"
             options={Object.values(Region1800)}
-            value={filter.region}
+            defaultValue={filter.region}
             onChange={(e) =>
               setFilter({ payload: e.target.value, type: 'REGION' })
             }
@@ -49,7 +49,7 @@ const Filter = () => {
             id="capital"
             name="capital"
             options={Object.values(Capital1800)}
-            value={filter.capital}
+            defaultValue={filter.capital}
             onChange={(e) =>
               setFilter({ payload: e.target.value, type: 'CAPITAL' })
             }
@@ -64,17 +64,15 @@ const Filter = () => {
           <Select
             id="sort"
             name="sort"
-            options={['newest', 'likes']}
-            value={filter.sort}
+            options={['downloads', 'newest', 'likes']}
+            defaultValue={filter.sort}
             onChange={(e) =>
               setFilter({
                 payload: e.target.value,
                 type: 'SORT',
               })
             }
-          >
-            <option value="">Downloads</option>
-          </Select>
+          />
         </div>
       </div>
 
@@ -87,7 +85,7 @@ const Filter = () => {
             id="modded"
             name="modded"
             type="checkbox"
-            value={filter.modded}
+            defaultValue={filter.modded}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
             onChange={(e) =>
               setFilter({
@@ -105,7 +103,7 @@ const Filter = () => {
             id="townhall"
             name="townhall"
             type="checkbox"
-            value={filter.townhall}
+            defaultValue={filter.townhall}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
             onChange={(e) =>
               setFilter({
@@ -123,7 +121,7 @@ const Filter = () => {
             id="trade-union"
             name="trade-union"
             type="checkbox"
-            value={filter.tradeUnion}
+            defaultValue={filter.tradeUnion}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
             onChange={(e) =>
               setFilter({
