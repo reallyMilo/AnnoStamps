@@ -9,7 +9,7 @@ const Search = () => {
     const val = e.target as HTMLFormElement
     const search = val.search as HTMLInputElement
 
-    setFilter({ payload: search.value.toString(), type: 'SEARCH' })
+    setFilter({ payload: search.value.toString(), type: 'search' })
   }
   return (
     <form className="flex items-center" onSubmit={handleSubmit}>

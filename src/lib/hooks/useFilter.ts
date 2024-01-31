@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import qs from 'qs'
 import { z } from 'zod'
 
 export const filterSchema = z
@@ -11,31 +12,43 @@ export const filterSchema = z
     search: z.string(),
     sort: z.string(),
     townhall: z.string(),
-    tradeUnion: z.string(),
+    tradeunion: z.string(),
   })
   .partial()
 
 export type FilterState = z.infer<typeof filterSchema>
-type Action =
-  | { payload: string; type: 'CATEGORY' }
-  | { payload: string; type: 'REGION' }
-  | { payload: string; type: 'MODDED' }
-  | { payload: string; type: 'CAPITAL' }
-  | { payload: string; type: 'TOWNHALL' }
-  | { payload: string; type: 'TRADEUNION' }
-  | { payload: string; type: 'SORT' }
-  | { payload: string; type: 'SEARCH' }
+type Action = {
+  payload: string
+  type:
+    | 'category'
+    | 'region'
+    | 'modded'
+    | 'capital'
+    | 'townhall'
+    | 'tradeunion'
+    | 'sort'
+    | 'search'
+}
+
+const sortOrder: Action['type'][] = [
+  'category',
+  'region',
+  'modded',
+  'capital',
+  'townhall',
+  'tradeunion',
+  'sort',
+  'search',
+]
 
 const useFilter = () => {
   const router = useRouter()
   const { query } = router
 
   const setFilter = (action: Action) => {
-    if (!action.payload) {
-      if (
-        Object.prototype.hasOwnProperty.call(query, action.type.toLowerCase())
-      ) {
-        delete query[action.type.toLowerCase()]
+    if (!action.payload || action.payload === 'false') {
+      if (Object.prototype.hasOwnProperty.call(query, action.type)) {
+        delete query[action.type]
       }
       router.replace({
         pathname: '/',
@@ -43,53 +56,61 @@ const useFilter = () => {
       })
       return
     }
+
+    const queryString = qs.stringify(
+      { ...query, [action.type]: action.payload },
+      {
+        sort: (a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
+      }
+    )
+
     switch (action.type) {
-      case 'CATEGORY':
+      case 'category':
         router.replace({
           pathname: '/',
-          query: { ...query, category: action.payload },
+          query: queryString,
         })
         break
-      case 'REGION':
+      case 'region':
         router.replace({
           pathname: '/',
-          query: { ...query, region: action.payload },
+          query: queryString,
         })
         break
-      case 'MODDED':
+      case 'modded':
         router.replace({
           pathname: '/',
-          query: { ...query, modded: action.payload },
+          query: queryString,
         })
         break
-      case 'CAPITAL':
+      case 'capital':
         router.replace({
           pathname: '/',
-          query: { ...query, capital: action.payload },
+          query: queryString,
         })
         break
-      case 'TOWNHALL':
+      case 'townhall':
         router.replace({
           pathname: '/',
-          query: { ...query, townhall: action.payload },
+          query: queryString,
         })
         break
-      case 'TRADEUNION':
+      case 'tradeunion':
         router.replace({
           pathname: '/',
-          query: { ...query, tradeUnion: action.payload },
+          query: queryString,
         })
         break
-      case 'SORT':
+      case 'sort':
         router.replace({
           pathname: '/',
-          query: { ...query, sort: action.payload },
+          query: queryString,
         })
         break
-      case 'SEARCH':
+      case 'search':
         router.replace({
           pathname: '/',
-          query: { ...query, search: action.payload },
+          query: queryString,
         })
         break
       default:

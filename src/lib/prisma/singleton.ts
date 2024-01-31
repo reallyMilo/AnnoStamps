@@ -1,7 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 
 import { FilterState } from '../hooks/useFilter'
-import { parseBoolean } from '../utils'
 import {
   imageExtension,
   stampExtensions,
@@ -61,8 +60,8 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 export const buildFilterWhereClause = (
   filter: Omit<FilterState, 'sort' | 'page'>
-) => {
-  const { modded, capital, region, category, townhall, tradeUnion, search } =
+): Prisma.StampWhereInput => {
+  const { modded, capital, region, category, townhall, tradeunion, search } =
     filter
 
   // https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search#postgresql
@@ -72,12 +71,13 @@ export const buildFilterWhereClause = (
     : undefined
 
   return {
-    ...(modded ? { modded: parseBoolean(modded) } : {}),
+    ...(modded ? { modded: true } : {}),
     ...(region ? { region } : {}),
     ...(category ? { category } : {}),
     ...(capital ? { capital } : {}),
-    ...(parseBoolean(townhall) ? { townhall: true } : {}),
-    ...(parseBoolean(tradeUnion) ? { tradeUnion: true } : {}),
+    ...(townhall ? { townhall: true } : {}),
+    //FIXME: TS function return not showing type error for invalid schema where option ie. { tradeunion: true }
+    ...(tradeunion ? { tradeUnion: true } : {}),
     ...(parsedQuery
       ? {
           title: {
@@ -88,7 +88,7 @@ export const buildFilterWhereClause = (
           },
         }
       : {}),
-  } satisfies Prisma.StampWhereInput
+  }
 }
 export const buildOrderByClause = (
   orderBy?: FilterState['sort']

@@ -5,7 +5,6 @@ import Select from '../ui/Select'
 
 const Filter = () => {
   const [filter, setFilter] = useFilter()
-
   return (
     <div className="flex flex-col pb-10">
       <div className="mb-4 items-center gap-10 md:flex">
@@ -19,7 +18,7 @@ const Filter = () => {
             options={Object.values(Category)}
             defaultValue={filter.category}
             onChange={(e) =>
-              setFilter({ payload: e.target.value, type: 'CATEGORY' })
+              setFilter({ payload: e.target.value, type: 'category' })
             }
           >
             <option value="">All</option>
@@ -35,7 +34,7 @@ const Filter = () => {
             options={Object.values(Region1800)}
             defaultValue={filter.region}
             onChange={(e) =>
-              setFilter({ payload: e.target.value, type: 'REGION' })
+              setFilter({ payload: e.target.value, type: 'region' })
             }
           >
             <option value="">All</option>
@@ -51,7 +50,7 @@ const Filter = () => {
             options={Object.values(Capital1800)}
             defaultValue={filter.capital}
             onChange={(e) =>
-              setFilter({ payload: e.target.value, type: 'CAPITAL' })
+              setFilter({ payload: e.target.value, type: 'capital' })
             }
           >
             <option value="">All</option>
@@ -64,15 +63,17 @@ const Filter = () => {
           <Select
             id="sort"
             name="sort"
-            options={['downloads', 'newest', 'likes']}
+            options={['newest', 'likes']}
             defaultValue={filter.sort}
             onChange={(e) =>
               setFilter({
                 payload: e.target.value,
-                type: 'SORT',
+                type: 'sort',
               })
             }
-          />
+          >
+            <option value="">Downloads</option>
+          </Select>
         </div>
       </div>
 
@@ -85,12 +86,12 @@ const Filter = () => {
             id="modded"
             name="modded"
             type="checkbox"
-            defaultValue={filter.modded}
+            defaultChecked={filter.modded === 'true' ? true : false}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-            onChange={(e) =>
+            onChange={() =>
               setFilter({
-                payload: e.target.value === 'true' ? 'false' : 'true',
-                type: 'MODDED',
+                payload: filter.modded === 'true' ? 'false' : 'true',
+                type: 'modded',
               })
             }
           />
@@ -103,12 +104,12 @@ const Filter = () => {
             id="townhall"
             name="townhall"
             type="checkbox"
-            defaultValue={filter.townhall}
+            defaultChecked={filter.townhall === 'true' ? true : false}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-            onChange={(e) =>
+            onChange={() =>
               setFilter({
-                payload: e.target.value === 'true' ? 'false' : 'true',
-                type: 'TOWNHALL',
+                payload: filter.townhall === 'true' ? 'false' : 'true',
+                type: 'townhall',
               })
             }
           />
@@ -121,12 +122,12 @@ const Filter = () => {
             id="trade-union"
             name="trade-union"
             type="checkbox"
-            defaultValue={filter.tradeUnion}
+            defaultChecked={filter.tradeunion === 'true' ? true : false}
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-            onChange={(e) =>
+            onChange={() =>
               setFilter({
-                payload: e.target.value === 'true' ? 'false' : 'true',
-                type: 'TRADEUNION',
+                payload: filter.tradeunion === 'true' ? 'false' : 'true',
+                type: 'tradeunion',
               })
             }
           />
