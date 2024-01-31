@@ -37,5 +37,3 @@ export async function sendRequest(
     body: arg,
   }).then((res) => res.json())
 }
-
-export const parseBoolean = (value?: string) => value === 'true'
