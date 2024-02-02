@@ -1,8 +1,8 @@
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
-import Grid from '@/components/Layout/Grid'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
+import Grid from '@/components/ui/Grid'
 import { userIncludeStatement, UserWithStamps } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
