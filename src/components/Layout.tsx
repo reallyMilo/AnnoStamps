@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import UserMenu from '../Auth/UserMenu'
 import Search from '../Filter/Search'
 
 const navigation = [
