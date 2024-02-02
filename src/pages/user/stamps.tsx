@@ -8,9 +8,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Fragment, useState } from 'react'
 
-import Grid from '@/components/Layout/Grid'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
+import Grid from '@/components/ui/Grid'
 import { useUserStamps } from '@/lib/hooks/useUserStamps'
 
 const StampDeleteModal = ({
