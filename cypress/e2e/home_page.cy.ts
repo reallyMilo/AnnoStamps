@@ -3,6 +3,20 @@ describe('Home Page', () => {
     cy.visit('/')
   })
 
+  it('Navbar and Footer links render', () => {
+    cy.contains('a', 'All Stamps').should('have.attr', 'href', '/')
+    cy.contains('a', 'How To').should('have.attr', 'href', '/how-to')
+    cy.contains('a', 'Add Stamp').should('have.attr', 'href', '/auth/signin')
+
+    cy.contains('a', 'Support AnnoStamps').should(
+      'have.attr',
+      'href',
+      'https://www.buymeacoffee.com/miloK'
+    )
+    cy.getBySel('discord').should('exist')
+    cy.getBySel('github').should('exist')
+  })
+
   it('set filter fields displays in url', () => {
     cy.get('select#category')
       .select('production')
