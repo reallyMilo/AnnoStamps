@@ -1,4 +1,4 @@
-import { Capital1800, Category, Region1800 } from '@/lib/game/1800/enum'
+import { CAPITALS_1800, CATEGORIES, REGIONS_1800 } from '@/lib/game/1800/data'
 import useFilter from '@/lib/hooks/useFilter'
 
 import Select from '../ui/Select'
@@ -15,7 +15,7 @@ const Filter = () => {
           <Select
             id="category"
             name="category"
-            options={Object.values(Category)}
+            options={Object.values(CATEGORIES)}
             defaultValue={filter.category}
             onChange={(e) =>
               setFilter({ payload: e.target.value, type: 'category' })
@@ -31,7 +31,7 @@ const Filter = () => {
           <Select
             id="region"
             name="region"
-            options={Object.values(Region1800)}
+            options={Object.values(REGIONS_1800)}
             defaultValue={filter.region}
             onChange={(e) =>
               setFilter({ payload: e.target.value, type: 'region' })
@@ -47,7 +47,7 @@ const Filter = () => {
           <Select
             id="capital"
             name="capital"
-            options={Object.values(Capital1800)}
+            options={Object.values(CAPITALS_1800)}
             defaultValue={filter.capital}
             onChange={(e) =>
               setFilter({ payload: e.target.value, type: 'capital' })
