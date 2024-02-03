@@ -1,15 +1,23 @@
 import { createId } from '@paralleldrive/cuid2'
 import { PrismaClient, User } from '@prisma/client'
 
-import { GOOD_CATEGORIES_1800 } from '../src/lib/game/1800/data'
-import { getGoodRegion } from '../src/lib/game/1800/helpers'
+import {
+  ARCTIC_GOODS,
+  ENBESA_GOODS,
+  NEW_WORLD_GOODS,
+  OLD_WORLD_GOODS,
+  REGIONS_1800,
+} from '../src/lib/game/1800/data'
 
 const prisma = new PrismaClient()
 
-export const seedUserData = (
+const region = Object.values(REGIONS_1800)
+const goods = [OLD_WORLD_GOODS, NEW_WORLD_GOODS, ENBESA_GOODS, ARCTIC_GOODS]
+
+export const generateUserData = (
   length: number
-): Omit<User, 'image' | 'emailVerified'>[] => {
-  return Array.from({ length }, (_, index) => ({
+): Omit<User, 'image' | 'emailVerified'>[] =>
+  Array.from({ length }, (_, index) => ({
     id: createId(),
     name: `User ${index + 1}`,
     email: `user${index + 1}@example.com`,
@@ -17,21 +25,16 @@ export const seedUserData = (
     usernameURL: `user${index + 1}`,
     biography: `user${index + 1} amazing stamp creator`,
   }))
-}
 
-export const seedStampData = (
+export const generateStampData = (
   length: number,
   users: Omit<User, 'image' | 'emailVerified'>[]
-) => {
-  return Array.from({ length }, (_, index) => {
-    const goodCategories = Object.keys(GOOD_CATEGORIES_1800)
-    const rndCategoryIndex = Math.floor(Math.random() * goodCategories.length)
-
-    const associatedGoods =
-      Object.values(GOOD_CATEGORIES_1800)[rndCategoryIndex].items
-    const rndGoodIndex = Math.floor(Math.random() * associatedGoods.length)
-
-    const good = associatedGoods[rndGoodIndex].name
+) =>
+  Array.from({ length: length }, (_, index) => {
+    const regionIdx = Math.floor(Math.random() * 4)
+    const regionArray = goods[regionIdx]
+    const goodIdx = Math.floor(Math.random() * regionArray.length)
+    const good = regionArray[goodIdx]
     const id = createId()
     return {
       id,
@@ -40,7 +43,7 @@ export const seedStampData = (
       title: `Stamp-${good}-${index}`,
       description: `Stamp-${good}-${index}`,
       category: 'production',
-      region: getGoodRegion(good),
+      region: region[regionIdx],
       stampFileUrl: '/stamp.zip',
       collection: index % 2 ? false : true,
       townhall: index % 2 ? false : true,
@@ -49,9 +52,8 @@ export const seedStampData = (
       downloads: index,
     }
   })
-}
 
-export const seedImages = () => {
+export const generatePlaceHoldImages = () => {
   return [1, 2].map((image) => {
     const id = createId()
     return {
@@ -64,14 +66,12 @@ export const seedImages = () => {
     }
   })
 }
-
-const userData = seedUserData(100)
-const stampData = seedStampData(1000, userData)
-
 async function seed() {
+  const userData = generateUserData(100)
+  const stampData = generateStampData(1000, userData)
   await prisma.user.createMany({ data: userData })
 
-  const stamp = await prisma.stamp.createMany({
+  await prisma.stamp.createMany({
     data: stampData,
   })
 
@@ -87,7 +87,7 @@ async function seed() {
         },
         images: {
           createMany: {
-            data: seedImages(),
+            data: generatePlaceHoldImages(),
           },
         },
       },
