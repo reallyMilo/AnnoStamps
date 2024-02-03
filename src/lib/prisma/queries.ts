@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 import { getUnixTime } from 'date-fns'
 import z from 'zod'
 
-import { Category, Region1800 } from '@/lib/game/1800/enum'
+import { CATEGORIES, REGIONS_1800 } from '@/lib/game/1800/data'
 
 //Exception: you cannot mutate include or select because that would change the
 //expected output type and break type safety. Will have to keep exporting this
@@ -30,8 +30,8 @@ const stampSchema = z.object({
   title: z.string(),
   description: z.string(),
   userId: z.string(),
-  category: z.nativeEnum(Category),
-  region: z.nativeEnum(Region1800),
+  category: z.nativeEnum(CATEGORIES),
+  region: z.nativeEnum(REGIONS_1800),
   game: z.enum(['1800']),
   good: z.string().optional(),
   capital: z.string().optional(),

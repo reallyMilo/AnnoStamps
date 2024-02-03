@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Capital1800, Category, Region1800 } from '@/lib/game/1800/enum'
+import { CAPITALS_1800, CATEGORIES, REGIONS_1800 } from '@/lib/game/1800/data'
 import { cn } from '@/lib/utils'
 
 import Select, { selectVariantStyles } from '../ui/Select'
@@ -20,7 +20,7 @@ const Fields = () => {
             id="category"
             name="category"
             variant="primaryShadow"
-            options={Object.values(Category)}
+            options={Object.values(CATEGORIES)}
             onChange={(e) => setCategory(e.target.value)}
             value={category}
             required
@@ -34,7 +34,7 @@ const Fields = () => {
             id="region"
             name="region"
             required
-            options={Object.values(Region1800)}
+            options={Object.values(REGIONS_1800)}
             defaultValue={stamp?.region}
             variant="primaryShadow"
           >
@@ -123,7 +123,7 @@ const Fields = () => {
             <Select
               id="capital"
               name="capital"
-              options={Object.values(Capital1800)}
+              options={Object.values(CAPITALS_1800)}
               className={selectVariantStyles.primaryShadow}
               defaultValue={stamp?.capital ?? undefined}
             >
