@@ -63,59 +63,10 @@ const useFilter = () => {
         sort: (a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
       }
     )
-
-    switch (action.type) {
-      case 'category':
-        router.replace({
-          pathname: '/',
-          query: queryString,
-        })
-        break
-      case 'region':
-        router.replace({
-          pathname: '/',
-          query: queryString,
-        })
-        break
-      case 'modded':
-        router.replace({
-          pathname: '/',
-          query: queryString,
-        })
-        break
-      case 'capital':
-        router.replace({
-          pathname: '/',
-          query: queryString,
-        })
-        break
-      case 'townhall':
-        router.replace({
-          pathname: '/',
-          query: queryString,
-        })
-        break
-      case 'tradeunion':
-        router.replace({
-          pathname: '/',
-          query: queryString,
-        })
-        break
-      case 'sort':
-        router.replace({
-          pathname: '/',
-          query: queryString,
-        })
-        break
-      case 'search':
-        router.replace({
-          pathname: '/',
-          query: queryString,
-        })
-        break
-      default:
-        break
-    }
+    router.replace({
+      pathname: '/',
+      query: queryString,
+    })
   }
   const filter = query as FilterState
 
