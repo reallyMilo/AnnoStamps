@@ -31,10 +31,13 @@ const LikeButton = ({ id, likedBy }: LikeButtonProps) => {
       return json
     }
   )
+
   const addLikeToStamp = async () => {
-    //TODO: set signin callback to stamp user tried to like
     if (!authUser) {
-      router.push('/auth/signin')
+      router.push({
+        pathname: '/auth/signin',
+        query: { callbackUrl: router.asPath },
+      })
     }
 
     const { ok } = await trigger()
