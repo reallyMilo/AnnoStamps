@@ -29,7 +29,7 @@ export const Pagination = ({ count, page }: PaginationProps) => {
   const [filter, setFilter] = useFilter()
   const { page: queryPage } = filter
   useEffect(() => {
-    if (page === 1 && Number(queryPage) !== 1 && page) {
+    if (page === 1 && Number(queryPage) !== 1 && queryPage) {
       setFilter({ payload: 1, type: 'page' })
     }
   })
