@@ -51,21 +51,12 @@ const useFilter = () => {
   const pathToFilter = '/'
 
   const setFilter = (action: Action) => {
-    if (!action.payload || action.payload === 'false') {
-      if (Object.prototype.hasOwnProperty.call(query, action.type)) {
-        delete query[action.type]
-      }
-      router.replace({
-        pathname: pathToFilter,
-        query,
-      })
-      return
-    }
-
     const queryString = qs.stringify(
       { ...query, [action.type]: action.payload },
       {
         sort: (a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
+        filter: (_, value) =>
+          (value !== '' && value !== 'false' && value) || undefined,
       }
     )
 
