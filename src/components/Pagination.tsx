@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
-import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
+import useFilter from '@/lib/hooks/useFilter'
 import { cn, stampsPerPage } from '@/lib/utils'
 
 const generatePageNumbers = (totalPageCount: number, currentPage: number) => {
@@ -26,14 +26,11 @@ type PaginationProps = {
 }
 
 export const Pagination = ({ count, page }: PaginationProps) => {
-  const router = useRouter()
-  const { query } = router
-
+  const [filter, setFilter] = useFilter()
+  const { page: queryPage } = filter
   useEffect(() => {
-    if (page === 1 && Number(query.page) !== 1 && query.page) {
-      router.replace({
-        query: { ...query, page: 1 },
-      })
+    if (page === 1 && Number(queryPage) !== 1 && page) {
+      setFilter({ payload: 1, type: 'page' })
     }
   })
   const totalPageCount = Math.ceil(count / stampsPerPage())
@@ -42,25 +39,16 @@ export const Pagination = ({ count, page }: PaginationProps) => {
 
   const incrementPage = () => {
     if (page + 1 > totalPageCount) return
-    router.push({
-      pathname: '/',
-      query: { ...query, page: page + 1 },
-    })
+    setFilter({ payload: page + 1, type: 'page' })
   }
   const decrementPage = () => {
     if (page - 1 < 1) return
-    router.push({
-      pathname: '/',
-      query: { ...query, page: page - 1 },
-    })
+    setFilter({ payload: page - 1, type: 'page' })
   }
   const changePage = (e: React.MouseEvent<HTMLLIElement>) => {
     const page = e.currentTarget.value
 
-    router.push({
-      pathname: '/',
-      query: { ...query, page: page },
-    })
+    setFilter({ payload: page, type: 'page' })
   }
   const starting = (page - 1) * stampsPerPage() + 1
   const ending = Math.min(starting + stampsPerPage() - 1, count)

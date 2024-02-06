@@ -17,18 +17,20 @@ export const filterSchema = z
   .partial()
 
 export type FilterState = z.infer<typeof filterSchema>
-type Action = {
-  payload: string
-  type:
-    | 'category'
-    | 'region'
-    | 'modded'
-    | 'capital'
-    | 'townhall'
-    | 'tradeunion'
-    | 'sort'
-    | 'search'
-}
+type Action =
+  | {
+      payload: string
+      type:
+        | 'category'
+        | 'region'
+        | 'modded'
+        | 'capital'
+        | 'townhall'
+        | 'tradeunion'
+        | 'sort'
+        | 'search'
+    }
+  | { payload: number; type: 'page' }
 
 const sortOrder: Action['type'][] = [
   'category',
@@ -38,6 +40,7 @@ const sortOrder: Action['type'][] = [
   'townhall',
   'tradeunion',
   'sort',
+  'page',
   'search',
 ]
 
@@ -45,13 +48,15 @@ const useFilter = () => {
   const router = useRouter()
   const { query } = router
 
+  const pathToFilter = '/'
+
   const setFilter = (action: Action) => {
     if (!action.payload || action.payload === 'false') {
       if (Object.prototype.hasOwnProperty.call(query, action.type)) {
         delete query[action.type]
       }
       router.replace({
-        pathname: '/',
+        pathname: pathToFilter,
         query,
       })
       return
@@ -63,8 +68,16 @@ const useFilter = () => {
         sort: (a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
       }
     )
+
+    if (action.payload === 'page') {
+      router.push({
+        pathname: pathToFilter,
+        query: queryString,
+      })
+      return
+    }
     router.replace({
-      pathname: '/',
+      pathname: pathToFilter,
       query: queryString,
     })
   }
