@@ -1,9 +1,5 @@
 module.exports = {
-  // TODO: eslint build errors
   reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   images: {
     remotePatterns: [
       {
