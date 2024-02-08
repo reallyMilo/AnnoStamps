@@ -9,7 +9,7 @@ export const useUserStamps = () => {
   const { status } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push('/auth/signin')
+      router.replace('/auth/signin')
     },
   })
 
