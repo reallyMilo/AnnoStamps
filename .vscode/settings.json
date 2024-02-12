@@ -1,4 +1,8 @@
 {
+  // Configure todo-tree to exclude node_modules
+  "todo-tree.filtering.excludeGlobs": ["**/node_modules"],
+  // Match TODO-APP in addition to other TODOs.
+  "todo-tree.general.tags": ["FIXME", "TODO", "RSC"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
