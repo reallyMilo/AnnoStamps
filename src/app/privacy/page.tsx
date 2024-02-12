@@ -1,6 +1,6 @@
 import Container from '@/components/ui/Container'
 
-const Privacy = () => {
+const PrivacyPage = () => {
   return (
     <Container className="space-y-2">
       <h1 className="border-b text-3xl font-bold">Privacy Policy</h1>
@@ -139,4 +139,4 @@ const Privacy = () => {
   )
 }
 
-export default Privacy
+export default PrivacyPage
