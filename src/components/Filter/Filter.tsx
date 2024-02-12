@@ -1,3 +1,4 @@
+'use client'
 import { CAPITALS_1800, CATEGORIES, REGIONS_1800 } from '@/lib/game/1800/data'
 import useFilter from '@/lib/hooks/useFilter'
 
