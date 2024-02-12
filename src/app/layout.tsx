@@ -86,7 +86,7 @@ const Navbar = () => {
                 </Link>
               ))}
             </nav>
-            {/* <Search /> */}
+            <Search />
           </div>
           {/* <UserMenu /> */}
         </div>

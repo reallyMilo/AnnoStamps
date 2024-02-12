@@ -1,4 +1,5 @@
-import { useRouter } from 'next/router'
+'use client'
+import { useRouter, useSearchParams } from 'next/navigation'
 import qs from 'qs'
 import { z } from 'zod'
 
@@ -46,13 +47,13 @@ const sortOrder: Action['type'][] = [
 
 const useFilter = () => {
   const router = useRouter()
-  const { query } = router
+  const searchParams = useSearchParams()
 
   const pathToFilter = '/'
 
   const setFilter = (action: Action) => {
     const queryString = qs.stringify(
-      { ...query, [action.type]: action.payload },
+      { ...searchParams, [action.type]: action.payload },
       {
         sort: (a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
         filter: (_, value) =>
@@ -61,18 +62,12 @@ const useFilter = () => {
     )
 
     if (action.payload === 'page') {
-      router.push({
-        pathname: pathToFilter,
-        query: queryString,
-      })
+      router.push(`${pathToFilter}?${queryString}`)
       return
     }
-    router.replace({
-      pathname: pathToFilter,
-      query: queryString,
-    })
+    router.replace(`${pathToFilter}?${queryString}`)
   }
-  const filter = query as FilterState
+  const filter = searchParams as unknown as FilterState
 
   return [filter, setFilter] as const
 }
