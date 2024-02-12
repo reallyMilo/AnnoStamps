@@ -1,9 +1,22 @@
-import Head from 'next/head'
+import './globals.css'
+
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import UserMenu from '@/components/Auth/UserMenu'
 import Search from '@/components/Filter/Search'
+export const metadata: Metadata = {
+  title: 'Anno 1800 Stamps | Stamp Sharing',
+  description:
+    'A community site for uploading and sharing stamps for Anno 1800',
+  openGraph: {
+    title: 'Anno 1800 Stamps | Stamp Sharing',
+    description:
+      'A community site for uploading and sharing stamps for Anno 1800',
+  },
+  metadataBase: new URL(`${process.env.NEXTAUTH_URL}`),
+}
 
 const navigation = [
   {
@@ -64,9 +77,9 @@ const Navbar = () => {
                 </Link>
               ))}
             </nav>
-            <Search />
+            {/* <Search /> */}
           </div>
-          <UserMenu />
+          {/* <UserMenu /> */}
         </div>
       </div>
     </header>
@@ -74,7 +87,7 @@ const Navbar = () => {
 }
 const Footer = () => {
   return (
-    <footer className="mt-auto  bg-[#222939] py-6">
+    <footer className="mt-auto bg-[#222939] py-6">
       <div className="container mx-auto flex items-center justify-between px-5">
         <p className="text-sm font-bold text-white">Anno Stamps</p>
 
@@ -111,34 +124,16 @@ const Footer = () => {
   )
 }
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
-      <Head>
-        <title>Anno 1800 Stamps | Stamp Sharing</title>
-        <meta
-          name="description"
-          content="A community site for uploading and sharing stamps for Anno 1800"
-        ></meta>
-        <meta name="og:title" content="Anno 1800 Stamps | Stamp Sharing" />
-        <meta
-          name="og:description"
-          content="A community site for uploading and sharing stamps for Anno 1800"
-        />
-        <link rel="icon" href="/favicon.svg" />
-      </Head>
-
-      <div className="flex min-h-screen flex-col bg-[#F0F3F4]">
+    <html lang="en">
+      <body className="bg-[#F0F3F4] bg-opacity-95">
         <Navbar />
-
-        <main className="s relative z-10 mx-auto mb-20 min-h-full w-full bg-[#F0F3F4] bg-opacity-95">
-          {children}
-        </main>
-
+        {children}
         <Footer />
-      </div>
-    </>
+      </body>
+    </html>
   )
 }
 
-export default Layout
+export default RootLayout
