@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import Container from '@/components/ui/Container'
 
-const HowTo = () => {
+const HowToPage = () => {
   return (
     <Container className="max-w-5xl space-y-8">
       <section>
@@ -108,4 +108,4 @@ const HowTo = () => {
   )
 }
 
-export default HowTo
+export default HowToPage
