@@ -3,6 +3,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import Filter from '@/components/Filter/Filter'
 import { Pagination } from '@/components/Pagination'
 import StampCard from '@/components/StampCard'
+import Container from '@/components/ui/Container'
 import Grid from '@/components/ui/Grid'
 import { filterSchema, stampsPerPage } from '@/lib/constants'
 import prisma from '@/lib/prisma/singleton'
@@ -29,7 +30,7 @@ const HomePage = async ({
   const pageNumber = resetPage === 0 ? 1 : searchParamsNumber
 
   return (
-    <>
+    <Container>
       <Filter />
       {stamps.length === 0 ? (
         <p className="inline-flex max-w-max items-center space-x-1 rounded-md bg-amber-100 px-4 py-2 text-amber-700">
@@ -46,7 +47,7 @@ const HomePage = async ({
           <Pagination count={count} page={pageNumber} />
         </>
       )}
-    </>
+    </Container>
   )
 }
 
