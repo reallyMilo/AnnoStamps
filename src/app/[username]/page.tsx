@@ -1,35 +1,21 @@
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { notFound } from 'next/navigation'
 
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import Grid from '@/components/ui/Grid'
-import { userIncludeStatement, UserWithStamps } from '@/lib/prisma/queries'
+import { userIncludeStatement } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
-type UsernamePageProps = {
-  stats: { downloads: number; likes: number }
-  user: UserWithStamps
-}
-
-export const getServerSideProps: GetServerSideProps<
-  UsernamePageProps
-> = async ({ query, res }) => {
+const UsernamePage = async ({ params }: { params: { username: string } }) => {
+  //RSC: https://nextjs.org/docs/app/building-your-application/caching
   const user = await prisma.user.findUnique({
     include: userIncludeStatement,
-    where: { usernameURL: query.username as string },
+    where: { usernameURL: params.username },
   })
 
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=15, stale-while-revalidate=59'
-  )
-
   if (!user) {
-    return {
-      notFound: true,
-    }
+    notFound()
   }
-
   //FIXME: is rawSQL query with prisma better?
 
   const stats = user.listedStamps.reduce(
@@ -44,18 +30,6 @@ export const getServerSideProps: GetServerSideProps<
       likes: 0,
     }
   )
-  return {
-    props: {
-      user,
-      stats,
-    },
-  }
-}
-
-const UsernamePage = ({
-  user,
-  stats,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Container>
       <div className="mb-4 flex flex-col gap-y-2 border-b-2 pb-10">
