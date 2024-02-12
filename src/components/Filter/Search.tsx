@@ -1,3 +1,4 @@
+'use client'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 
 import useFilter from '@/lib/hooks/useFilter'
