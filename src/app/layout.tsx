@@ -137,9 +137,13 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" className={poppins.className}>
       <body className="bg-[#F0F3F4] bg-opacity-95">
-        <Navbar />
-        {children}
-        <Footer />
+        <div className="flex h-full min-h-screen w-full flex-col">
+          <Navbar />
+          <main className="container mx-auto w-full max-w-7xl flex-auto px-5 py-12">
+            {children}
+          </main>
+          <Footer />
+        </div>
       </body>
       <GoogleTagManager gtmId="G-9KT01SRSVX" />
     </html>

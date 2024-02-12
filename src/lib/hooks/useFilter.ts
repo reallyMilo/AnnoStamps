@@ -1,37 +1,15 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import qs from 'qs'
-import { z } from 'zod'
 
-export const filterSchema = z
-  .object({
-    capital: z.string(),
-    category: z.string(),
-    modded: z.string(),
-    page: z.string(),
-    region: z.string(),
-    search: z.string(),
-    sort: z.string(),
-    townhall: z.string(),
-    tradeunion: z.string(),
-  })
-  .partial()
+import type { FilterState } from '@/lib/constants'
 
-export type FilterState = z.infer<typeof filterSchema>
 type Action =
   | {
       payload: string
-      type:
-        | 'category'
-        | 'region'
-        | 'modded'
-        | 'capital'
-        | 'townhall'
-        | 'tradeunion'
-        | 'sort'
-        | 'search'
+      type: keyof Omit<FilterState, 'page'>
     }
-  | { payload: number; type: 'page' }
+  | { payload: number; type: keyof Pick<FilterState, 'page'> }
 
 const sortOrder: Action['type'][] = [
   'category',
@@ -47,10 +25,9 @@ const sortOrder: Action['type'][] = [
 
 const useFilter = () => {
   const router = useRouter()
+  //RSC: https://nextjs.org/docs/app/api-reference/functions/use-search-params
   const searchParams = useSearchParams()
-
   const pathToFilter = '/'
-
   const setFilter = (action: Action) => {
     const queryString = qs.stringify(
       { ...searchParams, [action.type]: action.payload },
