@@ -2,11 +2,13 @@ import './globals.css'
 
 import { GoogleTagManager } from '@next/third-parties/google'
 import type { Metadata } from 'next'
+import { Poppins } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import UserMenu from '@/components/Auth/UserMenu'
 import Search from '@/components/Filter/Search'
+
 export const metadata: Metadata = {
   title: 'Anno 1800 Stamps | Stamp Sharing',
   description:
@@ -18,6 +20,12 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL(`${process.env.NEXTAUTH_URL}`),
 }
+
+const poppins = Poppins({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 const navigation = [
   {
@@ -127,7 +135,7 @@ const Footer = () => {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en">
+    <html lang="en" className={poppins.className}>
       <body className="bg-[#F0F3F4] bg-opacity-95">
         <Navbar />
         {children}
