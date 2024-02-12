@@ -1,5 +1,6 @@
 import './globals.css'
 
+import { GoogleTagManager } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -132,6 +133,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         {children}
         <Footer />
       </body>
+      <GoogleTagManager gtmId="G-9KT01SRSVX" />
     </html>
   )
 }
