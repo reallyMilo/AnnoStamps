@@ -1,96 +1,31 @@
-import 'swiper/css'
-import 'swiper/css/navigation'
-
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
-import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { Navigation } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
+import { notFound } from 'next/navigation'
+import { cache } from 'react'
 
 import Category from '@/components/Category'
-import LikeButton from '@/components/LikeButton'
 import Container from '@/components/ui/Container'
-import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
+import { stampIncludeStatement } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
-export async function getStaticPaths() {
-  const stamps = await prisma.stamp.findMany({
-    select: { id: true },
-    orderBy: { downloads: 'desc' },
-    take: 20,
-  })
+import Carousel from './Carousel'
+import LikeButton from './LikeButton'
 
-  return {
-    paths: stamps.map((stamp) => ({
-      params: { id: stamp.id },
-    })),
-    fallback: true,
-  }
-}
-type Params = {
-  params: {
-    id: string
-  }
-}
+export const revalidate = 60 //revalidate every 60 seconds
 
-export async function getStaticProps({ params }: Params) {
-  const stamp = await prisma.stamp.findUnique({
+export const getStamp = cache(async (id: string) => {
+  return await prisma.stamp.findUnique({
     include: stampIncludeStatement,
-    where: { id: params.id },
+    where: { id },
   })
+})
 
-  return {
-    props: {
-      stamp,
-    },
-    revalidate: 30,
+const StampPage = async ({ params }: { params: { id: string } }) => {
+  const stamp = await getStamp(params.id)
+
+  if (!stamp) {
+    notFound()
   }
-}
-
-type CarouselProps = {
-  fallBack: string
-  images: StampWithRelations['images']
-}
-const Carousel = ({ images, fallBack }: CarouselProps) => {
-  if (images.length === 0) {
-    return (
-      <Image
-        src={fallBack}
-        alt="anno stamp image"
-        className="max-h-[768px] w-full object-contain object-center"
-        height={768}
-        width={1024}
-      />
-    )
-  }
-  return (
-    <Swiper navigation={true} modules={[Navigation]} className="">
-      {images.map((image) => (
-        <SwiperSlide key={image.id}>
-          <Image
-            src={image.largeUrl ?? image.originalUrl}
-            alt="anno stamp image"
-            className="max-h-[768px] w-full object-contain object-center"
-            height={768}
-            width={1024}
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  )
-}
-const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
-  const router = useRouter()
-
-  if (router.isFallback) {
-    return (
-      <Container>
-        <p>Loading...</p>
-      </Container>
-    )
-  }
-
   const {
     id,
     title,
@@ -156,7 +91,8 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
           href={stampFileUrl}
           data-testid="stamp-download"
           className="inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
-          onClick={() => fetch(`/api/stamp/download/${id}`)}
+          //RSC
+          // onClick={() => fetch(`/api/stamp/download/${id}`)}
           download={title}
         >
           <ArrowDownTrayIcon className="mr-2 inline-block h-6 w-6" />

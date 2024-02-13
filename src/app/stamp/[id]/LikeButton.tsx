@@ -1,6 +1,6 @@
+'use client'
 import { HandThumbUpIcon } from '@heroicons/react/24/solid'
-import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import useSWRMutation from 'swr/mutation'
 
@@ -11,8 +11,10 @@ type LikeButtonProps = Pick<StampWithRelations, 'likedBy' | 'id'>
 
 const LikeButton = ({ id, likedBy }: LikeButtonProps) => {
   const router = useRouter()
-  const { data: session } = useSession()
-  const authUser = session?.user
+  const pathname = usePathname()
+  //RSC: auth
+  // const { data: session } = useSession()
+  const authUser = null
   const [isLiked, setIsLiked] = useState(false)
 
   const { data: likeStamp, trigger } = useSWRMutation(
@@ -34,10 +36,7 @@ const LikeButton = ({ id, likedBy }: LikeButtonProps) => {
 
   const addLikeToStamp = async () => {
     if (!authUser) {
-      router.push({
-        pathname: '/auth/signin',
-        query: { callbackUrl: router.asPath },
-      })
+      router.push(`/auth/signin?callbackUrl=${pathname}`)
     }
 
     const { ok } = await trigger()
@@ -49,7 +48,7 @@ const LikeButton = ({ id, likedBy }: LikeButtonProps) => {
 
   const isStampLiked = () => {
     if (likedBy.length === 0 || !authUser) return false
-    if (likedBy.some((liked) => liked.id === authUser.id)) return true
+    //    if (likedBy.some((liked) => liked.id === authUser.id)) return true
     return false
   }
 
