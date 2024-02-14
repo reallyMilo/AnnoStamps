@@ -18,7 +18,6 @@ export const metadata: Metadata = {
     description:
       'A community site for uploading and sharing stamps for Anno 1800',
   },
-  metadataBase: new URL(`${process.env.NEXTAUTH_URL}`),
 }
 
 const poppins = Poppins({
