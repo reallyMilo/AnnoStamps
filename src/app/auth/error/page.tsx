@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router'
-
 import Container from '@/components/ui/Container'
 
 const error: Record<string, string> = {
@@ -9,14 +7,16 @@ const error: Record<string, string> = {
   Default: 'Unable to sign-in',
 }
 
-const Error = () => {
-  const { query } = useRouter()
-
+const AuthErrorPage = ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) => {
   return (
     <Container>
-      <pre>{error[query.error as string]}</pre>
+      <pre>{error[searchParams.error as string]}</pre>
     </Container>
   )
 }
 
-export default Error
+export default AuthErrorPage
