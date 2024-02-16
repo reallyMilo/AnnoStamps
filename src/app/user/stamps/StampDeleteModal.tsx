@@ -5,7 +5,7 @@ import { Fragment, useState } from 'react'
 
 import type { StampWithRelations } from '@/lib/prisma/queries'
 
-import { deleteStamp } from './actions'
+import { deleteStamp } from '../actions'
 
 const StampDeleteModal = ({
   title,
