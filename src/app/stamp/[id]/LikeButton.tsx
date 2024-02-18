@@ -1,69 +1,66 @@
 'use client'
 import { HandThumbUpIcon } from '@heroicons/react/24/solid'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState } from 'react'
-import useSWRMutation from 'swr/mutation'
+import { startTransition, useOptimistic, useState } from 'react'
 
 import { StampWithRelations } from '@/lib/prisma/queries'
 import { cn } from '@/lib/utils'
 
-type LikeButtonProps = Pick<StampWithRelations, 'likedBy' | 'id'>
+import { likeStamp } from './actions'
 
-const LikeButton = ({ id, likedBy }: LikeButtonProps) => {
+type LikeButtonProps = {
+  id: StampWithRelations['id']
+  initialLikes: number
+  liked: boolean
+}
+
+const LikeButton = ({ id, initialLikes, liked }: LikeButtonProps) => {
   const router = useRouter()
   const pathname = usePathname()
-  //RSC: auth
-  // const { data: session } = useSession()
-  const authUser = null
-  const [isLiked, setIsLiked] = useState(false)
-
-  const { data: likeStamp, trigger } = useSWRMutation(
-    `/api/stamp/like/${id}`,
-    async (
-      url: string
-    ): Promise<{
-      message: string
-      ok: boolean
-      stamp?: StampWithRelations
-    }> => {
-      const res = await fetch(url, {
-        method: 'PUT',
-      })
-      const json = await res.json()
-      return json
+  const [likeState, setLikeState] = useState({
+    likes: initialLikes,
+    isLiked: liked,
+  })
+  const [optimisticLikes, mutateOptimisticLike] = useOptimistic(
+    likeState,
+    (state, newLikes: 'add' | 'remove') => {
+      if (newLikes === 'remove') {
+        return {
+          isLiked: false,
+          likes: state.likes - 1,
+        }
+      }
+      return {
+        isLiked: true,
+        likes: state.likes + 1,
+      }
     }
   )
 
-  const addLikeToStamp = async () => {
-    if (!authUser) {
-      router.push(`/auth/signin?callbackUrl=${pathname}`)
-    }
-
-    const { ok } = await trigger()
-    if (!ok) {
+  const mutateLikes = async () => {
+    //TODO: before we allow spamming likes need debounce / rate-limiting
+    if (likeState.isLiked === true) {
       return
     }
-    setIsLiked(true)
-  }
-
-  const isStampLiked = () => {
-    if (likedBy.length === 0 || !authUser) return false
-    //    if (likedBy.some((liked) => liked.id === authUser.id)) return true
-    return false
+    startTransition(() => {
+      mutateOptimisticLike('add')
+    })
+    const stampLikes = await likeStamp(id)
+    if (!stampLikes?.authenticated) {
+      router.push(`/auth/signin?callbackUrl=${pathname}`)
+    }
+    setLikeState({ likes: stampLikes.likes, isLiked: true })
   }
 
   return (
     <button
-      onClick={addLikeToStamp}
+      onClick={mutateLikes}
       className="flex cursor-pointer items-center gap-1 text-sm"
     >
       <HandThumbUpIcon
-        className={cn(
-          'h-6 w-6',
-          (isStampLiked() || isLiked) && 'text-[#6DD3C0]'
-        )}
+        className={cn('h-6 w-6', optimisticLikes.isLiked && 'text-[#6DD3C0]')}
       />
-      {likeStamp?.stamp ? likeStamp.stamp.likedBy.length : likedBy.length}
+      {optimisticLikes.likes}
     </button>
   )
 }
