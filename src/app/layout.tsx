@@ -13,11 +13,24 @@ export const metadata: Metadata = {
   title: 'Anno 1800 Stamps | Stamp Sharing',
   description:
     'A community site for uploading and sharing stamps for Anno 1800',
+  keywords: ['Anno', 'Anno 1800', 'Stamps', 'Anno Stamps'],
   openGraph: {
     title: 'Anno 1800 Stamps | Stamp Sharing',
     description:
       'A community site for uploading and sharing stamps for Anno 1800',
+    url: 'https://annostamps.com',
+    siteName: 'Annostamps',
+    images: [
+      {
+        url: 'https://annostamps.com/header.jpg',
+        width: 1230,
+        height: 600,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
   },
+  metadataBase: new URL('https://annostamps.com'),
 }
 
 const poppins = Poppins({
