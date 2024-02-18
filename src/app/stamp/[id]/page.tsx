@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 
+import { auth } from '@/auth'
 import Category from '@/components/Category'
 import Container from '@/components/ui/Container'
 import { stampIncludeStatement } from '@/lib/prisma/queries'
@@ -11,7 +12,7 @@ import prisma from '@/lib/prisma/singleton'
 import Carousel from './Carousel'
 import LikeButton from './LikeButton'
 
-export const revalidate = 60 //revalidate every 60 seconds
+export const revalidate = 300 //revalidate every 5 minutes
 
 export const getStamp = cache(async (id: string) => {
   return await prisma.stamp.findUnique({
@@ -22,6 +23,7 @@ export const getStamp = cache(async (id: string) => {
 
 const StampPage = async ({ params }: { params: { id: string } }) => {
   const stamp = await getStamp(params.id)
+  const session = await auth()
 
   if (!stamp) {
     notFound()
@@ -42,6 +44,10 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
     collection,
     likedBy,
   } = stamp
+
+  const userLikedStamp = session
+    ? likedBy.some((liked) => liked.id === session.user.id)
+    : false
 
   return (
     <Container className="max-w-5xl space-y-6 px-0">
@@ -85,8 +91,12 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
             {downloads}
           </div>
         </div>
-        <LikeButton id={id} likedBy={likedBy} />
-
+        <LikeButton
+          id={id}
+          initialLikes={likedBy.length}
+          liked={userLikedStamp}
+        />
+        {/* //TODO: cloudfront distribution custom domain for download attribute */}
         <a
           href={stampFileUrl}
           data-testid="stamp-download"
