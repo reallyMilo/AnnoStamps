@@ -25,12 +25,14 @@ const sortOrder: Action['type'][] = [
 
 const useFilter = () => {
   const router = useRouter()
-  //RSC: https://nextjs.org/docs/app/api-reference/functions/use-search-params
+
   const searchParams = useSearchParams()
+  const query = searchParams ? qs.parse(searchParams?.toString()) : {}
+
   const pathToFilter = '/'
   const setFilter = (action: Action) => {
     const queryString = qs.stringify(
-      { ...searchParams, [action.type]: action.payload },
+      { ...query, [action.type]: action.payload },
       {
         sort: (a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
         filter: (_, value) =>
@@ -44,7 +46,7 @@ const useFilter = () => {
     }
     router.replace(`${pathToFilter}?${queryString}`)
   }
-  const filter = searchParams as unknown as FilterState
+  const filter = query as unknown as FilterState
 
   return [filter, setFilter] as const
 }
