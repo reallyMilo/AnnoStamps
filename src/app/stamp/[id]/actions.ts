@@ -24,3 +24,12 @@ export const likeStamp = async (id: StampWithRelations['id']) => {
   revalidatePath(`/stamp/${id}`)
   return { authenticated: true, likes: updateStampLikes.likedBy.length }
 }
+
+export const incrementDownloads = async (id: string) => {
+  await prisma.stamp.update({
+    where: { id },
+    data: {
+      downloads: { increment: 1 },
+    },
+  })
+}

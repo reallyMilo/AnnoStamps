@@ -10,6 +10,7 @@ import { stampIncludeStatement } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
 import Carousel from './Carousel'
+import DownloadButton from './DownloadButton'
 import LikeButton from './LikeButton'
 
 export const revalidate = 300 //revalidate every 5 minutes
@@ -34,7 +35,6 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
     category,
     region,
     description,
-    stampFileUrl,
     imageUrl,
     modded,
     good,
@@ -96,18 +96,7 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
           initialLikes={likedBy.length}
           liked={userLikedStamp}
         />
-        {/* //TODO: cloudfront distribution custom domain for download attribute */}
-        <a
-          href={stampFileUrl}
-          data-testid="stamp-download"
-          className="inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
-          //RSC
-          // onClick={() => fetch(`/api/stamp/download/${id}`)}
-          download={title}
-        >
-          <ArrowDownTrayIcon className="mr-2 inline-block h-6 w-6" />
-          Download
-        </a>
+        <DownloadButton {...stamp} />
       </div>
 
       <p className="col-span-3 break-words text-lg">{description}</p>
