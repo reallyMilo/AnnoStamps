@@ -1,7 +1,7 @@
 'use client'
 import { HandThumbUpIcon } from '@heroicons/react/24/solid'
 import { usePathname, useRouter } from 'next/navigation'
-import { startTransition, useOptimistic, useState } from 'react'
+import { startTransition, useOptimistic } from 'react'
 
 import { StampWithRelations } from '@/lib/prisma/queries'
 import { cn } from '@/lib/utils'
@@ -17,29 +17,33 @@ type LikeButtonProps = {
 const LikeButton = ({ id, initialLikes, liked }: LikeButtonProps) => {
   const router = useRouter()
   const pathname = usePathname()
-  const [likeState, setLikeState] = useState({
-    likes: initialLikes,
-    isLiked: liked,
-  })
+
   const [optimisticLikes, mutateOptimisticLike] = useOptimistic(
-    likeState,
-    (state, newLikes: 'add' | 'remove') => {
-      if (newLikes === 'remove') {
-        return {
-          isLiked: false,
-          likes: state.likes - 1,
-        }
-      }
-      return {
-        isLiked: true,
-        likes: state.likes + 1,
+    {
+      likes: initialLikes,
+      isLiked: liked,
+    },
+    (state, action: 'add' | 'remove') => {
+      switch (action) {
+        case 'add':
+          return {
+            likes: state.likes + 1,
+            isLiked: true,
+          }
+        case 'remove':
+          return {
+            likes: state.likes - 1,
+            isLiked: false,
+          }
+        default:
+          return state
       }
     }
   )
 
   const mutateLikes = async () => {
     //TODO: before we allow spamming likes need debounce / rate-limiting
-    if (likeState.isLiked === true) {
+    if (optimisticLikes.isLiked === true) {
       return
     }
     startTransition(() => {
@@ -49,7 +53,6 @@ const LikeButton = ({ id, initialLikes, liked }: LikeButtonProps) => {
     if (!stampLikes?.authenticated) {
       router.push(`/auth/signin?callbackUrl=${pathname}`)
     }
-    setLikeState({ likes: stampLikes.likes, isLiked: true })
   }
 
   return (
