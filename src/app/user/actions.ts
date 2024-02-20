@@ -1,7 +1,6 @@
 'use server'
 import { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
@@ -124,5 +123,57 @@ export const createStamp = async (formData: FormData, addImages: string[]) => {
     return { ok: false, message: e }
   }
   revalidatePath('/user/stamps')
-  redirect('/user/stamps')
+
+  return { ok: true, message: 'created stamp' }
+}
+
+export const updateStamp = async (
+  formData: FormData,
+  addImages: string[],
+  removeImages?: string[]
+) => {
+  const session = await auth()
+  if (!session) {
+    throw new Error('Not authenticated')
+  }
+
+  if (removeImages && removeImages.length > 0) {
+    await prisma.image.deleteMany({
+      where: {
+        id: {
+          in: removeImages,
+        },
+      },
+    })
+  }
+  const { stampId, ...fields } = Object.fromEntries(formData)
+
+  try {
+    await prisma.stamp.update({
+      where: {
+        id: stampId,
+      },
+      data: {
+        ...(addImages.length > 0 && {
+          images: {
+            create: addImages.map((image) => {
+              const start = image.lastIndexOf('/')
+              const end = image.lastIndexOf('.')
+              const id = image.slice(start + 1, end)
+              return {
+                id,
+                originalUrl: image,
+              }
+            }),
+          },
+        }),
+        ...fields,
+      },
+    } as Prisma.StampUpdateArgs)
+  } catch (e) {
+    return { ok: false, message: e }
+  }
+
+  revalidatePath('/user/stamps')
+  return { ok: true, message: 'updated stamp' }
 }
