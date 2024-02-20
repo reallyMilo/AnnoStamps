@@ -1,6 +1,7 @@
 'use client'
 import { createId } from '@paralleldrive/cuid2'
 import JSZip, { JSZipObject } from 'jszip'
+import { useRouter } from 'next/router'
 import * as React from 'react'
 
 import { Asset } from '@/lib/hooks/useUpload'
@@ -78,6 +79,7 @@ const isAsset = (b: Asset | JSZipObject | Image): b is Asset => {
 }
 
 const Form = ({ children, action }: FormProps) => {
+  const router = useRouter()
   const { stamp, images, files, setStatus } = useStampFormContext()
   const [errorMessage, setErrorMessage] = React.useState<object | null>(null)
 
@@ -143,12 +145,14 @@ const Form = ({ children, action }: FormProps) => {
 
     const removeImageIds = currentImages.map((image) => image.id)
 
-    const createStamp = await action(formData, addImages, removeImageIds)
+    const mutateStamp = await action(formData, addImages, removeImageIds)
 
-    if (!createStamp.ok) {
+    if (!mutateStamp.ok) {
       setStatus('error')
       return
     }
+
+    router.push('/user/stamps')
   }
 
   return (
