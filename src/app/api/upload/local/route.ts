@@ -2,11 +2,10 @@
 
 import { createId } from '@paralleldrive/cuid2'
 import { outputFileSync } from 'fs-extra'
-import { NextApiRequest, NextApiResponse } from 'next'
-import { getServerSession } from 'next-auth'
+import { NextRequest } from 'next/server'
 import sharp from 'sharp'
 
-import { authOptions } from '../auth/[...nextauth]'
+import { auth } from '@/auth'
 
 const BREAKPOINTS = {
   large: 1024,
@@ -42,43 +41,24 @@ const generateResponsiveImages = async (filepath: string, filename: string) => {
   }
 }
 
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '20mb',
-    },
-  },
-}
-
-interface Req extends NextApiRequest {
-  query: { fileType: string; filename: string; stampId: string }
-}
-type Response = {
-  message: string
-  ok: boolean
-}
-export default async function localHandler(
-  req: Req,
-  res: NextApiResponse<Response>
-) {
+export const POST = auth(async (request: NextRequest) => {
   if (process.env.NODE_ENV !== 'development') {
-    return res.status(500).json({ ok: false, message: 'only in dev mode' })
-  }
-  const session = await getServerSession(req, res, authOptions)
-
-  if (!session?.user?.id) {
-    return res.status(401).json({ ok: false, message: 'Unauthorized.' })
+    return Response.json({ ok: false, message: 'only in dev mode' })
   }
 
-  const { filename, fileType, stampId } = req.query
+  const searchParams = request.nextUrl.searchParams
+  const stampId = searchParams.get('stampId')
+  const filename = searchParams.get('filename')
+  const fileType = searchParams.get('fileType')
 
-  const base64Image = req.body.split('base64,')?.[1]
-  const buffer = Buffer.from(base64Image, 'base64')
+  const arrayBuffer = await request.arrayBuffer()
+
   const name = fileType === 'zip' ? createId() + '.zip' : createId() + filename
   const filepath = `public/tmp/${stampId}/${name}`
-  outputFileSync(filepath, buffer)
+  outputFileSync(filepath, Buffer.from(arrayBuffer))
   if (fileType !== 'zip') {
     await generateResponsiveImages(filepath, name)
   }
-  return res.status(200).json({ ok: true, message: `${stampId}/${name}` })
-}
+
+  return Response.json({ ok: true, message: `${stampId}/${name}` })
+})

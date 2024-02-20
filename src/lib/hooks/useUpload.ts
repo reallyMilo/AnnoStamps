@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react'
 
 const sizeLimit = 1028 * 1028 //1 mb

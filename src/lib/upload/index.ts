@@ -9,20 +9,11 @@ export const upload = async (
 
   //TODO: Localstack or aws sandbox can remove this
   if (process.env.NODE_ENV === 'development') {
-    const reader = (file: File) =>
-      new Promise((resolve, reject) => {
-        const fr = new FileReader()
-        fr.onload = () => resolve(fr)
-        fr.onerror = (err) => reject(err)
-        fr.readAsDataURL(file)
-      })
-
-    const fileResult = (await reader(body as File)) as FileReader
     const localRes = await fetch(
       `/api/upload/local?stampId=${stampId}&filename=${filename}&fileType=${fileType}`,
       {
         method: 'POST',
-        body: fileResult.result,
+        body,
       }
     )
 

@@ -1,3 +1,4 @@
+'use client'
 import { JSZipObject } from 'jszip'
 
 import { Asset, useUpload } from '@/lib/hooks/useUpload'
