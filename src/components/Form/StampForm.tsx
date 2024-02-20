@@ -1,6 +1,6 @@
+'use client'
 import { createId } from '@paralleldrive/cuid2'
 import JSZip, { JSZipObject } from 'jszip'
-import { useRouter } from 'next/router'
 import * as React from 'react'
 
 import { Asset } from '@/lib/hooks/useUpload'
@@ -65,22 +65,21 @@ const Header = ({ title, subTitle }: HeaderProps) => {
 }
 
 export type FormProps = {
-  children: React.ReactNode
-  onSubmit: (
+  action: (
     formData: FormData,
     addImages: string[],
     removeImages?: string[]
-  ) => Promise<Response>
+  ) => Promise<{ message: unknown; ok: boolean }>
+  children: React.ReactNode
 }
 
 const isAsset = (b: Asset | JSZipObject | Image): b is Asset => {
   return (b as Asset).rawFile !== undefined
 }
 
-const Form = ({ children, onSubmit }: FormProps) => {
+const Form = ({ children, action }: FormProps) => {
   const { stamp, images, files, setStatus } = useStampFormContext()
   const [errorMessage, setErrorMessage] = React.useState<object | null>(null)
-  const router = useRouter()
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -144,17 +143,12 @@ const Form = ({ children, onSubmit }: FormProps) => {
 
     const removeImageIds = currentImages.map((image) => image.id)
 
-    const res = await onSubmit(formData, addImages, removeImageIds)
+    const createStamp = await action(formData, addImages, removeImageIds)
 
-    if (!res.ok) {
-      const json = (await res.json()) as { message: object; ok: boolean }
-      setErrorMessage(json.message)
+    if (!createStamp.ok) {
       setStatus('error')
       return
     }
-    setStatus('success')
-    router.push('/user/stamps')
-    return
   }
 
   return (
