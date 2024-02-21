@@ -39,6 +39,7 @@ export const deleteStamp = async (id: string) => {
   await prisma.$transaction([deleteImages, deleteStamp])
 
   revalidatePath('/user/stamps')
+  revalidatePath(`/${session.user.usernameURL}`)
 }
 
 export const updateUser = async (
@@ -123,7 +124,7 @@ export const createStamp = async (formData: FormData, addImages: string[]) => {
     return { ok: false, message: e }
   }
   revalidatePath('/user/stamps')
-
+  revalidatePath(`/${session.user.usernameURL}`)
   return { ok: true, message: 'created stamp' }
 }
 
@@ -175,5 +176,6 @@ export const updateStamp = async (
   }
 
   revalidatePath('/user/stamps')
+  revalidatePath(`/${session.user.usernameURL}`)
   return { ok: true, message: 'updated stamp' }
 }
