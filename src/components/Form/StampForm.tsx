@@ -4,13 +4,13 @@ import JSZip, { JSZipObject } from 'jszip'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
 
-import { Asset } from '@/lib/hooks/useUpload'
 import { UserWithStamps } from '@/lib/prisma/queries'
 import { upload } from '@/lib/upload'
 
 import Fields from './Fields'
 import Files from './Files'
 import Images from './Images'
+import { Asset } from './useUpload'
 
 type Stamp = UserWithStamps['listedStamps'][0]
 type Image = Stamp['images'][0]

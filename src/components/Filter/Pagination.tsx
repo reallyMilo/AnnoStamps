@@ -4,8 +4,9 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { useEffect } from 'react'
 
 import { stampsPerPage } from '@/lib/constants'
-import useFilter from '@/lib/hooks/useFilter'
 import { cn } from '@/lib/utils'
+
+import useFilter from './useFilter'
 
 const generatePageNumbers = (totalPageCount: number, currentPage: number) => {
   const presetMaxPageList = 20

@@ -1,9 +1,8 @@
 'use client'
 import { JSZipObject } from 'jszip'
 
-import { Asset, useUpload } from '@/lib/hooks/useUpload'
-
 import { useStampFormContext } from './StampForm'
+import { Asset, useUpload } from './useUpload'
 
 const isJSZip = (b: Asset | JSZipObject): b is JSZipObject => {
   return (b as JSZipObject).name !== undefined
