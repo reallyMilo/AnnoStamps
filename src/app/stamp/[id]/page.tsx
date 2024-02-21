@@ -15,7 +15,7 @@ import LikeButton from './LikeButton'
 
 export const revalidate = 300 //revalidate every 5 minutes
 
-export const getStamp = cache(async (id: string) => {
+const getStamp = cache(async (id: string) => {
   return await prisma.stamp.findUnique({
     include: stampIncludeStatement,
     where: { id },
