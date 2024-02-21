@@ -1,14 +1,19 @@
+'use client'
+
 import * as Sentry from '@sentry/nextjs'
-import type { NextPageContext } from 'next'
-import NextErrorComponent from 'next/error'
+import { useEffect } from 'react'
 
-const CustomErrorComponent = ({ statusCode }: { statusCode: number }) => (
-  <NextErrorComponent statusCode={statusCode} />
-)
+const GlobalError = ({ error }: { error: Error & { digest?: string } }) => {
+  useEffect(() => {
+    Sentry.captureException(error)
+  }, [error])
 
-CustomErrorComponent.getInitialProps = async (ctx: NextPageContext) => {
-  await Sentry.captureUnderscoreErrorException(ctx)
-  return NextErrorComponent.getInitialProps(ctx)
+  return (
+    <html>
+      <body>
+        <h2>Something went wrong!</h2>
+      </body>
+    </html>
+  )
 }
-
-export default CustomErrorComponent
+export default GlobalError
