@@ -2,7 +2,6 @@
 
 import { createId } from '@paralleldrive/cuid2'
 import { outputFileSync } from 'fs-extra'
-import { NextRequest } from 'next/server'
 import sharp from 'sharp'
 
 import { auth } from '@/auth'
@@ -41,11 +40,13 @@ const generateResponsiveImages = async (filepath: string, filename: string) => {
   }
 }
 
-export const POST = auth(async (request: NextRequest) => {
+export const POST = auth(async (request) => {
   if (process.env.NODE_ENV !== 'development') {
     return Response.json({ ok: false, message: 'only in dev mode' })
   }
-
+  if (!request.auth) {
+    return Response.json({ message: 'Not authenticated' }, { status: 401 })
+  }
   const searchParams = request.nextUrl.searchParams
   const stampId = searchParams.get('stampId')
   const filename = searchParams.get('filename')

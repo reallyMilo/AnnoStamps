@@ -1,7 +1,7 @@
 'use client'
 import { createId } from '@paralleldrive/cuid2'
 import JSZip, { JSZipObject } from 'jszip'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 
 import { Asset } from '@/lib/hooks/useUpload'
