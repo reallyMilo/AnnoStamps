@@ -9,11 +9,13 @@ declare module 'next-auth' {
       biography?: string
       id: string
       username?: string
+      usernameURL?: string
     } & DefaultSession['user']
   }
   interface User extends DefaultUser {
     biography: string
     discord: string
     username: string
+    usernameURL: string
   }
 }
