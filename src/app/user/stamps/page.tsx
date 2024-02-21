@@ -1,6 +1,7 @@
 import { PencilSquareIcon, PlusIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import { cache } from 'react'
 
 import { auth } from '@/auth'
 import StampCard from '@/components/StampCard'
@@ -11,18 +12,21 @@ import prisma from '@/lib/prisma/singleton'
 
 import StampDeleteModal from './StampDeleteModal'
 
+const getUserWithStamps = cache(async (id: string) => {
+  return await prisma.user.findUniqueOrThrow({
+    include: userIncludeStatement,
+    where: {
+      id,
+    },
+  })
+})
 const UserStampsPage = async () => {
   const session = await auth()
   if (!session) {
     redirect('/auth/signin')
   }
 
-  const user = await prisma.user.findUniqueOrThrow({
-    include: userIncludeStatement,
-    where: {
-      id: session.user.id,
-    },
-  })
+  const user = await getUserWithStamps(session.user.id)
 
   return (
     <Container className="space-y-6">

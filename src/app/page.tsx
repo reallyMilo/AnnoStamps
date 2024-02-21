@@ -1,34 +1,43 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
+import { cache } from 'react'
 
 import Filter from '@/components/Filter/Filter'
 import { Pagination } from '@/components/Filter/Pagination'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import Grid from '@/components/ui/Grid'
-import { filterSchema, stampsPerPage } from '@/lib/constants'
+import { filterSchema, FilterState, stampsPerPage } from '@/lib/constants'
+import type { StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
+export const revalidate = 120 // revalidate every 2 minutes
+
+const getFilteredStamps = cache(
+  async (
+    filterState: FilterState
+  ): Promise<[number, StampWithRelations[], number]> => {
+    const { page, sort, ...filter } = filterState
+    const searchParamsPage = parseInt(page || '1', 10)
+    const [count, stamps, resetPage] =
+      await prisma.stamp.filterFindManyWithCount(filter, sort, {
+        skip: (searchParamsPage - 1) * stampsPerPage,
+        take: stampsPerPage,
+      })
+    const pageNumber = resetPage === 0 ? 1 : searchParamsPage
+
+    return [count, stamps, pageNumber]
+  }
+)
 const HomePage = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) => {
   const result = filterSchema.safeParse(searchParams)
-  if (!result.success) {
-    return '...'
-  }
 
-  const { page, sort, ...filter } = result.data
-  const searchParamsNumber = parseInt(page || '1', 10)
-  //RSC: https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating#fetching-data-on-the-server-with-third-party-libraries
-  const [count, stamps, resetPage] = await prisma.stamp.filterFindManyWithCount(
-    filter,
-    sort,
-    { skip: (searchParamsNumber - 1) * stampsPerPage, take: stampsPerPage }
+  const [count, stamps, pageNumber] = await getFilteredStamps(
+    result.success ? result.data : {}
   )
-
-  const pageNumber = resetPage === 0 ? 1 : searchParamsNumber
-
   return (
     <Container>
       <Filter />

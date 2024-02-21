@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { cache } from 'react'
 
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
@@ -6,12 +7,15 @@ import Grid from '@/components/ui/Grid'
 import { userIncludeStatement } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
-const UsernamePage = async ({ params }: { params: { username: string } }) => {
-  //RSC: https://nextjs.org/docs/app/building-your-application/caching
-  const user = await prisma.user.findUnique({
+const getUserPageStamps = cache(async (usernameURL: string) => {
+  return await prisma.user.findUnique({
     include: userIncludeStatement,
-    where: { usernameURL: params.username },
+    where: { usernameURL },
   })
+})
+
+const UsernamePage = async ({ params }: { params: { username: string } }) => {
+  const user = await getUserPageStamps(params.username)
 
   if (!user) {
     notFound()
