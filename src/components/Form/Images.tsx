@@ -3,10 +3,10 @@ import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 
 import Grid from '@/components/ui/Grid'
-import { Asset, useUpload } from '@/lib/hooks/useUpload'
 import { Image } from '@/lib/prisma/queries'
 
 import { useStampFormContext } from './StampForm'
+import { Asset, useUpload } from './useUpload'
 
 const isImage = (b: Asset | Image): b is Image => {
   return (b as Image).id !== undefined

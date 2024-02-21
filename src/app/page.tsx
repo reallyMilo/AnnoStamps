@@ -1,7 +1,7 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 
 import Filter from '@/components/Filter/Filter'
-import { Pagination } from '@/components/Pagination'
+import { Pagination } from '@/components/Filter/Pagination'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import Grid from '@/components/ui/Grid'

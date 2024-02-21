@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 
-import { FilterState } from '../hooks/useFilter'
+import type { FilterState } from '../constants'
 import {
   imageExtension,
   stampExtensions,
