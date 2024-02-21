@@ -7,6 +7,12 @@ import Grid from '@/components/ui/Grid'
 import { userIncludeStatement } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
+/*
+  Revalidate every hour to update responsive images from webhook
+  User created/updated stamps will immediately appear from revalidatePath in create/update stamp actions
+*/
+export const revalidate = 3600
+
 const getUserPageStamps = cache(async (usernameURL: string) => {
   return await prisma.user.findUnique({
     include: userIncludeStatement,
