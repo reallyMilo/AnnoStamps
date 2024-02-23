@@ -20,7 +20,7 @@ const SignInPage = async ({
       ? searchParams.callbackUrl
       : '/user/stamps'
   //https://github.com/nextauthjs/next-auth/issues/9293#issuecomment-1834443691
-  const providers = ['discord', 'google']
+  const providers = ['google', 'discord']
   return (
     <Container className="flex max-w-md flex-col justify-center">
       <Link href="/" className="mx-auto">
