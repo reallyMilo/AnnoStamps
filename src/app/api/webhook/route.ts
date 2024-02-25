@@ -33,7 +33,7 @@ export const POST = async (request: NextRequest) => {
       where: { id },
       data: url,
     })
-    return Response.json({ message: 'updated image' }, { status: 200 })
+    return Response.json({ message: 'updated image' })
   } catch (e) {
     return Response.json({ message: e }, { status: 500 })
   }

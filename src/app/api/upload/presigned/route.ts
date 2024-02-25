@@ -39,6 +39,5 @@ export const GET = auth(async (request) => {
   })
 
   const url = await getSignedUrl(client, command, { expiresIn: 3600 })
-
-  return Response.json({ url, path }, { status: 200 })
+  return Response.json({ url, path })
 })
