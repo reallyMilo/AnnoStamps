@@ -17,12 +17,11 @@ export const upload = async (
       }
     )
 
-    if (localRes.ok) {
-      const { message } = await localRes.json()
-      return '/tmp/' + message
+    if (!localRes.ok) {
+      throw new Error('failed to local upload')
     }
-
-    return undefined
+    const { message } = await localRes.json()
+    return '/tmp/' + message
   }
 
   const presigned = await fetch(
@@ -35,8 +34,9 @@ export const upload = async (
     body,
   })
 
-  if (putObject.ok) {
-    return 'https://d16532dqapk4x.cloudfront.net/' + path
+  if (!putObject.ok) {
+    throw new Error(putObject.statusText)
   }
-  return undefined
+
+  return 'https://d16532dqapk4x.cloudfront.net/' + path
 }

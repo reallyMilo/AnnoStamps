@@ -3,6 +3,7 @@ import { createId } from '@paralleldrive/cuid2'
 import JSZip, { JSZipObject } from 'jszip'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
+import { useFormStatus } from 'react-dom'
 
 import { UserWithStamps } from '@/lib/prisma/queries'
 import { upload } from '@/lib/upload'
@@ -38,16 +39,15 @@ const useStampFormContext = () => {
 }
 
 const Submit = ({ children }: { children: React.ReactNode }) => {
-  const { status } = useStampFormContext()
-  const isMutating = status === 'loading'
-  const isDisabled = status === 'error' || isMutating
+  const { pending } = useFormStatus()
+
   return (
     <button
       type="submit"
       className="ml-auto rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
-      disabled={isDisabled}
+      disabled={pending}
     >
-      {isMutating ? 'Loading...' : children}
+      {pending ? 'Submitting...' : children}
     </button>
   )
 }
@@ -68,8 +68,8 @@ const Header = ({ title, subTitle }: HeaderProps) => {
 export type FormProps = {
   action: (
     formData: FormData,
-    addImages: string[],
-    removeImages?: string[]
+    addImages: Image['id'][],
+    removeImages?: Image['id'][]
   ) => Promise<{ message: unknown; ok: boolean }>
   children: React.ReactNode
 }
@@ -81,12 +81,8 @@ const isAsset = (b: Asset | JSZipObject | Image): b is Asset => {
 const Form = ({ children, action }: FormProps) => {
   const router = useRouter()
   const { stamp, images, files, setStatus } = useStampFormContext()
-  const [errorMessage, setErrorMessage] = React.useState<object | null>(null)
 
-  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setStatus('loading')
-
+  const formAction = async (formData: FormData) => {
     if (images.length === 0) {
       setStatus('images')
       return
@@ -95,33 +91,23 @@ const Form = ({ children, action }: FormProps) => {
       setStatus('zip')
       return
     }
-
-    const formData = new FormData(e.currentTarget)
     formData.delete('images')
     formData.delete('stamps')
     const stampId = stamp?.id ?? createId()
     formData.set('stampId', stampId)
 
-    const addImages = []
-    const currentImages = stamp?.images ?? []
+    const imagesToUpload: Asset[] = []
+    const imageIdsToRemove: Image['id'][] = []
+
     for (const image of images) {
       if (isAsset(image)) {
-        const imagePath = await upload(
-          stampId,
-          image.rawFile,
-          image.rawFile.type,
-          image.name
-        )
-        if (!imagePath) {
-          setErrorMessage({ images: 'error uploading:' + image.name })
-          setStatus('error')
-          return
-        }
-        addImages.push(imagePath)
+        imagesToUpload.push(image)
         continue
       }
-      const index = currentImages.findIndex((oldImg) => oldImg.id === image.id)
-      currentImages.splice(index, 1)
+      const index = stamp?.images.findIndex((oldImg) => oldImg.id === image.id)
+      if (index === -1) {
+        imageIdsToRemove.push(image.id)
+      }
     }
 
     const zip = new JSZip()
@@ -133,36 +119,40 @@ const Form = ({ children, action }: FormProps) => {
       zip.file(file.name, file.async('blob'))
     }
     const zipped = await zip.generateAsync({ type: 'blob' })
-
-    const zipPath = await upload(stampId, zipped, 'zip')
-    if (!zipPath) {
-      setErrorMessage({ zip: 'error uploading zip' })
-      setStatus('error')
-      return
-    }
-    formData.set('stampFileUrl', zipPath)
     formData.set('collection', files.length > 1 ? 'true' : 'false')
 
-    const removeImageIds = currentImages.map((image) => image.id)
+    const [uploadedImageUrls, uploadedStampZipUrl] = await Promise.all([
+      Promise.all(
+        imagesToUpload.map(async (image) => {
+          const imagePath = await upload(
+            stampId,
+            image.rawFile,
+            image.rawFile.type,
+            image.name
+          )
+          return imagePath
+        })
+      ),
+      upload(stampId, zipped, 'zip'),
+    ])
 
-    const mutateStamp = await action(formData, addImages, removeImageIds)
+    formData.set('stampFileUrl', uploadedStampZipUrl)
 
+    const mutateStamp = await action(
+      formData,
+      uploadedImageUrls,
+      imageIdsToRemove
+    )
     if (!mutateStamp.ok) {
       setStatus('error')
       return
     }
-
     router.push('/user/stamps')
   }
 
   return (
-    <form className="mt-8 space-y-8" onSubmit={handleOnSubmit}>
+    <form className="mt-8 space-y-8" action={formAction}>
       {children}
-      {errorMessage && (
-        <pre>
-          post this to the discord {JSON.stringify(errorMessage, undefined, 2)}
-        </pre>
-      )}
     </form>
   )
 }
