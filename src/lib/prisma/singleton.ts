@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 
-import type { FilterState } from '../constants'
+import { type FilterState, stampsPerPage } from '../constants'
 import {
   imageExtension,
   stampExtensions,
@@ -18,27 +18,31 @@ const prismaClientSingleton = () => {
       model: {
         stamp: {
           async filterFindManyWithCount(
-            filter: Omit<FilterState, 'sort' | 'page'>,
-            sort: FilterState['sort'],
-            args: Required<Pick<Prisma.StampFindManyArgs, 'take' | 'skip'>>
+            filterState: FilterState
           ): Promise<[number, StampWithRelations[], number]> {
+            const { page, sort, ...filter } = filterState
+            let pageNumber = parseInt(page ?? '1', 10)
             return prisma.$transaction(async (q) => {
               const count = await q.stamp.count({
                 where: buildFilterWhereClause(filter),
               })
 
-              if (args.skip > count) {
-                args.skip = 0
+              let skip = (pageNumber - 1) * stampsPerPage
+
+              if (skip > count) {
+                skip = 0
+                pageNumber = 1
               }
 
               const stamps = await q.stamp.findMany({
                 include: stampIncludeStatement,
                 where: buildFilterWhereClause(filter),
                 orderBy: buildOrderByClause(sort),
-                ...args,
+                skip,
+                take: stampsPerPage,
               })
 
-              return [count, stamps, args.skip]
+              return [count, stamps, pageNumber]
             })
           },
         },

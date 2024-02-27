@@ -6,17 +6,12 @@ import { Pagination } from '@/components/Filter/Pagination'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import Grid from '@/components/ui/Grid'
-import { filterSchema, FilterState, stampsPerPage } from '@/lib/constants'
+import { filterSchema, FilterState } from '@/lib/constants'
 import prisma from '@/lib/prisma/singleton'
 
 const getFilteredStamps = unstable_cache(
   async (filterState: FilterState) => {
-    const { page, sort, ...filter } = filterState
-    const searchParamsPage = parseInt(page || '1', 10)
-    return prisma.stamp.filterFindManyWithCount(filter, sort, {
-      skip: (searchParamsPage - 1) * stampsPerPage,
-      take: stampsPerPage,
-    })
+    return prisma.stamp.filterFindManyWithCount(filterState)
   },
   ['filterStamps'],
   {
@@ -31,7 +26,6 @@ const HomePage = async ({
   searchParams: { [key: string]: string | string[] | undefined }
 }) => {
   const result = filterSchema.safeParse(searchParams)
-
   const [count, stamps, pageNumber] = await getFilteredStamps(
     result.success ? result.data : {}
   )
