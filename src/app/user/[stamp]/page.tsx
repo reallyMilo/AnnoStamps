@@ -1,21 +1,10 @@
 import { redirect } from 'next/navigation'
-import { cache } from 'react'
 
 import { auth } from '@/auth'
 import Container from '@/components/ui/Container'
-import { userIncludeStatement } from '@/lib/prisma/queries'
-import prisma from '@/lib/prisma/singleton'
 
+import { getUserWithStamps } from '../queries'
 import UpdateStampForm from './UpdateStampForm'
-
-const getUserWithStamps = cache(async (id: string) => {
-  return await prisma.user.findUniqueOrThrow({
-    include: userIncludeStatement,
-    where: {
-      id,
-    },
-  })
-})
 
 const EditStampPage = async ({ params }: { params: { stamp: string } }) => {
   const session = await auth()

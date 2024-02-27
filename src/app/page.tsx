@@ -1,5 +1,5 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
-import { cache } from 'react'
+import { unstable_cache } from 'next/cache'
 
 import Filter from '@/components/Filter/Filter'
 import { Pagination } from '@/components/Filter/Pagination'
@@ -7,27 +7,24 @@ import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import Grid from '@/components/ui/Grid'
 import { filterSchema, FilterState, stampsPerPage } from '@/lib/constants'
-import type { StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
-export const revalidate = 120 // revalidate every 2 minutes
-
-const getFilteredStamps = cache(
-  async (
-    filterState: FilterState
-  ): Promise<[number, StampWithRelations[], number]> => {
+const getFilteredStamps = unstable_cache(
+  async (filterState: FilterState) => {
     const { page, sort, ...filter } = filterState
     const searchParamsPage = parseInt(page || '1', 10)
-    const [count, stamps, resetPage] =
-      await prisma.stamp.filterFindManyWithCount(filter, sort, {
-        skip: (searchParamsPage - 1) * stampsPerPage,
-        take: stampsPerPage,
-      })
-    const pageNumber = resetPage === 0 ? 1 : searchParamsPage
-
-    return [count, stamps, pageNumber]
+    return prisma.stamp.filterFindManyWithCount(filter, sort, {
+      skip: (searchParamsPage - 1) * stampsPerPage,
+      take: stampsPerPage,
+    })
+  },
+  ['filterStamps'],
+  {
+    tags: ['filterStamps'],
+    revalidate: 120,
   }
 )
+
 const HomePage = async ({
   searchParams,
 }: {

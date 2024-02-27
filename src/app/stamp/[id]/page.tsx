@@ -1,7 +1,7 @@
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
+import { unstable_cache } from 'next/cache'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { cache } from 'react'
 
 import { auth } from '@/auth'
 import Category from '@/components/Category'
@@ -13,14 +13,16 @@ import Carousel from './Carousel'
 import DownloadButton from './DownloadButton'
 import LikeButton from './LikeButton'
 
-export const revalidate = 300 //revalidate every 5 minutes
-
-const getStamp = cache(async (id: string) => {
-  return await prisma.stamp.findUnique({
-    include: stampIncludeStatement,
-    where: { id },
-  })
-})
+const getStamp = unstable_cache(
+  async (id: string) => {
+    return prisma.stamp.findUnique({
+      include: stampIncludeStatement,
+      where: { id },
+    })
+  },
+  ['stamp'],
+  { revalidate: 300 }
+)
 
 const StampPage = async ({ params }: { params: { id: string } }) => {
   const stamp = await getStamp(params.id)
