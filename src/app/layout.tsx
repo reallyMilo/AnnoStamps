@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 import UserButton from '@/components/Auth/UserButton'
 import Search from '@/components/Filter/Search'
@@ -98,7 +99,9 @@ const Navbar = () => {
                 </Link>
               ))}
             </nav>
-            <Search />
+            <Suspense>
+              <Search />
+            </Suspense>
           </div>
           <UserButton />
         </div>

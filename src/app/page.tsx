@@ -1,5 +1,6 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { unstable_cache } from 'next/cache'
+import { Suspense } from 'react'
 
 import Filter from '@/components/Filter/Filter'
 import { Pagination } from '@/components/Filter/Pagination'
@@ -31,7 +32,9 @@ const HomePage = async ({
   )
   return (
     <Container>
-      <Filter />
+      <Suspense>
+        <Filter />
+      </Suspense>
       {stamps.length === 0 ? (
         <p className="inline-flex max-w-max items-center space-x-1 rounded-md bg-amber-100 px-4 py-2 text-amber-700">
           <ExclamationCircleIcon className="mt-px h-5 w-5 shrink-0" />
@@ -44,7 +47,9 @@ const HomePage = async ({
               <StampCard key={stamp.id} {...stamp} />
             ))}
           </Grid>
-          <Pagination count={count} page={pageNumber} />
+          <Suspense>
+            <Pagination count={count} page={pageNumber} />
+          </Suspense>
         </>
       )}
     </Container>
