@@ -1,5 +1,5 @@
+import { unstable_cache } from 'next/cache'
 import { notFound } from 'next/navigation'
-import { cache } from 'react'
 
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
@@ -11,14 +11,19 @@ import prisma from '@/lib/prisma/singleton'
   Revalidate every hour to update responsive images from webhook
   User created/updated stamps will immediately appear from revalidatePath in create/update stamp actions
 */
-export const revalidate = 3600
 
-const getUserPageStamps = cache(async (usernameURL: string) => {
-  return await prisma.user.findUnique({
-    include: userIncludeStatement,
-    where: { usernameURL },
-  })
-})
+const getUserPageStamps = unstable_cache(
+  async (usernameURL: string) => {
+    return prisma.user.findUnique({
+      include: userIncludeStatement,
+      where: { usernameURL },
+    })
+  },
+  ['usernameUrl'],
+  {
+    revalidate: 3600,
+  }
+)
 
 const UsernamePage = async ({ params }: { params: { username: string } }) => {
   const user = await getUserPageStamps(params.username)

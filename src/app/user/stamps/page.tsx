@@ -1,25 +1,15 @@
 import { PencilSquareIcon, PlusIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { cache } from 'react'
 
 import { auth } from '@/auth'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import Grid from '@/components/ui/Grid'
-import { userIncludeStatement } from '@/lib/prisma/queries'
-import prisma from '@/lib/prisma/singleton'
 
+import { getUserWithStamps } from '../queries'
 import StampDeleteModal from './StampDeleteModal'
 
-const getUserWithStamps = cache(async (id: string) => {
-  return await prisma.user.findUniqueOrThrow({
-    include: userIncludeStatement,
-    where: {
-      id,
-    },
-  })
-})
 const UserStampsPage = async () => {
   const session = await auth()
   if (!session) {
