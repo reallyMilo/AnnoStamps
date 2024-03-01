@@ -101,26 +101,18 @@ const Form = ({ children, onSubmit }: FormProps) => {
     const stampId = stamp?.id ?? createId()
     formData.set('stampId', stampId)
 
-    const addImages = []
-    const currentImages = stamp?.images ?? []
+    const imagesToUpload: Asset[] = []
+    const imageIdsToRemove: Image['id'][] = []
+
     for (const image of images) {
       if (isAsset(image)) {
-        const imagePath = await upload(
-          stampId,
-          image.rawFile,
-          image.rawFile.type,
-          image.name
-        )
-        if (!imagePath) {
-          setErrorMessage({ images: 'error uploading:' + image.name })
-          setStatus('error')
-          return
-        }
-        addImages.push(imagePath)
+        imagesToUpload.push(image)
         continue
       }
-      const index = currentImages.findIndex((oldImg) => oldImg.id === image.id)
-      currentImages.splice(index, 1)
+      const index = stamp?.images.findIndex((oldImg) => oldImg.id === image.id)
+      if (index === -1) {
+        imageIdsToRemove.push(image.id)
+      }
     }
 
     const zip = new JSZip()
@@ -132,19 +124,35 @@ const Form = ({ children, onSubmit }: FormProps) => {
       zip.file(file.name, file.async('blob'))
     }
     const zipped = await zip.generateAsync({ type: 'blob' })
+    formData.set('collection', files.length > 1 ? 'true' : 'false')
 
-    const zipPath = await upload(stampId, zipped, 'zip')
-    if (!zipPath) {
-      setErrorMessage({ zip: 'error uploading zip' })
+    let uploadedImageUrls: string[] = []
+    let uploadedStampZipUrl: string | null = null
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-extra-semi
+      ;[uploadedImageUrls, uploadedStampZipUrl] = await Promise.all([
+        Promise.all(
+          imagesToUpload.map(async (image) => {
+            const imagePath = await upload(
+              stampId,
+              image.rawFile,
+              image.rawFile.type,
+              image.name
+            )
+            return imagePath
+          })
+        ),
+        upload(stampId, zipped, 'zip'),
+      ])
+    } catch (e) {
+      setErrorMessage({ message: 'Error uploading assets' })
       setStatus('error')
       return
     }
-    formData.set('stampFileUrl', zipPath)
-    formData.set('collection', files.length > 1 ? 'true' : 'false')
 
-    const removeImageIds = currentImages.map((image) => image.id)
+    formData.set('stampFileUrl', uploadedStampZipUrl)
 
-    const res = await onSubmit(formData, addImages, removeImageIds)
+    const res = await onSubmit(formData, uploadedImageUrls, imageIdsToRemove)
 
     if (!res.ok) {
       const json = (await res.json()) as { message: object; ok: boolean }
