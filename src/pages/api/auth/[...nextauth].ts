@@ -71,6 +71,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = user.id
         session.user.username = user.username
         session.user.biography = user.biography
+        session.user.usernameURL = user.usernameURL
       }
       return session
     },
