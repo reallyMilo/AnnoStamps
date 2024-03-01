@@ -5,6 +5,9 @@ import Link from 'next/link'
 import UserMenu from '@/components/Auth/UserMenu'
 import Search from '@/components/Filter/Search'
 
+import headerLogo from '../../public/anno-stamps-logo.svg'
+import discordWhite from '../../public/discord-white-icon.svg'
+import github from '../../public/github-mark.svg'
 const navigation = [
   {
     href: '/',
@@ -19,12 +22,12 @@ const socials = [
   {
     name: 'discord',
     url: 'https://discord.gg/73hfP54qXe',
-    src: '/discord-white-icon.svg',
+    src: discordWhite,
   },
   {
     name: 'github',
     url: 'https://github.com/reallyMilo/AnnoStamps',
-    src: '/github-mark.svg',
+    src: github,
   },
 ]
 
@@ -40,17 +43,13 @@ const Navbar = () => {
               className="hidden items-center space-x-1 md:flex"
             >
               <Image
-                src="/anno-stamps-logo.svg"
-                width="160"
-                height="60"
+                src={headerLogo}
                 alt="Anno Stamps"
-                priority
                 style={{
                   width: '100%',
                   maxWidth: '160px',
                   height: 'auto',
                 }}
-                className="w-[100px] md:w-[160px]"
               />
             </Link>
             <nav className="flex items-center space-x-4 text-center text-xs font-bold md:text-left md:text-sm">
@@ -78,7 +77,7 @@ const Footer = () => {
       <div className="container mx-auto flex items-center justify-between px-5">
         <p className="text-sm font-bold text-white">Anno Stamps</p>
 
-        <div className="flex items-center space-x-5 px-5">
+        <div className="flex items-center space-x-5">
           <a
             href="https://www.buymeacoffee.com/miloK"
             target="_blank"
@@ -96,11 +95,10 @@ const Footer = () => {
               <Image
                 src={social.src}
                 alt={social.name}
-                width={32}
-                height={32}
                 style={{
                   maxWidth: '100%',
-                  height: 'auto',
+                  height: '32px',
+                  width: '32px',
                 }}
               />{' '}
             </a>

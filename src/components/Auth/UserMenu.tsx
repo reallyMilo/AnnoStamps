@@ -38,7 +38,13 @@ const menuItems = [
     href: null,
   },
 ]
+const Avatar = ({ src }: { src: string | undefined | null }) => {
+  if (!src) {
+    return <UserIcon className="h-6 w-6 text-gray-400" />
+  }
 
+  return <Image src={src} alt="Avatar" height={36} width={36} />
+}
 const UserMenu = () => {
   const { data: session, status } = useSession()
   const user = session?.user
@@ -59,11 +65,7 @@ const UserMenu = () => {
     <Menu as="div" data-testid="user-menu" className="relative z-50">
       <Menu.Button className="group flex items-center space-x-px">
         <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-          {user?.image ? (
-            <Image src={user.image} alt="Avatar" fill sizes="100vw" />
-          ) : (
-            <UserIcon className="h-6 w-6 text-gray-400" />
-          )}
+          <Avatar src={user?.image} />
         </div>
         <ChevronDownIcon className="h-5 w-5 shrink-0 text-white group-hover:text-white" />
       </Menu.Button>
@@ -82,11 +84,7 @@ const UserMenu = () => {
         >
           <div className="mb-2 flex items-center space-x-2 px-4 py-4">
             <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-              {user?.image ? (
-                <Image src={user.image} alt="Avatar" fill sizes="100vw" />
-              ) : (
-                <UserIcon className="h-6 w-6 text-gray-400" />
-              )}
+              <Avatar src={user?.image} />
             </div>
             <div className="flex flex-col truncate">
               {user?.username ? (
