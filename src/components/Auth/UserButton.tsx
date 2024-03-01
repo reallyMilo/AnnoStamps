@@ -19,21 +19,38 @@ const UserButton = async () => {
       </Link>
     )
   const { user } = session
+
   //FIXME: dropdowns should be composition pattern of client components to pass server components as children
   return (
     <UserMenu
       avatar={
-        user?.image ? (
-          <Image src={user.image} alt="Avatar" fill sizes="100vw" />
-        ) : (
-          <UserIcon className="h-6 w-6 text-gray-400" />
-        )
+        <div className="relative inline-block rounded-full bg-gray-200">
+          {user?.image ? (
+            <Image
+              src={user.image}
+              style={{
+                borderRadius: '9999px',
+              }}
+              alt="Avatar"
+              height={36}
+              width={36}
+            />
+          ) : (
+            <UserIcon className="h-6 w-6 text-gray-400" />
+          )}
+          {!user.usernameURL && (
+            <span className="absolute right-0 top-0 z-10 block h-2 w-2 -translate-y-1/2 translate-x-1/2 transform rounded-full bg-red-400 ring-2 ring-white" />
+          )}
+        </div>
       }
       username={
         user?.username ? (
           <span id="user-name">{user?.username}</span>
         ) : (
-          <Link href={'/user/account'} className="text-blue-500 underline">
+          <Link
+            href={'/user/account'}
+            className="flex text-yellow-400 underline"
+          >
             Set username!
           </Link>
         )

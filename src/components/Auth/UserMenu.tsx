@@ -1,7 +1,6 @@
 'use client'
 
 import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { HomeIcon, PlusIcon, UserIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { Fragment } from 'react'
@@ -32,10 +31,7 @@ const UserMenu = ({ avatar, username, logout }: UserMenuProps) => {
   return (
     <Menu as="div" data-testid="user-menu" className="relative z-50">
       <Menu.Button className="group flex items-center space-x-px">
-        <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-          {avatar}
-        </div>
-        <ChevronDownIcon className="h-5 w-5 shrink-0 text-white group-hover:text-white" />
+        {avatar}
       </Menu.Button>
       <Transition
         as={Fragment}

@@ -9,6 +9,7 @@ import prisma from './lib/prisma/singleton'
 export const config = {
   adapter: PrismaAdapter(prisma),
   pages: {
+    newUser: '/user/account',
     signIn: '/auth/signin',
     signOut: '/',
     error: '/auth/error',
