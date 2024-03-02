@@ -17,7 +17,7 @@ const render = (props?: Partial<StampWithRelations>) => ({
       imageUrl={null}
       downloads={123}
       createdAt={1709335430}
-      updatedAt={1709397580}
+      updatedAt={1709397567}
       modded
       user={{ username: 'stampCreator' } as StampWithRelations['user']}
       likedBy={[{ id: '10' }, { id: '11' }] as StampWithRelations['likedBy']}
@@ -42,7 +42,7 @@ describe('Stamp Card', () => {
     expect(screen.getByText('production')).toBeInTheDocument()
     expect(screen.getByText('old world')).toBeInTheDocument()
     expect(screen.getByText('stampCreator')).toBeInTheDocument()
-    expect(screen.getByText('20 hours ago'))
+    expect(screen.getByText('19 hours ago'))
   })
 
   it('hidden mod when false', () => {
