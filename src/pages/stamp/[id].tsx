@@ -124,10 +124,10 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
             </Link>
           )}
           {modded && (
-            <span className="flex w-fit items-center gap-1 rounded-full bg-[#C34E27] py-1 pl-2 pr-3 text-xs capitalize text-white">
+            <div className="flex w-fit items-center gap-1 rounded-full bg-[#C34E27] py-1 pl-2 pr-3 text-xs capitalize text-white">
               <WrenchIcon className="h-5 w-5" />
               mods
-            </span>
+            </div>
           )}
           <div className="hidden sm:block">
             <Category category={category} />
@@ -140,17 +140,17 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
               <div className="capitalize text-gray-500">{good}</div>
             )}
 
-            {collection && <span>Collection</span>}
+            {collection && <div>Collection</div>}
             {/* TODO: views */}
             {/* <div className="">
             <EyeIcon className="mr-2 inline-block h-5 w-5" /> Views
           </div> */}
             <div>
               <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5" />
-              <span>{downloads}</span>
+              {downloads}
             </div>
 
-            <span>{distanceUnixTimeToNow(createdAt)}</span>
+            <div>{distanceUnixTimeToNow(createdAt)}</div>
           </div>
           <LikeButton id={id} likedBy={likedBy} />
 
