@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import type { StampWithRelations } from '@/lib/prisma/queries'
+import { distanceUnixTimeToNow } from '@/lib/utils'
 
 import Category from './Category'
 
@@ -20,7 +21,20 @@ const StampCard = ({
   downloads,
   images,
   user,
-}: StampWithRelations) => {
+  createdAt,
+}: Pick<
+  StampWithRelations,
+  | 'id'
+  | 'title'
+  | 'category'
+  | 'region'
+  | 'modded'
+  | 'imageUrl'
+  | 'downloads'
+  | 'images'
+  | 'user'
+  | 'createdAt'
+>) => {
   const srcUrl =
     images.length === 0
       ? imageUrl ?? 'https://placehold.co/250x250/png'
@@ -52,9 +66,12 @@ const StampCard = ({
       </Link>
       <div className="flex flex-col flex-nowrap gap-y-2 p-4">
         <Link href={`/stamp/${id}`}>
-          <h4 id="stamp-region" className=" text-[#B11E47]">
-            {region}
-          </h4>
+          <div className="flex justify-between">
+            <h4 id="stamp-region" className="text-[#B11E47]">
+              {region}
+            </h4>
+            <span className="text-xs">{distanceUnixTimeToNow(createdAt)}</span>
+          </div>
 
           <h2
             id="stamp-title"
