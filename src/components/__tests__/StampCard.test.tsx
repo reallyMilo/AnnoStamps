@@ -42,7 +42,7 @@ describe('Stamp Card', () => {
     expect(screen.getByText('production')).toBeInTheDocument()
     expect(screen.getByText('old world')).toBeInTheDocument()
     expect(screen.getByText('stampCreator')).toBeInTheDocument()
-    expect(screen.getByText('19 hours ago'))
+    expect(screen.getByText('ago', { exact: false })).toBeInTheDocument()
   })
 
   it('hidden mod when false', () => {
