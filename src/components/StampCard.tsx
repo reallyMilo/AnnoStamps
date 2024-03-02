@@ -66,11 +66,11 @@ const StampCard = ({
       </Link>
       <div className="flex flex-col flex-nowrap gap-y-2 p-4">
         <Link href={`/stamp/${id}`}>
-          <div className="flex justify-between">
+          <div className="flex items-baseline justify-between">
             <h4 id="stamp-region" className="text-[#B11E47]">
               {region}
             </h4>
-            <span className="text-xs">{distanceUnixTimeToNow(createdAt)}</span>
+            <div className="text-xs">{distanceUnixTimeToNow(createdAt)}</div>
           </div>
 
           <h2
