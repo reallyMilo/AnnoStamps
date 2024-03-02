@@ -1,4 +1,3 @@
-import { stampMock } from '@/__mocks__/data'
 import { StampWithRelations } from '@/lib/prisma/queries'
 
 import {
@@ -8,25 +7,30 @@ import {
 } from '../../__tests__/test-utils'
 import StampCard from '../StampCard'
 
-const stamp = stampMock[0]
-
 const render = (props?: Partial<StampWithRelations>) => ({
-  ...renderRTL(<StampCard {...stamp} {...props} />),
+  ...renderRTL(
+    <StampCard
+      id="urlID"
+      title="Stamp Title"
+      category="production"
+      region="old world"
+      imageUrl={null}
+      downloads={123}
+      createdAt={1709335430}
+      updatedAt={1709397567}
+      modded
+      user={{ username: 'stampCreator' } as StampWithRelations['user']}
+      likedBy={[{ id: '10' }, { id: '11' }] as StampWithRelations['likedBy']}
+      images={[] as StampWithRelations['images']}
+      {...props}
+    />
+  ),
   user: userEvent.setup(),
 })
 
 describe('Stamp Card', () => {
   it('renders with all provided props', () => {
-    render({
-      id: 'urlID',
-      title: 'Stamp Title',
-      category: 'production',
-      region: 'old world',
-      downloads: 123,
-      modded: true,
-      user: { ...stamp.user, username: 'stampCreator' },
-      likedBy: [{ ...stamp.likedBy[0] }, { ...stamp.likedBy[0] }],
-    })
+    render()
 
     expect(screen.getByTestId('stamp-card-link')).toHaveAttribute(
       'href',
@@ -38,12 +42,11 @@ describe('Stamp Card', () => {
     expect(screen.getByText('production')).toBeInTheDocument()
     expect(screen.getByText('old world')).toBeInTheDocument()
     expect(screen.getByText('stampCreator')).toBeInTheDocument()
+    expect(screen.getByText('19 hours ago'))
   })
 
-  it('hidden mod and collection badge when false', () => {
-    render({ modded: false, collection: false })
-
+  it('hidden mod when false', () => {
+    render({ modded: false })
     expect(screen.queryByText('mods')).not.toBeInTheDocument()
-    expect(screen.queryByText('collection')).not.toBeInTheDocument()
   })
 })
