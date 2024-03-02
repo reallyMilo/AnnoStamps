@@ -13,6 +13,7 @@ import LikeButton from '@/components/LikeButton'
 import Container from '@/components/ui/Container'
 import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
+import { distanceUnixTimeToNow } from '@/lib/utils'
 
 export async function getStaticPaths() {
   const stamps = await prisma.stamp.findMany({
@@ -106,66 +107,72 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
     user,
     collection,
     likedBy,
+    createdAt,
+    updatedAt,
   } = stamp
 
   return (
     <Container className="max-w-5xl space-y-6 px-0">
       <Carousel images={images} fallBack={imageUrl ?? ''} />
+      <div className="space-y-6 px-2 sm:px-0">
+        <h1 className="truncate text-2xl font-semibold">{title} </h1>
 
-      <h1 className=" truncate text-2xl font-semibold">{title} </h1>
-
-      <div className="flex space-x-5">
-        {user.usernameURL && (
-          <Link
-            className="self-center hover:text-sky-700"
-            href={`/${user.usernameURL}`}
-          >
-            {user.username}
-          </Link>
-        )}
-
-        <Category category={category} />
-
-        <div className="hidden grow space-x-5 text-sm md:flex">
-          <div className="self-center capitalize text-[#B11E47]">{region}</div>
-
-          {category === 'production' && (
-            <div className="self-center capitalize text-gray-500">{good}</div>
+        <div className="flex items-center space-x-5">
+          {user.usernameURL && (
+            <Link className=" hover:text-sky-700" href={`/${user.usernameURL}`}>
+              {user.username}
+            </Link>
           )}
-
           {modded && (
-            <span className="self-center rounded-full bg-[#6DD3C0] px-4 py-2 text-black">
-              <WrenchIcon className="mr-2 inline-block h-5 w-5" />
+            <span className="flex w-fit items-center gap-1 rounded-full bg-[#C34E27] py-1 pl-2 pr-3 text-xs capitalize text-white">
+              <WrenchIcon className="h-5 w-5" />
               mods
             </span>
           )}
+          <div className="hidden sm:block">
+            <Category category={category} />
+          </div>
 
-          {collection && <div className="self-center">Collection</div>}
-          {/* TODO: views */}
-          {/* <div className="self-center">
+          <div className="hidden grow space-x-5 text-sm md:flex">
+            <div className=" capitalize text-[#B11E47]">{region}</div>
+
+            {category === 'production' && (
+              <div className="capitalize text-gray-500">{good}</div>
+            )}
+
+            {collection && <span>Collection</span>}
+            {/* TODO: views */}
+            {/* <div className="">
             <EyeIcon className="mr-2 inline-block h-5 w-5" /> Views
           </div> */}
-          <div className="self-center">
-            <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5" />
-            {downloads}
+            <div>
+              <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5" />
+              <span>{downloads}</span>
+            </div>
+
+            <span>{distanceUnixTimeToNow(createdAt)}</span>
           </div>
+          <LikeButton id={id} likedBy={likedBy} />
+
+          <a
+            href={stampFileUrl}
+            data-testid="stamp-download"
+            className="inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
+            onClick={() => fetch(`/api/stamp/download/${id}`)}
+            download={title}
+          >
+            <ArrowDownTrayIcon className="mr-2 inline-block h-6 w-6" />
+            Download
+          </a>
         </div>
-        <LikeButton id={id} likedBy={likedBy} />
 
-        <a
-          href={stampFileUrl}
-          data-testid="stamp-download"
-          className="inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
-          onClick={() => fetch(`/api/stamp/download/${id}`)}
-          download={title}
-        >
-          <ArrowDownTrayIcon className="mr-2 inline-block h-6 w-6" />
-          Download
-        </a>
+        {createdAt !== updatedAt && (
+          <div className="italic">
+            Updated: {distanceUnixTimeToNow(updatedAt)}
+          </div>
+        )}
+        <p className="col-span-3 break-words text-lg">{description}</p>
       </div>
-
-      <p className="col-span-3 break-words text-lg">{description}</p>
-      {/* TODO: list of mods used in stamp #70 */}
     </Container>
   )
 }
