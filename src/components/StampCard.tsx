@@ -57,7 +57,7 @@ const StampCard = ({
             }}
           />
           {modded && (
-            <span className="absolute right-2 top-2 flex h-fit w-fit flex-row items-center rounded-full bg-[#6DD3C0] px-2 py-1 text-xs text-black">
+            <span className="absolute right-2 top-2 flex h-fit w-fit flex-row items-center rounded-full bg-[#C34E27] px-2 py-1 text-xs text-white">
               <WrenchIcon className="mr-1 h-3 w-3" />
               mods
             </span>
