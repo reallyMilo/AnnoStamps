@@ -1,4 +1,6 @@
+import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import JSZip from 'jszip'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import useSWR from 'swr'
@@ -13,7 +15,7 @@ type Stamp = UserWithStamps['listedStamps'][0]
 const EditStampPage = () => {
   const { query } = useRouter()
 
-  const { userStamps, isLoading, error } = useUserStamps()
+  const { session, userStamps, isLoading, error } = useUserStamps()
 
   const stamp = useMemo<Stamp | undefined>(() => {
     if (!userStamps) {
@@ -68,6 +70,32 @@ const EditStampPage = () => {
       <Container>
         <h1 className="text-xl font-bold text-gray-800">Your Stamps</h1>
         <div className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200" />{' '}
+      </Container>
+    )
+  }
+
+  if (!session?.user.username) {
+    return (
+      <Container>
+        <div className="flex">
+          <div className="flex-shrink-0">
+            <ExclamationTriangleIcon
+              className="h-5 w-5 text-yellow-400"
+              aria-hidden="true"
+            />
+          </div>
+          <div className="ml-3">
+            <p className="text-sm text-yellow-700">
+              This account currently does not have a username set.{' '}
+              <Link
+                href="/user/account"
+                className="font-medium text-yellow-700 underline hover:text-yellow-600"
+              >
+                Please set your username.
+              </Link>
+            </p>
+          </div>
+        </div>
       </Container>
     )
   }
