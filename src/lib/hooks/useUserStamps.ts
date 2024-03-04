@@ -6,7 +6,7 @@ import { UserWithStamps } from '../prisma/queries'
 
 export const useUserStamps = () => {
   const router = useRouter()
-  const { status } = useSession({
+  const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
       router.replace('/auth/signin')
@@ -33,6 +33,7 @@ export const useUserStamps = () => {
 
   return {
     userStamps: data?.data,
+    session,
     isLoading,
     error,
   }
