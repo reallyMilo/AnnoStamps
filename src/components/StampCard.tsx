@@ -42,7 +42,11 @@ const StampCard = ({
 
   return (
     <div className="rounded-lg bg-white shadow-md">
-      <Link href={`/stamp/${id}`} data-testid="stamp-card-link">
+      <Link
+        href={`/stamp/${id}`}
+        data-testid="stamp-card-link"
+        prefetch={false}
+      >
         <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200">
           <Image
             src={srcUrl}
@@ -65,7 +69,7 @@ const StampCard = ({
         </div>
       </Link>
       <div className="flex flex-col flex-nowrap gap-y-2 p-4">
-        <Link href={`/stamp/${id}`}>
+        <Link href={`/stamp/${id}`} prefetch={false}>
           <div className="flex items-baseline justify-between">
             <h4 id="stamp-region" className="text-[#B11E47]">
               {region}
@@ -85,14 +89,15 @@ const StampCard = ({
           <Link
             href={`/${user.usernameURL}`}
             className="flex h-11 items-center gap-1 text-slate-500"
+            prefetch={false}
           >
             <UserCircleIcon className="h-4 w-4" />
             <span className="hover:text-sky-700">{user.username}</span>
           </Link>
         ) : (
-          <Link href={`/stamp/${id}`} className="h-11" />
+          <Link href={`/stamp/${id}`} className="h-11" prefetch={false} />
         )}
-        <Link href={`/stamp/${id}`}>
+        <Link href={`/stamp/${id}`} prefetch={false}>
           <div className="flex justify-between">
             <Category category={category} />
             <div className="flex items-end">
