@@ -74,6 +74,7 @@ export default async function updateStampHandler(
             }),
           },
         }),
+        changedAt: new Date().toISOString(),
         ...fields,
       },
     })
