@@ -23,7 +23,7 @@ model Image {
 }
 
 model Stamp {
-  id           String   @id
+  id           String    @id
   userId       String
   game         String
   title        String
@@ -36,16 +36,17 @@ model Stamp {
   good         String?
   population   String?
   capital      String?
-  collection   Boolean  @default(false)
-  townhall     Boolean  @default(false)
-  tradeUnion   Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  modded       Boolean  @default(false)
-  downloads    Int      @default(0)
-  user         User     @relation("StampCreator", fields: [userId], references: [id], onDelete: NoAction)
-  likedBy      User[]   @relation("StampLiker")
-  images       Image[]  @relation("StampImage")
+  collection   Boolean   @default(false)
+  townhall     Boolean   @default(false)
+  tradeUnion   Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  changedAt    DateTime?
+  updatedAt    DateTime  @updatedAt
+  modded       Boolean   @default(false)
+  downloads    Int       @default(0)
+  user         User      @relation("StampCreator", fields: [userId], references: [id], onDelete: NoAction)
+  likedBy      User[]    @relation("StampLiker")
+  images       Image[]   @relation("StampImage")
 }
 
 model Account {
