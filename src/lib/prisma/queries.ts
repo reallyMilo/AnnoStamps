@@ -132,6 +132,11 @@ export const stampExtensions = Prisma.defineExtension({
           return getUnixTime(new Date(updatedAt))
         },
       },
+      changedAt: {
+        compute({ changedAt }) {
+          return getUnixTime(new Date(changedAt))
+        },
+      },
     },
   },
 })
