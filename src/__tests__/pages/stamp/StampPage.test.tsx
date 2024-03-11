@@ -21,6 +21,7 @@ const stamp = {
   townhall: false,
   tradeUnion: true,
   createdAt: 1695253939,
+  changedAt: 1695253939,
   updatedAt: 1695253939,
   modded: true,
   downloads: 999,
@@ -106,7 +107,7 @@ describe('Stamp Page', () => {
   })
   it('displays stamp updated time', () => {
     render({
-      updatedAt: 1709404300,
+      changedAt: 1709404300,
     })
 
     expect(screen.getByText('Updated:', { exact: false })).toBeInTheDocument()
