@@ -18,8 +18,9 @@ export interface StampWithRelations
     Prisma.StampGetPayload<{
       include: typeof stampIncludeStatement
     }>,
-    'createdAt' | 'updatedAt' | 'images'
+    'createdAt' | 'updatedAt' | 'images' | 'changedAt'
   > {
+  changedAt: number
   createdAt: number
   images: Image[]
   updatedAt: number
@@ -86,7 +87,9 @@ const createStampSchema = stampSchema
 >
 
 const updateStampSchema = stampSchema
-  .partial()
+  .omit({ id: true, userId: true, game: true })
+  .partial({ images: true })
+  .extend({ changedAt: z.string().datetime() })
   .transform(({ modded, tradeUnion, townhall, collection, ...schema }) => ({
     modded: modded === 'true',
     tradeUnion: tradeUnion === 'true',
@@ -130,6 +133,11 @@ export const stampExtensions = Prisma.defineExtension({
       updatedAt: {
         compute({ updatedAt }) {
           return getUnixTime(new Date(updatedAt))
+        },
+      },
+      changedAt: {
+        compute({ changedAt }) {
+          return getUnixTime(new Date(changedAt))
         },
       },
     },

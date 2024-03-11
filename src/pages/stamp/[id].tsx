@@ -108,7 +108,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
     collection,
     likedBy,
     createdAt,
-    updatedAt,
+    changedAt,
   } = stamp
 
   return (
@@ -166,9 +166,9 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
           </a>
         </div>
 
-        {createdAt !== updatedAt && (
+        {createdAt !== changedAt && (
           <div className="italic">
-            Updated: {distanceUnixTimeToNow(updatedAt)}
+            Updated: {distanceUnixTimeToNow(changedAt)}
           </div>
         )}
         <p className="col-span-3 break-words text-lg">{description}</p>
