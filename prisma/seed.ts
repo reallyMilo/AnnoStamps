@@ -46,8 +46,6 @@ export const generateStampData = (
       region: region[regionIdx],
       stampFileUrl: '/stamp.zip',
       collection: index % 2 ? false : true,
-      townhall: index % 2 ? false : true,
-      tradeUnion: index % 2 ? true : false,
       good: good.toLowerCase(),
       downloads: index,
     }
