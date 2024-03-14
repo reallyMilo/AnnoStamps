@@ -61,8 +61,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 export const buildFilterWhereClause = (
   filter: Omit<FilterState, 'sort' | 'page'>
 ): Prisma.StampWhereInput => {
-  const { modded, capital, region, category, townhall, tradeunion, search } =
-    filter
+  const { modded, capital, region, category, search } = filter
 
   // https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search#postgresql
   // increase chance that user search returns something with or matching
@@ -75,9 +74,6 @@ export const buildFilterWhereClause = (
     ...(region ? { region } : {}),
     ...(category ? { category } : {}),
     ...(capital ? { capital } : {}),
-    ...(townhall ? { townhall: true } : {}),
-    //FIXME: TS function return not showing type error for invalid schema where option ie. { tradeunion: true }
-    ...(tradeunion ? { tradeUnion: true } : {}),
     ...(parsedQuery
       ? {
           title: {

@@ -75,45 +75,9 @@ const Fields = () => {
               )}
             />
           </div>
+        </div>
+      )}
 
-          <div className="flex flex-col space-y-1">
-            <label className="text-gray-600" htmlFor="tradeUnion">
-              Trade Union
-            </label>
-            <select
-              className={selectVariantStyles.primaryShadow}
-              id="tradeUnion"
-              name="tradeUnion"
-              defaultValue={stamp?.tradeUnion.toString()}
-              required
-            >
-              <option value="">-Select-</option>
-              <option value="true">Yes</option>
-              <option value="false">No</option>
-            </select>
-          </div>
-        </div>
-      )}
-      {category === 'housing' && (
-        <div className="grid grid-cols-3 gap-x-4">
-          <div className="flex flex-col space-y-1">
-            <label className="text-gray-600" htmlFor="townhall">
-              Town Hall
-            </label>
-            <select
-              className={selectVariantStyles.primaryShadow}
-              id="townhall"
-              name="townhall"
-              defaultValue={stamp?.townhall.toString()}
-              required
-            >
-              <option value="">-Select-</option>
-              <option value="true">Yes</option>
-              <option value="false">No</option>
-            </select>
-          </div>
-        </div>
-      )}
       {category === 'island' && (
         <div className="grid grid-cols-3 gap-x-4">
           <div className="flex flex-col space-y-1">

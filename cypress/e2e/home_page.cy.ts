@@ -32,9 +32,9 @@ describe('Home Page', () => {
       .should('eq', 'manola')
     cy.get('select#sort').select('newest').invoke('val').should('eq', 'newest')
 
-    cy.get('#modded').check().should('be.checked')
-    cy.get('#townhall').check().should('be.checked')
-    cy.get('#trade-union').check().should('be.checked')
+    cy.get('#modded')
+      .click()
+      .should('have.attr', 'data-headlessui-state', 'checked')
 
     //test flakey
     // cy.url().should(
