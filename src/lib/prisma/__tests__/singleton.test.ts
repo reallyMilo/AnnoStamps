@@ -13,8 +13,7 @@ describe('buildFilterWhereClause', () => {
       capital: 'crown falls',
       region: 'new world',
       category: 'production',
-      townhall: 'true',
-      tradeUnion: 'false',
+
       search: 'Cool stamp',
     }
     const result = buildFilterWhereClause(filter)
@@ -23,7 +22,7 @@ describe('buildFilterWhereClause', () => {
       capital: 'crown falls',
       region: 'new world',
       category: 'production',
-      townhall: true,
+
       title: {
         search: 'Cool | stamp',
       },

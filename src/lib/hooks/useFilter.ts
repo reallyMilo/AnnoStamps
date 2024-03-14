@@ -11,8 +11,6 @@ export const filterSchema = z
     region: z.string(),
     search: z.string(),
     sort: z.string(),
-    townhall: z.string(),
-    tradeunion: z.string(),
   })
   .partial()
 
@@ -20,25 +18,15 @@ export type FilterState = z.infer<typeof filterSchema>
 type Action =
   | {
       payload: string
-      type:
-        | 'category'
-        | 'region'
-        | 'modded'
-        | 'capital'
-        | 'townhall'
-        | 'tradeunion'
-        | 'sort'
-        | 'search'
+      type: NonNullable<keyof Omit<FilterState, 'page'>>
     }
-  | { payload: number; type: 'page' }
+  | { payload: number; type: NonNullable<keyof Pick<FilterState, 'page'>> }
 
 const sortOrder: Action['type'][] = [
   'category',
   'region',
   'modded',
   'capital',
-  'townhall',
-  'tradeunion',
   'sort',
   'page',
   'search',
