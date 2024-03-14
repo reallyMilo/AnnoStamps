@@ -9,9 +9,9 @@ interface SelectProps extends React.ComponentPropsWithRef<'select'> {
 
 export const selectVariantStyles = {
   primary:
-    'w-full bg-[#F0F3F4] truncate rounded-md border py-2.5 pl-4 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-opacity-2',
+    'w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-2',
   primaryShadow:
-    'w-full bg-[#F0F3F4] truncate rounded-md border py-2.5 pl-4 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 focus:border-gray-400 focus:ring-gray-400',
+    'w-full truncate rounded-md border py-2 pl-4 shadow-sm transition focus:outline-none focus:ring-4 focus:ring-opacity-20 disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 focus:border-gray-400 focus:ring-gray-400',
 }
 
 const Select = ({
