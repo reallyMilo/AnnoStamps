@@ -13,16 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
-      - run: pnpm install
+      - uses: ./github/actions/build
       - name: Run lint
         run: pnpm lint
   test:
@@ -31,16 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
-      - run: pnpm install
+      - uses: ./github/actions/build
       - name: Run test
         run: pnpm test
   e2e:
@@ -50,15 +32,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
-      - run: pnpm install
+      - uses: ./github/actions/build
       - name: Cypress e2e
         run: pnpm ci:e2e
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/annostamps
+          DIRECT_URL: postgresql://postgres:postgres@localhost:5432/annostamps
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: '54x5s+4mM6/yoJa/z4q57PElcT67/mPKkI2hgNX2Ht4='
