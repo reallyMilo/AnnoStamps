@@ -53,6 +53,7 @@ jobs:
       - name: 'Create Database and Seed'
         run: pnpm migrate
         env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/annostamps
           DIRECT_URL: postgresql://postgres:postgres@localhost:5432/annostamps
       - name: Cypress e2e
         run: pnpm ci:e2e
