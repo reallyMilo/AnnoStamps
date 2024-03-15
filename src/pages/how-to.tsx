@@ -1,109 +1,109 @@
 import Image from 'next/image'
-
+import Link from 'next/link'
 import Container from '@/components/ui/Container'
+import stampButton from '../../public/stamp-button.jpg'
+import stampHighlight from '../../public/stamp-highlight.jpg'
+import stampFolder from '../../public/stamp-name.jpg'
+import stampPath from '../../public/stamp-folder-path.jpg'
+import stampPage from '../../public/stamp-download.png'
 
 const HowTo = () => {
   return (
-    <Container className="max-w-5xl space-y-8">
-      <section>
-        <h1 className="text-3xl font-bold">How to use stamps in Anno 1800</h1>
-        <p>
-          Stamps allow for creating blueprints of a layout that can be reused.
-          <br />
-          Stamps are created in game and generate a file that can then be shared
-          with others.
+    <Container className="prose">
+      <h1>How to use stamps in Anno 1800</h1>
+      <p>
+        Stamps allow for creating blueprints of a layout that can be reused.
+        Stamps are created in game and generate a file that can then be shared
+        with others. For a detailed guide, check the{' '}
+        <a href="https://anno1800.fandom.com/wiki/Stamps">wiki.</a>
+      </p>
+
+      <h2>How to create a stamp</h2>
+      <div className="grid-rows grid gap-x-3 md:grid-flow-col md:grid-rows-2">
+        <p className="col-span-2">
+          The stamp menu is located in the game bar at the bottom of your
+          screen. With this tool you can highlight the area to create a stamp.
         </p>
-      </section>
-      <section className="space-y-2">
-        <h3 className="pb-5 text-xl font-bold">How to create a stamp</h3>
-        <p className="font-bold">Create the stamp in game.</p>
-        <p>The stamp menu is shown in the screenshot below.</p>
-        <Image
-          src="/stamp-button.jpg"
-          width={800}
-          height={600}
-          alt="Stamp button"
-        />
-        <p>With this tool you can highlight the area to create a stamp.</p>
-        <Image
-          src="/stamp-highlight.jpg"
-          width={800}
-          height={600}
-          alt="Stamp highlight"
-        />
-        <p>
+        <p className="col-span-2">
           Stamps are grouped in folders. Clicking on the stamp folder in the
           stamp menu will display a menu above it with a list of stamps in that
           folder. Right clicking the stamp or the stamp folder will display a
           menu allowing you to rename the folder/stamp and set an icon.
         </p>
-        <Image
-          src="/stamp-name.jpg"
-          width={800}
-          height={600}
-          alt="Stamp folder"
-          style={{ height: 'auto' }}
-        />
-        <p className="font-bold">Locate the stamp file in Windows</p>
+
+        <div className="col-span-3 md:row-span-2">
+          <Image
+            src={stampButton}
+            alt="Location of the stamp tool icon in the menu at the bottom of the screen."
+          />
+          <Image
+            src={stampHighlight}
+            alt="Highlighting of buildings for the creation of the stamp."
+          />
+          <Image
+            src={stampFolder}
+            alt="Accessing created stamps with the ability to rename and organize in folders."
+          />
+        </div>
+      </div>
+
+      <h3>Locate the stamp file in Windows</h3>
+      <span className="italic">
+        C:/Users/[username]/Documents/Anno 1800/stamps/[region]
+      </span>
+      <div className="md:flex">
         <p>
-          Your stamps directory is located in the Windows user
-          &apos;Documents&apos; folder, by default:{' '}
-          <span className="italic">
-            &apos;C:/Users/[username]/Documents/Anno 1800/stamps&apos;
-          </span>
-        </p>
-        <p>
+          Your stamps directory is located in the Windows user Documents folder.
           Stamps will be organized by region and then sub categorized within a
           folder that can contain multiple stamps.
         </p>
         <Image
-          src="/stamp-folder-path.jpg"
-          width={800}
-          height={600}
-          alt="Stamp folder"
+          src={stampPath}
+          alt="The windows folder path where stamps are saved on your computer by default."
         />
-      </section>
-      <section className="space-y-2">
-        <h3 className="text-xl font-bold">How to use a downloaded stamp</h3>
-        <p className="font-bold">Download the stamp</p>
-        <p>
-          Navigate to the &apos;All stamps&apos; page and select the stamp
-          you&apos;d like to use. From the stamp page click the download button.
-        </p>
-        <Image
-          src="/stamp-download.png"
-          width={600}
-          height={300}
-          alt="Download stamp"
-        />
+      </div>
 
-        <p className="text-sm italic">
-          The downloaded stamp file can be re-named to your preference.
-        </p>
-
-        <p className="font-bold">
-          Place the stamp file in your stamps directory
-        </p>
-        <p>
-          Your stamps directory is located in the Windows user
-          &apos;Documents&apos; folder, by default:{' '}
-          <span className="italic">
-            &apos;C:/Users/[username]/Documents/Anno 1800/stamps&apos;
-          </span>
-        </p>
-        <p>
-          Stamps are organized by the region they are associated with so you
-          will need to place the stamp file in the relevant region folder.
-          Stamps can also be further sub categorized inside the region folder
-          with a folder containing multiple stamps.
-        </p>
+      <h3 id="#download-guide">How to download a stamp</h3>
+      <div className="grid grid-flow-col grid-rows-1">
+        <div>
+          <p>
+            Navigate to the <Link href="/">All stamps page</Link> and select the
+            stamp you&apos;d like to use. From the stamp page click the download
+            button.
+          </p>
+          <p className="font-bold">
+            The downloaded stamp will be a .zip file. You will need to unzip the
+            folder by right click on the file and selecting extract. If that is
+            unavailable download{' '}
+            <a className="font-bold" href="https://www.7-zip.org/">
+              7zip.
+            </a>
+          </p>
+          <p className="text-sm italic">
+            The downloaded stamp file can be re-named to your preference.
+          </p>
+        </div>
         <Image
-          src="/stamp-folder-path.jpg"
-          width={800}
-          height={600}
-          alt="Stamp folder"
+          src={stampPage}
+          alt="Visiting a stamp page to click the download button to retrieve a stamp."
         />
-      </section>
+      </div>
+
+      <h3>Place the stamp file in your stamps directory</h3>
+
+      <span className="italic">
+        C:/Users/[username]/Documents/Anno 1800/stamps/[region]
+      </span>
+      <p className="font-bold">
+        Stamp files will not work if they are not placed in the right region!
+        You may need to create the region folder if missing.
+      </p>
+      <ul>
+        <li>Enbesa</li>
+        <li>The Arctic </li>
+        <li>The New World</li>
+        <li>The Old World</li>
+      </ul>
     </Container>
   )
 }
