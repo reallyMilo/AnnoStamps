@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - mkcy3/ci-e2e
   pull_request:
     types:
       - opened
