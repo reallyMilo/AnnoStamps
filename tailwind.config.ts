@@ -1,3 +1,5 @@
+import type { Config } from 'tailwindcss'
+
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
@@ -14,4 +16,4 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('@tailwindcss/aspect-ratio'),
   ],
-}
+} satisfies Config
