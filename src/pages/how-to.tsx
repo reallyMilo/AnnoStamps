@@ -1,11 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
+
 import Container from '@/components/ui/Container'
+
 import stampButton from '../../public/stamp-button.jpg'
+import stampPage from '../../public/stamp-download.png'
+import stampPath from '../../public/stamp-folder-path.jpg'
 import stampHighlight from '../../public/stamp-highlight.jpg'
 import stampFolder from '../../public/stamp-name.jpg'
-import stampPath from '../../public/stamp-folder-path.jpg'
-import stampPage from '../../public/stamp-download.png'
 
 const HowTo = () => {
   return (
