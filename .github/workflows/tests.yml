@@ -2,14 +2,11 @@ name: 'Tests'
 
 on:
   push:
+    branches-ignore:
+      - main
+  pull_request:
     branches:
       - main
-      - mkcy3/ci-e2e
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
 
 jobs:
   lint:
