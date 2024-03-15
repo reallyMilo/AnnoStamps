@@ -58,7 +58,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          dev: pnpm dev
+          start: pnpm dev
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/annostamps
           NEXTAUTH_URL: http://localhost:3000
