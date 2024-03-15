@@ -2,29 +2,18 @@ name: 'Tests'
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+    branches:
+      - main
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
-      - run: pnpm install
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build
       - name: Run lint
         run: pnpm lint
   test:
@@ -32,57 +21,47 @@ jobs:
     needs: [lint]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
-      - run: pnpm install
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build
       - name: Run test
         run: pnpm test
-#   build:
-#     name: 'build nextjs'
-#     needs: [lint, test]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v3
-#       - name: Install Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 18
-#       - uses: pnpm/action-setup@v2
-#         name: Install pnpm
-#         with:
-#           version: 8
-#           run_install: false
-#       - run: pnpm install
-#       - name: Build
-#         run: pnpm build
-#   e2e:
-#     timeout-minutes: 15
-#     name: 'e2e tests'
-#     needs: [lint, test, build]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v3
-#       - name: Install Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: 18
-#       - uses: pnpm/action-setup@v2
-#         name: Install pnpm
-#         with:
-#           version: 8
-#           run_install: false
-#       - run: pnpm install
-#       - name: Cypress run
-#         uses: cypress-io/github-action@v5
-#         with:
-#           build: pnpm build
-#           start: pnpm start
-#           wait-on: 'http://localhost:3000'
+  e2e:
+    timeout-minutes: 15
+    name: 'e2e tests'
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build
+      - name: 'Create Database and Seed'
+        run: pnpm migrate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/annostamps
+          DIRECT_URL: postgresql://postgres:postgres@localhost:5432/annostamps
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: pnpm build
+          start: pnpm start
+          browser: chrome
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/annostamps
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: '54x5s+4mM6/yoJa/z4q57PElcT67/mPKkI2hgNX2Ht4='
