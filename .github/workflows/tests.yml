@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./github/actions/build
+      - uses: ./.github/actions/build
       - name: Run lint
         run: pnpm lint
   test:
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./github/actions/build
+      - uses: ./.github/actions/build
       - name: Run test
         run: pnpm test
   e2e:
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./github/actions/build
+      - uses: ./.github/actions/build
       - name: Cypress e2e
         run: pnpm ci:e2e
         env:
