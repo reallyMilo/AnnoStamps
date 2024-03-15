@@ -60,6 +60,7 @@ jobs:
         with:
           build: pnpm build
           start: pnpm start
+          browser: chrome
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/annostamps
           NEXTAUTH_URL: http://localhost:3000
