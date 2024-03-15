@@ -33,7 +33,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build
-      - uses: ./.github/actions/docker-compose
+      - name: 'Install postgres'
+        run: sudo apt install postgresql
       - name: Cypress e2e
         run: pnpm ci:e2e
         env:
