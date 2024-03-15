@@ -13,7 +13,7 @@
     "test:watch": "vitest",
     "test:e2e": "cypress run",
     "vitest": "vitest --ui",
-    "ci": "start-server-and-test dev http://localhost:3000 test:e2e",
+    "ci:e2e": "start-server-and-test dev http://localhost:3000 test:e2e",
     "cypress": "cypress open",
     "db-seed": "NODE_ENV=development prisma db seed",
     "prepare": "husky install",

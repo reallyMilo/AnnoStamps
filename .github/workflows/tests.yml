@@ -61,4 +61,4 @@ jobs:
           run_install: false
       - run: pnpm install
       - name: Cypress e2e
-        run: pnpm ci
+        run: pnpm ci:e2e
