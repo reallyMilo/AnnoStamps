@@ -13,4 +13,5 @@ runs:
       with:
         node-version: 18
         cache: 'pnpm'
-      run: pnpm install
+    - run: pnpm install
+      shell: bash
