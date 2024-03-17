@@ -6,6 +6,7 @@ declare namespace Cypress {
       dataTestAttribute: string,
       args?: any
     ): Chainable<JQuery<HTMLElement>>
-    userSession()
+    newUserSession(route: string)
+    usernameSession(route: string)
   }
 }

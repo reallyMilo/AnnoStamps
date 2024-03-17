@@ -1,8 +1,6 @@
 describe('Create stamp', () => {
   beforeEach(() => {
-    cy.userSession()
-    cy.visit('/user/create')
-    cy.wait('@session')
+    cy.usernameSession('/user/create')
   })
 
   it('user can submit a stamp with all fields filled', () => {
