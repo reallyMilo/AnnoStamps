@@ -19,8 +19,9 @@ describe('user/account route', () => {
       },
       expires: '3000-01-01T00:00:00.000Z',
       accessToken: 'abcdefghijklmnopqrst',
-    })
+    }).as('usernameSet')
 
+    cy.wait('@usernameSet')
     cy.get('#username').invoke('val').should('equal', 'cypressTester')
     cy.findByText(
       'If you wish to change your username please contact us via the discord server.'

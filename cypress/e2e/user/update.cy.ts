@@ -8,10 +8,10 @@ describe('Update stamp page', () => {
     cy.intercept('GET', '/api/get-stamp', {
       fixture: 'test-stamp.zip',
     }).as('getStampZip')
+    cy.wait(['@getUser', '@getStampZip'])
   })
 
   it('renders stamp assets and defaults', () => {
-    cy.wait(['@getUser', '@getStampZip'])
     cy.findByText('test-stamp-zip').should('exist')
     cy.get('#category').should('have.value', 'production')
     cy.get('#region').should('have.value', 'old world')
