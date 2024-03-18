@@ -11,7 +11,7 @@
     "migrate": "prisma migrate dev",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "cypress run",
+    "test:e2e": "cypress run --browser chrome",
     "vitest": "vitest --ui",
     "cypress": "cypress open",
     "db-seed": "NODE_ENV=development prisma db seed",

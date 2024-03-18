@@ -1,19 +1,20 @@
 const path = require('path') // eslint-disable-line
 
+const now = new Date(2024, 3, 14)
 describe('Stamp Page', () => {
-  beforeEach(() => {
+  it('download button should download stamp', () => {
+    cy.clock(now)
     cy.visit('/')
     cy.getBySel('stamp-card-link')
       .first()
       .then(($link) => {
         cy.visit($link.attr('href'))
       })
-  })
 
-  it('download button should download stamp', () => {
     cy.intercept('GET', '/stamp.zip', {
       fixture: 'test-stamp.zip',
     }).as('download')
+    cy.intercept('GET', '/api/stamp/download/*', { statusCode: 200 })
     cy.getBySel('stamp-download')
       .trigger('mouseover')
       .then(($link) => {
