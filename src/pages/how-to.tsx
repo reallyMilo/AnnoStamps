@@ -53,13 +53,14 @@ const HowTo = () => {
       <span className="italic">
         C:/Users/[username]/Documents/Anno 1800/stamps/[region]
       </span>
-      <div className="md:flex">
+      <div className="md:grid md:grid-cols-3">
         <p>
           Your stamps directory is located in the Windows user Documents folder.
           Stamps will be organized by region and then sub categorized within a
           folder that can contain multiple stamps.
         </p>
         <Image
+          className="col-span-2"
           src={stampPath}
           alt="The windows folder path where stamps are saved on your computer by default."
         />
@@ -104,7 +105,7 @@ const HowTo = () => {
         <li>Enbesa</li>
         <li>The Arctic </li>
         <li>The New World</li>
-        <li>The Old World</li>
+        <li>The Old World / Cape Trelawney</li>
       </ul>
     </Container>
   )
