@@ -41,6 +41,11 @@ export async function getStaticProps({ params }: Params) {
     where: { id: params.id },
   })
 
+  if (!stamp) {
+    return {
+      notFound: true,
+    }
+  }
   return {
     props: {
       stamp,
