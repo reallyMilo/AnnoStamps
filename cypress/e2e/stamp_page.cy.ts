@@ -1,19 +1,18 @@
 const path = require('path') // eslint-disable-line
 
 describe('Stamp Page', () => {
-  beforeEach(() => {
+  it('download button should download stamp', () => {
     cy.visit('/')
     cy.getBySel('stamp-card-link')
       .first()
       .then(($link) => {
         cy.visit($link.attr('href'))
       })
-  })
 
-  it('download button should download stamp', () => {
     cy.intercept('GET', '/stamp.zip', {
       fixture: 'test-stamp.zip',
     }).as('download')
+
     cy.getBySel('stamp-download')
       .trigger('mouseover')
       .then(($link) => {
