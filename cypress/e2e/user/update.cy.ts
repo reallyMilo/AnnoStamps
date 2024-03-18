@@ -1,16 +1,16 @@
 describe('Update stamp page', () => {
   beforeEach(() => {
     cy.usernameSession('/user/clll7fyxp002sem82uejwfey5')
-  })
 
-  it('renders stamp assets and defaults', () => {
     cy.intercept('GET', '/api/user', {
       fixture: 'userStamps.json',
     }).as('getUser')
     cy.intercept('GET', '/api/get-stamp', {
       fixture: 'test-stamp.zip',
     }).as('getStampZip')
+  })
 
+  it('renders stamp assets and defaults', () => {
     cy.wait(['@getUser', '@getStampZip'])
     cy.findByText('test-stamp-zip').should('exist')
     cy.get('#category').should('have.value', 'production')

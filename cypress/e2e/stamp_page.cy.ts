@@ -12,7 +12,7 @@ describe('Stamp Page', () => {
     cy.intercept('GET', '/stamp.zip', {
       fixture: 'test-stamp.zip',
     }).as('download')
-
+    cy.intercept('GET', '/api/stamp/download/*', { statusCode: 200 })
     cy.getBySel('stamp-download')
       .trigger('mouseover')
       .then(($link) => {
