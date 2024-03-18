@@ -1,7 +1,9 @@
 const path = require('path') // eslint-disable-line
 
+const now = new Date(2024, 3, 14)
 describe('Stamp Page', () => {
   it('download button should download stamp', () => {
+    cy.clock(now)
     cy.visit('/')
     cy.getBySel('stamp-card-link')
       .first()
