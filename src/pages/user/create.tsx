@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 
-import { StampForm } from '@/components/Form/StampForm'
+import { StampForm } from '@/components/StampForm/StampForm'
 import Container from '@/components/ui/Container'
 
 const CreateStampPage = () => {
@@ -62,9 +62,9 @@ const CreateStampPage = () => {
             title="Upload stamp"
             subTitle="Fill out the form below to upload your stamp."
           />
-          <StampForm.Images />
-          <StampForm.Files />
-          <StampForm.Fields />
+          <StampForm.ImageUpload />
+          <StampForm.FileUpload />
+          <StampForm.FormInputFields />
           <StampForm.Submit>Submit Stamp</StampForm.Submit>
         </StampForm.Form>
       </StampForm.Root>
