@@ -24,4 +24,16 @@ describe('Update stamp page', () => {
       'Stamp-Agricultural Products-Indigo Dye-0'
     )
   })
+
+  it('displays alert to set username with link if username not set', () => {
+    cy.newUserSession('/user/create')
+
+    cy.findByRole('link', { name: 'Please set your username.' }).should(
+      'have.attr',
+      'href',
+      '/user/account'
+    )
+
+    cy.findByLabelText('Add Images').should('not.exist')
+  })
 })

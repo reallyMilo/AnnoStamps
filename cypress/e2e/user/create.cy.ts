@@ -1,9 +1,7 @@
 describe('Create stamp', () => {
-  beforeEach(() => {
-    cy.usernameSession('/user/create')
-  })
-
   it('user can submit a stamp with all fields filled', () => {
+    cy.usernameSession('/user/create')
+
     cy.findByLabelText('Add Images').selectFile(
       'cypress/fixtures/cypress-test-image.png',
       {
@@ -28,5 +26,16 @@ describe('Create stamp', () => {
       .should('have.value', 'cypress test description')
 
     cy.findByText('Submit Stamp').should('exist')
+  })
+
+  it('displays alert to set username with link if username not set', () => {
+    cy.newUserSession('/user/create')
+
+    cy.findByRole('link', { name: 'Please set your username.' }).should(
+      'have.attr',
+      'href',
+      '/user/account'
+    )
+    cy.findByLabelText('Add Images').should('not.exist')
   })
 })
