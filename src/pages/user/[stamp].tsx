@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 
-import { StampForm } from '@/components/Form/StampForm'
+import { StampForm } from '@/components/StampForm/StampForm'
 import Container from '@/components/ui/Container'
 import { useUserStamps } from '@/lib/hooks/useUserStamps'
 import type { UserWithStamps } from '@/lib/prisma/queries'
@@ -109,9 +109,9 @@ const EditStampPage = () => {
               title="Edit your stamp"
               subTitle="Fill out the form below to update your stamp."
             />
-            <StampForm.Images />
-            <StampForm.Files />
-            <StampForm.Fields />
+            <StampForm.ImageUpload />
+            <StampForm.FileUpload />
+            <StampForm.FormInputFields />
             <StampForm.Submit> Update Stamp </StampForm.Submit>
           </StampForm.Form>
         </StampForm.Root>

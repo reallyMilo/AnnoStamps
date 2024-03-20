@@ -7,9 +7,9 @@ import { Asset } from '@/lib/hooks/useUpload'
 import { UserWithStamps } from '@/lib/prisma/queries'
 import { upload } from '@/lib/upload'
 
-import Fields from './Fields'
-import Files from './Files'
-import Images from './Images'
+import FileUpload from './FileUpload'
+import FormInputFields from './FormInputFields'
+import ImageUpload from './ImageUpload'
 
 type Stamp = UserWithStamps['listedStamps'][0]
 type Image = Stamp['images'][0]
@@ -219,10 +219,10 @@ const StampForm = {
   Root,
   Form,
   Header,
-  Images,
-  Files,
+  ImageUpload,
+  FileUpload,
   Submit,
-  Fields,
+  FormInputFields,
 }
 
 export { StampForm, useStampFormContext }
