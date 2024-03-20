@@ -9,7 +9,7 @@ import Link from 'next/link'
 import type { StampWithRelations } from '@/lib/prisma/queries'
 import { distanceUnixTimeToNow } from '@/lib/utils'
 
-import Category from './Category'
+import StampCategoryIcon from './StampCategoryIcon'
 
 const StampCard = ({
   id,
@@ -99,7 +99,7 @@ const StampCard = ({
         )}
         <Link href={`/stamp/${id}`} prefetch={false}>
           <div className="flex justify-between">
-            <Category category={category} />
+            <StampCategoryIcon category={category} />
             <div className="flex items-end">
               <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5 self-center" />
               {downloads}

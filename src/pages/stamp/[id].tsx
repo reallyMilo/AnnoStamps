@@ -8,8 +8,8 @@ import { useRouter } from 'next/router'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import Category from '@/components/Category'
 import LikeButton from '@/components/LikeButton'
+import StampCategoryIcon from '@/components/StampCategoryIcon'
 import Container from '@/components/ui/Container'
 import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
@@ -135,7 +135,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
             </div>
           )}
           <div className="hidden sm:block">
-            <Category category={category} />
+            <StampCategoryIcon category={category} />
           </div>
 
           <div className="hidden grow space-x-5 text-sm md:flex">
