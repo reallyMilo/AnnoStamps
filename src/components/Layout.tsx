@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import UserMenu from '@/components/Auth/UserMenu'
+import UserButton from '@/components/Auth/UserButton'
 import Search from '@/components/Filter/Search'
 
 import headerLogo from '../../public/anno-stamps-logo.svg'
@@ -65,7 +65,7 @@ const Navbar = () => {
             </nav>
             <Search />
           </div>
-          <UserMenu />
+          <UserButton />
         </div>
       </div>
     </header>
