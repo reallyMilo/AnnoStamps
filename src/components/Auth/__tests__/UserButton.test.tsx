@@ -1,17 +1,17 @@
 import { act, render, screen, userEvent } from '../../../__tests__/test-utils'
-import UserMenu from '../UserMenu'
+import UserButton from '../UserButton'
 
-describe('UserMenu', () => {
+describe('UserButton', () => {
   it('renders for unauthenticated user', () => {
-    render(<UserMenu />)
+    render(<UserButton />)
 
     expect(screen.getByText('Add Stamp')).toBeInTheDocument()
   })
 
   it('user-menu for authenticated users with all menu items', async () => {
-    render(<UserMenu />, {
+    render(<UserButton />, {
       expires: new Date(Date.now() + 2 * 86400).toISOString(),
-      user: { id: '1' },
+      user: { id: '1', username: null, usernameURL: null, biography: null },
     })
 
     const button = screen.getByRole('button')
@@ -25,9 +25,14 @@ describe('UserMenu', () => {
     expect(screen.getByText('Logout')).toBeInTheDocument()
   })
   it('displays username', async () => {
-    render(<UserMenu />, {
+    render(<UserButton />, {
       expires: new Date(Date.now() + 2 * 86400).toISOString(),
-      user: { id: '1', username: 'stampCreator' },
+      user: {
+        id: '1',
+        username: 'stampCreator',
+        usernameURL: 'stampcreator',
+        biography: null,
+      },
     })
 
     await act(async () => await userEvent.click(screen.getByRole('button')))
