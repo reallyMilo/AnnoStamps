@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import Select, { selectVariantStyles } from '../ui/Select'
 import { useStampFormContext } from './StampForm'
 
-const Fields = () => {
+const FormInputFields = () => {
   const { stamp } = useStampFormContext()
 
   const [category, setCategory] = useState(stamp?.category)
@@ -134,4 +134,4 @@ const Fields = () => {
   )
 }
 
-export default Fields
+export default FormInputFields
