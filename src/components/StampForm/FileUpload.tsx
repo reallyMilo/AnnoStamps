@@ -7,7 +7,7 @@ import { useStampFormContext } from './StampForm'
 const isJSZip = (b: Asset | JSZipObject): b is JSZipObject => {
   return (b as JSZipObject).name !== undefined
 }
-const Files = () => {
+const FileUpload = () => {
   const { status, files, setFiles } = useStampFormContext()
   const { isError, handleChange, handleRemove } = useUpload<
     Asset | JSZipObject
@@ -78,4 +78,4 @@ const Files = () => {
   )
 }
 
-export default Files
+export default FileUpload
