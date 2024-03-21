@@ -33,7 +33,7 @@ export const Pagination = ({ count, page }: PaginationProps) => {
       setQuery({ payload: 1, type: 'page' })
     }
   })
-  const totalPageCount = Math.ceil(count / stampsPerPage())
+  const totalPageCount = Math.ceil(count / stampsPerPage)
 
   const pageNumbers = generatePageNumbers(totalPageCount, page)
 
@@ -50,8 +50,8 @@ export const Pagination = ({ count, page }: PaginationProps) => {
 
     setQuery({ payload: page, type: 'page' })
   }
-  const starting = (page - 1) * stampsPerPage() + 1
-  const ending = Math.min(starting + stampsPerPage() - 1, count)
+  const starting = (page - 1) * stampsPerPage + 1
+  const ending = Math.min(starting + stampsPerPage - 1, count)
 
   return (
     <div className="mt-6 flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
