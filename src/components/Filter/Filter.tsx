@@ -1,7 +1,7 @@
 import { Switch } from '@headlessui/react'
 
 import { CAPITALS_1800, CATEGORIES, REGIONS_1800 } from '@/lib/game/1800/data'
-import useFilter from '@/lib/hooks/useFilter'
+import { useQueryParams } from '@/lib/hooks/useQueryParams'
 import { cn } from '@/lib/utils'
 
 import Select from '../ui/Select'
@@ -10,8 +10,8 @@ const labelStyle =
   'absolute left-0 ml-2 -translate-y-2.5 bg-[#F0F3F4] px-1 text-sm capitalize'
 
 const Filter = () => {
-  const [filter, setFilter] = useFilter()
-  const isModded = filter.modded === 'true' ? true : false
+  const [query, setQuery] = useQueryParams()
+  const isModded = query.modded === 'true' ? true : false
 
   return (
     <div className="mb-5 flex flex-col gap-x-10 gap-y-4 md:flex-row">
@@ -23,9 +23,9 @@ const Filter = () => {
           id="category"
           name="category"
           options={Object.values(CATEGORIES)}
-          defaultValue={filter.category}
+          defaultValue={query.category}
           onChange={(e) =>
-            setFilter({ payload: e.target.value, type: 'category' })
+            setQuery({ payload: e.target.value, type: 'category' })
           }
         >
           <option value="">All</option>
@@ -39,9 +39,9 @@ const Filter = () => {
           id="region"
           name="region"
           options={Object.values(REGIONS_1800)}
-          defaultValue={filter.region}
+          defaultValue={query.region}
           onChange={(e) =>
-            setFilter({ payload: e.target.value, type: 'region' })
+            setQuery({ payload: e.target.value, type: 'region' })
           }
         >
           <option value="">All</option>
@@ -55,9 +55,9 @@ const Filter = () => {
           id="capital"
           name="capital"
           options={Object.values(CAPITALS_1800)}
-          defaultValue={filter.capital}
+          defaultValue={query.capital}
           onChange={(e) =>
-            setFilter({ payload: e.target.value, type: 'capital' })
+            setQuery({ payload: e.target.value, type: 'capital' })
           }
         >
           <option value="">All</option>
@@ -72,7 +72,7 @@ const Filter = () => {
           id="modded"
           checked={isModded}
           onChange={() =>
-            setFilter({
+            setQuery({
               payload: isModded ? 'false' : 'true',
               type: 'modded',
             })
@@ -100,9 +100,9 @@ const Filter = () => {
           id="sort"
           name="sort"
           options={['newest', 'likes']}
-          defaultValue={filter.sort}
+          defaultValue={query.sort}
           onChange={(e) =>
-            setFilter({
+            setQuery({
               payload: e.target.value,
               type: 'sort',
             })

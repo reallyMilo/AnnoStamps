@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { useEffect } from 'react'
 
-import useFilter from '@/lib/hooks/useFilter'
+import { useQueryParams } from '@/lib/hooks/useQueryParams'
 import { cn, stampsPerPage } from '@/lib/utils'
 
 const generatePageNumbers = (totalPageCount: number, currentPage: number) => {
@@ -26,11 +26,11 @@ type PaginationProps = {
 }
 
 export const Pagination = ({ count, page }: PaginationProps) => {
-  const [filter, setFilter] = useFilter()
-  const { page: queryPage } = filter
+  const [query, setQuery] = useQueryParams()
+  const { page: queryPage } = query
   useEffect(() => {
     if (page === 1 && Number(queryPage) !== 1 && queryPage) {
-      setFilter({ payload: 1, type: 'page' })
+      setQuery({ payload: 1, type: 'page' })
     }
   })
   const totalPageCount = Math.ceil(count / stampsPerPage())
@@ -39,16 +39,16 @@ export const Pagination = ({ count, page }: PaginationProps) => {
 
   const incrementPage = () => {
     if (page + 1 > totalPageCount) return
-    setFilter({ payload: page + 1, type: 'page' })
+    setQuery({ payload: page + 1, type: 'page' })
   }
   const decrementPage = () => {
     if (page - 1 < 1) return
-    setFilter({ payload: page - 1, type: 'page' })
+    setQuery({ payload: page - 1, type: 'page' })
   }
   const changePage = (e: React.MouseEvent<HTMLLIElement>) => {
     const page = e.currentTarget.value
 
-    setFilter({ payload: page, type: 'page' })
+    setQuery({ payload: page, type: 'page' })
   }
   const starting = (page - 1) * stampsPerPage() + 1
   const ending = Math.min(starting + stampsPerPage() - 1, count)
