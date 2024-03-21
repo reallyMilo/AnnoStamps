@@ -92,6 +92,43 @@ async function seed() {
     })
   }
 
+  const testSeedUser = {
+    id: 'testSeedUserId',
+    name: `testSeedUser`,
+    email: `testSeedUser@example.com`,
+    username: `testSeedUser`,
+    usernameURL: `testseeduser`,
+    biography: `testseeduser amazing stamp creator`,
+  }
+  await prisma.user.create({
+    data: testSeedUser,
+  })
+
+  await prisma.stamp.create({
+    data: {
+      id: 'testSeedUserStampId',
+      userId: 'testSeedUserId',
+      game: '1800',
+      title: `Test-Seed-User-Stamp`,
+      description: `Test seed user stamp`,
+      category: 'cosmetic',
+      region: 'old world',
+      stampFileUrl: '/stamp.zip',
+      collection: true,
+      downloads: 123,
+      images: {
+        create: [
+          {
+            id: 'TestSeedStampImageId',
+            originalUrl: 'https://placehold.co/2000x2000.png?text=Original',
+            largeUrl: `https://placehold.co/1024x576.png?text=Large`,
+            smallUrl: `https://placehold.co/500x281.png?text=Small`,
+          },
+        ],
+      },
+    },
+  })
+
   console.log('Seed completed successfully')
 }
 
