@@ -13,8 +13,16 @@ describe('Home Page', () => {
       'href',
       'https://www.buymeacoffee.com/miloK'
     )
-    cy.getBySel('discord').should('exist')
-    cy.getBySel('github').should('exist')
+    cy.getBySel('discord').should(
+      'have.attr',
+      'href',
+      'https://discord.gg/73hfP54qXe'
+    )
+    cy.getBySel('github').should(
+      'have.attr',
+      'href',
+      'https://github.com/reallyMilo/AnnoStamps'
+    )
   })
 
   it('set filter fields displays in url', () => {
@@ -51,5 +59,14 @@ describe('Home Page', () => {
     cy.get('select#category').select('All').invoke('val').should('eq', '')
 
     cy.url().should('not.include', '?')
+  })
+
+  it('resets query page param to 1', () => {
+    cy.get('[value=13]').click()
+    cy.url().should('include', 'page=13')
+
+    cy.get('#search').type('Test-Seed-User-Stamp{enter}')
+
+    cy.url().should('include', 'page=1&search=Test-Seed-User-Stamp')
   })
 })
