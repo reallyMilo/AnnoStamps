@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import qs from 'qs'
 import { z } from 'zod'
 
-export const queryParamsSchema = z
+const queryParamsSchema = z
   .object({
     capital: z.string(),
     category: z.string(),
@@ -14,7 +14,7 @@ export const queryParamsSchema = z
   })
   .partial()
 
-export type QueryParams = z.infer<typeof queryParamsSchema>
+type QueryParams = z.infer<typeof queryParamsSchema>
 type Action =
   | {
       payload: string
@@ -32,7 +32,7 @@ const queryParamsOrder: Action['type'][] = [
   'search',
 ]
 
-const useQueryParams = ({ pathToQuery = '/' }) => {
+const useQueryParams = (pathToQuery = '/') => {
   const router = useRouter()
   const { query } = router
 
@@ -63,4 +63,4 @@ const useQueryParams = ({ pathToQuery = '/' }) => {
   return [query as QueryParams, setQuery] as const
 }
 
-export { useQueryParams }
+export { type QueryParams, queryParamsSchema, useQueryParams }
