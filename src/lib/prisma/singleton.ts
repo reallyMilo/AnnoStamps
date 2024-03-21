@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 
-import { FilterState } from '../hooks/useFilter'
+import { QueryParams } from '../hooks/useQueryParams'
 import {
   imageExtension,
   stampExtensions,
@@ -18,8 +18,8 @@ const prismaClientSingleton = () => {
       model: {
         stamp: {
           async filterFindManyWithCount(
-            filter: Omit<FilterState, 'sort' | 'page'>,
-            sort: FilterState['sort'],
+            filter: Omit<QueryParams, 'sort' | 'page'>,
+            sort: QueryParams['sort'],
             args: Required<Pick<Prisma.StampFindManyArgs, 'take' | 'skip'>>
           ): Promise<[number, StampWithRelations[], number]> {
             return prisma.$transaction(async (q) => {
@@ -59,7 +59,7 @@ export default prisma
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 export const buildFilterWhereClause = (
-  filter: Omit<FilterState, 'sort' | 'page'>
+  filter: Omit<QueryParams, 'sort' | 'page'>
 ): Prisma.StampWhereInput => {
   const { modded, capital, region, category, search } = filter
 
@@ -87,7 +87,7 @@ export const buildFilterWhereClause = (
   }
 }
 export const buildOrderByClause = (
-  orderBy?: FilterState['sort']
+  orderBy?: QueryParams['sort']
 ): Prisma.StampOrderByWithRelationAndSearchRelevanceInput => {
   switch (orderBy) {
     case 'likes':

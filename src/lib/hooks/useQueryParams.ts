@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import qs from 'qs'
 import { z } from 'zod'
 
-export const filterSchema = z
+const queryParamsSchema = z
   .object({
     capital: z.string(),
     category: z.string(),
@@ -14,15 +14,15 @@ export const filterSchema = z
   })
   .partial()
 
-export type FilterState = z.infer<typeof filterSchema>
+type QueryParams = z.infer<typeof queryParamsSchema>
 type Action =
   | {
       payload: string
-      type: NonNullable<keyof Omit<FilterState, 'page'>>
+      type: NonNullable<keyof Omit<QueryParams, 'page'>>
     }
-  | { payload: number; type: NonNullable<keyof Pick<FilterState, 'page'>> }
+  | { payload: number; type: NonNullable<keyof Pick<QueryParams, 'page'>> }
 
-const sortOrder: Action['type'][] = [
+const queryParamsOrder: Action['type'][] = [
   'category',
   'region',
   'modded',
@@ -32,17 +32,16 @@ const sortOrder: Action['type'][] = [
   'search',
 ]
 
-const useFilter = () => {
+const useQueryParams = (pathToQuery = '/') => {
   const router = useRouter()
   const { query } = router
 
-  const pathToFilter = '/'
-
-  const setFilter = (action: Action) => {
+  const setQuery = (action: Action) => {
     const queryString = qs.stringify(
       { ...query, [action.type]: action.payload },
       {
-        sort: (a, b) => sortOrder.indexOf(a) - sortOrder.indexOf(b),
+        sort: (a, b) =>
+          queryParamsOrder.indexOf(a) - queryParamsOrder.indexOf(b),
         filter: (_, value) =>
           (value !== '' && value !== 'false' && value) || undefined,
       }
@@ -50,19 +49,18 @@ const useFilter = () => {
 
     if (action.payload === 'page') {
       router.push({
-        pathname: pathToFilter,
+        pathname: pathToQuery,
         query: queryString,
       })
       return
     }
     router.replace({
-      pathname: pathToFilter,
+      pathname: pathToQuery,
       query: queryString,
     })
   }
-  const filter = query as FilterState
 
-  return [filter, setFilter] as const
+  return [query as QueryParams, setQuery] as const
 }
 
-export default useFilter
+export { type QueryParams, queryParamsSchema, useQueryParams }
