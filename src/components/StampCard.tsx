@@ -74,7 +74,9 @@ const StampCard = ({
             <h4 id="stamp-region" className="text-[#B11E47]">
               {region}
             </h4>
-            <div className="text-xs">{distanceUnixTimeToNow(createdAt)}</div>
+            <div className="text-xs" suppressHydrationWarning>
+              {distanceUnixTimeToNow(createdAt)}
+            </div>
           </div>
 
           <h2
