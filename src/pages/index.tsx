@@ -9,7 +9,6 @@ import Grid from '@/components/ui/Grid'
 import { queryParamsSchema } from '@/lib/hooks/useQueryParams'
 import { StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
-import { stampsPerPage } from '@/lib/utils'
 
 type HomePageProps = {
   count: number
@@ -26,16 +25,20 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
     'public, s-maxage=15, stale-while-revalidate=59'
   )
 
-  const { page, sort, ...filter } = queryParamsSchema.parse(query)
-  const queryPageNumber = parseInt(page || '1', 10)
+  const parseResult = queryParamsSchema.safeParse(query)
+  if (!parseResult.success) {
+    return {
+      props: {
+        count: 0,
+        stamps: [],
+        pageNumber: 1,
+      },
+    }
+  }
 
-  const [count, stamps, resetPage] = await prisma.stamp.filterFindManyWithCount(
-    filter,
-    sort,
-    { skip: (queryPageNumber - 1) * stampsPerPage(), take: stampsPerPage() }
-  )
+  const [count, stamps, pageNumber] =
+    await prisma.stamp.filterFindManyWithCount(parseResult.data)
 
-  const pageNumber = resetPage === 0 ? 1 : queryPageNumber
   return {
     props: {
       count,
