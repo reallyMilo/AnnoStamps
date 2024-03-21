@@ -155,7 +155,9 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
               {downloads}
             </div>
 
-            <div>{distanceUnixTimeToNow(createdAt)}</div>
+            <div suppressHydrationWarning>
+              {distanceUnixTimeToNow(createdAt)}
+            </div>
           </div>
           <LikeButton id={id} likedBy={likedBy} />
 
