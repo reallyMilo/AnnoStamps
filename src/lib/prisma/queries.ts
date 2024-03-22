@@ -38,8 +38,6 @@ const stampSchema = z.object({
   capital: z.string().optional(),
   collection: z.string().optional(),
   downloads: z.object({ increment: z.number() }).optional(),
-  townhall: z.string().optional(),
-  tradeUnion: z.string().optional(),
   modded: z.string(),
   imageUrl: z.string().optional(),
   stampFileUrl: z.string(),
@@ -66,23 +64,16 @@ const stampSchema = z.object({
 
 const createStampSchema = stampSchema
   .omit({ downloads: true, likedBy: true })
-  .transform(({ modded, tradeUnion, townhall, collection, ...schema }) => ({
+  .transform(({ modded, collection, ...schema }) => ({
     modded: modded === 'true',
-    tradeUnion: tradeUnion === 'true',
-    townhall: townhall === 'true',
     collection: collection === 'true',
     ...schema,
   })) satisfies z.Schema<
   Prisma.StampUncheckedCreateInput,
   z.ZodTypeDef,
-  Omit<
-    Prisma.StampUncheckedCreateInput,
-    'modded' | 'tradeUnion' | 'townhall' | 'collection'
-  > & {
+  Omit<Prisma.StampUncheckedCreateInput, 'modded' | 'collection'> & {
     collection?: string
     modded: string
-    townhall?: string
-    tradeUnion?: string
   }
 >
 
@@ -90,23 +81,16 @@ const updateStampSchema = stampSchema
   .omit({ id: true, userId: true, game: true })
   .partial({ images: true })
   .extend({ changedAt: z.string().datetime() })
-  .transform(({ modded, tradeUnion, townhall, collection, ...schema }) => ({
+  .transform(({ modded, collection, ...schema }) => ({
     modded: modded === 'true',
-    tradeUnion: tradeUnion === 'true',
-    townhall: townhall === 'true',
     collection: collection === 'true',
     ...schema,
   })) satisfies z.Schema<
   Prisma.StampUncheckedUpdateInput,
   z.ZodTypeDef,
-  Omit<
-    Prisma.StampUncheckedUpdateInput,
-    'modded' | 'tradeUnion' | 'townhall' | 'collection'
-  > & {
+  Omit<Prisma.StampUncheckedUpdateInput, 'modded' | 'collection'> & {
     collection?: string
     modded?: string
-    townhall?: string
-    tradeUnion?: string
   }
 >
 
@@ -171,11 +155,6 @@ const userProfileSchema = z
     username: z.string().regex(/^[a-zA-Z0-9_\\-]+$/),
     usernameURL: z.string(),
     biography: z.string(),
-    emailContact: z.string(),
-    discord: z.string(),
-    twitter: z.string(),
-    reddit: z.string(),
-    twitch: z.string(),
   })
   .partial() satisfies z.Schema<Prisma.UserUncheckedUpdateInput>
 
