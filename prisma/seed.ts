@@ -3,6 +3,7 @@ import { PrismaClient, User } from '@prisma/client'
 
 import {
   ARCTIC_GOODS,
+  CATEGORIES,
   ENBESA_GOODS,
   NEW_WORLD_GOODS,
   OLD_WORLD_GOODS,
@@ -11,6 +12,7 @@ import {
 
 const prisma = new PrismaClient()
 
+const categories = Object.values(CATEGORIES)
 const region = Object.values(REGIONS_1800)
 const goods = [OLD_WORLD_GOODS, NEW_WORLD_GOODS, ENBESA_GOODS, ARCTIC_GOODS]
 
@@ -31,22 +33,38 @@ export const generateStampData = (
   users: Omit<User, 'image' | 'emailVerified'>[]
 ) =>
   Array.from({ length: length }, (_, index) => {
-    const regionIdx = Math.floor(Math.random() * 4)
-    const regionArray = goods[regionIdx]
-    const goodIdx = Math.floor(Math.random() * regionArray.length)
-    const good = regionArray[goodIdx]
-    const id = createId()
+    const categoryIdx = Math.floor(Math.random() * categories.length)
+    const rndCategory = categories[categoryIdx]
+
+    const regionIdx = Math.floor(Math.random() * region.length)
+    const rndRegion = region[regionIdx]
+
+    const getGood = () => {
+      const goodsInRegion = goods[regionIdx]
+      const goodIdx = Math.floor(Math.random() * goodsInRegion.length)
+      const rndGood = goodsInRegion[goodIdx]
+      return rndGood.toLowerCase()
+    }
+    const getCapital = () => {
+      if (rndCategory === 'island' && rndRegion === 'new world') {
+        return 'manola'
+      }
+      return null
+    }
+
     return {
-      id,
+      id: createId(),
       userId: users[index % users.length].id,
       game: '1800',
-      title: `Stamp-${good}-${index}`,
-      description: `Stamp-${good}-${index}`,
-      category: 'production',
-      region: region[regionIdx],
+      title: `Stamp-${index}`,
+      description: `Stamp-${index}`,
+      category: rndCategory,
+      region: rndRegion,
+      modded: index % 20 === 0 ? true : false,
       stampFileUrl: '/stamp.zip',
-      collection: index % 2 ? false : true,
-      good: good.toLowerCase(),
+      collection: index % 15 === 0 ? true : false,
+      good: rndCategory === 'production' ? getGood() : null,
+      capital: getCapital(),
       downloads: index,
     }
   })
@@ -91,43 +109,6 @@ async function seed() {
       },
     })
   }
-
-  const testSeedUser = {
-    id: 'testSeedUserId',
-    name: `testSeedUser`,
-    email: `testSeedUser@example.com`,
-    username: `testSeedUser`,
-    usernameURL: `testseeduser`,
-    biography: `testseeduser amazing stamp creator`,
-  }
-  await prisma.user.create({
-    data: testSeedUser,
-  })
-
-  await prisma.stamp.create({
-    data: {
-      id: 'testSeedUserStampId',
-      userId: 'testSeedUserId',
-      game: '1800',
-      title: `Test-Seed-User-Stamp`,
-      description: `Test seed user stamp`,
-      category: 'cosmetic',
-      region: 'old world',
-      stampFileUrl: '/stamp.zip',
-      collection: true,
-      downloads: 123,
-      images: {
-        create: [
-          {
-            id: 'TestSeedStampImageId',
-            originalUrl: 'https://placehold.co/2000x2000.png?text=Original',
-            largeUrl: `https://placehold.co/1024x576.png?text=Large`,
-            smallUrl: `https://placehold.co/500x281.png?text=Small`,
-          },
-        ],
-      },
-    },
-  })
 
   console.log('Seed completed successfully')
 }
