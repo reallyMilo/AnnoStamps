@@ -166,7 +166,11 @@ const Form = ({ children, onSubmit }: FormProps) => {
   }
 
   return (
-    <form className="mt-8 space-y-8" onSubmit={handleOnSubmit}>
+    <form
+      className="mt-8 space-y-8"
+      data-testid="stamp-form"
+      onSubmit={handleOnSubmit}
+    >
       {children}
       {errorMessage && (
         <pre>

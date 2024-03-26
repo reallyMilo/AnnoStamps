@@ -17,20 +17,30 @@ export default defineConfig({
           // use main seed for now
         },
         async 'db:removeTestUser'() {
-          await prisma.image.delete({
+          await prisma.image.deleteMany({
             where: {
-              id: 'testSeedStampImageId',
+              thumbnailUrl: null,
             },
           })
 
-          await prisma.stamp.delete({
+          await prisma.stamp.deleteMany({
             where: {
-              id: 'testSeedUserStampId',
+              userId: {
+                contains: 'testSeedUserId',
+              },
             },
           })
 
-          await prisma.session.deleteMany()
-          await prisma.account.deleteMany()
+          await prisma.session.delete({
+            where: {
+              id: 'testSeedUserSessionId',
+            },
+          })
+          await prisma.account.delete({
+            where: {
+              id: 'testSeedAccountId',
+            },
+          })
           return await prisma.user.delete({
             where: {
               id: 'testSeedUserId',
