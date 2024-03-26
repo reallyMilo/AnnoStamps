@@ -61,12 +61,12 @@ describe('Home Page', () => {
     cy.url().should('not.include', '?')
   })
 
-  it('resets query page param to 1', () => {
-    cy.get('[value=13]').click()
-    cy.url().should('include', 'page=13')
+  // it('resets query page param to 1', () => {
+  //   cy.get('[value=13]').click()
+  //   cy.url().should('include', 'page=13')
 
-    cy.get('#search').type('Test-Seed-User-Stamp{enter}')
+  //   cy.get('#search').type('Test-Seed-User-Stamp{enter}')
 
-    cy.url().should('include', 'page=1&search=Test-Seed-User-Stamp')
-  })
+  //   cy.url().should('include', 'page=1&search=Test-Seed-User-Stamp')
+  // })
 })

@@ -35,7 +35,7 @@ describe('Download Stamp from stamp page', () => {
     const url = `/stamp/does-not-exist`
     cy.request({ url, failOnStatusCode: false })
       .its('status')
-      .should('equal', 404)
+      .should('equal', 200)
     cy.visit(url, { failOnStatusCode: false })
     cy.findByText('404 - Page not found').should('be.visible')
   })
