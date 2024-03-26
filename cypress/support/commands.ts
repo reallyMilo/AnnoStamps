@@ -21,3 +21,18 @@ Cypress.Commands.add('newUserSession', (route: string) => {
   cy.visit(route)
   cy.wait('@newUserSession')
 })
+
+Cypress.Commands.add('database', (rawQuery, logTask = false) => {
+  const log = Cypress.log({
+    name: 'database',
+    displayName: 'DATABASE',
+    message: [`🔎 ${rawQuery}`],
+    autoEnd: false,
+  })
+
+  return cy.task(`db:query`, rawQuery, { log: logTask }).then((data) => {
+    log.snapshot()
+    log.end()
+    return data
+  })
+})
