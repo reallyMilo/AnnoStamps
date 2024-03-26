@@ -56,6 +56,7 @@ interface Req extends NextApiRequest {
 type Response = {
   message: string
   ok: boolean
+  path?: string
 }
 export default async function localHandler(
   req: Req,
@@ -80,5 +81,9 @@ export default async function localHandler(
   if (fileType !== 'zip') {
     await generateResponsiveImages(filepath, name)
   }
-  return res.status(200).json({ ok: true, message: `${stampId}/${name}` })
+  return res.status(200).json({
+    ok: true,
+    message: 'asset uploaded',
+    path: `/tmp/${stampId}/${name}`,
+  })
 }

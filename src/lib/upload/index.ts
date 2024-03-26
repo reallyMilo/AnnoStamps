@@ -30,8 +30,8 @@ export const upload = async (
     if (!localRes.ok) {
       throw new Error('Failed local upload')
     }
-    const { message } = await localRes.json()
-    return '/tmp/' + message
+    const { path }: { path: string } = await localRes.json()
+    return path
   }
 
   const presigned = await fetch(
