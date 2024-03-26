@@ -1,7 +1,7 @@
 const path = require('path') // eslint-disable-line
 
-describe('Stamp Page', () => {
-  it('download button should download stamp', () => {
+describe('Download Stamp from stamp page', () => {
+  it('User can download stamp', () => {
     cy.visit('/')
     cy.getBySel('stamp-card-link')
       .first()
@@ -31,8 +31,12 @@ describe('Stamp Page', () => {
     })
   })
 
-  it('shows 404 page for invalid route', () => {
-    cy.visit('/stamp/bad-route', { failOnStatusCode: false })
+  it('shows 404 page if stamp route is invalid', () => {
+    const url = `/stamp/does-not-exist`
+    cy.request({ url, failOnStatusCode: false })
+      .its('status')
+      .should('equal', 404)
+    cy.visit(url, { failOnStatusCode: false })
     cy.findByText('404 - Page not found').should('be.visible')
   })
 })
