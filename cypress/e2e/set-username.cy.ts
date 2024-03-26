@@ -7,7 +7,7 @@ describe('User can set username', () => {
     cy.task('db:removeTestUser')
   })
 
-  it('', () => {
+  it('user can navigate to account settings and update username', () => {
     cy.intercept('PUT', '/api/user', (req) => {
       req.headers[
         'Cookie'
