@@ -1,10 +1,11 @@
 {
   "user": {
-    "id": "clll7fyse0000em82dlc6m56j",
-    "name": "cypress-tester",
-    "email": "cypress@tester.com",
+    "id": "testSeedUserId",
+    "name": "testSeedUser",
+    "email": "testSeedUser@example.com",
     "image": null,
-    "username": "cypressTester"
+    "username": "testSeedUser",
+    "usernameURL": "testseeduser"
   },
   "expires": "3000-01-01T00:00:00.000Z",
   "accessToken": "abcdefghijklmnopqrst"
