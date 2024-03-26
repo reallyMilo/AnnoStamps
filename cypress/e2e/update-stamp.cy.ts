@@ -41,7 +41,7 @@ describe('Updating Stamp', () => {
     )
   })
 
-  it('user can click the edit stamp button and update the stamp', () => {
+  it('user can click the edit stamp link and update the stamp', () => {
     cy.intercept('/api/stamp/update', (req) => {
       req.headers[
         'cookie'
@@ -64,16 +64,7 @@ describe('Updating Stamp', () => {
       'be.visible'
     )
 
-    cy.getBySel('stamp-card-link')
-      .last()
-      .invoke('attr', 'href')
-      .should('be.a', 'string')
-      .invoke('split', '/')
-      .its(2)
-      .then((id) => {
-        cy.visit(`/user/${id}`)
-      })
-
+    cy.findByRole('link', { name: 'Edit Stamp' }).click()
     cy.wait('@getStampZip')
     cy.findByText('Edit your stamp').should('be.visible')
 
