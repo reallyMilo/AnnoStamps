@@ -52,8 +52,18 @@ describe('Updating Stamp', () => {
       fixture: 'test-stamp.zip',
     }).as('getStampZip')
 
-    cy.intercept('/api/upload/*', { statusCode: 200 })
-    cy.intercept('PUT', '/user/presigned*', { statusCode: 200 })
+    cy.intercept('/api/upload/*', {
+      statusCode: 200,
+      body: {
+        ok: true,
+        url: 'presigned?fileType=zip',
+        path: '/stamp.zip',
+      },
+    }).as('uploadAsset')
+    cy.intercept('PUT', '/user/presigned*', {
+      statusCode: 200,
+      body: '/stamp.zip',
+    }).as('S3Put')
 
     cy.intercept('GET', '/api/user', (req) => {
       req.headers[
@@ -83,6 +93,7 @@ describe('Updating Stamp', () => {
       .should('have.value', 'Test-Seed-User-Stamp-Updated')
 
     cy.findByRole('button', { name: 'Update Stamp' }).click()
+    cy.wait(['@uploadAsset', '@S3Put'])
     cy.wait('@updateStamp').its('response.statusCode').should('eq', 200)
 
     cy.database(
