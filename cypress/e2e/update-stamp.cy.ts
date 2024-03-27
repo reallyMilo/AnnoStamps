@@ -52,6 +52,9 @@ describe('Updating Stamp', () => {
       fixture: 'test-stamp.zip',
     }).as('getStampZip')
 
+    cy.intercept('/api/upload/*', { statusCode: 200 })
+    cy.intercept('PUT', '/user/presigned*', { statusCode: 200 })
+
     cy.intercept('GET', '/api/user', (req) => {
       req.headers[
         'cookie'
