@@ -18,3 +18,8 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+beforeEach(() => {
+  //sentry
+  cy.intercept('/monitoring?*', { statusCode: 200 })
+})
