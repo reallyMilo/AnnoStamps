@@ -69,12 +69,34 @@ describe('Stamp creation', () => {
         .split('=')[1]
       req.continue((res) => {
         if (fileType === 'zip') {
-          res.send(200, { ok: true, path: '/api/get-stamp' })
+          res.send(200, {
+            ok: true,
+            url: 'presigned?fileType=zip',
+            path: '/stamp.zip',
+          })
         } else {
-          res.send(200, { ok: true, path: '/stamp-highlight.jpg' })
+          res.send(200, {
+            ok: true,
+            url: 'presigned?fileType=img',
+            path: '/stamp-highlight.jpg',
+          })
         }
       })
     }).as('uploadAsset')
+
+    cy.intercept('PUT', '/user/presigned*', (req) => {
+      const fileType = req.url
+        .split('&')
+        .find((param) => param.includes('fileType='))
+        .split('=')[1]
+      req.continue((res) => {
+        if (fileType === 'zip') {
+          res.send(200, { ok: true, path: '/stamp.zip' })
+        } else {
+          res.send(200, { ok: true, path: 'anno-stamps-logo.png' })
+        }
+      })
+    }).as('S3Put')
 
     cy.usernameSession('/user/create')
 
@@ -105,13 +127,18 @@ describe('Stamp creation', () => {
 
     // should have two api calls, because 1 image and 1 stamp file
     cy.wait('@uploadAsset').then((interception) => {
-      assert.isNotNull(interception.response.body, '1st API call')
+      assert.isNotNull(interception.response.body, '1st Presigned Url')
     })
 
     cy.wait('@uploadAsset').then((interception) => {
-      assert.isNotNull(interception.response.body, '2nd API call')
+      assert.isNotNull(interception.response.body, '2nd Presigned Url')
     })
-
+    cy.wait('@S3Put').then((interception) => {
+      assert.isNotNull(interception.response.body, '1st S3 Put')
+    })
+    cy.wait('@S3Put').then((interception) => {
+      assert.isNotNull(interception.response.body, '2nd S3 Put')
+    })
     cy.wait('@createStamp').its('response.statusCode').should('eq', 200)
 
     cy.database(
