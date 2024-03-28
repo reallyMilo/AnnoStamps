@@ -66,6 +66,9 @@ export const generateStampData = (
       good: rndCategory === 'production' ? getGood() : null,
       capital: getCapital(),
       downloads: index,
+      createdAt: new Date(1711644714252 + index * 1000000).toISOString(),
+      changedAt: new Date(1711644714252 + index * 1000000).toISOString(),
+      updatedAt: new Date(1711644714252 + index * 1000000).toISOString(),
     }
   })
 
