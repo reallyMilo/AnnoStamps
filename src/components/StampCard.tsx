@@ -104,7 +104,7 @@ const StampCard = ({
             <StampCategoryIcon category={category} />
             <div className="flex items-end">
               <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5 self-center" />
-              {downloads}
+              <span data-testid="stamp-card-downloads">{downloads}</span>
             </div>
           </div>
         </Link>
