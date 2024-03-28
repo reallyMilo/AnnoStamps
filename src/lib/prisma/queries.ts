@@ -79,8 +79,8 @@ const createStampSchema = stampSchema
 
 const updateStampSchema = stampSchema
   .omit({ id: true, userId: true, game: true })
-  .partial({ images: true })
   .extend({ changedAt: z.string().datetime() })
+  .partial()
   .transform(({ modded, collection, ...schema }) => ({
     modded: modded === 'true',
     collection: collection === 'true',

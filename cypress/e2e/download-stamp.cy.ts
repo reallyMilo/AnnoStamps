@@ -1,28 +1,40 @@
 const path = require('path') // eslint-disable-line
 
 describe('Download Stamp from stamp page', () => {
-  it('User can download stamp', () => {
+  it('user can download stamp and download counter incrementing', () => {
     cy.visit('/')
     cy.getBySel('stamp-card-link')
       .first()
-      .then(($link) => {
-        cy.visit($link.attr('href'))
+      .then((link) => {
+        cy.visit(link.attr('href'))
       })
 
     cy.intercept('GET', '/stamp.zip', {
       fixture: 'test-stamp.zip',
     }).as('download')
-    cy.intercept('GET', '/api/stamp/download/*', { statusCode: 200 })
-    cy.getBySel('stamp-download')
-      .trigger('mouseover')
-      .then(($link) => {
-        expect($link.css('cursor')).to.equal('pointer')
-      })
-      .click()
+    cy.intercept('/api/stamp/download/*').as('incDownloads')
 
-    cy.wait('@download').then((req) => {
-      expect(req.response.statusCode).to.equal(200)
-    })
+    cy.getBySel('stamp-downloads')
+      .invoke('text')
+      .then(Number)
+      .then((initDownloads) => {
+        cy.getBySel('stamp-download')
+          .trigger('mouseover')
+          .then(($link) => {
+            expect($link.css('cursor')).to.equal('pointer')
+          })
+          .click()
+        cy.wait('@incDownloads')
+        cy.wait('@download').then((req) => {
+          expect(req.response.statusCode).to.equal(200)
+        })
+        cy.reload(true)
+        cy.getBySel('stamp-downloads').should(
+          'have.text',
+          String(initDownloads + 1)
+        )
+      })
+
     const downloadsFolder = Cypress.config('downloadsFolder')
 
     cy.get('h1').then((h1) => {
