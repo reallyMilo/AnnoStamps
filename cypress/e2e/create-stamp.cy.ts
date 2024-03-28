@@ -78,7 +78,7 @@ describe('Stamp creation', () => {
           res.send(200, {
             ok: true,
             url: 'presigned?fileType=img',
-            path: '/stamp-highlight.jpg',
+            path: 'anno-stamps-logo.png',
           })
         }
       })
