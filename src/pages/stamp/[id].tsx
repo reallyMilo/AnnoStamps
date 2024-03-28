@@ -152,7 +152,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
           </div> */}
             <div>
               <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5" />
-              {downloads}
+              <span data-testid="stamp-downloads">{downloads}</span>
             </div>
 
             <div suppressHydrationWarning>
