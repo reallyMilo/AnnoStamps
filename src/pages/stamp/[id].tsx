@@ -174,7 +174,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
         </div>
 
         {createdAt !== changedAt && (
-          <div className="italic">
+          <div className="italic" suppressHydrationWarning>
             Updated: {distanceUnixTimeToNow(changedAt)}
           </div>
         )}
