@@ -9,16 +9,12 @@ describe('Download Stamp from stamp page', () => {
         cy.visit(link.attr('href'))
       })
 
-    cy.intercept('GET', '/stamp.zip', {
-      fixture: 'test-stamp.zip',
-    }).as('download')
-
-    cy.reload(true)
     cy.getBySel('stamp-downloads')
       .invoke('text')
       .then(Number)
       .then((initDownloads) => {
         cy.log(String(initDownloads))
+
         cy.getBySel('stamp-download')
           .trigger('mouseover')
           .then(($link) => {
@@ -26,8 +22,14 @@ describe('Download Stamp from stamp page', () => {
           })
           .click()
 
-        cy.wait('@download').then((req) => {
-          expect(req.response.statusCode).to.equal(200)
+        const downloadsFolder = Cypress.config('downloadsFolder')
+
+        cy.get('h1').then((h1) => {
+          const filename = path.join(
+            downloadsFolder,
+            `${h1.text().trimEnd()}.zip`
+          )
+          cy.readFile(filename, { timeout: 15000 }).should('have.length.gt', 50)
         })
         cy.url().then((url) => {
           cy.database(
@@ -40,13 +42,6 @@ describe('Download Stamp from stamp page', () => {
           })
         })
       })
-
-    const downloadsFolder = Cypress.config('downloadsFolder')
-
-    cy.get('h1').then((h1) => {
-      const filename = path.join(downloadsFolder, `${h1.text().trimEnd()}.zip`)
-      cy.readFile(filename, { timeout: 15000 }).should('have.length.gt', 50)
-    })
   })
 
   it('shows 404 page if stamp route is invalid', () => {
