@@ -162,11 +162,10 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
           <LikeButton id={id} likedBy={likedBy} />
 
           <a
-            href={stampFileUrl}
+            href={`/api/stamp/download/${id}?file=${stampFileUrl}&title=${title}`}
             data-testid="stamp-download"
             className="inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
-            onClick={() => fetch(`/api/stamp/download/${id}`)}
-            download={title}
+            download
           >
             <ArrowDownTrayIcon className="mr-2 inline-block h-6 w-6" />
             Download
@@ -174,7 +173,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
         </div>
 
         {createdAt !== changedAt && (
-          <div className="italic">
+          <div className="italic" suppressHydrationWarning>
             Updated: {distanceUnixTimeToNow(changedAt)}
           </div>
         )}
