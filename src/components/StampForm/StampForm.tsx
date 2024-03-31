@@ -43,7 +43,7 @@ const Submit = ({ children }: { children: React.ReactNode }) => {
   return (
     <button
       type="submit"
-      className="ml-auto rounded-md bg-yellow-600 px-6 py-2 text-white transition hover:bg-yellow-300 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
+      className="ml-auto rounded-md bg-secondary px-6 py-2 text-dark transition hover:bg-secondary/75 focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
       disabled={isDisabled}
     >
       {isMutating ? 'Loading...' : children}
@@ -167,7 +167,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
 
   return (
     <form
-      className="mt-8 space-y-8"
+      className="mt-8 flex flex-col space-y-8"
       data-testid="stamp-form"
       onSubmit={handleOnSubmit}
     >

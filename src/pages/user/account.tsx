@@ -88,7 +88,7 @@ const Account = () => {
                   </div>
                 </div>
                 {errorMessage && (
-                  <p className="mt-2 text-sm text-red-600" id="username-error">
+                  <p className="mt-2 text-sm text-accent" id="username-error">
                     {errorMessage}
                   </p>
                 )}
@@ -126,7 +126,7 @@ const Account = () => {
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="submit"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md bg-secondary px-3 py-2 text-sm font-medium text-dark shadow-sm hover:bg-secondary/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
             disabled={errorMessage ? true : false}
           >
             Save

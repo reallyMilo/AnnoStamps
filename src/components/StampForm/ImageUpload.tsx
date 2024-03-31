@@ -29,7 +29,7 @@ const ImageUpload = () => {
 
         <label
           htmlFor="images"
-          className="h-fit self-end rounded-md bg-yellow-600 px-6 py-2 text-sm text-white hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-rose-600 focus:ring-opacity-50 "
+          className="h-fit self-end rounded-md bg-secondary px-6 py-2 text-sm text-dark hover:cursor-pointer hover:bg-secondary/75 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50 "
         >
           Add Images
         </label>

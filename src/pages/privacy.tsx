@@ -2,16 +2,16 @@ import Container from '@/components/ui/Container'
 
 const Privacy = () => {
   return (
-    <Container className="space-y-2">
-      <h1 className="border-b text-3xl font-bold">Privacy Policy</h1>
+    <Container className="prose space-y-2">
+      <h1>Privacy Policy</h1>
 
-      <h2 className=" font-bold">Anno Stamps Privacy Policy</h2>
+      <h2>Anno Stamps Privacy Policy</h2>
       <p>
         This Privacy Policy describes how your personal information is
         collected, used, and shared when you visit https://annostamps.com , or
         any of our product demo subdomains, (the “Site”).
       </p>
-      <h3 className="font-bold">PERSONAL INFORMATION WE COLLECT</h3>
+      <h3>PERSONAL INFORMATION WE COLLECT</h3>
       <p>
         When you visit the Site, we automatically collect certain information
         about your device, including information about your web browser, IP
@@ -49,7 +49,7 @@ const Privacy = () => {
         Additionally when you subscribe to our newsletter we collect your name
         and email address.
       </p>
-      <h3 className=" font-bold">HOW DO WE USE YOUR PERSONAL INFORMATION?</h3>
+      <h3>HOW DO WE USE YOUR PERSONAL INFORMATION?</h3>
       <p>
         We use your name and email address to communicate with you and to
         provide you with information or advertising relating to our products or
@@ -62,7 +62,7 @@ const Privacy = () => {
         analytics about how our customers browse and interact with the Site, and
         to assess the success of our marketing and advertising campaigns).
       </p>
-      <h3 className="font-bold">SHARING YOUR PERSONAL INFORMATION</h3>
+      <h3>SHARING YOUR PERSONAL INFORMATION</h3>
       <p>
         We share your Personal Information with third parties, such as Google
         Analytics, to help us use your Personal Information, as described above.
@@ -97,12 +97,12 @@ const Privacy = () => {
         </li>
       </ul>
 
-      <h3 className="font-bold">DO NOT TRACK</h3>
+      <h3>DO NOT TRACK</h3>
       <p>
         Please note that we do not alter our Site’s data collection and use
         practices when we see a Do Not Track signal from your browser.
       </p>
-      <h3 className="font-bold">YOUR RIGHTS</h3>
+      <h3>YOUR RIGHTS</h3>
       <p>
         If you are a European resident, you have the right to access personal
         information we hold about you and to ask that this information be
@@ -116,19 +116,19 @@ const Privacy = () => {
         will be transferred outside of Europe, including to Canada and the
         United States.
       </p>
-      <h3 className=" font-bold">DATA RETENTION</h3>
+      <h3>DATA RETENTION</h3>
       <p>
         When you subscribe to our newsletter through the Site, we will maintain
         your information for our records unless and until you ask us to delete
         this information.
       </p>
-      <h3 className=" font-bold">CHANGES</h3>
+      <h3>CHANGES</h3>
       <p>
         We may update this privacy policy from time to time in order to reflect,
         for example, changes to our practices or for other operational, legal or
         regulatory reasons.
       </p>
-      <h3 className=" font-bold">CONTACT US</h3>
+      <h3>CONTACT US</h3>
       <p>
         For more information about our privacy practices, if you have questions,
         would like to update or remove your personal information, or if you

@@ -129,7 +129,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
             </Link>
           )}
           {modded && (
-            <div className="flex w-fit items-center gap-1 rounded-full bg-[#C34E27] py-1 pl-2 pr-3 text-xs capitalize text-white">
+            <div className="flex w-fit items-center gap-1 rounded-full bg-accent py-1 pl-2 pr-3 text-xs capitalize text-white">
               <WrenchIcon className="h-5 w-5" />
               mods
             </div>
@@ -139,7 +139,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
           </div>
 
           <div className="hidden grow space-x-5 text-sm md:flex">
-            <div className=" capitalize text-[#B11E47]">{region}</div>
+            <div className=" capitalize text-accent">{region}</div>
 
             {category === 'production' && (
               <div className="capitalize text-gray-500">{good}</div>
@@ -164,7 +164,7 @@ const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
           <a
             href={stampFileUrl}
             data-testid="stamp-download"
-            className="inline-block rounded-md bg-[#6DD3C0] px-4 py-2 font-bold"
+            className="inline-block rounded-md bg-primary px-4 py-2 font-bold"
             onClick={() => fetch(`/api/stamp/download/${id}`)}
             download={title}
           >
