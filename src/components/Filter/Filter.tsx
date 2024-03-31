@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import Select from '../ui/Select'
 
 const labelStyle =
-  'absolute left-0 ml-2 -translate-y-2.5 bg-[#F0F3F4] px-1 text-sm capitalize'
+  'absolute left-0 ml-2 -translate-y-2.5 bg-default px-1 text-sm capitalize'
 
 const Filter = () => {
   const [query, setQuery] = useQueryParams()

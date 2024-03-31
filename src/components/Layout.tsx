@@ -33,7 +33,7 @@ const socials = [
 
 const Navbar = () => {
   return (
-    <header className="relative z-20 h-20 w-full bg-[#222939] shadow-md">
+    <header className="relative z-20 h-20 w-full bg-dark shadow-md">
       <div className="container mx-auto h-full">
         <div className="flex h-full items-center justify-between space-x-4 px-1 md:px-4">
           <div className="flex md:space-x-6">
@@ -57,7 +57,7 @@ const Navbar = () => {
                 <Link
                   key={item.text}
                   href={item.href}
-                  className="block rounded-md px-3 py-1 text-white transition hover:bg-amber-800"
+                  className="rounded-md px-3 py-1 text-default transition hover:bg-primary hover:text-dark"
                 >
                   {item.text}
                 </Link>
@@ -73,16 +73,12 @@ const Navbar = () => {
 }
 const Footer = () => {
   return (
-    <footer className="mt-auto  bg-[#222939] py-6">
+    <footer className="mt-auto  bg-dark py-6 text-default">
       <div className="container mx-auto flex items-center justify-between px-5">
-        <p className="text-sm font-bold text-white">Anno Stamps</p>
+        <p className="text-sm font-bold ">Anno Stamps</p>
 
         <div className="flex items-center space-x-5">
-          <a
-            href="https://www.buymeacoffee.com/miloK"
-            target="_blank"
-            className="text-white"
-          >
+          <a href="https://www.buymeacoffee.com/miloK" target="_blank">
             Support AnnoStamps
           </a>
           {socials.map((social) => (
@@ -126,10 +122,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <link rel="icon" href="/favicon.svg" />
       </Head>
 
-      <div className="flex min-h-screen flex-col bg-[#F0F3F4]">
+      <div className="flex min-h-screen flex-col bg-default">
         <Navbar />
 
-        <main className="s relative z-10 mx-auto mb-20 min-h-full w-full bg-[#F0F3F4] bg-opacity-95">
+        <main className="relative z-10 mx-auto mb-20 min-h-full w-full bg-opacity-95">
           {children}
         </main>
 

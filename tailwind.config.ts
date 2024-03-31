@@ -7,6 +7,13 @@ module.exports = {
       backgroundImage: {
         'main-background': "url('/anno2.jpg')",
       },
+      colors: {
+        default: '#F0F3F4',
+        dark: '#222939',
+        primary: '#6DD3C0',
+        secondary: '#F6AE2D',
+        accent: '#B11E47',
+      },
     },
     fontFamily: {
       sans: ['Poppins', 'system-ui'],

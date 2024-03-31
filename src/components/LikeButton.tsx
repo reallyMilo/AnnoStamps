@@ -59,10 +59,7 @@ const LikeButton = ({ id, likedBy }: LikeButtonProps) => {
       className="flex cursor-pointer items-center gap-1 text-sm"
     >
       <HandThumbUpIcon
-        className={cn(
-          'h-6 w-6',
-          (isStampLiked() || isLiked) && 'text-[#6DD3C0]'
-        )}
+        className={cn('h-6 w-6', (isStampLiked() || isLiked) && 'text-primary')}
       />
       {likeStamp?.stamp ? likeStamp.stamp.likedBy.length : likedBy.length}
     </button>
