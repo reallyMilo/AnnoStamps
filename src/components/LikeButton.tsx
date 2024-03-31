@@ -38,6 +38,7 @@ const LikeButton = ({ id, likedBy }: LikeButtonProps) => {
         pathname: '/auth/signin',
         query: { callbackUrl: router.asPath },
       })
+      return
     }
 
     const { ok } = await trigger()
@@ -55,10 +56,12 @@ const LikeButton = ({ id, likedBy }: LikeButtonProps) => {
 
   return (
     <button
+      data-testid="like-stamp"
       onClick={addLikeToStamp}
       className="flex cursor-pointer items-center gap-1 text-sm"
     >
       <HandThumbUpIcon
+        data-testid="like-icon"
         className={cn('h-6 w-6', (isStampLiked() || isLiked) && 'text-primary')}
       />
       {likeStamp?.stamp ? likeStamp.stamp.likedBy.length : likedBy.length}
