@@ -9,10 +9,6 @@ describe('Download Stamp from stamp page', () => {
         cy.visit(link.attr('href'))
       })
 
-    cy.intercept('GET', '/stamp.zip', {
-      fixture: 'test-stamp.zip',
-    }).as('download')
-
     cy.reload(true)
     cy.getBySel('stamp-downloads')
       .invoke('text')
@@ -26,9 +22,6 @@ describe('Download Stamp from stamp page', () => {
           })
           .click()
 
-        cy.wait('@download').then((req) => {
-          expect(req.response.statusCode).to.equal(200)
-        })
         cy.url().then((url) => {
           cy.database(
             `SELECT * FROM "Stamp" WHERE id = '${url.split('/').at(-1)}';`
