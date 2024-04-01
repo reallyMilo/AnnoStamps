@@ -142,7 +142,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
             return imagePath
           })
         ),
-        upload(stampId, zipped, 'zip'),
+        upload(stampId, zipped, 'zip', formData.get('title') as string),
       ])
     } catch (e) {
       setErrorMessage({ message: 'Error uploading assets' })
