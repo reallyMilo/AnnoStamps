@@ -81,14 +81,12 @@ const FormInputFields = () => {
       {category === 'island' && (
         <div className="grid grid-cols-3 gap-x-4">
           <div className="flex flex-col space-y-1">
-            <label className="text-gray-600" htmlFor="capital">
-              Capital
-            </label>
+            <label htmlFor="capital">Capital</label>
             <Select
               id="capital"
               name="capital"
               options={Object.values(CAPITALS_1800)}
-              className={selectVariantStyles.primaryShadow}
+              variant="primaryShadow"
               defaultValue={stamp?.capital ?? undefined}
             >
               <option value="">-Select-</option>
@@ -98,9 +96,7 @@ const FormInputFields = () => {
       )}
       <div className="space-y-6">
         <div className="flex flex-col space-y-1">
-          <label className="text-gray-600" htmlFor="title">
-            Stamp Title
-          </label>
+          <label htmlFor="title">Stamp Title</label>
           <input
             id="title"
             name="title"
@@ -112,9 +108,7 @@ const FormInputFields = () => {
           />
         </div>
         <div className="flex flex-col space-y-1">
-          <label className="text-gray-600" htmlFor="description">
-            Description
-          </label>
+          <label htmlFor="description">Description</label>
           <textarea
             id="description"
             name="description"
