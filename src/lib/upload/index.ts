@@ -2,7 +2,7 @@ export const upload = async (
   stampId: string,
   body: Blob | File,
   type: string,
-  name?: string
+  name: string
 ) => {
   const filename = name && encodeURIComponent(name)
   const fileType = encodeURIComponent(type)
