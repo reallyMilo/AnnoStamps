@@ -4,7 +4,7 @@ export const upload = async (
   type: string,
   name: string
 ) => {
-  const filename = name && encodeURIComponent(name)
+  const filename = encodeURIComponent(name)
   const fileType = encodeURIComponent(type)
 
   //TODO: Localstack or aws sandbox can remove this
