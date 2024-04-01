@@ -1,4 +1,11 @@
 describe('Stamp liking', () => {
+  beforeEach(() => {
+    cy.task('db:testUser')
+  })
+  afterEach(() => {
+    cy.task('db:removeTestUser')
+  })
+
   it('unauthorized user redirected to sign in with callback to stamp', () => {
     cy.intercept('/api/auth/session', [])
     cy.visit('/')
@@ -15,7 +22,6 @@ describe('Stamp liking', () => {
   })
 
   it('user can like stamp', () => {
-    cy.task('db:testUser')
     cy.intercept('/api/stamp/like/*', (req) => {
       req.headers[
         'cookie'
@@ -39,7 +45,7 @@ describe('Stamp liking', () => {
         cy.wait('@likeStamp')
 
         cy.database(
-          `SELECT * FROM "User" INNER JOIN "_StampLiker" ON "User".id = "_StampLiker"."B" WHERE id = 'testSeedUserId'`
+          `SELECT * FROM "User" INNER JOIN "_StampLiker" ON "User".id = "_StampLiker"."B" WHERE id = 'testSeedUserId';`
         ).then((users) => {
           cy.wrap(users).should('have.length', 1)
         })
@@ -54,7 +60,5 @@ describe('Stamp liking', () => {
           .then(Number)
           .should('eq', initialLikesCount + 1)
       })
-
-    cy.task('db:removeTestUser')
   })
 })
