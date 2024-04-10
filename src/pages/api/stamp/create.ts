@@ -1,10 +1,8 @@
 import { Prisma } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getServerSession } from 'next-auth/next'
 
+import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
-
-import { authOptions } from '../auth/[...nextauth]'
 
 type Response = {
   message: string | unknown
@@ -26,7 +24,7 @@ export default async function createStampHandler(
   req: NextApiRequest,
   res: NextApiResponse<Response>
 ) {
-  const session = await getServerSession(req, res, authOptions)
+  const session = await auth(req, res)
 
   if (!session?.user?.id) {
     return res.status(401).json({ ok: false, message: 'Unauthorized.' })

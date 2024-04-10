@@ -3,10 +3,9 @@
 import { createId } from '@paralleldrive/cuid2'
 import { outputFileSync } from 'fs-extra'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getServerSession } from 'next-auth'
 import sharp from 'sharp'
 
-import { authOptions } from '../auth/[...nextauth]'
+import { auth } from '@/auth'
 
 const BREAKPOINTS = {
   large: 1024,
@@ -65,7 +64,7 @@ export default async function localHandler(
   if (process.env.NODE_ENV !== 'development') {
     return res.status(500).json({ ok: false, message: 'only in dev mode' })
   }
-  const session = await getServerSession(req, res, authOptions)
+  const session = await auth(req, res)
 
   if (!session?.user?.id) {
     return res.status(401).json({ ok: false, message: 'Unauthorized.' })

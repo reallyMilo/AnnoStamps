@@ -1,11 +1,9 @@
 import { Prisma } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getServerSession } from 'next-auth/next'
 
+import { auth } from '@/auth'
 import { userIncludeStatement, UserWithStamps } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
-
-import { authOptions } from './auth/[...nextauth]'
 
 type Response = {
   data?: Partial<UserWithStamps>
@@ -16,7 +14,7 @@ export default async function usernameHandler(
   req: NextApiRequest,
   res: NextApiResponse<Response>
 ) {
-  const session = await getServerSession(req, res, authOptions)
+  const session = await auth(req, res)
 
   if (!session?.user.id) {
     return res.status(401).json({ message: 'Unauthorized.' })
