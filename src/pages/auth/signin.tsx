@@ -4,15 +4,13 @@ import type {
 } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getServerSession } from 'next-auth/next'
 import { getProviders, signIn } from 'next-auth/react'
 
+import { auth } from '@/auth'
 import Container from '@/components/ui/Container'
 
-import { authOptions } from '../api/auth/[...nextauth]'
-
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions)
+  const session = await auth(context.req, context.res)
 
   if (session) {
     return { redirect: { destination: '/' } }

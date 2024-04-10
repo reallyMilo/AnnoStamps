@@ -2,15 +2,14 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { createId } from '@paralleldrive/cuid2'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getServerSession } from 'next-auth'
 
-import { authOptions } from '../auth/[...nextauth]'
+import { auth } from '@/auth'
 
 interface Req extends NextApiRequest {
   query: { fileType: string; filename: string; stampId: string }
 }
 export default async function presignedHandler(req: Req, res: NextApiResponse) {
-  const session = await getServerSession(req, res, authOptions)
+  const session = await auth(req, res)
 
   if (!session?.user?.id) {
     return res.status(401).json({ ok: false, message: 'Unauthorized.' })

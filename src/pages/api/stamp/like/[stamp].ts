@@ -1,15 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getServerSession } from 'next-auth/next'
 
+import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
-
-import { authOptions } from '../../auth/[...nextauth]'
 
 export default async function likesHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const session = await getServerSession(req, res, authOptions)
+  const session = await auth(req, res)
   const { stamp: stampId } = req.query
 
   if (!session) {

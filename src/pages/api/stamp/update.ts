@@ -1,10 +1,8 @@
 import { Prisma } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getServerSession } from 'next-auth'
 
+import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
-
-import { authOptions } from '../auth/[...nextauth]'
 
 interface Req extends NextApiRequest {
   body: Pick<
@@ -26,7 +24,7 @@ export default async function updateStampHandler(
 ) {
   const { id: stampId, addImages, deleteImages, ...fields } = req.body
 
-  const session = await getServerSession(req, res, authOptions)
+  const session = await auth(req, res)
 
   if (!session?.user.id) {
     return res.status(401).json({ ok: false, message: 'Unauthorized.' })
