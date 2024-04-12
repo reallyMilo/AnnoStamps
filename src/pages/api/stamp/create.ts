@@ -24,17 +24,20 @@ export default async function createStampHandler(
   req: NextApiRequest,
   res: NextApiResponse<Response>
 ) {
-  const session = await auth(req, res)
-
-  if (!session?.user?.id) {
-    return res.status(401).json({ ok: false, message: 'Unauthorized.' })
-  }
-
   if (req.method !== 'POST') {
     return res.status(405).json({
       ok: false,
       message: `HTTP method ${req.method} is not supported.`,
     })
+  }
+
+  const session = await auth(req, res)
+
+  if (!session?.user?.id) {
+    return res.status(401).json({ ok: false, message: 'Unauthorized.' })
+  }
+  if (!session.user.usernameURL) {
+    return res.status(400).json({ ok: false, message: 'UsernameURL not set' })
   }
 
   try {
@@ -60,7 +63,7 @@ export default async function createStampHandler(
         ...fields,
       },
     })
-
+    await res.revalidate(`/${session.user.usernameURL}`)
     return res.status(200).json({ ok: true, message: 'stamp created!' })
   } catch (e) {
     return res.status(500).json({ ok: false, message: e })
