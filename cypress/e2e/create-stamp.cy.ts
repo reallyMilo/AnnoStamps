@@ -1,6 +1,6 @@
 describe('Stamp creation', () => {
   beforeEach(() => {
-    cy.task('db:testUser')
+    cy.task('db:testUser', true)
   })
   afterEach(() => {
     cy.task('db:removeTestUser')
