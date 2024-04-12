@@ -1,5 +1,3 @@
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import Grid from '@/components/ui/Grid'
@@ -10,27 +8,28 @@ type UsernamePageProps = {
   stats: { downloads: number; likes: number }
   user: UserWithStamps
 }
+export const getStaticPaths = () => {
+  return {
+    paths: [], // add content creators here to generate path at build time
+    fallback: 'blocking',
+  }
+}
 
-export const getServerSideProps: GetServerSideProps<
-  UsernamePageProps
-> = async ({ query, res }) => {
+export const getStaticProps = async ({
+  params,
+}: {
+  params: { username: string }
+}) => {
   const user = await prisma.user.findUnique({
     include: userIncludeStatement,
-    where: { usernameURL: query.username as string },
+    where: { usernameURL: params.username },
   })
-
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=15, stale-while-revalidate=59'
-  )
 
   if (!user) {
     return {
       notFound: true,
     }
   }
-
-  //FIXME: is rawSQL query with prisma better?
 
   const stats = user.listedStamps.reduce(
     (acc, curr) => {
@@ -49,13 +48,11 @@ export const getServerSideProps: GetServerSideProps<
       user,
       stats,
     },
+    revalidate: 86400, // update stats daily
   }
 }
 
-const UsernamePage = ({
-  user,
-  stats,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const UsernamePage = ({ user, stats }: UsernamePageProps) => {
   return (
     <Container>
       <div className="mb-4 flex flex-col gap-y-2 border-b-2 pb-10">

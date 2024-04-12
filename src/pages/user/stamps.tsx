@@ -23,7 +23,7 @@ const StampDeleteModal = ({
   const router = useRouter()
 
   const deleteStamp = async () => {
-    const deleteStampRes = await fetch(`/api/stamp/${id}`, {
+    const deleteStampRes = await fetch(`/api/stamp/delete/${id}`, {
       method: 'DELETE',
     })
 
