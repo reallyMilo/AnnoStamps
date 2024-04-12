@@ -10,7 +10,7 @@ type Response = {
 
 interface Req extends NextApiRequest {
   query: {
-    delete: string
+    id: string
   }
 }
 
@@ -18,14 +18,6 @@ export default async function deleteStampHandler(
   req: Req,
   res: NextApiResponse<Response>
 ) {
-  const session = await auth(req, res)
-
-  const { delete: stampId } = req.query
-
-  if (!session?.user?.id) {
-    return res.status(401).json({ ok: false, message: 'Unauthorized.' })
-  }
-
   if (req.method !== 'DELETE') {
     return res.status(405).json({
       ok: false,
@@ -33,44 +25,52 @@ export default async function deleteStampHandler(
     })
   }
 
+  const session = await auth(req, res)
+
+  const { id: stampId } = req.query
+
+  if (!session?.user?.id) {
+    return res.status(401).json({ ok: false, message: 'Unauthorized.' })
+  }
+  if (!session.user.usernameURL) {
+    return res.status(400).json({ ok: false, message: 'UsernameURL not set' })
+  }
+
   try {
-    const userStamp = await prisma.user.findUnique({
-      select: {
-        listedStamps: {
-          where: {
-            id: stampId,
+    const removeStamp = await prisma.$transaction(async (tx) => {
+      const userStamp = await tx.user.findUnique({
+        select: {
+          listedStamps: {
+            where: {
+              id: stampId,
+            },
           },
         },
-      },
-      where: {
-        id: session.user.id,
-      },
+        where: {
+          id: session.user.id,
+        },
+      })
+
+      if (userStamp?.listedStamps.length === 0) {
+        throw new Error('Not stamp owner')
+      }
+
+      await tx.image.deleteMany({
+        where: {
+          stampId,
+        },
+      })
+
+      return await tx.stamp.delete({
+        where: {
+          id: stampId,
+        },
+      })
     })
-
-    if (userStamp?.listedStamps.length === 0) {
-      return res.status(404).json({ ok: false, message: 'not found' })
-    }
-
-    const deleteImages = prisma.image.deleteMany({
-      where: {
-        stampId,
-      },
-    })
-
-    const deleteStamp = prisma.stamp.delete({
-      where: {
-        id: stampId,
-      },
-    })
-
-    const [, removedStamp] = await prisma.$transaction([
-      deleteImages,
-      deleteStamp,
-    ])
-
+    res.revalidate(`/${session.user.usernameURL}`)
     return res
       .status(200)
-      .json({ ok: true, message: removedStamp.title + 'has been removed' })
+      .json({ ok: true, message: removeStamp.title + 'has been removed' })
   } catch (e) {
     return res.status(500).json({ ok: false, message: e })
   }
