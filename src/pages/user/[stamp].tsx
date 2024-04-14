@@ -42,8 +42,7 @@ const EditStampPage = () => {
       throw new Error('no stamp')
     }
 
-    formData.set('id', stamp.id)
-    const res = await fetch(`/api/stamp/update`, {
+    const res = await fetch(`/api/stamp/update/${stamp.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
