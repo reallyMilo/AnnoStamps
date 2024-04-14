@@ -14,8 +14,10 @@ interface Req extends NextApiRequest {
     | 'modded'
     | 'collection'
     | 'stampFileUrl'
-    | 'id'
   > & { addImages: string[]; deleteImages: string[] }
+  query: {
+    id: string
+  }
 }
 
 export default async function updateStampHandler(
@@ -28,8 +30,8 @@ export default async function updateStampHandler(
       message: `HTTP method ${req.method} is not supported.`,
     })
   }
-
-  const { id: stampId, addImages, deleteImages, ...fields } = req.body
+  const { id: stampId } = req.query
+  const { addImages, deleteImages, ...fields } = req.body
 
   const session = await auth(req, res)
 
