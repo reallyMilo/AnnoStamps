@@ -91,7 +91,7 @@ export default async function updateStampHandler(
         },
       })
     })
-
+    await res.revalidate(`/stamp/${stampId}`)
     await res.revalidate(`/${session.user.usernameURL}`)
     return res.status(200).json({ ok: true, message: 'successfully updated' })
   } catch (e) {
