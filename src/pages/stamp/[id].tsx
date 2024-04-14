@@ -50,7 +50,7 @@ export async function getStaticProps({ params }: Params) {
     props: {
       stamp,
     },
-    revalidate: 30,
+    revalidate: 3600, // revalidate every hour to update stats
   }
 }
 
