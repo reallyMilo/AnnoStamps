@@ -9,6 +9,7 @@ Cypress.Commands.add('usernameSession', (route: string) => {
     'usernameSession'
   )
   cy.setCookie('next-auth.session-token', Cypress.env('sessionToken'))
+  cy.setCookie('csrfToken', Cypress.env('csrfToken'))
   cy.visit(route)
   cy.wait('@usernameSession')
 })
@@ -18,6 +19,7 @@ Cypress.Commands.add('newUserSession', (route: string) => {
     'newUserSession'
   )
   cy.setCookie('next-auth.session-token', Cypress.env('sessionToken'))
+  cy.setCookie('csrfToken', Cypress.env('csrfToken'))
   cy.visit(route)
   cy.wait('@newUserSession')
 })

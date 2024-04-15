@@ -72,6 +72,10 @@ export default async function deleteStampHandler(
       .status(200)
       .json({ ok: true, message: removeStamp.title + 'has been removed' })
   } catch (e) {
+    if (e instanceof Error) {
+      return res.status(500).json({ ok: false, message: e.message })
+    }
+
     return res.status(500).json({ ok: false, message: e })
   }
 }

@@ -55,11 +55,7 @@ describe('Stamp creation', () => {
   })
 
   it('user can create a stamp with all fields filled', () => {
-    cy.intercept('/api/stamp/create', (req) => {
-      req.headers[
-        'cookie'
-      ] = `next-auth.csrf-token=dfbc1c2ed29dd90157662042a479720a4bf4c394f954bdd2e01a372aa42c9f1b%7C426823b50e26ac90384ba7a800b10b79c4d19202dd2a5e1f80739d2c7594db44; next-auth.session-token=cdc4b0fb-77b5-44b5-947a-dde785af2676;`
-    }).as('createStamp')
+    cy.intercept('/api/stamp/create').as('createStamp')
     // since 2 calls are made to upload 1 image, and 1 zip
     // we set the zip call to an api-route to catch for updating
     cy.intercept('/api/upload/*', (req) => {
@@ -148,7 +144,7 @@ describe('Stamp creation', () => {
       cy.wrap(stamp).its('userId').should('eq', 'testSeedUserId')
     })
     // redirect after successful stamp creation
-    cy.url().should('include', '/user/stamps')
+    cy.url().should('include', `testseeduser`)
 
     cy.findByText('cypress test title').should('be.visible')
     cy.getBySel('stamp-card-link')

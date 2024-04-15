@@ -16,11 +16,7 @@ describe('User can set username', () => {
   })
 
   it('duplicate username error is displayed on already taken username', () => {
-    cy.intercept('PUT', '/api/user', (req) => {
-      req.headers[
-        'Cookie'
-      ] = `next-auth.csrf-token=dfbc1c2ed29dd90157662042a479720a4bf4c394f954bdd2e01a372aa42c9f1b%7C426823b50e26ac90384ba7a800b10b79c4d19202dd2a5e1f80739d2c7594db44; next-auth.session-token=cdc4b0fb-77b5-44b5-947a-dde785af2676;`
-    }).as('setUsername')
+    cy.intercept('PUT', '/api/user').as('setUsername')
 
     cy.findByLabelText('Username').type('user1')
 
@@ -30,11 +26,7 @@ describe('User can set username', () => {
   })
 
   it('user can navigate to account settings and update username', () => {
-    cy.intercept('PUT', '/api/user', (req) => {
-      req.headers[
-        'Cookie'
-      ] = `next-auth.csrf-token=dfbc1c2ed29dd90157662042a479720a4bf4c394f954bdd2e01a372aa42c9f1b%7C426823b50e26ac90384ba7a800b10b79c4d19202dd2a5e1f80739d2c7594db44; next-auth.session-token=cdc4b0fb-77b5-44b5-947a-dde785af2676;`
-    }).as('setUsername')
+    cy.intercept('PUT', '/api/user').as('setUsername')
 
     cy.intercept('/api/auth/session', {
       user: {

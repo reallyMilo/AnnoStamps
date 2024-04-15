@@ -22,11 +22,7 @@ describe('Stamp liking', () => {
   })
 
   it('user can like stamp', () => {
-    cy.intercept('/api/stamp/like/*', (req) => {
-      req.headers[
-        'cookie'
-      ] = `next-auth.csrf-token=dfbc1c2ed29dd90157662042a479720a4bf4c394f954bdd2e01a372aa42c9f1b%7C426823b50e26ac90384ba7a800b10b79c4d19202dd2a5e1f80739d2c7594db44; next-auth.session-token=cdc4b0fb-77b5-44b5-947a-dde785af2676;`
-    }).as('likeStamp')
+    cy.intercept('/api/stamp/like/*').as('likeStamp')
     cy.newUserSession('/')
     cy.getBySel('stamp-card-link').last().click()
 

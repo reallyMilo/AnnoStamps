@@ -8,7 +8,7 @@ describe('UserButton', () => {
     expect(screen.getByText('Add Stamp')).toBeInTheDocument()
   })
 
-  it('user-menu for authenticated users with all menu items', async () => {
+  it('user-menu prompts to set username for authenticated users without username set', async () => {
     render(<UserButton />, {
       expires: new Date(Date.now() + 2 * 86400).toISOString(),
       user: { id: '1', username: null, usernameURL: null, biography: null },
@@ -18,13 +18,24 @@ describe('UserButton', () => {
     expect(button).toBeInTheDocument()
 
     await act(async () => await userEvent.click(button))
-    expect(screen.getByText('Set username!')).toBeInTheDocument()
-    expect(screen.getByText('My Account')).toBeInTheDocument()
-    expect(screen.getByText('My stamps')).toBeInTheDocument()
-    expect(screen.getByText('Add new stamp')).toBeInTheDocument()
-    expect(screen.getByText('Logout')).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Please set username!' })
+    ).toHaveAttribute('href', '/user/account')
+    expect(screen.getByRole('link', { name: 'My Account' })).toHaveAttribute(
+      'href',
+      '/user/account'
+    )
+    expect(screen.getByRole('link', { name: 'My stamps' })).toHaveAttribute(
+      'href',
+      '/user/account'
+    )
+    expect(screen.getByRole('link', { name: 'Add new stamp' })).toHaveAttribute(
+      'href',
+      '/user/create'
+    )
+    expect(screen.getByRole('button', { name: 'Logout' })).toBeInTheDocument()
   })
-  it('displays username', async () => {
+  it('user-menu provides right href for authenticated user with username set', async () => {
     render(<UserButton />, {
       expires: new Date(Date.now() + 2 * 86400).toISOString(),
       user: {
@@ -36,6 +47,13 @@ describe('UserButton', () => {
     })
 
     await act(async () => await userEvent.click(screen.getByRole('button')))
-    expect(screen.getByText('stampCreator')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'stampCreator' })).toHaveAttribute(
+      'href',
+      '/stampcreator'
+    )
+    expect(screen.getByRole('link', { name: 'My stamps' })).toHaveAttribute(
+      'href',
+      '/stampcreator'
+    )
   })
 })
