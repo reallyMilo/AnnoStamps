@@ -52,10 +52,8 @@ describe('Updating Stamp', () => {
       body: '/stamp.zip',
     }).as('S3Put')
 
-    cy.intercept('GET', '/api/user').as('getUserStamps')
     cy.usernameSession('/testseeduser')
 
-    cy.wait('@getUserStamps')
     cy.findByRole('heading', { name: 'Test-Seed-User-Stamp' }).should(
       'be.visible'
     )
