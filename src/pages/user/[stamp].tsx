@@ -2,13 +2,48 @@ import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import JSZip from 'jszip'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 
 import { StampForm } from '@/components/StampForm/StampForm'
 import Container from '@/components/ui/Container'
-import { useUserStamps } from '@/lib/hooks/useUserStamps'
 import type { UserWithStamps } from '@/lib/prisma/queries'
+
+const useUserStamps = () => {
+  const router = useRouter()
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.replace('/auth/signin')
+    },
+  })
+
+  const { data, isLoading, error } = useSWR<{ data: UserWithStamps }>(
+    status === 'authenticated' ? '/api/user' : null,
+    async (url: string) => {
+      const res = await fetch(url)
+
+      if (!res.ok) {
+        const error = new Error(
+          'An error occurred while fetching the data.'
+        ) as Error & { info: string; status: number }
+        error.info = await res.json()
+        error.status = res.status
+        throw error
+      }
+
+      return res.json()
+    }
+  )
+
+  return {
+    userStamps: data?.data,
+    session,
+    isLoading,
+    error,
+  }
+}
 
 type Stamp = UserWithStamps['listedStamps'][0]
 
