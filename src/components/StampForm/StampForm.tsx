@@ -1,6 +1,7 @@
 import { createId } from '@paralleldrive/cuid2'
 import JSZip, { JSZipObject } from 'jszip'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 import * as React from 'react'
 
 import { Asset } from '@/lib/hooks/useUpload'
@@ -81,6 +82,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
   const { stamp, images, files, setStatus } = useStampFormContext()
   const [errorMessage, setErrorMessage] = React.useState<object | null>(null)
   const router = useRouter()
+  const { data: session } = useSession()
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -161,8 +163,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
       return
     }
     setStatus('success')
-    router.push('/user/stamps')
-    return
+    router.push(`/${session?.user.usernameURL}`)
   }
 
   return (
