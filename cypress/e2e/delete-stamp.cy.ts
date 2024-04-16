@@ -32,7 +32,8 @@ describe('Delete stamp', () => {
   it('user can delete own stamp', () => {
     cy.intercept('/api/stamp/delete/*').as('deleteStamp')
     cy.usernameSession('/testseeduser')
-    cy.getBySel('delete-stamp').click()
+    //FIXME: Need to revalidate the path for [username]
+    cy.getBySel('delete-stamp').first().click()
     cy.findByRole('button', { name: 'Yes, delete' })
       .should('be.visible')
       .click()
@@ -43,7 +44,6 @@ describe('Delete stamp', () => {
     ).then((stamps) => {
       cy.wrap(stamps).should('have.length', 0)
     })
-    cy.reload()
     cy.findByText('User has no stamps').should('be.visible')
   })
 })
