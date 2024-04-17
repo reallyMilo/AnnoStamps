@@ -10,19 +10,19 @@ import { queryParamsSchema } from '@/lib/hooks/useQueryParams'
 import { StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
-type HomePageProps = {
+type StampsPageProps = {
   count: number
   pageNumber: number
   stamps: StampWithRelations[]
 }
 
-export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
+export const getServerSideProps: GetServerSideProps<StampsPageProps> = async ({
   query,
   res,
 }) => {
   res.setHeader(
     'Cache-Control',
-    'public, s-maxage=15, stale-while-revalidate=59'
+    'public, s-maxage=600, stale-while-revalidate=900'
   )
 
   const parseResult = queryParamsSchema.safeParse(query)
@@ -48,7 +48,7 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async ({
   }
 }
 
-const HomePage = ({
+const StampsPage = ({
   count,
   stamps,
   pageNumber,
@@ -74,4 +74,4 @@ const HomePage = ({
     </Container>
   )
 }
-export default HomePage
+export default StampsPage
