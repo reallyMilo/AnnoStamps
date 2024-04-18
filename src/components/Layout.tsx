@@ -10,7 +10,7 @@ import discordWhite from '../../public/discord-white-icon.svg'
 import github from '../../public/github-mark.svg'
 const navigation = [
   {
-    href: '/',
+    href: '/stamps',
     text: 'All Stamps',
   },
   {
@@ -75,8 +75,17 @@ const Footer = () => {
   return (
     <footer className="mt-auto  bg-dark py-6 text-default">
       <div className="container mx-auto flex items-center justify-between px-5">
-        <p className="text-sm font-bold ">Anno Stamps</p>
-
+        <Link id="header-logo" href="/" className="hidden md:flex">
+          <Image
+            src={headerLogo}
+            alt="Anno Stamps"
+            style={{
+              width: '100%',
+              maxWidth: '160px',
+              height: 'auto',
+            }}
+          />
+        </Link>
         <div className="flex items-center space-x-5">
           <a href="https://www.buymeacoffee.com/miloK" target="_blank">
             Support AnnoStamps

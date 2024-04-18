@@ -1,7 +1,7 @@
 // const { _ } = Cypress
 describe('Filtering stamps', () => {
   beforeEach(() => {
-    cy.visit('/')
+    cy.visit('/stamps')
   })
   it('user can filter and sort stamps', () => {
     cy.get('select#category')

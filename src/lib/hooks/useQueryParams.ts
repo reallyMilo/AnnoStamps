@@ -32,7 +32,7 @@ const queryParamsOrder: Action['type'][] = [
   'search',
 ]
 
-const useQueryParams = (pathToQuery = '/') => {
+const useQueryParams = (pathToQuery = '/stamps') => {
   const router = useRouter()
   const { query } = router
 
