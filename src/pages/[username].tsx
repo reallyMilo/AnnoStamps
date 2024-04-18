@@ -1,5 +1,10 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid'
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+} from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
@@ -107,7 +112,10 @@ type UsernamePageProps = {
   stats: { downloads: number; likes: number }
   user: UserWithStamps
 }
-const UsernamePage = ({ user, stats }: UsernamePageProps) => {
+const UsernamePage = ({
+  user,
+  stats,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data: session } = useSession()
   const isStampOwner = user.id === session?.user.id
 
@@ -159,18 +167,20 @@ const UsernamePage = ({ user, stats }: UsernamePageProps) => {
 
 export default UsernamePage
 
-export const getStaticPaths = () => {
+export const getStaticPaths = (() => {
   return {
     paths: [], // add content creators here to generate path at build time
     fallback: 'blocking',
   }
-}
+}) satisfies GetStaticPaths
 
-export const getStaticProps = async ({
-  params,
-}: {
-  params: { username: string }
-}) => {
+export const getStaticProps = (async ({ params }) => {
+  if (typeof params?.username !== 'string') {
+    return {
+      notFound: true,
+    }
+  }
+
   const user = await prisma.user.findUnique({
     include: userIncludeStatement,
     where: { usernameURL: params.username.toLowerCase() },
@@ -201,4 +211,4 @@ export const getStaticProps = async ({
     },
     revalidate: 86400, // update stats daily
   }
-}
+}) satisfies GetStaticProps<UsernamePageProps>

@@ -16,10 +16,7 @@ type StampsPageProps = {
   stamps: StampWithRelations[]
 }
 
-export const getServerSideProps: GetServerSideProps<StampsPageProps> = async ({
-  query,
-  res,
-}) => {
+export const getServerSideProps = (async ({ query, res }) => {
   res.setHeader(
     'Cache-Control',
     'public, s-maxage=600, stale-while-revalidate=900'
@@ -46,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<StampsPageProps> = async ({
       pageNumber,
     },
   }
-}
+}) satisfies GetServerSideProps<StampsPageProps>
 
 const StampsPage = ({
   count,

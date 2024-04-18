@@ -2,6 +2,11 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+} from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -15,7 +20,7 @@ import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 import { distanceUnixTimeToNow } from '@/lib/utils'
 
-export async function getStaticPaths() {
+export const getStaticPaths = (async () => {
   const stamps = await prisma.stamp.findMany({
     select: { id: true },
     orderBy: { downloads: 'desc' },
@@ -28,14 +33,14 @@ export async function getStaticPaths() {
     })),
     fallback: true,
   }
-}
-type Params = {
-  params: {
-    id: string
-  }
-}
+}) satisfies GetStaticPaths
 
-export async function getStaticProps({ params }: Params) {
+export const getStaticProps = (async ({ params }) => {
+  if (typeof params?.id !== 'string') {
+    return {
+      notFound: true,
+    }
+  }
   const stamp = await prisma.stamp.findUnique({
     include: stampIncludeStatement,
     where: { id: params.id },
@@ -52,7 +57,7 @@ export async function getStaticProps({ params }: Params) {
     },
     revalidate: 3600, // revalidate every hour to update stats
   }
-}
+}) satisfies GetStaticProps<{ stamp: StampWithRelations }>
 
 type CarouselProps = {
   fallBack: string
@@ -86,7 +91,9 @@ const Carousel = ({ images, fallBack }: CarouselProps) => {
     </Swiper>
   )
 }
-const StampPage = ({ stamp }: { stamp: StampWithRelations }) => {
+const StampPage = ({
+  stamp,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter()
 
   if (router.isFallback) {
