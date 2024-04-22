@@ -15,7 +15,7 @@
     "vitest": "vitest --ui",
     "cypress": "cypress open",
     "db-seed": "NODE_ENV=development prisma db seed",
-    "prepare": "husky install",
+    "prepare": "husky",
     "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "prisma": {
@@ -77,9 +77,9 @@
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-testing-library": "^6.2.0",
     "eslint-plugin-typescript-sort-keys": "^2.3.0",
-    "husky": "^8.0.3",
+    "husky": "^9.0.11",
     "jsdom": "^22.1.0",
-    "lint-staged": "^14.0.1",
+    "lint-staged": "^15.2.2",
     "next-router-mock": "^0.9.10",
     "postcss": "^8.4.29",
     "prettier": "^2.8.8",
