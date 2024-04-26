@@ -41,7 +41,8 @@ const useQueryParams = (pathToQuery = '/stamps') => {
       { ...query, [action.type]: action.payload },
       {
         sort: (a, b) =>
-          queryParamsOrder.indexOf(a) - queryParamsOrder.indexOf(b),
+          queryParamsOrder.indexOf(a as Action['type']) -
+          queryParamsOrder.indexOf(b as Action['type']),
         filter: (_, value) =>
           (value !== '' && value !== 'false' && value) || undefined,
       }
