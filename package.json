@@ -73,7 +73,7 @@
     "cypress": "^13.2.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.2",
-    "eslint-plugin-jsonc": "^2.15.0",
+    "eslint-plugin-jsonc": "^2.15.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-testing-library": "^6.2.0",
     "eslint-plugin-typescript-sort-keys": "^2.3.0",
