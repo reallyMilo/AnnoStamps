@@ -1,5 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid'
+import {
+  PencilSquareIcon,
+  PlusIcon,
+  TrashIcon,
+} from '@heroicons/react/20/solid'
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -17,10 +21,22 @@ import { userIncludeStatement, UserWithStamps } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 /**
  * TODO: username page
- *  Empty state when for stamp owner has no stamps
  *  Add Dropdown that floats inside of stamp with 3 vertical dots
  *  edit stamp + delete stamp should appear in a drop down
  */
+const UserBanner = ({ user, stats }: UsernamePageProps) => {
+  return (
+    <div className="mb-4 flex flex-col gap-y-2 border-b-2 pb-10">
+      <div className="flex space-x-4 ">
+        <h1 className="text-3xl">{user.username}</h1>
+        <span className="self-end">{stats.downloads} Downloads</span>
+        <span className="self-end">{stats.likes} Likes</span>
+      </div>
+      <p className="text-sm">{user?.biography}</p>
+    </div>
+  )
+}
+
 const StampDeleteModal = ({ id, title }: UserWithStamps['listedStamps'][0]) => {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
@@ -119,47 +135,84 @@ const UsernamePage = ({
   const { data: session } = useSession()
   const isStampOwner = user.id === session?.user.id
 
+  if (user.listedStamps.length === 0 && isStampOwner) {
+    return (
+      <Container>
+        <UserBanner user={user} stats={stats} />
+        <div className="text-center">
+          <svg
+            className="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              vectorEffect="non-scaling-stroke"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+            />
+          </svg>
+          <h3 className="mt-2 text-sm font-semibold text-gray-900">
+            No Stamps
+          </h3>
+          <p className="mt-1 text-sm text-gray-500">
+            Get started by creating a new stamp.
+          </p>
+          <div className="mt-6">
+            <Link
+              href={'/user/create'}
+              className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-primary/75"
+            >
+              <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+              New Stamp
+            </Link>
+          </div>
+        </div>
+      </Container>
+    )
+  }
+
+  if (user.listedStamps.length === 0) {
+    return (
+      <Container>
+        <UserBanner user={user} stats={stats} />
+        <p>User has no stamps</p>
+      </Container>
+    )
+  }
+
   return (
     <Container>
-      <div className="mb-4 flex flex-col gap-y-2 border-b-2 pb-10">
-        <div className="flex space-x-4 ">
-          <h1 className="text-3xl">{user?.username}</h1>
-          <span className="self-end">{stats.downloads} Downloads</span>
-          <span className="self-end">{stats.likes} Likes</span>
-        </div>
-        <p className="text-sm">{user?.biography}</p>
-      </div>
+      <UserBanner user={user} stats={stats} />
 
       <Grid>
-        {' '}
-        {user.listedStamps.length === 0 ? (
-          <p>User has no stamps</p>
-        ) : (
-          user.listedStamps.map((stamp) => {
-            if (isStampOwner) {
-              return (
-                <div key={stamp.id} className="flex flex-col">
-                  <div className="mb-1 flex">
-                    <StampDeleteModal {...stamp} />
+        {user.listedStamps.map((stamp) => {
+          if (isStampOwner) {
+            return (
+              <div key={stamp.id} className="flex flex-col">
+                <div className="mb-1 flex">
+                  <StampDeleteModal {...stamp} />
 
-                    <Link
-                      className="mb-1 ml-auto flex rounded-md bg-primary px-4 py-2 text-sm font-bold text-dark transition hover:bg-accent focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
-                      href={{
-                        pathname: `/user/[stamp]`,
-                        query: { stamp: stamp.id },
-                      }}
-                    >
-                      <PencilSquareIcon className="mr-2 h-5 w-5" /> Edit Stamp{' '}
-                    </Link>
-                  </div>
-                  <StampCard user={user} {...stamp} />
+                  <Link
+                    className="mb-1 ml-auto flex rounded-md bg-primary px-4 py-2 text-sm font-bold text-dark transition hover:bg-accent focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
+                    href={{
+                      pathname: `/user/[stamp]`,
+                      query: { stamp: stamp.id },
+                    }}
+                  >
+                    <PencilSquareIcon className="mr-2 h-5 w-5" /> Edit Stamp{' '}
+                  </Link>
                 </div>
-              )
-            }
+                <StampCard user={user} {...stamp} />
+              </div>
+            )
+          }
 
-            return <StampCard key={stamp.id} user={user} {...stamp} />
-          })
-        )}
+          return <StampCard key={stamp.id} user={user} {...stamp} />
+        })}
       </Grid>
     </Container>
   )
