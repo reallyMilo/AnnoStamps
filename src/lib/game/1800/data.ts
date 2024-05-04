@@ -1,16 +1,16 @@
 export const CATEGORIES = {
+  Production: 'production',
   Cosmetic: 'cosmetic',
-  General: 'general',
   Housing: 'housing',
   Island: 'island',
-  Production: 'production',
+  General: 'general',
 } as const
 
 export const REGIONS_1800 = {
+  OldWorld: 'old world',
+  NewWorld: 'new world',
   Arctic: 'arctic',
   Enbesa: 'enbesa',
-  NewWorld: 'new world',
-  OldWorld: 'old world',
 } as const
 
 export const CAPITALS_1800 = {
