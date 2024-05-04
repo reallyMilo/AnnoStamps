@@ -50,24 +50,30 @@ const StampsPage = ({
   stamps,
   pageNumber,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  if (stamps.length === 0) {
+    return (
+      <Container>
+        <Filter>
+          <p className="inline-flex max-w-max items-center space-x-1 rounded-md bg-amber-100 px-4 py-2 text-amber-700">
+            <ExclamationCircleIcon className="mt-px h-5 w-5 shrink-0" />
+            <span>No stamps found.</span>
+          </p>
+        </Filter>
+      </Container>
+    )
+  }
   return (
     <Container>
-      <Filter />
-      {stamps.length === 0 ? (
-        <p className="inline-flex max-w-max items-center space-x-1 rounded-md bg-amber-100 px-4 py-2 text-amber-700">
-          <ExclamationCircleIcon className="mt-px h-5 w-5 shrink-0" />
-          <span>No stamps found.</span>
-        </p>
-      ) : (
-        <>
+      <Filter>
+        <div className="flex flex-col">
           <Grid>
             {stamps.map((stamp) => (
               <StampCard key={stamp.id} {...stamp} />
             ))}
           </Grid>
           <Pagination count={count} page={pageNumber} />
-        </>
-      )}
+        </div>
+      </Filter>
     </Container>
   )
 }
