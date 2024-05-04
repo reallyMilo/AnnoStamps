@@ -6,7 +6,7 @@ export const CATEGORIES = {
   General: 'general',
 } as const
 
-export const FILTER_SORTING = {
+export const SORT_OPTIONS = {
   Downloads: 'downloads',
   Newest: 'newest',
   Likes: 'likes',
