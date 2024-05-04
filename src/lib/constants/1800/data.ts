@@ -1,11 +1,3 @@
-export const CATEGORIES = {
-  Production: 'production',
-  Cosmetic: 'cosmetic',
-  Housing: 'housing',
-  Island: 'island',
-  General: 'general',
-} as const
-
 export const REGIONS_1800 = {
   OldWorld: 'old world',
   NewWorld: 'new world',
