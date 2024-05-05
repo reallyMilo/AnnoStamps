@@ -21,8 +21,8 @@ export const getServerSideProps = (async ({ query, res }) => {
     'Cache-Control',
     'public, s-maxage=600, stale-while-revalidate=900'
   )
-
   const parseResult = queryParamsSchema.safeParse(query)
+
   if (!parseResult.success) {
     return {
       props: {
@@ -32,7 +32,6 @@ export const getServerSideProps = (async ({ query, res }) => {
       },
     }
   }
-
   const [count, stamps, pageNumber] =
     await prisma.stamp.filterFindManyWithCount(parseResult.data)
 

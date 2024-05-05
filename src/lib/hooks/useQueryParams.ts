@@ -4,28 +4,26 @@ import { z } from 'zod'
 
 const queryParamsSchema = z
   .object({
-    capital: z.string(),
-    category: z.string(),
-    modded: z.string(),
+    capital: z.union([z.string().array(), z.string()]),
+    category: z.union([z.string().array(), z.string()]),
     page: z.string(),
-    region: z.string(),
+    region: z.union([z.string().array(), z.string()]),
     search: z.string(),
     sort: z.string(),
   })
   .partial()
 
 type QueryParams = z.infer<typeof queryParamsSchema>
-type Action =
-  | {
-      payload: string
-      type: NonNullable<keyof Omit<QueryParams, 'page'>>
-    }
-  | { payload: number; type: NonNullable<keyof Pick<QueryParams, 'page'>> }
+
+type Action = {
+  isAddParam?: boolean
+  payload: string
+  type: Required<keyof QueryParams>
+}
 
 const queryParamsOrder: Action['type'][] = [
   'category',
   'region',
-  'modded',
   'capital',
   'sort',
   'page',
@@ -34,21 +32,37 @@ const queryParamsOrder: Action['type'][] = [
 
 const useQueryParams = (pathToQuery = '/stamps') => {
   const router = useRouter()
-  const { query } = router
+  const { asPath } = router
 
-  const setQuery = (action: Action) => {
-    const queryString = qs.stringify(
-      { ...query, [action.type]: action.payload },
-      {
-        sort: (a, b) =>
-          queryParamsOrder.indexOf(a as Action['type']) -
-          queryParamsOrder.indexOf(b as Action['type']),
-        filter: (_, value) =>
-          (value !== '' && value !== 'false' && value) || undefined,
-      }
-    )
+  const setQuery = ({ type, payload, isAddParam = true }: Action) => {
+    const searchParams = asPath.slice(pathToQuery.length)
+    const newQuery = isAddParam
+      ? `${searchParams}&${type}=${payload}`
+      : searchParams
+    const parsedQuery = qs.parse(newQuery, {
+      ignoreQueryPrefix: true,
+      duplicates: 'combine',
+    })
 
-    if (action.payload === 'page') {
+    if (type === 'search' || type === 'sort' || type === 'page') {
+      parsedQuery[type] = payload.length > 0 ? payload : undefined
+    }
+
+    const queryString = qs.stringify(parsedQuery, {
+      arrayFormat: 'repeat',
+      sort: (a, b) =>
+        queryParamsOrder.indexOf(a as Action['type']) -
+        queryParamsOrder.indexOf(b as Action['type']),
+      filter: (prefix, value) => {
+        if (isAddParam === false && prefix === type && value === payload) {
+          return
+        }
+        return value
+      },
+      skipNulls: true,
+    })
+
+    if (payload === 'page') {
       router.push({
         pathname: pathToQuery,
         query: queryString,
@@ -60,8 +74,8 @@ const useQueryParams = (pathToQuery = '/stamps') => {
       query: queryString,
     })
   }
-
-  return [query as QueryParams, setQuery] as const
+  const searchParams = asPath.split('?')[1]
+  return [searchParams, setQuery] as const
 }
 
 export { type QueryParams, queryParamsSchema, useQueryParams }
