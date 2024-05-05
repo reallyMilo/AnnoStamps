@@ -21,8 +21,8 @@ export const getServerSideProps = (async ({ query, res }) => {
     'Cache-Control',
     'public, s-maxage=600, stale-while-revalidate=900'
   )
-
   const parseResult = queryParamsSchema.safeParse(query)
+
   if (!parseResult.success) {
     return {
       props: {
@@ -32,7 +32,6 @@ export const getServerSideProps = (async ({ query, res }) => {
       },
     }
   }
-
   const [count, stamps, pageNumber] =
     await prisma.stamp.filterFindManyWithCount(parseResult.data)
 
@@ -50,24 +49,30 @@ const StampsPage = ({
   stamps,
   pageNumber,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  if (stamps.length === 0) {
+    return (
+      <Container>
+        <Filter>
+          <p className="inline-flex max-w-max items-center space-x-1 rounded-md bg-amber-100 px-4 py-2 text-amber-700">
+            <ExclamationCircleIcon className="mt-px h-5 w-5 shrink-0" />
+            <span>No stamps found.</span>
+          </p>
+        </Filter>
+      </Container>
+    )
+  }
   return (
     <Container>
-      <Filter />
-      {stamps.length === 0 ? (
-        <p className="inline-flex max-w-max items-center space-x-1 rounded-md bg-amber-100 px-4 py-2 text-amber-700">
-          <ExclamationCircleIcon className="mt-px h-5 w-5 shrink-0" />
-          <span>No stamps found.</span>
-        </p>
-      ) : (
-        <>
+      <Filter>
+        <div className="flex flex-col">
           <Grid>
             {stamps.map((stamp) => (
               <StampCard key={stamp.id} {...stamp} />
             ))}
           </Grid>
           <Pagination count={count} page={pageNumber} />
-        </>
-      )}
+        </div>
+      </Filter>
     </Container>
   )
 }

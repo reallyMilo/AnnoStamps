@@ -65,7 +65,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 export const buildFilterWhereClause = (
   filter: Omit<QueryParams, 'sort' | 'page'>
 ): Prisma.StampWhereInput => {
-  const { modded, capital, region, category, search } = filter
+  const { capital, region, category, search } = filter
 
   // https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search#postgresql
   // increase chance that user search returns something with or matching
@@ -73,11 +73,20 @@ export const buildFilterWhereClause = (
     ? search.replace(/(\w)\s+(\w)/g, '$1 | $2')
     : undefined
 
+  const buildArrayFiltering = (column: string, params: string | string[]) => {
+    if (Array.isArray(params)) {
+      return {
+        OR: params.map((param) => ({ [column]: param })),
+      }
+    } else {
+      return { [column]: params }
+    }
+  }
+
   return {
-    ...(modded ? { modded: true } : {}),
-    ...(region ? { region } : {}),
-    ...(category ? { category } : {}),
-    ...(capital ? { capital } : {}),
+    ...(region ? buildArrayFiltering('region', region) : {}),
+    ...(category ? buildArrayFiltering('category', category) : {}),
+    ...(capital ? buildArrayFiltering('capital', capital) : {}),
     ...(parsedQuery
       ? {
           title: {

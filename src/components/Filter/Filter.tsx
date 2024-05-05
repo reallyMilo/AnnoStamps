@@ -1,116 +1,207 @@
-import { Switch } from '@headlessui/react'
+import { Dialog, Transition } from '@headlessui/react'
+import { FunnelIcon } from '@heroicons/react/20/solid'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import { Fragment, useState } from 'react'
 
-import { CAPITALS_1800, CATEGORIES, REGIONS_1800 } from '@/lib/game/1800/data'
-import { useQueryParams } from '@/lib/hooks/useQueryParams'
+import { CATEGORIES, SORT_OPTIONS } from '@/lib/constants'
+import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
+import { type QueryParams, useQueryParams } from '@/lib/hooks/useQueryParams'
 import { cn } from '@/lib/utils'
 
 import Select from '../ui/Select'
 
-const labelStyle =
-  'absolute left-0 ml-2 -translate-y-2.5 bg-default px-1 text-sm capitalize'
+const sortOptions = Object.values(SORT_OPTIONS)
+const filters = [
+  {
+    id: 'category',
+    options: Object.values(CATEGORIES),
+  },
+  {
+    id: 'region',
+    options: Object.values(REGIONS_1800),
+  },
+  {
+    id: 'capital',
+    options: Object.values(CAPITALS_1800),
+  },
+] satisfies {
+  id: keyof QueryParams
+  options: string[]
+}[]
 
-const Filter = () => {
+const FilterForm = ({ className }: { className: string }) => {
   const [query, setQuery] = useQueryParams()
-  const isModded = query.modded === 'true' ? true : false
 
   return (
-    <div className="mb-5 flex flex-col gap-x-10 gap-y-4 md:flex-row">
-      <div className="relative">
-        <label htmlFor="category" className={labelStyle}>
-          Category
-        </label>
-        <Select
-          id="category"
-          name="category"
-          options={Object.values(CATEGORIES)}
-          defaultValue={query.category}
-          onChange={(e) =>
-            setQuery({ payload: e.target.value, type: 'category' })
-          }
+    <form
+      onChange={(e) => {
+        const target = e.target as HTMLInputElement
+
+        setQuery({
+          isAddParam: target.checked,
+          payload: target.value,
+          type: target.dataset.section as keyof QueryParams,
+        })
+      }}
+      className={cn('space-y-6 divide-y divide-gray-200', className)}
+    >
+      {filters.map((section, sectionIdx) => (
+        <div key={`${section.id}-${sectionIdx}`} className="pt-6 first:pt-0">
+          <fieldset>
+            <legend className="block text-sm font-medium capitalize text-gray-900">
+              {section.id}
+            </legend>
+            <div className="space-y-3 pt-6">
+              {section.options.map((option, optionIdx) => (
+                <div
+                  key={`${section.id}-${option}-${optionIdx}`}
+                  className="flex items-center"
+                >
+                  <input
+                    id={`${option}`}
+                    name={`${option}`}
+                    value={option}
+                    type="checkbox"
+                    defaultChecked={query?.includes(option)}
+                    data-section={section.id}
+                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary/75"
+                  />
+                  <label
+                    htmlFor={`${option}`}
+                    className="ml-3 text-sm capitalize text-dark"
+                  >
+                    {option}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </fieldset>
+        </div>
+      ))}
+    </form>
+  )
+}
+const MobileFilter = () => {
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+
+  return (
+    <>
+      <button
+        type="button"
+        data-testid="mobile-filter-button"
+        className="-m-2 ml-4 p-2 text-secondary hover:text-secondary/75 sm:ml-6 lg:hidden"
+        onClick={() => setMobileFiltersOpen(true)}
+      >
+        <span className="sr-only">Filters</span>
+        <FunnelIcon className="h-5 w-5" aria-hidden="true" />
+      </button>
+      <Transition.Root show={mobileFiltersOpen} as={Fragment}>
+        <Dialog
+          className="relative z-40 lg:hidden"
+          onClose={setMobileFiltersOpen}
         >
-          <option value="">All</option>
-        </Select>
-      </div>
-      <div className="relative">
-        <label htmlFor="region" className={labelStyle}>
-          Region
-        </label>
-        <Select
-          id="region"
-          name="region"
-          options={Object.values(REGIONS_1800)}
-          defaultValue={query.region}
-          onChange={(e) =>
-            setQuery({ payload: e.target.value, type: 'region' })
-          }
-        >
-          <option value="">All</option>
-        </Select>
-      </div>
-      <div className="relative">
-        <label htmlFor="capital" className={labelStyle}>
-          Capital
-        </label>
-        <Select
-          id="capital"
-          name="capital"
-          options={Object.values(CAPITALS_1800)}
-          defaultValue={query.capital}
-          onChange={(e) =>
-            setQuery({ payload: e.target.value, type: 'capital' })
-          }
-        >
-          <option value="">All</option>
-        </Select>
+          <Transition.Child
+            as={Fragment}
+            enter="transition-opacity ease-linear duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity ease-linear duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 z-40 flex">
+            <Transition.Child
+              as={Fragment}
+              enter="transition ease-in-out duration-300 transform"
+              enterFrom="translate-x-full"
+              enterTo="translate-x-0"
+              leave="transition ease-in-out duration-300 transform"
+              leaveFrom="translate-x-0"
+              leaveTo="translate-x-full"
+            >
+              <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-default py-4 pb-6 shadow-xl">
+                <div className="flex items-center justify-between px-4">
+                  <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+                  <button
+                    type="button"
+                    data-testid="mobile-close-filter-button"
+                    className="-mr-2 flex h-10 w-10 items-center justify-center p-2 text-dark hover:text-dark/75"
+                    onClick={() => setMobileFiltersOpen(false)}
+                  >
+                    <span className="sr-only">Close menu</span>
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                  </button>
+                </div>
+
+                <FilterForm className="px-4 pt-6" />
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition.Root>
+    </>
+  )
+}
+const Filter = ({ children }: { children: React.ReactNode }) => {
+  const [query, setQuery] = useQueryParams()
+  const currentSortValue = new URLSearchParams(query).get('sort')
+
+  return (
+    <div>
+      <div className="flex items-baseline justify-between border-b border-gray-200 pb-6">
+        <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+          1800 Stamps
+        </h1>
+
+        <div className="flex items-center">
+          <div className="relative inline-block text-left md:ml-auto">
+            <label
+              htmlFor="sort"
+              className={
+                'absolute left-0 ml-2 -translate-y-2.5 bg-default px-1 text-sm capitalize'
+              }
+            >
+              Sort
+            </label>
+            <Select
+              id="sort"
+              name="sort"
+              options={sortOptions}
+              defaultValue={currentSortValue ?? undefined}
+              onChange={(e) =>
+                setQuery({
+                  payload: e.target.value,
+                  type: 'sort',
+                })
+              }
+            />
+          </div>
+
+          {/* <button
+            type="button"
+            className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
+          >
+            <span className="sr-only">View grid</span>
+            <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
+          </button> */}
+          <MobileFilter />
+        </div>
       </div>
 
-      <Switch.Group as="div" className="flex items-center space-x-2">
-        <Switch.Label as="span">
-          <span className="text-gray-900">Modded</span>{' '}
-        </Switch.Label>
-        <Switch
-          id="modded"
-          checked={isModded}
-          onChange={() =>
-            setQuery({
-              payload: isModded ? 'false' : 'true',
-              type: 'modded',
-            })
-          }
-          className={cn(
-            isModded ? 'bg-indigo-600' : 'bg-gray-200',
-            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2'
-          )}
-        >
-          <span
-            aria-hidden="true"
-            className={cn(
-              isModded ? 'translate-x-5' : 'translate-x-0',
-              'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out'
-            )}
-          />
-        </Switch>
-      </Switch.Group>
+      <section aria-labelledby="stamps-heading" className="pt-6">
+        <h2 id="stamps-heading" className="sr-only">
+          Stamps
+        </h2>
 
-      <div className="relative md:ml-auto">
-        <label htmlFor="sort" className={labelStyle}>
-          Sort
-        </label>
-        <Select
-          id="sort"
-          name="sort"
-          options={['newest', 'likes']}
-          defaultValue={query.sort}
-          onChange={(e) =>
-            setQuery({
-              payload: e.target.value,
-              type: 'sort',
-            })
-          }
-        >
-          <option value="">Downloads</option>
-        </Select>
-      </div>
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-6">
+          <FilterForm className="hidden lg:block" />
+
+          <div className="lg:col-span-5">{children}</div>
+        </div>
+      </section>
     </div>
   )
 }

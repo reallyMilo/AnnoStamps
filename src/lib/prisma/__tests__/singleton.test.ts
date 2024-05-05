@@ -1,28 +1,24 @@
 import { buildFilterWhereClause } from '../singleton'
 
 describe('buildFilterWhereClause', () => {
-  it('returns only modded false as default when no filter properties are provided', () => {
+  it('returns empty where clause when filter is empty', () => {
     const filter = {}
     const result = buildFilterWhereClause(filter)
     expect(result).toEqual({})
   })
 
-  it('builds a where clause with all filter properties', () => {
+  it('builds a where clause with all single string filter properties', () => {
     const filter = {
-      modded: 'true',
       capital: 'crown falls',
       region: 'new world',
       category: 'production',
-
       search: 'Cool stamp',
     }
     const result = buildFilterWhereClause(filter)
     expect(result).toEqual({
-      modded: true,
       capital: 'crown falls',
       region: 'new world',
       category: 'production',
-
       title: {
         search: 'Cool | stamp',
       },
@@ -32,15 +28,14 @@ describe('buildFilterWhereClause', () => {
     })
   })
 
-  it('ignores undefined properties in the filter', () => {
+  it('ignores undefined and empty string properties in the filter', () => {
     const filter = {
-      modded: 'true',
       region: undefined,
+      category: '',
       search: 'Test',
     }
     const result = buildFilterWhereClause(filter)
     expect(result).toEqual({
-      modded: true,
       title: {
         search: 'Test',
       },
@@ -50,15 +45,20 @@ describe('buildFilterWhereClause', () => {
     })
   })
 
-  it('handles empty string values correctly', () => {
+  it('builds a where clause with OR filter array', () => {
     const filter = {
-      modded: 'true',
-      region: '',
-      search: '',
+      category: ['production', 'cosmetic'],
     }
     const result = buildFilterWhereClause(filter)
     expect(result).toEqual({
-      modded: true,
+      OR: [
+        {
+          category: 'production',
+        },
+        {
+          category: 'cosmetic',
+        },
+      ],
     })
   })
 })

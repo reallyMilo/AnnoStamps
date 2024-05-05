@@ -11,7 +11,7 @@ import qs from 'qs'
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import Grid from '@/components/ui/Grid'
-import { REGIONS_1800 } from '@/lib/game/1800/data'
+import { REGIONS_1800 } from '@/lib/constants/1800/data'
 import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 const regionLinks = [

@@ -2,8 +2,9 @@ import { Prisma } from '@prisma/client'
 import { getUnixTime } from 'date-fns'
 import z from 'zod'
 
-import { CATEGORIES, REGIONS_1800 } from '@/lib/game/1800/data'
+import { REGIONS_1800 } from '@/lib/constants/1800/data'
 
+import { CATEGORIES } from '../constants'
 //Exception: you cannot mutate include or select because that would change the
 //expected output type and break type safety. Will have to keep exporting this
 //unfortunately or every statement call would have to be cast

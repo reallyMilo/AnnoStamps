@@ -27,10 +27,10 @@ type PaginationProps = {
 
 export const Pagination = ({ count, page }: PaginationProps) => {
   const [query, setQuery] = useQueryParams()
-  const { page: queryPage } = query
+  const queryPage = new URLSearchParams(query).get('page')
   useEffect(() => {
     if (page === 1 && Number(queryPage) !== 1 && queryPage) {
-      setQuery({ payload: 1, type: 'page' })
+      setQuery({ payload: '1', type: 'page' })
     }
   })
   const totalPageCount = Math.ceil(count / stampsPerPage)
@@ -39,14 +39,15 @@ export const Pagination = ({ count, page }: PaginationProps) => {
 
   const incrementPage = () => {
     if (page + 1 > totalPageCount) return
-    setQuery({ payload: page + 1, type: 'page' })
+
+    setQuery({ payload: (page + 1).toString(), type: 'page' })
   }
   const decrementPage = () => {
     if (page - 1 < 1) return
-    setQuery({ payload: page - 1, type: 'page' })
+    setQuery({ payload: (page - 1).toString(), type: 'page' })
   }
   const changePage = (e: React.MouseEvent<HTMLLIElement>) => {
-    const page = e.currentTarget.value
+    const page = e.currentTarget.value.toString()
 
     setQuery({ payload: page, type: 'page' })
   }
