@@ -26,10 +26,10 @@ type PaginationProps = {
 }
 
 export const Pagination = ({ count, page }: PaginationProps) => {
-  const [searchParams, setQuery] = useQueryParams()
-  const searchParamsPage = new URLSearchParams(searchParams).get('page')
+  const [query, setQuery] = useQueryParams()
+  const queryPage = new URLSearchParams(query).get('page')
   useEffect(() => {
-    if (page === 1 && Number(searchParamsPage) !== 1 && searchParamsPage) {
+    if (page === 1 && Number(queryPage) !== 1 && queryPage) {
       setQuery({ payload: '1', type: 'page' })
     }
   })

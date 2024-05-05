@@ -30,7 +30,7 @@ const filters = [
 }[]
 
 const FilterForm = ({ className }: { className: string }) => {
-  const [searchParams, setQuery] = useQueryParams()
+  const [query, setQuery] = useQueryParams()
 
   return (
     <form
@@ -62,7 +62,7 @@ const FilterForm = ({ className }: { className: string }) => {
                     name={`${option}`}
                     value={option}
                     type="checkbox"
-                    defaultChecked={searchParams?.includes(option)}
+                    defaultChecked={query?.includes(option)}
                     data-section={section.id}
                     className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary/75"
                   />
@@ -146,8 +146,8 @@ const MobileFilter = () => {
   )
 }
 const Filter = ({ children }: { children: React.ReactNode }) => {
-  const [searchParams, setQuery] = useQueryParams()
-  const currentSortValue = new URLSearchParams(searchParams).get('sort')
+  const [query, setQuery] = useQueryParams()
+  const currentSortValue = new URLSearchParams(query).get('sort')
 
   return (
     <div>

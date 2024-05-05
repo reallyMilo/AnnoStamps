@@ -35,10 +35,10 @@ const useQueryParams = (pathToQuery = '/stamps') => {
   const { asPath } = router
 
   const setQuery = ({ type, payload, isAddParam = true }: Action) => {
-    const searchParams = asPath.slice(pathToQuery.length)
+    const queryParams = asPath.slice(pathToQuery.length)
     const newQuery = isAddParam
-      ? `${searchParams}&${type}=${payload}`
-      : searchParams
+      ? `${queryParams}&${type}=${payload}`
+      : queryParams
     const parsedQuery = qs.parse(newQuery, {
       ignoreQueryPrefix: true,
       duplicates: 'combine',
@@ -74,8 +74,8 @@ const useQueryParams = (pathToQuery = '/stamps') => {
       query: queryString,
     })
   }
-  const searchParams = asPath.split('?')[1]
-  return [searchParams, setQuery] as const
+  const query = asPath.split('?')[1]
+  return [query, setQuery] as const
 }
 
 export { type QueryParams, queryParamsSchema, useQueryParams }
