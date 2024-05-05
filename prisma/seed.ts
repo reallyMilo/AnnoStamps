@@ -1,14 +1,14 @@
 import { createId } from '@paralleldrive/cuid2'
 import { PrismaClient, User } from '@prisma/client'
 
+import { CATEGORIES } from '../src/lib/constants'
 import {
   ARCTIC_GOODS,
-  CATEGORIES,
   ENBESA_GOODS,
   NEW_WORLD_GOODS,
   OLD_WORLD_GOODS,
   REGIONS_1800,
-} from '../src/lib/game/1800/data'
+} from '../src/lib/constants/1800/data'
 
 const prisma = new PrismaClient()
 

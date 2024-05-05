@@ -6,7 +6,7 @@ import {
   TagIcon,
 } from '@heroicons/react/24/solid'
 
-import { CATEGORIES } from '@/lib/game/1800/data'
+import { CATEGORIES } from '@/lib/constants'
 
 type CategoryInfo = {
   color: string
