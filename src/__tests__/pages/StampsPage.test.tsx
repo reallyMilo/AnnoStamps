@@ -11,7 +11,24 @@ const stamps = [
     user: {
       username: 'user100',
     },
-    images: [],
+    images: [
+      {
+        id: 'ythkadyhl34yt4dolibfgf9l',
+        originalUrl:
+          'https://placehold.co/2000x2000.png?text=Original2\\nythkadyhl34yt4dolibfgf9l',
+        thumbnailUrl:
+          'https://placehold.co/250x250.png?text=Thumbnail2\\nythkadyhl34yt4dolibfgf9l',
+        smallUrl:
+          'https://placehold.co/500x281.png?text=Small2\\nythkadyhl34yt4dolibfgf9l',
+        mediumUrl:
+          'https://placehold.co/750x421.png?text=Medium2\\nythkadyhl34yt4dolibfgf9l',
+        largeUrl:
+          'https://placehold.co/1024x576.png?text=Large2\\nythkadyhl34yt4dolibfgf9l',
+        createdAt: 1713225895,
+        updatedAt: 1713225895,
+        stampId: 'clmsefb5m00ujk9xxenynap1z',
+      },
+    ],
   },
 ] as unknown as StampWithRelations[]
 
