@@ -36,7 +36,7 @@ const StampCard = ({
   const srcUrl = images[0]?.smallUrl ?? images[0].originalUrl
 
   return (
-    <div className="group relative rounded-lg bg-white shadow-md">
+    <div className="group relative flex flex-col rounded-lg bg-white shadow-md">
       <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200 group-hover:opacity-75 ">
         <Image
           src={srcUrl}
@@ -58,7 +58,7 @@ const StampCard = ({
         )}
       </div>
 
-      <div className="flex flex-col flex-nowrap gap-y-2 p-4">
+      <div className="flex h-full flex-col gap-y-2 p-4">
         <div className="flex items-baseline justify-between">
           <h4 id="stamp-region" className="text-sm capitalize text-accent">
             {region}
@@ -81,7 +81,7 @@ const StampCard = ({
           </Link>
         </h2>
 
-        {user?.username ? (
+        {user?.username && (
           <Link
             href={`/${user.usernameURL}`}
             className="z-10 flex h-11 w-fit items-center gap-1 text-slate-500 hover:text-sky-700"
@@ -90,11 +90,9 @@ const StampCard = ({
             <UserCircleIcon className="h-4 w-4" />
             {user.username}
           </Link>
-        ) : (
-          <span className="inline-block"></span>
         )}
 
-        <div className="flex justify-between">
+        <div className="mt-auto flex justify-between">
           <StampCategoryIcon category={category} />
           <div className="flex items-end">
             <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5 self-center" />
