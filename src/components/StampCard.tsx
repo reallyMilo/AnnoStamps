@@ -33,7 +33,7 @@ const StampCard = ({
   | 'user'
   | 'createdAt'
 >) => {
-  const srcUrl = images[0].smallUrl ?? images[0].originalUrl
+  const srcUrl = images[0]?.smallUrl ?? images[0].originalUrl
 
   return (
     <div className="group relative rounded-lg bg-white shadow-md">
