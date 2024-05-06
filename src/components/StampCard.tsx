@@ -17,7 +17,6 @@ const StampCard = ({
   category,
   region,
   modded,
-  imageUrl,
   downloads,
   images,
   user,
@@ -29,16 +28,12 @@ const StampCard = ({
   | 'category'
   | 'region'
   | 'modded'
-  | 'imageUrl'
   | 'downloads'
   | 'images'
   | 'user'
   | 'createdAt'
 >) => {
-  const srcUrl =
-    images.length === 0
-      ? imageUrl ?? 'https://placehold.co/250x250/png'
-      : images[0].smallUrl ?? images[0].originalUrl
+  const srcUrl = images[0].smallUrl ?? images[0].originalUrl
 
   return (
     <div className="group relative rounded-lg bg-white shadow-md">

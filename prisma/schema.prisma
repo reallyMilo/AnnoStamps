@@ -30,7 +30,6 @@ model Stamp {
   description  String
   category     String
   region       String
-  imageUrl     String?
   stampFileUrl String
   good         String?
   capital      String?
