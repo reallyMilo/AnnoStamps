@@ -81,7 +81,7 @@ const StampCard = ({
           </Link>
         </h2>
 
-        {user?.username && (
+        {user?.username ? (
           <Link
             href={`/${user.usernameURL}`}
             className="z-10 flex h-11 w-fit items-center gap-1 text-slate-500 hover:text-sky-700"
@@ -90,6 +90,8 @@ const StampCard = ({
             <UserCircleIcon className="h-4 w-4" />
             {user.username}
           </Link>
+        ) : (
+          <span className="h-11"></span>
         )}
 
         <div className="mt-auto flex justify-between">
