@@ -1,13 +1,13 @@
-describe('User can set username', () => {
+describe('Update user profile', () => {
   beforeEach(() => {
     cy.task('db:testUser')
-    cy.newUserSession('/user/account')
   })
   afterEach(() => {
     cy.task('db:removeTestUser')
   })
 
   it('user unable to submit if username input fails validation', () => {
+    cy.newUserSession('/user/account')
     cy.findByLabelText('Username').type('cypress tester')
     cy.findByText(
       'Only alphanumeric, dashes(-) and underscores(_) accepted.'
@@ -16,6 +16,7 @@ describe('User can set username', () => {
   })
 
   it('duplicate username error is displayed on already taken username', () => {
+    cy.newUserSession('/user/account')
     cy.intercept('PUT', '/api/user').as('setUsername')
 
     cy.findByLabelText('Username').type('user1')
@@ -25,7 +26,8 @@ describe('User can set username', () => {
     cy.findByText('username already taken.').should('be.visible')
   })
 
-  it('user can navigate to account settings and update username', () => {
+  it('user can set username', () => {
+    cy.newUserSession('/user/account')
     cy.intercept('PUT', '/api/user').as('setUsername')
 
     cy.intercept('/api/auth/session', {
@@ -63,5 +65,40 @@ describe('User can set username', () => {
     cy.findByText(
       'If you wish to change your username please contact us via the discord server.'
     ).should('exist')
+  })
+  it('user can update profile with username set', () => {
+    cy.usernameSession('/user/account')
+    cy.intercept('PUT', '/api/user').as('setBio')
+
+    cy.intercept('/api/auth/session', {
+      user: {
+        name: 'cypress-tester',
+        email: 'cypress@tester.com',
+        image: null,
+        username: 'cypressTester',
+        biography: 'cypress tester biography',
+      },
+      expires: '3000-01-01T00:00:00.000Z',
+      accessToken: 'abcdefghijklmnopqrst',
+    }).as('bioUpdated')
+
+    cy.findByLabelText('Username').invoke('val').should('equal', 'testSeedUser')
+    cy.findByLabelText('About').invoke('val').should('equal', '')
+
+    cy.findByLabelText('About').type('cypress tester biography')
+    cy.findByRole('button', { name: 'Save' }).click()
+
+    cy.wait('@setBio').its('response.statusCode').should('eq', 200)
+    cy.wait('@bioUpdated')
+    cy.database(`SELECT * FROM "User" WHERE username = 'testSeedUser';`).then(
+      (users) => {
+        const user = users[0]
+        cy.wrap(user).its('biography').should('eq', 'cypress tester biography')
+      }
+    )
+
+    cy.findByLabelText('About')
+      .invoke('val')
+      .should('equal', 'cypress tester biography')
   })
 })

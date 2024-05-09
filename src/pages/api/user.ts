@@ -42,7 +42,7 @@ export default async function usernameHandler(
       const { username, biography } = req.body
 
       const updateData = session.user.username
-        ? biography
+        ? { biography }
         : {
             username,
             usernameURL: username.toLowerCase(),
