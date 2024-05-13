@@ -9,10 +9,10 @@ describe('Update user profile', () => {
   it('user unable to submit if username input fails validation', () => {
     cy.newUserSession('/user/account')
     cy.findByLabelText('Username').type('cypress tester')
-    cy.findByText(
-      'Only alphanumeric, dashes(-) and underscores(_) accepted.'
-    ).should('be.visible')
-    cy.findByRole('button', { name: 'Save' }).should('be.disabled')
+    cy.findByRole('button', { name: 'Save' }).click()
+    cy.get('#username')
+      .invoke('prop', 'validationMessage')
+      .should('equal', 'Please match the format requested.')
   })
 
   it('duplicate username error is displayed on already taken username', () => {
