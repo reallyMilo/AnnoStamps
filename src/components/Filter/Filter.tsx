@@ -62,7 +62,7 @@ const FilterForm = ({ className }: { className: string }) => {
                     name={`${option}`}
                     value={option}
                     type="checkbox"
-                    defaultChecked={query?.includes(option)}
+                    defaultChecked={query?.includes(`${section.id}=${option}`)}
                     data-section={section.id}
                     className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary/75"
                   />
