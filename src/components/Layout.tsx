@@ -57,7 +57,7 @@ const Navbar = () => {
                 <Link
                   key={item.text}
                   href={item.href}
-                  className="rounded-md px-3 py-1 text-default transition hover:bg-primary hover:text-dark"
+                  className="rounded-md px-3 py-1 text-default transition hover:text-primary"
                 >
                   {item.text}
                 </Link>
@@ -87,7 +87,11 @@ const Footer = () => {
           />
         </Link>
         <div className="flex items-center space-x-5">
-          <a href="https://www.buymeacoffee.com/miloK" target="_blank">
+          <a
+            href="https://www.buymeacoffee.com/miloK"
+            className="hover:text-primary"
+            target="_blank"
+          >
             Support AnnoStamps
           </a>
           {socials.map((social) => (
@@ -100,6 +104,7 @@ const Footer = () => {
               <Image
                 src={social.src}
                 alt={social.name}
+                className="hover:opacity-75"
                 style={{
                   maxWidth: '100%',
                   height: '32px',
