@@ -93,7 +93,7 @@ devDependencies:
     version: 0.5.12(tailwindcss@3.4.3)
   '@testing-library/cypress':
     specifier: ^10.0.1
-    version: 10.0.1(cypress@13.2.0)
+    version: 10.0.1(cypress@13.9.0)
   '@testing-library/jest-dom':
     specifier: ^6.1.3
     version: 6.1.3(vitest@1.1.1)
@@ -137,8 +137,8 @@ devDependencies:
     specifier: link:@types/parralleldrive/cuid2
     version: link:@types/parralleldrive/cuid2
   cypress:
-    specifier: ^13.2.0
-    version: 13.2.0
+    specifier: ^13.9.0
+    version: 13.9.0
   eslint:
     specifier: ^8.57.0
     version: 8.57.0
@@ -3820,7 +3820,7 @@ packages:
       }
     dev: false
 
-  /@testing-library/cypress@10.0.1(cypress@13.2.0):
+  /@testing-library/cypress@10.0.1(cypress@13.9.0):
     resolution:
       {
         integrity: sha512-e8uswjTZIBhaIXjzEcrQQ8nHRWHgZH7XBxKuIWxZ/T7FxfWhCR48nFhUX5nfPizjVOKSThEfOSv67jquc1ASkw==,
@@ -3831,7 +3831,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.22.15
       '@testing-library/dom': 9.3.1
-      cypress: 13.2.0
+      cypress: 13.9.0
     dev: true
 
   /@testing-library/dom@10.1.0:
@@ -4053,13 +4053,6 @@ packages:
       }
     dependencies:
       '@types/node': 20.6.0
-    dev: true
-
-  /@types/node@18.17.15:
-    resolution:
-      {
-        integrity: sha512-2yrWpBk32tvV/JAd3HNHWuZn/VDN1P+72hWirHnvsvTGSqbANi+kSeuQR9yAHnbvaBvHDsoTdXV0Fe+iRtHLKA==,
-      }
     dev: true
 
   /@types/node@20.6.0:
@@ -5485,10 +5478,10 @@ packages:
       }
     dev: true
 
-  /cypress@13.2.0:
+  /cypress@13.9.0:
     resolution:
       {
-        integrity: sha512-AvDQxBydE771GTq0TR4ZUBvv9m9ffXuB/ueEtpDF/6gOcvFR96amgwSJP16Yhqw6VhmwqspT5nAGzoxxB+D89g==,
+        integrity: sha512-atNjmYfHsvTuCaxTxLZr9xGoHz53LLui3266WWxXJHY7+N6OdwJdg/feEa3T+buez9dmUXHT1izCOklqG82uCQ==,
       }
     engines: { node: ^16.0.0 || ^18.0.0 || >=20.0.0 }
     hasBin: true
@@ -5496,7 +5489,6 @@ packages:
     dependencies:
       '@cypress/request': 3.0.1
       '@cypress/xvfb': 1.2.4(supports-color@8.1.1)
-      '@types/node': 18.17.15
       '@types/sinonjs__fake-timers': 8.1.1
       '@types/sizzle': 2.3.3
       arch: 2.2.0
