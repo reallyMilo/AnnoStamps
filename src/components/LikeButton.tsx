@@ -1,59 +1,51 @@
 import { HandThumbUpIcon } from '@heroicons/react/24/solid'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
-import useSWRMutation from 'swr/mutation'
+import useSWR from 'swr'
 
-import { StampWithRelations } from '@/lib/prisma/queries'
+import { StampWithRelations, UserWithStamps } from '@/lib/prisma/queries'
 import { cn } from '@/lib/utils'
 
-type LikeButtonProps = Pick<StampWithRelations, 'likedBy' | 'id'>
+type LikeButtonProps = {
+  id: StampWithRelations['id']
+  initialLikes: number
+}
 
-const LikeButton = ({ id, likedBy }: LikeButtonProps) => {
+const LikeButton = ({ id, initialLikes }: LikeButtonProps) => {
   const router = useRouter()
-  const { data: session } = useSession()
-  const authUser = session?.user
-  const [isLiked, setIsLiked] = useState(false)
-
-  const { data: likeStamp, trigger } = useSWRMutation(
-    `/api/stamp/like/${id}`,
-    async (
-      url: string
-    ): Promise<{
-      message: string
-      ok: boolean
-      stamp?: StampWithRelations
-    }> => {
-      const res = await fetch(url, {
-        method: 'PUT',
-      })
-      const json = await res.json()
-      return json
-    }
+  const { status } = useSession()
+  const isUserAuth = status === 'authenticated'
+  const { data: userData, mutate } = useSWR<{
+    data?: UserWithStamps
+    message: string
+  }>(isUserAuth ? '/api/user' : null, (url) =>
+    fetch(url).then((res) => res.json())
   )
 
+  const isStampLiked =
+    userData?.data?.likedStamps.some((stamp) => stamp.id === id) ?? false
   const addLikeToStamp = async () => {
-    if (!authUser) {
+    if (!isUserAuth) {
       router.push({
         pathname: '/auth/signin',
         query: { callbackUrl: router.asPath },
       })
       return
     }
-
-    const { ok } = await trigger()
-    if (!ok) {
+    if (isStampLiked) {
+      //TODO: cant unlike until debouncing / rate limiting implemented
       return
     }
-    setIsLiked(true)
-  }
+    const res = await fetch(`/api/stamp/like/${id}`, {
+      method: 'PUT',
+    })
+    if (!res.ok) {
+      return
+    }
 
-  const isStampLiked = () => {
-    if (likedBy.length === 0 || !authUser) return false
-    if (likedBy.some((liked) => liked.id === authUser.id)) return true
-    return false
+    userData?.data?.likedStamps.push({ id })
+    mutate(userData)
   }
-
   return (
     <button
       data-testid="like-stamp"
@@ -62,9 +54,9 @@ const LikeButton = ({ id, likedBy }: LikeButtonProps) => {
     >
       <HandThumbUpIcon
         data-testid="like-icon"
-        className={cn('h-6 w-6', (isStampLiked() || isLiked) && 'text-primary')}
+        className={cn('size-6', isStampLiked && 'text-primary')}
       />
-      {likeStamp?.stamp ? likeStamp.stamp.likedBy.length : likedBy.length}
+      {isStampLiked ? initialLikes + 1 : initialLikes}
     </button>
   )
 }

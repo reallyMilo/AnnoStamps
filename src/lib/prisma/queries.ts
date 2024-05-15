@@ -133,6 +133,11 @@ export const stampExtensions = Prisma.defineExtension({
  * User
  * -----------------------------------------------------------------------------------------------*/
 export const userIncludeStatement = {
+  likedStamps: {
+    select: {
+      id: true,
+    },
+  },
   listedStamps: {
     include: {
       likedBy: true,
