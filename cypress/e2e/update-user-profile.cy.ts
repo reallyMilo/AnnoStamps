@@ -12,7 +12,10 @@ describe('Update user profile', () => {
     cy.findByRole('button', { name: 'Save' }).click()
     cy.get('#username')
       .invoke('prop', 'validationMessage')
-      .should('equal', 'Please match the format requested.')
+      .should(
+        'equal',
+        'Select a username containing only alphanumeric characters, dashes (-), and underscores (_).'
+      )
   })
 
   it('duplicate username error is displayed on already taken username', () => {

@@ -81,6 +81,11 @@ const Account = () => {
               className="block w-full flex-1 rounded-r-md border-0 py-1.5 text-dark shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600  invalid:focus:ring-accent sm:text-sm sm:leading-6"
               defaultValue={username ?? ''}
               readOnly={username ? true : false}
+              onInvalid={(e) =>
+                e.currentTarget.setCustomValidity(
+                  'Select a username containing only alphanumeric characters, dashes (-), and underscores (_).'
+                )
+              }
               pattern={`^[a-zA-Z0-9_\\-]+$`}
               title="Select a username containing only alphanumeric characters, dashes (-), and underscores (_)."
               required
