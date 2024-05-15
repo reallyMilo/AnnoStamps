@@ -70,7 +70,7 @@
     "@vitest/ui": "^1.1.1",
     "autoprefixer": "^10.4.15",
     "cuid2": "link:@types/parralleldrive/cuid2",
-    "cypress": "^13.2.0",
+    "cypress": "^13.9.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.2",
     "eslint-plugin-jsonc": "^2.15.1",
