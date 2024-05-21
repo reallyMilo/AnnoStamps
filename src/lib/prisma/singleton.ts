@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 
+import { STAMPS_PER_PAGE } from '../constants'
 import { QueryParams } from '../hooks/useQueryParams'
-import { stampsPerPage } from '../utils'
 import {
   imageExtension,
   stampExtensions,
@@ -28,7 +28,7 @@ const prismaClientSingleton = () => {
               const count = await q.stamp.count({
                 where: buildFilterWhereClause(filter),
               })
-              let skip = (pageNumber - 1) * stampsPerPage
+              let skip = (pageNumber - 1) * STAMPS_PER_PAGE
               if (skip > count) {
                 skip = 0
                 pageNumber = 1
@@ -39,7 +39,7 @@ const prismaClientSingleton = () => {
                 where: buildFilterWhereClause(filter),
                 orderBy: buildOrderByClause(sort),
                 skip,
-                take: stampsPerPage,
+                take: STAMPS_PER_PAGE,
               })
 
               return [count, stamps, pageNumber]

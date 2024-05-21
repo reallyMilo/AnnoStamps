@@ -1,8 +1,9 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { useEffect } from 'react'
 
+import { STAMPS_PER_PAGE } from '@/lib/constants'
 import { useQueryParams } from '@/lib/hooks/useQueryParams'
-import { cn, stampsPerPage } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 
 const generatePageNumbers = (totalPageCount: number, currentPage: number) => {
   const presetMaxPageList = 20
@@ -33,7 +34,7 @@ export const Pagination = ({ count, page }: PaginationProps) => {
       setQuery({ payload: '1', type: 'page' })
     }
   })
-  const totalPageCount = Math.ceil(count / stampsPerPage)
+  const totalPageCount = Math.ceil(count / STAMPS_PER_PAGE)
 
   const pageNumbers = generatePageNumbers(totalPageCount, page)
 
@@ -51,8 +52,8 @@ export const Pagination = ({ count, page }: PaginationProps) => {
 
     setQuery({ payload: page, type: 'page' })
   }
-  const starting = (page - 1) * stampsPerPage + 1
-  const ending = Math.min(starting + stampsPerPage - 1, count)
+  const starting = (page - 1) * STAMPS_PER_PAGE + 1
+  const ending = Math.min(starting + STAMPS_PER_PAGE - 1, count)
 
   return (
     <div className="mt-6 flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
