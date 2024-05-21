@@ -1,4 +1,4 @@
-import { render, screen } from '../../__tests__/test-utils'
+import { render, screen } from '@/__tests__/test-utils'
 import { Pagination } from '../Pagination'
 
 describe('Pagination', () => {
