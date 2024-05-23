@@ -4,40 +4,30 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@heroicons/react/20/solid'
-import type {
-  GetStaticPaths,
-  GetStaticProps,
-  InferGetStaticPropsType,
-} from 'next'
+import type { InferGetStaticPropsType } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
 import { Fragment, useState } from 'react'
 
 import StampCard from '@/components/StampCard'
 import Container from '@/components/ui/Container'
 import Grid from '@/components/ui/Grid'
-import { userIncludeStatement, UserWithStamps } from '@/lib/prisma/queries'
-import prisma from '@/lib/prisma/singleton'
+
+import { UserBanner } from '../../../components/UserBanner'
+import { type getStaticProps } from './users-view.getStaticProps'
+
 /**
- * TODO: username page
+ * TODO: Stamp controls on Home-view
  *  Add Dropdown that floats inside of stamp with 3 vertical dots
  *  edit stamp + delete stamp should appear in a drop down
  */
-const UserBanner = ({ user, stats }: UsernamePageProps) => {
-  return (
-    <div className="mb-4 flex flex-col gap-y-2 border-b-2 pb-10">
-      <div className="flex space-x-4 ">
-        <h1 className="text-3xl">{user.username}</h1>
-        <span className="self-end">{stats.downloads} Downloads</span>
-        <span className="self-end">{stats.likes} Likes</span>
-      </div>
-      <p className="text-sm">{user?.biography}</p>
-    </div>
-  )
-}
 
-const StampDeleteModal = ({ id, title }: UserWithStamps['listedStamps'][0]) => {
+const StampDeleteModal = ({
+  id,
+  title,
+}: InferGetStaticPropsType<
+  typeof getStaticProps
+>['user']['listedStamps'][0]) => {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -124,18 +114,11 @@ const StampDeleteModal = ({ id, title }: UserWithStamps['listedStamps'][0]) => {
   )
 }
 
-type UsernamePageProps = {
-  stats: { downloads: number; likes: number }
-  user: UserWithStamps
-}
-const UsernamePage = ({
+const UserHomePage = ({
   user,
   stats,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { data: session } = useSession()
-  const isStampOwner = user.id === session?.user.id
-
-  if (user.listedStamps.length === 0 && isStampOwner) {
+  if (user.listedStamps.length === 0) {
     return (
       <Container>
         <UserBanner user={user} stats={stats} />
@@ -175,93 +158,29 @@ const UsernamePage = ({
     )
   }
 
-  if (user.listedStamps.length === 0) {
-    return (
-      <Container>
-        <UserBanner user={user} stats={stats} />
-        <p>User has no stamps</p>
-      </Container>
-    )
-  }
-
   return (
     <Container>
       <UserBanner user={user} stats={stats} />
 
       <Grid>
-        {user.listedStamps.map((stamp) => {
-          if (isStampOwner) {
-            return (
-              <div key={stamp.id} className="flex flex-col">
-                <div className="mb-1 flex">
-                  <StampDeleteModal {...stamp} />
+        {user.listedStamps.map((stamp) => (
+          <div key={stamp.id} className="flex flex-col">
+            <div className="mb-1 flex">
+              <StampDeleteModal {...stamp} />
 
-                  <Link
-                    className="mb-1 ml-auto flex rounded-md bg-primary px-4 py-2 text-sm font-bold text-dark transition hover:bg-accent focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
-                    href={{
-                      pathname: `/user/[stamp]`,
-                      query: { stamp: stamp.id },
-                    }}
-                  >
-                    <PencilSquareIcon className="mr-2 h-5 w-5" /> Edit Stamp{' '}
-                  </Link>
-                </div>
-                <StampCard user={user} {...stamp} />
-              </div>
-            )
-          }
-
-          return <StampCard key={stamp.id} user={user} {...stamp} />
-        })}
+              <Link
+                className="mb-1 ml-auto flex rounded-md bg-primary px-4 py-2 text-sm font-bold text-dark transition hover:bg-accent focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
+                href={`/user/${stamp.id}`}
+              >
+                <PencilSquareIcon className="mr-2 h-5 w-5" /> Edit Stamp{' '}
+              </Link>
+            </div>
+            <StampCard user={user} {...stamp} />
+          </div>
+        ))}
       </Grid>
     </Container>
   )
 }
 
-export default UsernamePage
-
-export const getStaticPaths = (() => {
-  return {
-    paths: [], // add content creators here to generate path at build time
-    fallback: 'blocking',
-  }
-}) satisfies GetStaticPaths
-
-export const getStaticProps = (async ({ params }) => {
-  if (typeof params?.username !== 'string') {
-    return {
-      notFound: true,
-    }
-  }
-
-  const user = await prisma.user.findUnique({
-    include: userIncludeStatement,
-    where: { usernameURL: params.username.toLowerCase() },
-  })
-
-  if (!user) {
-    return {
-      notFound: true,
-    }
-  }
-
-  const stats = user.listedStamps.reduce(
-    (acc, curr) => {
-      return {
-        downloads: acc.downloads + curr.downloads,
-        likes: acc.likes + curr.likedBy.length,
-      }
-    },
-    {
-      downloads: 0,
-      likes: 0,
-    }
-  )
-  return {
-    props: {
-      user,
-      stats,
-    },
-    revalidate: 86400, // update stats daily
-  }
-}) satisfies GetStaticProps<UsernamePageProps>
+export default UserHomePage

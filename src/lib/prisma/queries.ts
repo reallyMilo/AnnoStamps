@@ -140,7 +140,11 @@ export const userIncludeStatement = {
   },
   listedStamps: {
     include: {
-      likedBy: true,
+      _count: {
+        select: {
+          likedBy: true,
+        },
+      },
       images: true,
     },
   },
@@ -151,9 +155,14 @@ export interface UserWithStamps
     Prisma.UserGetPayload<{
       include: typeof userIncludeStatement
     }>,
-    'listedStamps'
+    'listedStamps' | 'name' | 'email' | 'emailVerified'
   > {
-  listedStamps: Omit<StampWithRelations, 'user'>[]
+  email: null
+  emailVerified: null
+  listedStamps: (Omit<StampWithRelations, 'user' | 'likedBy'> & {
+    _count: { likedBy: number }
+  })[]
+  name: null
 }
 
 const userProfileSchema = z
