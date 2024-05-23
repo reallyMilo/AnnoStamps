@@ -74,7 +74,7 @@ export default async function localHandler(
 
   const base64Image = req.body.split('base64,')?.[1]
   const buffer = Buffer.from(base64Image, 'base64')
-  const name = fileType === 'zip' ? createId() + '.zip' : createId() + filename
+  const name = fileType === 'zip' ? createId() + '.zip' : filename
   const filepath = `public/tmp/${stampId}/${name}`
   outputFileSync(filepath, buffer)
   if (fileType !== 'zip') {
