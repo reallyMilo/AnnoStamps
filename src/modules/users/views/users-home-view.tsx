@@ -170,10 +170,7 @@ const UserHomePage = ({
 
               <Link
                 className="mb-1 ml-auto flex rounded-md bg-primary px-4 py-2 text-sm font-bold text-dark transition hover:bg-accent focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
-                href={{
-                  pathname: `/user/[stamp]`,
-                  query: { stamp: stamp.id },
-                }}
+                href={`/user/${stamp.id}`}
               >
                 <PencilSquareIcon className="mr-2 h-5 w-5" /> Edit Stamp{' '}
               </Link>

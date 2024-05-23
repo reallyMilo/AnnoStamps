@@ -1,4 +1,4 @@
-import UsernamePage from '@/pages/[username]'
+import Page from '@/pages/[user]'
 
 import { render, screen } from '../test-utils'
 
@@ -15,6 +15,7 @@ const userStamps = {
   username: 'user100',
   usernameURL: 'user100',
   biography: 'user100 amazing stamp creator',
+  likedStamps: [],
   listedStamps: [
     {
       id: 'lvlo7zgws578mznet2owlon0',
@@ -34,7 +35,7 @@ const userStamps = {
       updatedAt: 1713225892,
       modded: false,
       downloads: 99,
-      likedBy: [],
+      _count: { likedBy: 2 },
       images: [
         {
           id: 'dhxl6xoa9rdz7dspjv7m5wnu',
@@ -57,9 +58,9 @@ const userStamps = {
   ],
 }
 
-describe('UsernamePage', () => {
-  it('renders and all provided fields', () => {
-    render(<UsernamePage user={userStamps} stats={stats} />)
+describe('UserPage', () => {
+  it('renders public user view with stamps', () => {
+    render(<Page user={userStamps} stats={stats} />)
 
     expect(screen.getByRole('heading', { name: 'user100' })).toBeInTheDocument()
     expect(
@@ -70,16 +71,14 @@ describe('UsernamePage', () => {
     ).toBeInTheDocument()
   })
 
-  it('displays that user has no stamps', () => {
-    userStamps.listedStamps = []
-    render(<UsernamePage user={userStamps} stats={stats} />)
+  it('renders public user view without stamps', () => {
+    render(<Page user={{ ...userStamps, listedStamps: [] }} stats={stats} />)
 
     expect(screen.getByText('user100')).toBeInTheDocument()
     expect(screen.getByText('User has no stamps')).toBeInTheDocument()
   })
-  it('displays empty state for user visiting own page without stamps', () => {
-    userStamps.listedStamps = []
-    render(<UsernamePage user={userStamps} stats={stats} />, {
+  it('renders empty state for user home view without stamps', () => {
+    render(<Page user={{ ...userStamps, listedStamps: [] }} stats={stats} />, {
       expires: new Date(Date.now() + 2 * 86400).toISOString(),
       user: userStamps,
     })
@@ -90,6 +89,18 @@ describe('UsernamePage', () => {
     expect(screen.getByRole('link', { name: 'New Stamp' })).toHaveAttribute(
       'href',
       '/user/create'
+    )
+  })
+  it('renders stamps with edit stamp options for user home view', () => {
+    render(<Page user={userStamps} stats={stats} />, {
+      expires: new Date(Date.now() + 2 * 86400).toISOString(),
+      user: userStamps,
+    })
+
+    expect(screen.getByTestId('delete-stamp')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Edit Stamp' })).toHaveAttribute(
+      'href',
+      '/user/lvlo7zgws578mznet2owlon0'
     )
   })
 })
