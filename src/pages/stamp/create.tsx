@@ -29,6 +29,7 @@ const CreateStampPage = () => {
     return res
   }
 
+  //TODO: Page Wrapper that checks auth + set username for all routes that require auth and username set
   if (!session.data?.user.username) {
     return (
       <Container>
@@ -43,7 +44,7 @@ const CreateStampPage = () => {
             <p className="text-sm text-yellow-700">
               This account currently does not have a username set.{' '}
               <Link
-                href="/user/account"
+                href={`/${session.data?.user.id}/settings`}
                 className="font-medium text-yellow-700 underline hover:text-yellow-600"
               >
                 Please set your username.

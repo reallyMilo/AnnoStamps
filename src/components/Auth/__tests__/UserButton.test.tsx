@@ -20,18 +20,18 @@ describe('UserButton', () => {
     await act(async () => await userEvent.click(button))
     expect(
       screen.getByRole('link', { name: 'Please set username!' })
-    ).toHaveAttribute('href', '/user/account')
+    ).toHaveAttribute('href', '/1/settings')
     expect(screen.getByRole('link', { name: 'My Account' })).toHaveAttribute(
       'href',
-      '/user/account'
+      '/1/settings'
     )
     expect(screen.getByRole('link', { name: 'My stamps' })).toHaveAttribute(
       'href',
-      '/user/account'
+      '/1'
     )
     expect(screen.getByRole('link', { name: 'Add new stamp' })).toHaveAttribute(
       'href',
-      '/user/create'
+      '/stamp/create'
     )
     expect(screen.getByRole('button', { name: 'Logout' })).toBeInTheDocument()
   })

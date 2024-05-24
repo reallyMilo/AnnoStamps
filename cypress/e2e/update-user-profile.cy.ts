@@ -7,7 +7,7 @@ describe('Update user profile', () => {
   })
 
   it('user unable to submit if username input fails validation', () => {
-    cy.newUserSession('/user/account')
+    cy.newUserSession('/testSeedUserId/settings')
     cy.findByLabelText('Username').type('cypress tester')
     cy.findByRole('button', { name: 'Save' }).click()
     cy.get('#username')
@@ -19,7 +19,7 @@ describe('Update user profile', () => {
   })
 
   it('duplicate username error is displayed on already taken username', () => {
-    cy.newUserSession('/user/account')
+    cy.newUserSession('/testSeedUserId/settings')
     cy.intercept('PUT', '/api/user').as('setUsername')
 
     cy.findByLabelText('Username').type('user1')
@@ -30,7 +30,7 @@ describe('Update user profile', () => {
   })
 
   it('user can set username', () => {
-    cy.newUserSession('/user/account')
+    cy.newUserSession('/testSeedUserId/settings')
     cy.intercept('PUT', '/api/user').as('setUsername')
 
     cy.intercept('/api/auth/session', {
@@ -70,7 +70,7 @@ describe('Update user profile', () => {
     ).should('exist')
   })
   it('user can update profile with username set', () => {
-    cy.usernameSession('/user/account')
+    cy.usernameSession('/testSeedUserId/settings')
     cy.intercept('PUT', '/api/user').as('setBio')
 
     cy.intercept('/api/auth/session', {

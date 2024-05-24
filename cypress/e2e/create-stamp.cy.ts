@@ -7,18 +7,18 @@ describe('Stamp creation', () => {
   })
 
   it('displays alert to set username with link if username not set', () => {
-    cy.newUserSession('/user/create')
+    cy.newUserSession('/stamp/create')
 
     cy.findByRole('link', { name: 'Please set your username.' }).should(
       'have.attr',
       'href',
-      '/user/account'
+      '/testSeedUserId/settings'
     )
     cy.findByLabelText('Add Images').should('not.exist')
   })
 
   it('user cannot submit a stamp without all fields being filled', () => {
-    cy.usernameSession('/user/create')
+    cy.usernameSession('/stamp/create')
     cy.findByText('Submit Stamp').click()
 
     cy.getBySel('stamp-form').within(() => {
@@ -80,7 +80,7 @@ describe('Stamp creation', () => {
       })
     }).as('uploadAsset')
 
-    cy.intercept('PUT', '/user/presigned*', (req) => {
+    cy.intercept('PUT', '/stamp/presigned*', (req) => {
       const fileType = req.url
         .split('&')
         .find((param) => param.includes('fileType='))
@@ -94,7 +94,7 @@ describe('Stamp creation', () => {
       })
     }).as('S3Put')
 
-    cy.usernameSession('/user/create')
+    cy.usernameSession('/stamp/create')
 
     cy.findByLabelText('Add Images').selectFile(
       'cypress/fixtures/cypress-test-image.png',

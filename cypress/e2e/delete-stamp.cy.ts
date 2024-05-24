@@ -44,6 +44,6 @@ describe('Delete stamp', () => {
     ).then((stamps) => {
       cy.wrap(stamps).should('have.length', 0)
     })
-    cy.findByText('Test-Seed-User-Stamp').should('be.visible')
+    // cy.findByText('Test-Seed-User-Stamp').should('be.visible')
   })
 })

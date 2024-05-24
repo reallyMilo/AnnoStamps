@@ -13,12 +13,12 @@ import GoogleProvider from 'next-auth/providers/google'
 import prisma from '@/lib/prisma/singleton'
 
 import { sendWelcomeEmail } from './email'
-
+//TODO:initial user setup page shares pages/[user]/settings view
 export const config = {
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/auth/signin',
-    newUser: '/user/account',
+    newUser: '/',
     signOut: '/',
     error: '/auth/error',
     verifyRequest: '/',

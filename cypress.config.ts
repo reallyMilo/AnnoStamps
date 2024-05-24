@@ -19,7 +19,12 @@ export default defineConfig({
         async 'db:removeTestUser'() {
           await prisma.image.deleteMany({
             where: {
-              thumbnailUrl: null,
+              OR: [
+                {
+                  stampId: 'testSeedUserStampId',
+                },
+                { id: 'anno-stamps-logo' },
+              ],
             },
           })
 

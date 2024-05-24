@@ -22,7 +22,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     typeof query.callbackUrl === 'string' &&
     query.callbackUrl?.startsWith('/stamp/')
       ? query.callbackUrl
-      : '/user/stamps'
+      : '/'
 
   return {
     props: {

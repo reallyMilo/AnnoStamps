@@ -88,7 +88,7 @@ describe('UserPage', () => {
     ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'New Stamp' })).toHaveAttribute(
       'href',
-      '/user/create'
+      '/stamp/create'
     )
   })
   it('renders stamps with edit stamp options for user home view', () => {
@@ -100,7 +100,7 @@ describe('UserPage', () => {
     expect(screen.getByTestId('delete-stamp')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Edit Stamp' })).toHaveAttribute(
       'href',
-      '/user/lvlo7zgws578mznet2owlon0'
+      '/stamp/update/lvlo7zgws578mznet2owlon0'
     )
   })
 })
