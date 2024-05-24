@@ -80,7 +80,7 @@ describe('Stamp creation', () => {
       })
     }).as('uploadAsset')
 
-    cy.intercept('PUT', '/user/presigned*', (req) => {
+    cy.intercept('PUT', '/stamp/presigned*', (req) => {
       const fileType = req.url
         .split('&')
         .find((param) => param.includes('fileType='))

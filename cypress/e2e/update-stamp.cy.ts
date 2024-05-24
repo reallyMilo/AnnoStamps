@@ -74,7 +74,7 @@ describe('Updating Stamp', () => {
         path: '/stamp.zip',
       },
     }).as('uploadAsset')
-    cy.intercept('PUT', '/user/presigned*', {
+    cy.intercept('PUT', '/stamp/update/presigned*', {
       statusCode: 200,
       body: '/stamp.zip',
     }).as('S3Put')
