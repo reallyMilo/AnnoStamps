@@ -5,7 +5,34 @@ describe('Updating Stamp', () => {
   afterEach(() => {
     cy.task('db:removeTestUser')
   })
+  it('unauthorized user redirected to signin page', () => {
+    cy.visit('/stamp/update/clll7fyxp002sem82uejwfey5')
+    cy.url().should('include', '/auth/signin')
+  })
+  it('user trying to edit another stamp is denied', () => {
+    cy.usernameSession('/stamps')
+    cy.getBySel('stamp-card-link')
+      .first()
+      .invoke('attr', 'href')
+      .should('be.a', 'string')
+      .invoke('split', '/')
+      .its(2)
+      .then((id) => {
+        cy.visit(`/stamp/update/${id}`)
+        cy.findByText('not your stamp').should('be.visible')
+        cy.findByRole('button', { name: 'Update Stamp' }).should('not.exist')
+      })
+  })
 
+  it('displays alert to set username with link if username not set', () => {
+    cy.newUserSession('/stamp/update/clll7fyxp002sem82uejwfey5')
+    cy.findByRole('link', { name: 'Please set your username.' }).should(
+      'have.attr',
+      'href',
+      '/testSeedUserId/settings'
+    )
+    cy.findByLabelText('Add Images').should('not.exist')
+  })
   it('all fields populated with default values', () => {
     cy.intercept('GET', '/api/user', {
       fixture: 'userStamps.json',
@@ -13,7 +40,7 @@ describe('Updating Stamp', () => {
     cy.intercept('GET', '/api/get-stamp', {
       fixture: 'test-stamp.zip',
     }).as('getStampZip')
-    cy.usernameSession('/user/clll7fyxp002sem82uejwfey5')
+    cy.usernameSession('/stamp/update/clll7fyxp002sem82uejwfey5')
 
     cy.wait(['@getUser', '@getStampZip'])
 
@@ -52,7 +79,7 @@ describe('Updating Stamp', () => {
       body: '/stamp.zip',
     }).as('S3Put')
     //FIXME: Need to revalidate the path for [username]
-    cy.usernameSession('/user/testSeedUserStampId')
+    cy.usernameSession('/stamp/update/testSeedUserStampId')
 
     cy.wait('@getStampZip')
     cy.findByText('Edit your stamp').should('be.visible')

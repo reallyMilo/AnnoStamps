@@ -56,8 +56,8 @@ const EditStampPage = () => {
     if (!userStamps) {
       return undefined
     }
-    return userStamps.listedStamps.find((stamp) => stamp.id === query.stamp)
-  }, [userStamps, query.stamp])
+    return userStamps.listedStamps.find((stamp) => stamp.id === query.id)
+  }, [userStamps, query.id])
 
   const { data: stampZip, isLoading: isStampLoading } = useSWR(
     stamp ? stamp.stampFileUrl : null,
@@ -107,6 +107,7 @@ const EditStampPage = () => {
       </Container>
     )
   }
+  //TODO: Page Wrapper that checks auth + set username for all routes that require auth and username set
 
   if (!session?.user.username) {
     return (
@@ -122,7 +123,7 @@ const EditStampPage = () => {
             <p className="text-sm text-yellow-700">
               This account currently does not have a username set.{' '}
               <Link
-                href="/user/account"
+                href={`/${session?.user.id}/settings`}
                 className="font-medium text-yellow-700 underline hover:text-yellow-600"
               >
                 Please set your username.
