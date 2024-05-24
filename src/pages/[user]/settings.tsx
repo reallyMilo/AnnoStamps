@@ -5,7 +5,7 @@ import { useState } from 'react'
 import Container from '@/components/ui/Container'
 
 const labelStyle = 'block text-base font-semibold leading-6 text-dark mt-8'
-const Account = () => {
+const UserSettingsPage = () => {
   const router = useRouter()
   const { data: session } = useSession({
     required: true,
@@ -118,4 +118,4 @@ const Account = () => {
     </Container>
   )
 }
-export default Account
+export default UserSettingsPage
