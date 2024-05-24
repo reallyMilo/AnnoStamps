@@ -17,9 +17,9 @@ import { UserBanner } from '../../../components/UserBanner'
 import { type getStaticProps } from './users-view.getStaticProps'
 
 /**
- * TODO: Stamp controls on Home-view
- *  Add Dropdown that floats inside of stamp with 3 vertical dots
- *  edit stamp + delete stamp should appear in a drop down
+ * TODO: home-view additions
+ *  1. Dropdown with 3 vertical dots for stamp options (edit / delete)
+ *  2. Customize button that goes to /settings
  */
 
 const StampDeleteModal = ({
@@ -146,7 +146,7 @@ const UserHomePage = ({
           </p>
           <div className="mt-6">
             <Link
-              href={'/user/create'}
+              href={'/stamp/create'}
               className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-primary/75"
             >
               <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
@@ -170,7 +170,7 @@ const UserHomePage = ({
 
               <Link
                 className="mb-1 ml-auto flex rounded-md bg-primary px-4 py-2 text-sm font-bold text-dark transition hover:bg-accent focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
-                href={`/user/${stamp.id}`}
+                href={`/stamp/update/${stamp.id}`}
               >
                 <PencilSquareIcon className="mr-2 h-5 w-5" /> Edit Stamp{' '}
               </Link>

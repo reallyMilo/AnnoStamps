@@ -39,23 +39,23 @@ const UserMenu = () => {
     Session['user']
   >
 
-  const usernamePath = usernameURL ? `/${usernameURL}` : '/user/account'
+  const userPath = usernameURL ? `/${usernameURL}` : `/${session?.user.id}`
 
   const menuItems = [
     {
       label: 'My Account',
       icon: UserIcon,
-      href: '/user/account',
+      href: `${userPath}/settings`,
     },
     {
       label: 'My stamps',
       icon: HomeIcon,
-      href: usernamePath,
+      href: userPath,
     },
     {
       label: 'Add new stamp',
       icon: PlusIcon,
-      href: '/user/create',
+      href: '/stamp/create',
     },
   ]
 
@@ -83,14 +83,19 @@ const UserMenu = () => {
             <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
               <Avatar src={image} />
             </div>
-
-            <Link
-              href={usernamePath}
-              className={cn(username ? '' : 'text-blue-500 underline')}
-              role="link"
-            >
-              {username ? username : 'Please set username!'}
-            </Link>
+            {username ? (
+              <Link href={`${userPath}`} role="link">
+                {username}
+              </Link>
+            ) : (
+              <Link
+                href={`${userPath}/settings`}
+                className={cn('text-blue-500 underline')}
+                role="link"
+              >
+                Please set username!
+              </Link>
+            )}
           </div>
 
           <div className="py-2">
