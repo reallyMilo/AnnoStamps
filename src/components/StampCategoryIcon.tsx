@@ -18,11 +18,11 @@ type CategoryValues = (typeof CATEGORIES)[keyof typeof CATEGORIES]
 const categoryMap: Record<CategoryValues, CategoryInfo> = {
   housing: {
     icon: <HomeIcon className="h-5 w-5" />,
-    color: 'bg-secondary text-dark',
+    color: 'bg-secondary text-midnight',
   },
   production: {
     icon: <CogIcon className="h-5 w-5" />,
-    color: 'bg-primary text-dark',
+    color: 'bg-primary text-midnight',
   },
   cosmetic: {
     icon: <SparklesIcon className="h-5 w-5" />,
@@ -30,7 +30,7 @@ const categoryMap: Record<CategoryValues, CategoryInfo> = {
   },
   island: {
     icon: <GlobeEuropeAfricaIcon className="h-5 w-5" />,
-    color: 'bg-dark text-default',
+    color: 'bg-midnight text-default',
   },
   general: {
     icon: <TagIcon className="h-5 w-5" />,
