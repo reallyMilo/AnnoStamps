@@ -27,7 +27,7 @@ const UserMenu = () => {
     return (
       <Link
         href="/auth/signin"
-        className="ml-4 rounded-md bg-primary px-4 py-2 text-sm font-bold text-dark transition hover:bg-accent hover:text-default focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
+        className="ml-4 rounded-md bg-primary px-4 py-2 text-sm font-bold text-midnight transition hover:bg-accent hover:text-default focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
       >
         Add Stamp
       </Link>

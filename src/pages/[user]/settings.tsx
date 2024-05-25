@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import Container from '@/components/ui/Container'
 
-const labelStyle = 'block text-base font-semibold leading-6 text-dark mt-8'
+const labelStyle = 'block text-base font-semibold leading-6 text-midnight mt-8'
 const UserSettingsPage = () => {
   const router = useRouter()
   const { data: session } = useSession({
@@ -51,7 +51,9 @@ const UserSettingsPage = () => {
       >
         <fieldset>
           <legend>
-            <h1 className="text-2xl font-bold leading-7 text-dark">Profile</h1>
+            <h1 className="text-2xl font-bold leading-7 text-midnight">
+              Profile
+            </h1>
           </legend>
           <label htmlFor="username" className={labelStyle}>
             Username
@@ -78,7 +80,7 @@ const UserSettingsPage = () => {
               type="text"
               name="username"
               id="username"
-              className="block w-full flex-1 rounded-r-md border-0 py-1.5 text-dark shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600  invalid:focus:ring-accent sm:text-sm sm:leading-6"
+              className="block w-full flex-1 rounded-r-md border-0 py-1.5 text-midnight shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600  invalid:focus:ring-accent sm:text-sm sm:leading-6"
               defaultValue={username ?? ''}
               readOnly={username ? true : false}
               onInvalid={(e) =>
@@ -100,7 +102,7 @@ const UserSettingsPage = () => {
             name="biography"
             rows={3}
             placeholder="To be displayed on your page banner."
-            className="mt-4 block w-full rounded-md border-0 py-1.5 font-normal text-dark shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className="mt-4 block w-full rounded-md border-0 py-1.5 font-normal text-midnight shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             defaultValue={session?.user.biography ?? ''}
           />
         </fieldset>
@@ -109,7 +111,7 @@ const UserSettingsPage = () => {
         )}
         <button
           type="submit"
-          className="justify-self-end rounded-md bg-secondary px-4 py-2 text-sm font-medium text-dark shadow-sm hover:bg-secondary/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+          className="justify-self-end rounded-md bg-secondary px-4 py-2 text-sm font-medium text-midnight shadow-sm hover:bg-secondary/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
           disabled={formState.status === 'sending'}
         >
           Save

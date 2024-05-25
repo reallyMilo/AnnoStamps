@@ -68,7 +68,7 @@ const FilterForm = ({ className }: { className: string }) => {
                   />
                   <label
                     htmlFor={`${option}`}
-                    className="ml-3 text-sm capitalize text-dark"
+                    className="ml-3 text-sm capitalize text-midnight"
                   >
                     {option}
                   </label>
@@ -128,7 +128,7 @@ const MobileFilter = () => {
                   <button
                     type="button"
                     data-testid="mobile-close-filter-button"
-                    className="-mr-2 flex h-10 w-10 items-center justify-center p-2 text-dark hover:text-dark/75"
+                    className="-mr-2 flex h-10 w-10 items-center justify-center p-2 text-midnight hover:text-midnight/75"
                     onClick={() => setMobileFiltersOpen(false)}
                   >
                     <span className="sr-only">Close menu</span>

@@ -19,7 +19,7 @@ const FileUpload = () => {
         <h2 className="py-1 font-bold"> Stamp File </h2>
         <label
           htmlFor="stamps"
-          className="rounded-md bg-secondary px-6 py-2 text-sm text-dark hover:bg-secondary/75 focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
+          className="rounded-md bg-secondary px-6 py-2 text-sm text-midnight hover:bg-secondary/75 focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
         >
           Add Stamps
           <input
