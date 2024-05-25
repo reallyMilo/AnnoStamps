@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import Container from '@/components/ui/Container'
+import { Container } from '@/components/ui'
 
 import stampButton from '../../public/stamp-button.jpg'
 import stampPage from '../../public/stamp-download.png'

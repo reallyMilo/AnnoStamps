@@ -9,7 +9,7 @@ import oldWorld from 'public/OldWorld.webp'
 import qs from 'qs'
 
 import StampCard from '@/components/StampCard'
-import Container from '@/components/ui/Container'
+import { Container, Heading } from '@/components/ui'
 import Grid from '@/components/ui/Grid'
 import { REGIONS_1800 } from '@/lib/constants/1800/data'
 import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
@@ -66,9 +66,7 @@ const HomePage = ({
         </Grid>
         <div className="space-y-4 pt-16">
           <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-              New Stamps
-            </h2>
+            <Heading>New Stamps</Heading>
             <Link
               href={'/stamps'}
               className="hidden text-sm font-semibold text-black hover:text-gray-700 sm:block"

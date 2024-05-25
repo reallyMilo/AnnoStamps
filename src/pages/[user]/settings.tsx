@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 
-import Container from '@/components/ui/Container'
+import { Container, Heading } from '@/components/ui'
 
 const labelStyle = 'block text-base font-semibold leading-6 text-midnight mt-8'
 const UserSettingsPage = () => {
@@ -51,9 +51,7 @@ const UserSettingsPage = () => {
       >
         <fieldset>
           <legend>
-            <h1 className="text-2xl font-bold leading-7 text-midnight">
-              Profile
-            </h1>
+            <Heading>Profile</Heading>
           </legend>
           <label htmlFor="username" className={labelStyle}>
             Username

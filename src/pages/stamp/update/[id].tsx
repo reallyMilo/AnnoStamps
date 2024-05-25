@@ -7,7 +7,7 @@ import { useMemo } from 'react'
 import useSWR from 'swr'
 
 import { StampForm } from '@/components/StampForm/StampForm'
-import Container from '@/components/ui/Container'
+import { Container, Heading } from '@/components/ui'
 import type { UserWithStamps } from '@/lib/prisma/queries'
 
 const useUserStamps = () => {
@@ -94,7 +94,7 @@ const EditStampPage = () => {
   if (error) {
     return (
       <Container>
-        <h1 className="text-xl font-bold text-gray-800">Your Stamps</h1>
+        <Heading>Error</Heading>
         <p>{error.info.message}</p>
       </Container>
     )
@@ -102,7 +102,9 @@ const EditStampPage = () => {
   if (isLoading || isStampLoading) {
     return (
       <Container>
-        <h1 className="text-xl font-bold text-gray-800">Your Stamps</h1>
+        <Heading className="text-xl font-bold text-gray-800">
+          Fetching Stamp
+        </Heading>
         <div className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200" />{' '}
       </Container>
     )

@@ -15,7 +15,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import LikeButton from '@/components/LikeButton'
 import StampCategoryIcon from '@/components/StampCategoryIcon'
-import Container from '@/components/ui/Container'
+import { Container, Heading } from '@/components/ui'
 import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 import { distanceUnixTimeToNow } from '@/lib/utils'
@@ -114,7 +114,7 @@ const StampPage = ({
     <Container className="max-w-5xl space-y-6 px-0">
       <Carousel images={images} />
       <div className="space-y-6 px-2 sm:px-0">
-        <h1 className="truncate text-2xl font-semibold">{title} </h1>
+        <Heading className="truncate">{title} </Heading>
 
         <div className="flex items-center space-x-5">
           {user.usernameURL && (

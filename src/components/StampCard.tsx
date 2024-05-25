@@ -6,6 +6,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { Heading } from '@/components/ui'
 import type { StampWithRelations } from '@/lib/prisma/queries'
 import { distanceUnixTimeToNow } from '@/lib/utils'
 
@@ -67,9 +68,10 @@ const StampCard = ({
             {distanceUnixTimeToNow(createdAt)}
           </div>
         </div>
-        <h2
+        <Heading
+          level={2}
           id="stamp-title"
-          className="line-clamp-2 min-h-[45px] w-full overflow-hidden text-ellipsis text-lg font-semibold leading-tight text-gray-700"
+          className="line-clamp-2 min-h-[45px] w-full overflow-hidden text-ellipsis"
         >
           <Link
             href={`/stamp/${id}`}
@@ -79,7 +81,7 @@ const StampCard = ({
             <span aria-hidden="true" className="absolute inset-0"></span>
             {title}
           </Link>
-        </h2>
+        </Heading>
 
         {user?.username ? (
           <Link

@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { getProviders, signIn } from 'next-auth/react'
 
 import { auth } from '@/auth'
-import Container from '@/components/ui/Container'
+import { Container, Heading } from '@/components/ui'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await auth(context.req, context.res)
@@ -52,7 +52,7 @@ const SignInPage = ({
         />
       </Link>
 
-      <h3 className="mt-6 text-center text-2xl font-bold">Welcome!</h3>
+      <Heading className="mt-6 text-center">Welcome!</Heading>
 
       <div className="mt-10 flex flex-col space-y-4 border">
         {providers &&

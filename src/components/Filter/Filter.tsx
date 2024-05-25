@@ -3,6 +3,7 @@ import { FunnelIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { Fragment, useState } from 'react'
 
+import { Heading, Subheading } from '@/components/ui'
 import { CATEGORIES, SORT_OPTIONS } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 import { type QueryParams, useQueryParams } from '@/lib/hooks/useQueryParams'
@@ -124,7 +125,7 @@ const MobileFilter = () => {
             >
               <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-default py-4 pb-6 shadow-xl">
                 <div className="flex items-center justify-between px-4">
-                  <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+                  <Subheading>Filters</Subheading>
                   <button
                     type="button"
                     data-testid="mobile-close-filter-button"
@@ -152,9 +153,7 @@ const Filter = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <div className="flex items-baseline justify-between border-b border-gray-200 pb-6">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-          1800 Stamps
-        </h1>
+        <Heading>1800 Stamps</Heading>
 
         <div className="flex items-center">
           <div className="relative inline-block text-left md:ml-auto">
@@ -192,9 +191,9 @@ const Filter = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       <section aria-labelledby="stamps-heading" className="pt-6">
-        <h2 id="stamps-heading" className="sr-only">
+        <Subheading id="stamps-heading" className="sr-only">
           Stamps
-        </h2>
+        </Subheading>
 
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-6">
           <FilterForm className="hidden lg:block" />

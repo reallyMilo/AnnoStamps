@@ -1,9 +1,9 @@
-import Container from '@/components/ui/Container'
+import { Container, Heading } from '@/components/ui'
 
 const Custom404 = () => {
   return (
     <Container className="flex flex-col justify-center gap-4">
-      <h1 className="text-center text-2xl">404 - Page not found</h1>
+      <Heading className="text-center text-4xl">404 - Page not found</Heading>
     </Container>
   )
 }

@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 import { Fragment, useState } from 'react'
 
 import StampCard from '@/components/StampCard'
-import Container from '@/components/ui/Container'
+import { Container, Subheading } from '@/components/ui'
 import Grid from '@/components/ui/Grid'
 
 import { UserBanner } from '../../../components/UserBanner'
@@ -138,9 +138,7 @@ const UserHomePage = ({
               d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
             />
           </svg>
-          <h3 className="mt-2 text-sm font-semibold text-gray-900">
-            No Stamps
-          </h3>
+          <Subheading level={3}>No Stamps</Subheading>
           <p className="mt-1 text-sm text-gray-500">
             Get started by creating a new stamp.
           </p>
