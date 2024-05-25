@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-import Container from '@/components/ui/Container'
+import { Container } from '@/components/ui'
 
 const error: Record<string, string> = {
   Configuration: 'There is a problem with the server configuration.',

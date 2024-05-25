@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import * as React from 'react'
 
+import { Heading } from '@/components/ui'
 import { Asset } from '@/lib/hooks/useUpload'
 import { UserWithStamps } from '@/lib/prisma/queries'
 import { upload } from '@/lib/upload'
@@ -58,10 +59,10 @@ type HeaderProps = {
 }
 const Header = ({ title, subTitle }: HeaderProps) => {
   return (
-    <>
-      <h1 className="text-xl font-medium text-gray-800">{title}</h1>
+    <div>
+      <Heading>{title}</Heading>
       <p className="text-gray-500">{subTitle}</p>
-    </>
+    </div>
   )
 }
 
