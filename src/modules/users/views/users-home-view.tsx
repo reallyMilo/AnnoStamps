@@ -10,8 +10,7 @@ import { useRouter } from 'next/router'
 import { Fragment, useState } from 'react'
 
 import StampCard from '@/components/StampCard'
-import { Container, Subheading } from '@/components/ui'
-import Grid from '@/components/ui/Grid'
+import { Container, Grid, Subheading } from '@/components/ui'
 
 import { UserBanner } from '../../../components/UserBanner'
 import { type getStaticProps } from './users-view.getStaticProps'

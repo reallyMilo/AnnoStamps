@@ -4,7 +4,7 @@ type GridProps = {
   children: React.ReactNode
   className?: string
 }
-const Grid = ({ children, className }: GridProps) => {
+export const Grid = ({ children, className }: GridProps) => {
   return (
     <div
       className={cn(
@@ -16,4 +16,3 @@ const Grid = ({ children, className }: GridProps) => {
     </div>
   )
 }
-export default Grid
