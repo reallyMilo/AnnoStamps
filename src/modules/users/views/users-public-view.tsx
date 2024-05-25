@@ -1,8 +1,7 @@
 import type { InferGetStaticPropsType } from 'next'
 
 import StampCard from '@/components/StampCard'
-import { Container } from '@/components/ui'
-import Grid from '@/components/ui/Grid'
+import { Container, Grid } from '@/components/ui'
 
 import { UserBanner } from '../../../components/UserBanner'
 import { type getStaticProps } from './users-view.getStaticProps'

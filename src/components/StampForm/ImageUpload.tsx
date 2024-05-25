@@ -1,8 +1,7 @@
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 
-import { Heading, Subheading } from '@/components/ui'
-import Grid from '@/components/ui/Grid'
+import { Grid, Subheading } from '@/components/ui'
 import { Asset, useUpload } from '@/lib/hooks/useUpload'
 import { Image } from '@/lib/prisma/queries'
 
