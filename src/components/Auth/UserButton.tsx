@@ -5,22 +5,14 @@ import {
   PlusIcon,
   UserIcon,
 } from '@heroicons/react/24/outline'
-import Image from 'next/image'
 import Link from 'next/link'
 import type { Session } from 'next-auth'
 import { signOut, useSession } from 'next-auth/react'
 import { Fragment } from 'react'
 
-import { Button } from '@/components/ui'
+import { Avatar, Button } from '@/components/ui'
 import { cn } from '@/lib/utils'
 
-const Avatar = ({ src }: { src: string | undefined | null }) => {
-  if (!src) {
-    return <UserIcon className="h-6 w-6 text-gray-400" />
-  }
-
-  return <Image src={src} alt="Avatar" height={36} width={36} />
-}
 const UserMenu = () => {
   const { data: session, status } = useSession()
 

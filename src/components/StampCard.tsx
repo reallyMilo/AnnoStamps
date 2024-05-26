@@ -1,12 +1,8 @@
-import {
-  ArrowDownTrayIcon,
-  UserCircleIcon,
-  WrenchIcon,
-} from '@heroicons/react/24/solid'
+import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { Heading } from '@/components/ui'
+import { Avatar, Heading } from '@/components/ui'
 import type { StampWithRelations } from '@/lib/prisma/queries'
 import { distanceUnixTimeToNow } from '@/lib/utils'
 
@@ -89,7 +85,7 @@ const StampCard = ({
             className="z-10 flex h-11 w-fit items-center gap-1 text-slate-500 hover:text-sky-700"
             prefetch={false}
           >
-            <UserCircleIcon className="h-4 w-4" />
+            <Avatar src={user.image} className="size-5" />
             {user.username}
           </Link>
         ) : (
