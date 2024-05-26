@@ -15,10 +15,10 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import LikeButton from '@/components/LikeButton'
 import StampCategoryIcon from '@/components/StampCategoryIcon'
-import { Container, Heading } from '@/components/ui'
+import { buttonStyles, Container, Heading } from '@/components/ui'
 import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
-import { distanceUnixTimeToNow } from '@/lib/utils'
+import { cn, distanceUnixTimeToNow } from '@/lib/utils'
 
 export const getStaticPaths = (async () => {
   const stamps = await prisma.stamp.findMany({
@@ -158,11 +158,15 @@ const StampPage = ({
           <a
             href={stampFileUrl}
             data-testid="stamp-download"
-            className="inline-block rounded-md bg-primary px-4 py-2 font-bold"
+            className={cn(
+              buttonStyles.base,
+              buttonStyles.solid,
+              buttonStyles.colors.primary
+            )}
             onClick={() => fetch(`/api/stamp/download/${id}`)}
             download={title}
           >
-            <ArrowDownTrayIcon className="mr-2 inline-block h-6 w-6" />
+            <ArrowDownTrayIcon />
             Download
           </a>
         </div>

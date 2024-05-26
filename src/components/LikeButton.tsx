@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import useSWR from 'swr'
 
+import { Button } from '@/components/ui'
 import { StampWithRelations, UserWithStamps } from '@/lib/prisma/queries'
 import { cn } from '@/lib/utils'
 
@@ -47,17 +48,18 @@ const LikeButton = ({ id, initialLikes }: LikeButtonProps) => {
     mutate(userData)
   }
   return (
-    <button
+    <Button
       data-testid="like-stamp"
       onClick={addLikeToStamp}
-      className="flex cursor-pointer items-center gap-1 text-sm"
+      plain
+      className={cn(
+        '[&>[data-slot=icon]]:sm:size-6',
+        isStampLiked && '[&>[data-slot=icon]]:sm:text-primary'
+      )}
     >
-      <HandThumbUpIcon
-        data-testid="like-icon"
-        className={cn('size-6', isStampLiked && 'text-primary')}
-      />
+      <HandThumbUpIcon data-testid="like-icon" />
       {isStampLiked ? initialLikes + 1 : initialLikes}
-    </button>
+    </Button>
   )
 }
 

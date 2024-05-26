@@ -11,6 +11,7 @@ import type { Session } from 'next-auth'
 import { signOut, useSession } from 'next-auth/react'
 import { Fragment } from 'react'
 
+import { Button } from '@/components/ui'
 import { cn } from '@/lib/utils'
 
 const Avatar = ({ src }: { src: string | undefined | null }) => {
@@ -24,14 +25,7 @@ const UserMenu = () => {
   const { data: session, status } = useSession()
 
   if (status === 'unauthenticated')
-    return (
-      <Link
-        href="/auth/signin"
-        className="ml-4 rounded-md bg-primary px-4 py-2 text-sm font-bold text-midnight transition hover:bg-accent hover:text-default focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
-      >
-        Add Stamp
-      </Link>
-    )
+    return <Button href="/auth/signin">Add Stamp</Button>
   if (status === 'loading')
     return <div className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200" />
 
