@@ -1,7 +1,8 @@
 import { JSZipObject } from 'jszip'
 
-import { Subheading } from '@/components/ui'
+import { buttonStyles, Subheading } from '@/components/ui'
 import { Asset, useUpload } from '@/lib/hooks/useUpload'
+import { cn } from '@/lib/utils'
 
 import { useStampFormContext } from './StampForm'
 
@@ -20,7 +21,12 @@ const FileUpload = () => {
         <Subheading> Stamp File </Subheading>
         <label
           htmlFor="stamps"
-          className="rounded-md bg-secondary px-6 py-2 text-sm text-midnight hover:bg-secondary/75 focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
+          className={cn(
+            buttonStyles.base,
+            buttonStyles.solid,
+            buttonStyles.colors.secondary,
+            'font-normal hover:opacity-90'
+          )}
         >
           Add Stamps
           <input

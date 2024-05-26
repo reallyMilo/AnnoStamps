@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import * as React from 'react'
 
-import { Heading } from '@/components/ui'
+import { Button, Heading } from '@/components/ui'
 import { Asset } from '@/lib/hooks/useUpload'
 import { UserWithStamps } from '@/lib/prisma/queries'
 import { upload } from '@/lib/upload'
@@ -43,13 +43,14 @@ const Submit = ({ children }: { children: React.ReactNode }) => {
   const isMutating = status === 'loading'
   const isDisabled = status === 'error' || isMutating
   return (
-    <button
+    <Button
       type="submit"
-      className="ml-auto rounded-md bg-secondary px-6 py-2 text-midnight transition hover:bg-secondary/75 focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-yellow-700"
+      color="secondary"
+      className="ml-auto font-normal"
       disabled={isDisabled}
     >
       {isMutating ? 'Loading...' : children}
-    </button>
+    </Button>
   )
 }
 

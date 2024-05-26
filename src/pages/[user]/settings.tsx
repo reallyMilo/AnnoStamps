@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 
-import { Container, Heading } from '@/components/ui'
+import { Button, Container, Heading } from '@/components/ui'
 
 const labelStyle = 'block text-base font-semibold leading-6 text-midnight mt-8'
 const UserSettingsPage = () => {
@@ -107,13 +107,14 @@ const UserSettingsPage = () => {
         {formState.status === 'error' && (
           <p className="text-accent">{formState.message}</p>
         )}
-        <button
+        <Button
           type="submit"
-          className="justify-self-end rounded-md bg-secondary px-4 py-2 text-sm font-medium text-midnight shadow-sm hover:bg-secondary/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
           disabled={formState.status === 'sending'}
+          color="secondary"
+          className="justify-self-end font-normal"
         >
           Save
-        </button>
+        </Button>
       </form>
     </Container>
   )

@@ -1,9 +1,10 @@
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 
-import { Grid, Subheading } from '@/components/ui'
+import { buttonStyles, Grid, Subheading } from '@/components/ui'
 import { Asset, useUpload } from '@/lib/hooks/useUpload'
 import { Image } from '@/lib/prisma/queries'
+import { cn } from '@/lib/utils'
 
 import { useStampFormContext } from './StampForm'
 
@@ -29,7 +30,12 @@ const ImageUpload = () => {
 
         <label
           htmlFor="images"
-          className="h-fit self-end rounded-md bg-secondary px-6 py-2 text-sm text-midnight hover:cursor-pointer hover:bg-secondary/75 hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50 "
+          className={cn(
+            buttonStyles.base,
+            buttonStyles.solid,
+            buttonStyles.colors.secondary,
+            'h-fit font-normal hover:opacity-90'
+          )}
         >
           Add Images
         </label>
