@@ -2,7 +2,15 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 
-import { Button, Container, Heading } from '@/components/ui'
+import {
+  Button,
+  Container,
+  Field,
+  Fieldset,
+  Heading,
+  Label,
+  Textarea,
+} from '@/components/ui'
 
 const labelStyle = 'block text-base font-semibold leading-6 text-midnight mt-8'
 const UserSettingsPage = () => {
@@ -49,7 +57,7 @@ const UserSettingsPage = () => {
         onSubmit={handleSubmit}
         className="grid max-w-3xl space-y-8"
       >
-        <fieldset>
+        <Fieldset>
           <legend>
             <Heading>Profile</Heading>
           </legend>
@@ -92,18 +100,17 @@ const UserSettingsPage = () => {
             />
           </div>
 
-          <label htmlFor="biography" className={labelStyle}>
-            About
-          </label>
-          <textarea
-            id="biography"
-            name="biography"
-            rows={3}
-            placeholder="To be displayed on your page banner."
-            className="mt-4 block w-full rounded-md border-0 py-1.5 font-normal text-midnight shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            defaultValue={session?.user.biography ?? ''}
-          />
-        </fieldset>
+          <Field>
+            <Label>About</Label>
+            <Textarea
+              id="biography"
+              name="biography"
+              placeholder="To be displayed on your page banner."
+              defaultValue={session?.user.biography ?? ''}
+              rows={3}
+            />
+          </Field>
+        </Fieldset>
         {formState.status === 'error' && (
           <p className="text-accent">{formState.message}</p>
         )}
