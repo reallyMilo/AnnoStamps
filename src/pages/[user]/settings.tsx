@@ -5,14 +5,17 @@ import { useState } from 'react'
 import {
   Button,
   Container,
+  Description,
+  ErrorMessage,
   Field,
-  Fieldset,
+  FieldGroup,
   Heading,
+  Input,
+  InputGroup,
   Label,
   Textarea,
 } from '@/components/ui'
 
-const labelStyle = 'block text-base font-semibold leading-6 text-midnight mt-8'
 const UserSettingsPage = () => {
   const router = useRouter()
   const { data: session } = useSession({
@@ -57,63 +60,55 @@ const UserSettingsPage = () => {
         onSubmit={handleSubmit}
         className="grid max-w-3xl space-y-8"
       >
-        <Fieldset>
+        <fieldset>
           <legend>
             <Heading>Profile</Heading>
           </legend>
-          <label htmlFor="username" className={labelStyle}>
-            Username
-          </label>
-          <p className="text-xs font-normal leading-6 text-gray-600">
-            {username ? (
-              <>
+          <FieldGroup>
+            <Field>
+              <Label>Username</Label>
+              <Description>
+                {' '}
                 If you wish to change your username please contact us via the
-                discord server.
-              </>
-            ) : (
-              <>
-                Setting your username allows you to share all your stamps. It
-                will also appear on every stamp you upload.
-              </>
-            )}
-          </p>
+                discord server.{' '}
+              </Description>
+              <InputGroup>
+                <span data-slot="custom-text">annostamps.com/</span>
+                <Input
+                  type="text"
+                  name="username"
+                  id="username"
+                  defaultValue={username ?? ''}
+                  readOnly={username ? true : false}
+                  onInvalid={(e) =>
+                    e.currentTarget.setCustomValidity(
+                      'Select a username containing only alphanumeric characters, dashes (-), and underscores (_).'
+                    )
+                  }
+                  pattern={`^[a-zA-Z0-9_\\-]+$`}
+                  title="Select a username containing only alphanumeric characters, dashes (-), and underscores (_)."
+                  required
+                />
+              </InputGroup>
 
-          <div className="relative mt-4 flex rounded-md font-medium shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
-            <span className="flex select-none items-center rounded-l-md pl-3  text-gray-500 sm:text-sm">
-              annostamps.com/
-            </span>
-            <input
-              type="text"
-              name="username"
-              id="username"
-              className="block w-full flex-1 rounded-r-md border-0 py-1.5 text-midnight shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600  invalid:focus:ring-accent sm:text-sm sm:leading-6"
-              defaultValue={username ?? ''}
-              readOnly={username ? true : false}
-              onInvalid={(e) =>
-                e.currentTarget.setCustomValidity(
-                  'Select a username containing only alphanumeric characters, dashes (-), and underscores (_).'
-                )
-              }
-              pattern={`^[a-zA-Z0-9_\\-]+$`}
-              title="Select a username containing only alphanumeric characters, dashes (-), and underscores (_)."
-              required
-            />
-          </div>
+              {formState.status === 'error' && (
+                <ErrorMessage>{formState.message}</ErrorMessage>
+              )}
+            </Field>
 
-          <Field>
-            <Label>About</Label>
-            <Textarea
-              id="biography"
-              name="biography"
-              placeholder="To be displayed on your page banner."
-              defaultValue={session?.user.biography ?? ''}
-              rows={3}
-            />
-          </Field>
-        </Fieldset>
-        {formState.status === 'error' && (
-          <p className="text-accent">{formState.message}</p>
-        )}
+            <Field>
+              <Label>About</Label>
+              <Textarea
+                id="biography"
+                name="biography"
+                placeholder="To be displayed on your page banner."
+                defaultValue={session?.user.biography ?? ''}
+                rows={3}
+              />
+            </Field>
+          </FieldGroup>
+        </fieldset>
+
         <Button
           type="submit"
           disabled={formState.status === 'sending'}
