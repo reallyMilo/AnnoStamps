@@ -50,7 +50,7 @@
     "swr": "^2.2.2",
     "tailwind-merge": "^1.14.0",
     "use-immer": "^0.9.0",
-    "zod": "^3.23.0"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
