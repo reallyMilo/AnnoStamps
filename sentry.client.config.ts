@@ -23,10 +23,9 @@ Sentry.init({
 
   // You can remove this option if you're not planning to use the Sentry Session Replay feature:
   integrations: [
-    new Sentry.Replay({
-      // Additional Replay configuration goes in here, for example:
-      maskAllText: true,
-      blockAllMedia: true,
+    Sentry.replayIntegration({
+      unblock: ['.sentry-unblock, [data-sentry-unblock]'],
+      unmask: ['.sentry-unmask, [data-sentry-unmask]'],
     }),
   ],
 })
