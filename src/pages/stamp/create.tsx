@@ -65,7 +65,7 @@ const CreateStampPage = () => {
           />
           <StampForm.ImageUpload />
           <StampForm.FileUpload />
-          <StampForm.FormInputFields />
+          <StampForm.StampInfoFieldGroup />
           <StampForm.Submit>Submit Stamp</StampForm.Submit>
         </StampForm.Form>
       </StampForm.Root>

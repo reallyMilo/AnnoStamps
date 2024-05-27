@@ -148,7 +148,7 @@ const EditStampPage = () => {
             />
             <StampForm.ImageUpload />
             <StampForm.FileUpload />
-            <StampForm.FormInputFields />
+            <StampForm.StampInfoFieldGroup />
             <StampForm.Submit> Update Stamp </StampForm.Submit>
           </StampForm.Form>
         </StampForm.Root>

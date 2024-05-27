@@ -3,13 +3,11 @@ import { FunnelIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { Fragment, useState } from 'react'
 
-import { Heading, Subheading } from '@/components/ui'
+import { Field, Heading, Label, Select, Subheading } from '@/components/ui'
 import { CATEGORIES, SORT_OPTIONS } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 import { type QueryParams, useQueryParams } from '@/lib/hooks/useQueryParams'
 import { cn } from '@/lib/utils'
-
-import Select from '../ui/Select'
 
 const sortOptions = Object.values(SORT_OPTIONS)
 const filters = [
@@ -157,26 +155,33 @@ const Filter = ({ children }: { children: React.ReactNode }) => {
 
         <div className="flex items-center">
           <div className="relative inline-block text-left md:ml-auto">
-            <label
-              htmlFor="sort"
-              className={
-                'absolute left-0 ml-2 -translate-y-2.5 bg-default px-1 text-sm capitalize'
-              }
-            >
-              Sort
-            </label>
-            <Select
-              id="sort"
-              name="sort"
-              options={sortOptions}
-              defaultValue={currentSortValue ?? undefined}
-              onChange={(e) =>
-                setQuery({
-                  payload: e.target.value,
-                  type: 'sort',
-                })
-              }
-            />
+            <Field>
+              <Label className="absolute left-0 z-10 ml-2 -translate-y-2.5 bg-default text-sm capitalize sm:text-sm dark:bg-transparent">
+                Sort
+              </Label>
+              <Select
+                id="sort"
+                name="sort"
+                className="before:bg-default"
+                defaultValue={currentSortValue ?? undefined}
+                onChange={(e) =>
+                  setQuery({
+                    payload: e.target.value,
+                    type: 'sort',
+                  })
+                }
+              >
+                {sortOptions.map((option, idx) => (
+                  <option
+                    key={`sort-${option}-${idx}`}
+                    className="capitalize"
+                    value={option}
+                  >
+                    {option}
+                  </option>
+                ))}
+              </Select>
+            </Field>
           </div>
 
           {/* <button
