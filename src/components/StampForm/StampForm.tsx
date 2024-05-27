@@ -10,8 +10,8 @@ import { UserWithStamps } from '@/lib/prisma/queries'
 import { upload } from '@/lib/upload'
 
 import FileUpload from './FileUpload'
-import FormInputFields from './FormInputFields'
 import ImageUpload from './ImageUpload'
+import { StampInfoFieldGroup } from './StampInfoFieldGroup'
 
 type Stamp = UserWithStamps['listedStamps'][0]
 type Image = Stamp['images'][0]
@@ -229,7 +229,7 @@ const StampForm = {
   ImageUpload,
   FileUpload,
   Submit,
-  FormInputFields,
+  StampInfoFieldGroup,
 }
 
 export { StampForm, useStampFormContext }

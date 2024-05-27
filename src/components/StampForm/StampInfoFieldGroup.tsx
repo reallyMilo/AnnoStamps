@@ -10,7 +10,7 @@ import { useStampFormContext } from './StampForm'
 const presetCategories = Object.values(CATEGORIES)
 const presetRegions = Object.values(REGIONS_1800)
 const presetCapitals = Object.values(CAPITALS_1800)
-const FormInputFields = () => {
+export const StampInfoFieldGroup = () => {
   const { stamp } = useStampFormContext()
 
   const [category, setCategory] = useState(stamp?.category)
@@ -144,5 +144,3 @@ const FormInputFields = () => {
     </FieldGroup>
   )
 }
-
-export default FormInputFields
