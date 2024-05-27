@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Field, FieldGroup, Label, Select } from '@/components/ui'
+import { Field, FieldGroup, Label, Select, Textarea } from '@/components/ui'
 import { CATEGORIES } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 import { cn } from '@/lib/utils'
@@ -10,6 +10,7 @@ import { useStampFormContext } from './StampForm'
 const presetCategories = Object.values(CATEGORIES)
 const presetRegions = Object.values(REGIONS_1800)
 const presetCapitals = Object.values(CAPITALS_1800)
+
 export const StampInfoFieldGroup = () => {
   const { stamp } = useStampFormContext()
 
@@ -138,19 +139,17 @@ export const StampInfoFieldGroup = () => {
             required
           />
         </div>
-        <div className="flex flex-col space-y-1">
-          <label htmlFor="description">Description</label>
-          <textarea
+        <Field>
+          <Label>Description</Label>
+          <Textarea
             id="description"
             name="description"
-            className={cn('', 'whitespace-pre-line')}
-            placeholder="Add some two letter fields for searching at the start of the description, see anno wiki
-            production layouts for reference."
+            placeholder='Add some two letter fields for searching at the start of the description, see anno wiki
+            production layouts for reference."'
             defaultValue={stamp?.description}
             rows={5}
-            required
           />
-        </div>
+        </Field>
       </div>
     </FieldGroup>
   )
