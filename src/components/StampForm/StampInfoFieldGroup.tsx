@@ -21,6 +21,7 @@ export const StampInfoFieldGroup = () => {
         <Field>
           <Label>Category</Label>
           <Select
+            id="category"
             name="category"
             defaultValue={stamp?.category ?? ''}
             onChange={(e) => setCategory(e.target.value)}
@@ -43,7 +44,12 @@ export const StampInfoFieldGroup = () => {
         </Field>
         <Field>
           <Label>Region</Label>
-          <Select name="region" defaultValue={stamp?.region ?? ''} required>
+          <Select
+            id="region"
+            name="region"
+            defaultValue={stamp?.region ?? ''}
+            required
+          >
             <option value="" disabled>
               Select a region&hellip;
             </option>
@@ -62,6 +68,7 @@ export const StampInfoFieldGroup = () => {
         <Field>
           <Label>Mods</Label>
           <Select
+            id="modded"
             name="modded"
             defaultValue={stamp?.modded.toString() ?? ''}
             required
@@ -98,7 +105,11 @@ export const StampInfoFieldGroup = () => {
         <div className="grid grid-cols-3 gap-x-4">
           <Field>
             <Label>Capital</Label>
-            <Select name="capital" defaultValue={stamp?.capital ?? undefined}>
+            <Select
+              id="capital"
+              name="capital"
+              defaultValue={stamp?.capital ?? undefined}
+            >
               <option value="">Not capital</option>
               {presetCapitals.map((capital, idx) => (
                 <option
