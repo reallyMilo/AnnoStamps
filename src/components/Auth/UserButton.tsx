@@ -64,7 +64,7 @@ const UserMenu = () => {
           <>
             <DropdownItem href={`${userPath}/settings`}>
               <ExclamationTriangleIcon />
-              <DropdownLabel>Please set your username!</DropdownLabel>
+              <DropdownLabel>Please set username!</DropdownLabel>
             </DropdownItem>
             <DropdownDivider />
           </>
@@ -78,7 +78,7 @@ const UserMenu = () => {
         <DropdownDivider />
         <DropdownItem onClick={() => signOut()}>
           <ArrowLeftIcon />
-          <DropdownLabel>Log out</DropdownLabel>
+          <DropdownLabel>Logout</DropdownLabel>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
