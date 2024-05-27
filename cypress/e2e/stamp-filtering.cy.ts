@@ -5,7 +5,7 @@ describe('Filtering stamps', () => {
     cy.visit('/stamps')
   })
   it('user can filter and sort stamps', () => {
-    cy.get('#production').check()
+    cy.get('#production').click()
     cy.url().should('include', '?category=production')
 
     cy.findAllByText('Production', { exact: false }).should(
@@ -13,7 +13,7 @@ describe('Filtering stamps', () => {
       10
     )
 
-    cy.get('#enbesa').check()
+    cy.get('#enbesa').click()
 
     cy.url().should('include', '?category=production&region=enbesa')
 
@@ -22,7 +22,7 @@ describe('Filtering stamps', () => {
     cy.get('select#sort').select('newest').invoke('val').should('eq', 'newest')
     cy.url().should('include', 'category=production&region=enbesa&sort=newest')
 
-    cy.get('#cosmetic').check()
+    cy.get('#cosmetic').click()
     cy.url().should(
       'include',
       'category=production&category=cosmetic&region=enbesa&sort=newest'
