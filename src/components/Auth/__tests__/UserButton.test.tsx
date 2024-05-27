@@ -19,21 +19,19 @@ describe('UserButton', () => {
 
     await act(async () => await userEvent.click(button))
     expect(
-      screen.getByRole('link', { name: 'Please set username!' })
+      screen.getByRole('menuitem', { name: 'Please set username!' })
     ).toHaveAttribute('href', '/1/settings')
-    expect(screen.getByRole('link', { name: 'My Account' })).toHaveAttribute(
-      'href',
-      '/1/settings'
-    )
-    expect(screen.getByRole('link', { name: 'My stamps' })).toHaveAttribute(
+    expect(
+      screen.getByRole('menuitem', { name: 'My Account' })
+    ).toHaveAttribute('href', '/1/settings')
+    expect(screen.getByRole('menuitem', { name: 'My stamps' })).toHaveAttribute(
       'href',
       '/1'
     )
-    expect(screen.getByRole('link', { name: 'Add new stamp' })).toHaveAttribute(
-      'href',
-      '/stamp/create'
-    )
-    expect(screen.getByRole('button', { name: 'Logout' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('menuitem', { name: 'Add new stamp' })
+    ).toHaveAttribute('href', '/stamp/create')
+    expect(screen.getByRole('menuitem', { name: 'Logout' })).toBeInTheDocument()
   })
   it('user-menu provides right href for authenticated user with username set', async () => {
     render(<UserButton />, {
@@ -47,11 +45,7 @@ describe('UserButton', () => {
     })
 
     await act(async () => await userEvent.click(screen.getByRole('button')))
-    expect(screen.getByRole('link', { name: 'stampCreator' })).toHaveAttribute(
-      'href',
-      '/stampcreator'
-    )
-    expect(screen.getByRole('link', { name: 'My stamps' })).toHaveAttribute(
+    expect(screen.getByRole('menuitem', { name: 'My stamps' })).toHaveAttribute(
       'href',
       '/stampcreator'
     )
