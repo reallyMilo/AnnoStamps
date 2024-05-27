@@ -141,7 +141,23 @@ describe('Stamp creation', () => {
       `SELECT * FROM "Stamp" WHERE title = 'cypress test title';`
     ).then((stamps) => {
       const stamp = stamps[0]
-      cy.wrap(stamp).its('userId').should('eq', 'testSeedUserId')
+      cy.wrap(stamp)
+        .should('be.an', 'object')
+        .and('have.keys', [
+          'userId',
+          'description',
+          'modded',
+          'category',
+          'region',
+          'stampFileUrl',
+        ])
+        .and('contain', {
+          userId: 'testSeedUserId',
+          description: 'cypress test description',
+          modded: 'false',
+          category: 'general',
+          region: 'arctic',
+        })
     })
     // redirect after successful stamp creation
     cy.url().should('include', `testseeduser`)
