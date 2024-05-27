@@ -1,5 +1,6 @@
 export * from './Avatar'
 export { Button, styles as buttonStyles } from './Button'
 export * from './Container'
+export * from './Dropdown'
 export * from './Grid'
 export * from './Heading'

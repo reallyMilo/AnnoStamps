@@ -1,17 +1,23 @@
-import { Menu, Transition } from '@headlessui/react'
 import {
   ArrowLeftIcon,
+  ExclamationTriangleIcon,
   HomeIcon,
   PlusIcon,
   UserIcon,
 } from '@heroicons/react/24/outline'
-import Link from 'next/link'
 import type { Session } from 'next-auth'
 import { signOut, useSession } from 'next-auth/react'
-import { Fragment } from 'react'
 
-import { Avatar, Button } from '@/components/ui'
-import { cn } from '@/lib/utils'
+import {
+  AvatarButton,
+  Button,
+  Dropdown,
+  DropdownButton,
+  DropdownDivider,
+  DropdownItem,
+  DropdownLabel,
+  DropdownMenu,
+} from '@/components/ui'
 
 const UserMenu = () => {
   const { data: session, status } = useSession()
@@ -21,7 +27,7 @@ const UserMenu = () => {
   if (status === 'loading')
     return <div className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200" />
 
-  const { image, username, usernameURL } = session?.user as NonNullable<
+  const { username, usernameURL } = session?.user as NonNullable<
     Session['user']
   >
 
@@ -46,70 +52,36 @@ const UserMenu = () => {
   ]
 
   return (
-    <Menu as="div" data-testid="user-menu" className="relative z-50">
-      <Menu.Button className="group flex items-center space-x-px">
-        <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-          <Avatar src={image} />
-        </div>
-      </Menu.Button>
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="opacity-0 scale-95"
-        enterTo="opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="opacity-100 scale-100"
-        leaveTo="opacity-0 scale-95"
-      >
-        <Menu.Items
-          data-testid="user-dropdown"
-          className="absolute right-0 mt-1 w-72 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-        >
-          <div className="flex items-center space-x-2 px-4 py-4">
-            <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-              <Avatar src={image} />
-            </div>
-            {username ? (
-              <Link href={`${userPath}`} role="link">
-                {username}
-              </Link>
-            ) : (
-              <Link
-                href={`${userPath}/settings`}
-                className={cn('text-blue-500 underline')}
-                role="link"
-              >
-                Please set username!
-              </Link>
-            )}
-          </div>
-
-          <div className="py-2">
-            {menuItems.map(({ label, href, icon: Icon }) => (
-              <Menu.Item key={label} as="div" data-testid="user-menu-item">
-                <Link
-                  href={href}
-                  className="flex items-center space-x-4 rounded-md px-6 py-2 hover:bg-gray-100"
-                >
-                  <Icon className="h-5 w-5 shrink-0 text-gray-500" />
-                  <span>{label}</span>
-                </Link>
-              </Menu.Item>
-            ))}
-
-            <button
-              data-testid="logout-button"
-              className="mt-2 flex w-full items-center space-x-4 rounded-md border-t px-6 py-2 pt-2 hover:bg-gray-100"
-              onClick={() => signOut({ callbackUrl: '/' })}
-              role="button"
-            >
-              <ArrowLeftIcon className="h-5 w-5 shrink-0 text-gray-500" />
-              <span>Logout</span>
-            </button>
-          </div>
-        </Menu.Items>
-      </Transition>
-    </Menu>
+    <Dropdown>
+      <DropdownButton
+        className="size-9"
+        as={AvatarButton}
+        src={session?.user.image}
+        aria-label="Account options"
+      />
+      <DropdownMenu className="z-40" anchor="bottom end">
+        {!username && (
+          <>
+            <DropdownItem href={`${userPath}/settings`}>
+              <ExclamationTriangleIcon />
+              <DropdownLabel>Please set your username!</DropdownLabel>
+            </DropdownItem>
+            <DropdownDivider />
+          </>
+        )}
+        {menuItems.map(({ label, icon: Icon, href }) => (
+          <DropdownItem key={label} href={href}>
+            <Icon />
+            <DropdownLabel>{label}</DropdownLabel>
+          </DropdownItem>
+        ))}
+        <DropdownDivider />
+        <DropdownItem onClick={() => signOut()}>
+          <ArrowLeftIcon />
+          <DropdownLabel>Log out</DropdownLabel>
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
   )
 }
 
