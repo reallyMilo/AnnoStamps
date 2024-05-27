@@ -144,17 +144,27 @@ describe('Stamp creation', () => {
       cy.wrap(stamp)
         .should('be.an', 'object')
         .and('have.keys', [
+          'id',
           'userId',
-          'description',
-          'modded',
           'category',
           'region',
+          'modded',
+          'capital',
+          'title',
+          'description',
           'stampFileUrl',
+          'collection',
+          'downloads',
+          'game',
+          'good',
+          'createdAt',
+          'updatedAt',
+          'changedAt',
         ])
         .and('contain', {
           userId: 'testSeedUserId',
           description: 'cypress test description',
-          modded: 'false',
+          modded: false,
           category: 'general',
           region: 'arctic',
         })
