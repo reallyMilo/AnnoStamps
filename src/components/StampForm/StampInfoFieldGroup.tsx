@@ -1,6 +1,13 @@
 import { useState } from 'react'
 
-import { Field, FieldGroup, Label, Select, Textarea } from '@/components/ui'
+import {
+  Field,
+  FieldGroup,
+  Input,
+  Label,
+  Select,
+  Textarea,
+} from '@/components/ui'
 import { CATEGORIES } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 import { cn } from '@/lib/utils'
@@ -84,73 +91,64 @@ export const StampInfoFieldGroup = () => {
       </div>
 
       {category === 'production' && (
-        <div className="grid grid-cols-3 gap-x-4">
-          <div className="relative flex flex-col space-y-1">
-            <label htmlFor="good" className="text-gray-600">
-              Enter Good
-            </label>
-            <input
-              id="good"
-              name="good"
-              type="text"
-              placeholder="Enter final good in chain"
-              defaultValue={stamp?.good ?? undefined}
-              required
-              className={cn('', 'relative capitalize')}
-            />
-          </div>
-        </div>
+        <Field>
+          <Label>Enter Good</Label>
+          <Input
+            id="good"
+            name="good"
+            type="text"
+            placeholder="Enter final good in chain"
+            defaultValue={stamp?.good ?? undefined}
+            required
+          />
+        </Field>
       )}
 
       {category === 'island' && (
-        <div className="grid grid-cols-3 gap-x-4">
-          <Field>
-            <Label>Capital</Label>
-            <Select
-              id="capital"
-              name="capital"
-              defaultValue={stamp?.capital ?? undefined}
-            >
-              <option value="">Not capital</option>
-              {presetCapitals.map((capital, idx) => (
-                <option
-                  key={`${capital}-${idx}`}
-                  className="capitalize"
-                  value={capital}
-                >
-                  {' '}
-                  {capital}
-                </option>
-              ))}
-            </Select>
-          </Field>
-        </div>
-      )}
-      <div className="space-y-6">
-        <div className="flex flex-col space-y-1">
-          <label htmlFor="title">Stamp Title</label>
-          <input
-            id="title"
-            name="title"
-            type="text"
-            placeholder="Enter stamp title"
-            className={''}
-            defaultValue={stamp?.title}
-            required
-          />
-        </div>
         <Field>
-          <Label>Description</Label>
-          <Textarea
-            id="description"
-            name="description"
-            placeholder='Add some two letter fields for searching at the start of the description, see anno wiki
-            production layouts for reference."'
-            defaultValue={stamp?.description}
-            rows={5}
-          />
+          <Label>Capital</Label>
+          <Select
+            id="capital"
+            name="capital"
+            defaultValue={stamp?.capital ?? undefined}
+          >
+            <option value="">Not capital</option>
+            {presetCapitals.map((capital, idx) => (
+              <option
+                key={`${capital}-${idx}`}
+                className="capitalize"
+                value={capital}
+              >
+                {' '}
+                {capital}
+              </option>
+            ))}
+          </Select>
         </Field>
-      </div>
+      )}
+
+      <Field>
+        <Label>Title</Label>
+        <Input
+          id="title"
+          name="title"
+          type="text"
+          placeholder="Enter stamp title"
+          defaultValue={stamp?.title}
+          required
+        />
+      </Field>
+      <Field>
+        <Label>Description</Label>
+        <Textarea
+          id="description"
+          name="description"
+          placeholder='Add some two letter fields for searching at the start of the description, see anno wiki
+            production layouts for reference."'
+          defaultValue={stamp?.description}
+          rows={5}
+        />
+      </Field>
     </FieldGroup>
   )
 }
