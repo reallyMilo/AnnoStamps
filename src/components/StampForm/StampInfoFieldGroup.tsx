@@ -17,61 +17,63 @@ export const StampInfoFieldGroup = () => {
 
   return (
     <FieldGroup>
-      <Field>
-        <Label>Category</Label>
-        <Select
-          name="category"
-          defaultValue={stamp?.category ?? ''}
-          onChange={(e) => setCategory(e.target.value)}
-          required
-        >
-          <option value="" disabled>
-            Select a category&hellip;
-          </option>
-          {presetCategories.map((category, idx) => (
-            <option
-              key={`${category}-${idx}`}
-              className="capitalize"
-              value={category}
-            >
-              {' '}
-              {category}
+      <div className="flex space-x-6">
+        <Field>
+          <Label>Category</Label>
+          <Select
+            name="category"
+            defaultValue={stamp?.category ?? ''}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+          >
+            <option value="" disabled>
+              Select a category&hellip;
             </option>
-          ))}
-        </Select>
-      </Field>
-      <Field>
-        <Label>Region</Label>
-        <Select name="region" defaultValue={stamp?.region ?? ''} required>
-          <option value="" disabled>
-            Select a region&hellip;
-          </option>
-          {presetRegions.map((region, idx) => (
-            <option
-              key={`${region}-${idx}`}
-              className="capitalize"
-              value={region}
-            >
-              {' '}
-              {region}
+            {presetCategories.map((category, idx) => (
+              <option
+                key={`${category}-${idx}`}
+                className="capitalize"
+                value={category}
+              >
+                {' '}
+                {category}
+              </option>
+            ))}
+          </Select>
+        </Field>
+        <Field>
+          <Label>Region</Label>
+          <Select name="region" defaultValue={stamp?.region ?? ''} required>
+            <option value="" disabled>
+              Select a region&hellip;
             </option>
-          ))}
-        </Select>
-      </Field>
-      <Field>
-        <Label>Mods</Label>
-        <Select
-          name="modded"
-          defaultValue={stamp?.modded.toString() ?? ''}
-          required
-        >
-          <option value="" disabled>
-            Contains mods&hellip;
-          </option>
-          <option value="true">Yes</option>
-          <option value="false">No</option>
-        </Select>
-      </Field>
+            {presetRegions.map((region, idx) => (
+              <option
+                key={`${region}-${idx}`}
+                className="capitalize"
+                value={region}
+              >
+                {' '}
+                {region}
+              </option>
+            ))}
+          </Select>
+        </Field>
+        <Field>
+          <Label>Mods</Label>
+          <Select
+            name="modded"
+            defaultValue={stamp?.modded.toString() ?? ''}
+            required
+          >
+            <option value="" disabled>
+              Has mods&hellip;
+            </option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </Select>
+        </Field>
+      </div>
 
       {category === 'production' && (
         <div className="grid grid-cols-3 gap-x-4">
@@ -97,9 +99,7 @@ export const StampInfoFieldGroup = () => {
           <Field>
             <Label>Capital</Label>
             <Select name="capital" defaultValue={stamp?.capital ?? undefined}>
-              <option value="" disabled>
-                Select a capital&hellip;
-              </option>
+              <option value="">Not capital</option>
               {presetCapitals.map((capital, idx) => (
                 <option
                   key={`${capital}-${idx}`}
