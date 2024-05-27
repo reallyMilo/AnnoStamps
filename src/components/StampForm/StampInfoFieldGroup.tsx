@@ -10,7 +10,6 @@ import {
 } from '@/components/ui'
 import { CATEGORIES } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
-import { cn } from '@/lib/utils'
 
 import { useStampFormContext } from './StampForm'
 
