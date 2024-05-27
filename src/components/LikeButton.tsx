@@ -53,7 +53,7 @@ const LikeButton = ({ id, initialLikes }: LikeButtonProps) => {
       onClick={addLikeToStamp}
       plain
       className={cn(
-        '[&>[data-slot=icon]]:sm:size-6',
+        'cursor-pointer [&>[data-slot=icon]]:sm:size-6',
         isStampLiked && '[&>[data-slot=icon]]:sm:text-primary'
       )}
     >
