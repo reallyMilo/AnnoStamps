@@ -164,7 +164,7 @@ describe('Stamp creation', () => {
         .and('contain', {
           userId: 'testSeedUserId',
           description: 'cypress test description',
-          modded: 'false',
+          modded: false,
           category: 'general',
           region: 'arctic',
         })
