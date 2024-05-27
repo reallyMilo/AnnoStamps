@@ -3,7 +3,17 @@ import { FunnelIcon } from '@heroicons/react/20/solid'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { Fragment, useState } from 'react'
 
-import { Field, Heading, Label, Select, Subheading } from '@/components/ui'
+import {
+  Checkbox,
+  CheckboxField,
+  Field,
+  Fieldset,
+  Heading,
+  Label,
+  Legend,
+  Select,
+  Subheading,
+} from '@/components/ui'
 import { CATEGORIES, SORT_OPTIONS } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 import { type QueryParams, useQueryParams } from '@/lib/hooks/useQueryParams'
@@ -32,49 +42,33 @@ const FilterForm = ({ className }: { className: string }) => {
   const [query, setQuery] = useQueryParams()
 
   return (
-    <form
-      onChange={(e) => {
-        const target = e.target as HTMLInputElement
-
-        setQuery({
-          isAddParam: target.checked,
-          payload: target.value,
-          type: target.dataset.section as keyof QueryParams,
-        })
-      }}
-      className={cn('space-y-6 divide-y divide-gray-200', className)}
-    >
+    <form className={cn('space-y-6 divide-y divide-gray-200', className)}>
       {filters.map((section, sectionIdx) => (
         <div key={`${section.id}-${sectionIdx}`} className="pt-6 first:pt-0">
-          <fieldset>
-            <legend className="block text-sm font-medium capitalize text-gray-900">
-              {section.id}
-            </legend>
-            <div className="space-y-3 pt-6">
+          <Fieldset>
+            <Legend className="capitalize">{section.id}</Legend>
+            <div className="space-y-2 pt-3">
               {section.options.map((option, optionIdx) => (
-                <div
-                  key={`${section.id}-${option}-${optionIdx}`}
-                  className="flex items-center"
-                >
-                  <input
+                <CheckboxField key={`${section.id}-${option}-${optionIdx}`}>
+                  <Checkbox
                     id={`${option}`}
                     name={`${option}`}
                     value={option}
-                    type="checkbox"
                     defaultChecked={query?.includes(`${section.id}=${option}`)}
                     data-section={section.id}
-                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary/75"
+                    onChange={(e) => {
+                      setQuery({
+                        isAddParam: e,
+                        payload: option,
+                        type: section.id,
+                      })
+                    }}
                   />
-                  <label
-                    htmlFor={`${option}`}
-                    className="ml-3 text-sm capitalize text-midnight"
-                  >
-                    {option}
-                  </label>
-                </div>
+                  <Label className="capitalize">{option}</Label>
+                </CheckboxField>
               ))}
             </div>
-          </fieldset>
+          </Fieldset>
         </div>
       ))}
     </form>
