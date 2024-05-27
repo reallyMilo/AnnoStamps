@@ -1,62 +1,78 @@
 import { useState } from 'react'
 
+import { Field, FieldGroup, Label, Select } from '@/components/ui'
 import { CATEGORIES } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 import { cn } from '@/lib/utils'
 
-import Select, { selectVariantStyles } from '../ui/Select'
 import { useStampFormContext } from './StampForm'
 
+const presetCategories = Object.values(CATEGORIES)
+const presetRegions = Object.values(REGIONS_1800)
+const presetCapitals = Object.values(CAPITALS_1800)
 const FormInputFields = () => {
   const { stamp } = useStampFormContext()
 
   const [category, setCategory] = useState(stamp?.category)
 
   return (
-    <>
-      <div className="flex w-full space-x-4">
-        <div>
-          <label htmlFor="category">Category</label>
-          <Select
-            id="category"
-            name="category"
-            variant="primaryShadow"
-            options={Object.values(CATEGORIES)}
-            onChange={(e) => setCategory(e.target.value)}
-            value={category}
-            required
-          >
-            <option value="">-Select-</option>
-          </Select>
-        </div>
-        <div>
-          <label htmlFor="region">Region</label>
-          <Select
-            id="region"
-            name="region"
-            required
-            options={Object.values(REGIONS_1800)}
-            defaultValue={stamp?.region}
-            variant="primaryShadow"
-          >
-            <option value="">-Select-</option>
-          </Select>
-        </div>
-        <div>
-          <label htmlFor="modded">Uses Mods</label>
-          <select
-            name="modded"
-            id="modded"
-            className={selectVariantStyles.primaryShadow}
-            defaultValue={stamp?.modded.toString()}
-            required
-          >
-            <option value="">-Select-</option>
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-        </div>
-      </div>
+    <FieldGroup>
+      <Field>
+        <Label>Category</Label>
+        <Select
+          name="category"
+          defaultValue={stamp?.category ?? ''}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+        >
+          <option value="" disabled>
+            Select a category&hellip;
+          </option>
+          {presetCategories.map((category, idx) => (
+            <option
+              key={`${category}-${idx}`}
+              className="capitalize"
+              value={category}
+            >
+              {' '}
+              {category}
+            </option>
+          ))}
+        </Select>
+      </Field>
+      <Field>
+        <Label>Region</Label>
+        <Select name="region" defaultValue={stamp?.region ?? ''} required>
+          <option value="" disabled>
+            Select a region&hellip;
+          </option>
+          {presetRegions.map((region, idx) => (
+            <option
+              key={`${region}-${idx}`}
+              className="capitalize"
+              value={region}
+            >
+              {' '}
+              {region}
+            </option>
+          ))}
+        </Select>
+      </Field>
+      <Field>
+        <Label>Mods</Label>
+        <Select
+          name="modded"
+          defaultValue={stamp?.modded.toString() ?? ''}
+          required
+        >
+          <option value="" disabled>
+            Contains mods&hellip;
+          </option>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </Select>
+      </Field>
+
       {category === 'production' && (
         <div className="grid grid-cols-3 gap-x-4">
           <div className="relative flex flex-col space-y-1">
@@ -70,10 +86,7 @@ const FormInputFields = () => {
               placeholder="Enter final good in chain"
               defaultValue={stamp?.good ?? undefined}
               required
-              className={cn(
-                selectVariantStyles.primaryShadow,
-                'relative capitalize'
-              )}
+              className={cn('', 'relative capitalize')}
             />
           </div>
         </div>
@@ -81,18 +94,24 @@ const FormInputFields = () => {
 
       {category === 'island' && (
         <div className="grid grid-cols-3 gap-x-4">
-          <div className="flex flex-col space-y-1">
-            <label htmlFor="capital">Capital</label>
-            <Select
-              id="capital"
-              name="capital"
-              options={Object.values(CAPITALS_1800)}
-              variant="primaryShadow"
-              defaultValue={stamp?.capital ?? undefined}
-            >
-              <option value="">-Select-</option>
+          <Field>
+            <Label>Capital</Label>
+            <Select name="capital" defaultValue={stamp?.capital ?? undefined}>
+              <option value="" disabled>
+                Select a capital&hellip;
+              </option>
+              {presetCapitals.map((capital, idx) => (
+                <option
+                  key={`${capital}-${idx}`}
+                  className="capitalize"
+                  value={capital}
+                >
+                  {' '}
+                  {capital}
+                </option>
+              ))}
             </Select>
-          </div>
+          </Field>
         </div>
       )}
       <div className="space-y-6">
@@ -103,7 +122,7 @@ const FormInputFields = () => {
             name="title"
             type="text"
             placeholder="Enter stamp title"
-            className={selectVariantStyles.primaryShadow}
+            className={''}
             defaultValue={stamp?.title}
             required
           />
@@ -113,10 +132,7 @@ const FormInputFields = () => {
           <textarea
             id="description"
             name="description"
-            className={cn(
-              selectVariantStyles.primaryShadow,
-              'whitespace-pre-line'
-            )}
+            className={cn('', 'whitespace-pre-line')}
             placeholder="Add some two letter fields for searching at the start of the description, see anno wiki
             production layouts for reference."
             defaultValue={stamp?.description}
@@ -125,7 +141,7 @@ const FormInputFields = () => {
           />
         </div>
       </div>
-    </>
+    </FieldGroup>
   )
 }
 
