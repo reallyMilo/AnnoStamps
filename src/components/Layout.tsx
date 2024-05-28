@@ -1,13 +1,22 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import Link from 'next/link'
 
 import UserButton from '@/components/Auth/UserButton'
 import Search from '@/components/Filter/Search'
+import {
+  Container,
+  Link,
+  Navbar as NavbarRoot,
+  NavbarDivider,
+  NavbarItem,
+  NavbarSection,
+  NavbarSpacer,
+} from '@/components/ui'
 
 import headerLogo from '../../public/anno-stamps-logo.svg'
 import discordWhite from '../../public/discord-white-icon.svg'
 import github from '../../public/github-mark.svg'
+
 const navigation = [
   {
     href: '/stamps',
@@ -18,6 +27,7 @@ const navigation = [
     text: 'How To',
   },
 ]
+
 const socials = [
   {
     name: 'discord',
@@ -33,88 +43,87 @@ const socials = [
 
 const Navbar = () => {
   return (
-    <header className="relative z-20 h-20 w-full bg-midnight shadow-md">
-      <div className="container mx-auto h-full">
-        <div className="flex h-full items-center justify-between space-x-4 px-1 md:px-4">
-          <div className="flex md:space-x-6">
-            <Link
-              id="header-logo"
-              href="/"
-              className="hidden items-center space-x-1 md:flex"
-            >
-              <Image
-                src={headerLogo}
-                alt="Anno Stamps"
-                style={{
-                  width: '100%',
-                  maxWidth: '160px',
-                  height: 'auto',
-                }}
-              />
-            </Link>
-            <nav className="flex items-center space-x-4 text-center text-xs font-bold md:text-left md:text-sm">
-              {navigation.map((item) => (
-                <Link
-                  key={item.text}
-                  href={item.href}
-                  className="rounded-md px-3 py-1 text-default transition hover:text-primary"
-                >
-                  {item.text}
-                </Link>
-              ))}
-            </nav>
-            <Search />
-          </div>
+    <header>
+      <Container className="py-0">
+        <NavbarRoot>
+          <Link id="header-logo" href="/">
+            <Image
+              src={headerLogo}
+              alt="Anno Stamps"
+              style={{
+                width: '100%',
+                maxWidth: '160px',
+                height: 'auto',
+              }}
+            />
+          </Link>
+          <NavbarDivider className="max-lg:hidden" />
+          <NavbarSection className="max-lg:hidden">
+            {navigation.map((item) => (
+              <NavbarItem key={item.text} href={item.href}>
+                {item.text}
+              </NavbarItem>
+            ))}
+          </NavbarSection>
+          <NavbarSpacer />
+          <Search />
+          <NavbarSpacer />
           <UserButton />
-        </div>
-      </div>
+        </NavbarRoot>
+      </Container>
     </header>
   )
 }
 const Footer = () => {
   return (
-    <footer className="mt-auto  bg-midnight py-6 text-default">
-      <div className="container mx-auto flex items-center justify-between px-5">
-        <Link id="header-logo" href="/" className="hidden md:flex">
-          <Image
-            src={headerLogo}
-            alt="Anno Stamps"
-            style={{
-              width: '100%',
-              maxWidth: '160px',
-              height: 'auto',
-            }}
-          />
-        </Link>
-        <div className="flex items-center space-x-5">
-          <a
-            href="https://www.buymeacoffee.com/miloK"
-            className="hover:text-primary"
-            target="_blank"
-          >
-            Support AnnoStamps
-          </a>
-          {socials.map((social) => (
-            <a
-              key={social.name}
-              href={social.url}
+    <footer>
+      <Container className="py-0">
+        <NavbarRoot>
+          <Link id="header-logo" href="/" className="max-lg:hidden">
+            <Image
+              src={headerLogo}
+              alt="Anno Stamps"
+              style={{
+                width: '100%',
+                maxWidth: '160px',
+                height: 'auto',
+              }}
+            />
+          </Link>
+
+          <NavbarSpacer />
+          <NavbarSection>
+            <NavbarItem
+              rel="noopener noreferrer"
               target="_blank"
-              data-testid={social.name}
+              href="https://www.buymeacoffee.com/miloK"
             >
-              <Image
-                src={social.src}
-                alt={social.name}
-                className="hover:opacity-75"
-                style={{
-                  maxWidth: '100%',
-                  height: '32px',
-                  width: '32px',
-                }}
-              />{' '}
-            </a>
-          ))}
-        </div>
-      </div>
+              Support AnnoStamps
+            </NavbarItem>
+
+            {socials.map(({ name, url, src }) => (
+              <NavbarItem
+                key={`${name}-footer`}
+                href={url}
+                rel="noopener noreferrer"
+                target="_blank"
+                htmlLink={true}
+              >
+                <Image
+                  src={src}
+                  alt={name}
+                  className="brightness-[0.85] contrast-0 grayscale dark:brightness-[1.7] dark:contrast-100"
+                  style={{
+                    maxWidth: '100%',
+                    height: '32px',
+                    width: '32px',
+                  }}
+                />{' '}
+              </NavbarItem>
+            ))}
+          </NavbarSection>
+        </NavbarRoot>
+      </Container>
     </footer>
   )
 }
@@ -136,12 +145,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <link rel="icon" href="/favicon.svg" />
       </Head>
 
-      <div className="flex min-h-screen flex-col bg-default">
+      <div className="flex min-h-screen flex-col justify-between bg-default dark:bg-zinc-900">
         <Navbar />
 
-        <main className="relative z-10 mx-auto mb-20 min-h-full w-full bg-opacity-95">
-          {children}
-        </main>
+        <main className="relative mx-auto min-h-full w-full ">{children}</main>
 
         <Footer />
       </div>
