@@ -12,7 +12,7 @@ const isImage = (b: Asset | Image): b is Image => {
   return (b as Image).id !== undefined
 }
 
-const ImageUpload = () => {
+export const ImageUpload = () => {
   const { status, images, setImages } = useStampFormContext()
   const { isError, handleChange, handleRemove } = useUpload<Asset | Image>(
     images,
@@ -96,5 +96,3 @@ const ImageUpload = () => {
     </div>
   )
 }
-
-export default ImageUpload

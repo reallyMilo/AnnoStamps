@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
 
-import UserButton from '@/components/Auth/UserButton'
-import Search from '@/components/Filter/Search'
+import { UserButton } from '@/components/Auth/UserButton'
+import { Search } from '@/components/Filter/Search'
 import {
   Container,
   Link,
@@ -128,7 +128,7 @@ const Footer = () => {
   )
 }
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Head>
@@ -155,5 +155,3 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     </>
   )
 }
-
-export default Layout

@@ -19,7 +19,7 @@ import {
   DropdownMenu,
 } from '@/components/ui'
 
-const UserMenu = () => {
+export const UserButton = () => {
   const { data: session, status } = useSession()
 
   if (status === 'unauthenticated')
@@ -84,5 +84,3 @@ const UserMenu = () => {
     </Dropdown>
   )
 }
-
-export default UserMenu

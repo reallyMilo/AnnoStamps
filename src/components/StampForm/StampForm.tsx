@@ -9,8 +9,8 @@ import { Asset } from '@/lib/hooks/useUpload'
 import { UserWithStamps } from '@/lib/prisma/queries'
 import { upload } from '@/lib/upload'
 
-import FileUpload from './FileUpload'
-import ImageUpload from './ImageUpload'
+import { FileUpload } from './FileUpload'
+import { ImageUpload } from './ImageUpload'
 import { StampInfoFieldGroup } from './StampInfoFieldGroup'
 
 type Stamp = UserWithStamps['listedStamps'][0]

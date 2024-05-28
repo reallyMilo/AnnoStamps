@@ -138,7 +138,7 @@ const MobileFilter = () => {
     </>
   )
 }
-const Filter = ({ children }: { children: React.ReactNode }) => {
+export const Filter = ({ children }: { children: React.ReactNode }) => {
   const [query, setQuery] = useQueryParams()
   const currentSortValue = new URLSearchParams(query).get('sort')
 
@@ -203,5 +203,3 @@ const Filter = ({ children }: { children: React.ReactNode }) => {
     </div>
   )
 }
-
-export default Filter

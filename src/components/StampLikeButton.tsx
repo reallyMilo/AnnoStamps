@@ -12,7 +12,7 @@ type LikeButtonProps = {
   initialLikes: number
 }
 
-const LikeButton = ({ id, initialLikes }: LikeButtonProps) => {
+export const StampLikeButton = ({ id, initialLikes }: LikeButtonProps) => {
   const router = useRouter()
   const { status } = useSession()
   const isUserAuth = status === 'authenticated'
@@ -62,5 +62,3 @@ const LikeButton = ({ id, initialLikes }: LikeButtonProps) => {
     </Button>
   )
 }
-
-export default LikeButton

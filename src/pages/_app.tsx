@@ -4,7 +4,7 @@ import type { AppProps } from 'next/app'
 import Script from 'next/script'
 import { SessionProvider } from 'next-auth/react'
 
-import Layout from '@/components/Layout'
+import { Layout } from '@/components/Layout'
 
 const StampsApp = ({
   Component,
