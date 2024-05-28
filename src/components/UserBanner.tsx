@@ -1,7 +1,7 @@
 import type { InferGetStaticPropsType } from 'next'
 
 import { Heading, Text } from '@/components/ui'
-import { type getStaticProps } from '@/modules/users/views/users-view.getStaticProps'
+import type { getStaticProps } from '@/modules/users/views/users-view.getStaticProps'
 
 export const UserBanner = ({
   user,
