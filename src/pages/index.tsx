@@ -1,6 +1,5 @@
 import type { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Image, { StaticImageData } from 'next/image'
-import Link from 'next/link'
 import anno1800Header from 'public/Anno1800Header.webp'
 import arctic from 'public/Arctic.webp'
 import enbesa from 'public/Enbesa.webp'
@@ -9,7 +8,7 @@ import oldWorld from 'public/OldWorld.webp'
 import qs from 'qs'
 
 import StampCard from '@/components/StampCard'
-import { Container, Grid, Heading } from '@/components/ui'
+import { Container, Grid, Heading, Link } from '@/components/ui'
 import { REGIONS_1800 } from '@/lib/constants/1800/data'
 import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
@@ -40,7 +39,7 @@ const HomePage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <>
-      <Container className="pt-0">
+      <Container className="pt-2">
         <Image
           src={anno1800Header}
           alt="Anno 1800 game start screen"
@@ -66,10 +65,7 @@ const HomePage = ({
         <div className="space-y-4 pt-16">
           <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
             <Heading>New Stamps</Heading>
-            <Link
-              href={'/stamps'}
-              className="hidden text-sm font-semibold text-black hover:text-gray-700 sm:block"
-            >
+            <Link href="/stamps" className="dark:text-white">
               Browse all stamps
               <span aria-hidden="true"> &rarr;</span>
             </Link>
