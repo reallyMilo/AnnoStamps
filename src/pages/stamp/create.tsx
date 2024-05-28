@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 
 import { StampForm } from '@/components/StampForm/StampForm'
-import { Container } from '@/components/ui'
+import { Container, Text } from '@/components/ui'
 
 const CreateStampPage = () => {
   const router = useRouter()
@@ -41,7 +41,7 @@ const CreateStampPage = () => {
             />
           </div>
           <div className="ml-3">
-            <p className="text-sm text-yellow-700">
+            <Text className="text-sm text-yellow-700">
               This account currently does not have a username set.{' '}
               <Link
                 href={`/${session.data?.user.id}/settings`}
@@ -49,7 +49,7 @@ const CreateStampPage = () => {
               >
                 Please set your username.
               </Link>
-            </p>
+            </Text>
           </div>
         </div>
       </Container>

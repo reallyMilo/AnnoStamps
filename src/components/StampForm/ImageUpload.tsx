@@ -1,7 +1,7 @@
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 
-import { buttonStyles, Grid, Subheading } from '@/components/ui'
+import { buttonStyles, Grid, Subheading, Text } from '@/components/ui'
 import { Asset, useUpload } from '@/lib/hooks/useUpload'
 import { Image } from '@/lib/prisma/queries'
 import { cn } from '@/lib/utils'
@@ -23,9 +23,7 @@ export const ImageUpload = () => {
       <div className="flex flex-row justify-between">
         <div>
           <Subheading> Upload Images </Subheading>
-          <p className="text-sm text-gray-500">
-            First Image will be the Thumbnail, 4:3 aspect ratio
-          </p>
+          <Text>First Image will be the Thumbnail, 4:3 aspect ratio</Text>
         </div>
 
         <label

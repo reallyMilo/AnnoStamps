@@ -8,14 +8,13 @@ import type {
   InferGetStaticPropsType,
 } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
 import { StampLikeButton } from '@/components/StampLikeButton'
-import { buttonStyles, Container, Heading } from '@/components/ui'
+import { buttonStyles, Container, Heading, Link, Text } from '@/components/ui'
 import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 import { cn, distanceUnixTimeToNow } from '@/lib/utils'
@@ -87,7 +86,7 @@ const StampPage = ({
   if (router.isFallback) {
     return (
       <Container>
-        <p>Loading...</p>
+        <Text>Loading...</Text>
       </Container>
     )
   }
@@ -113,12 +112,12 @@ const StampPage = ({
   return (
     <Container className="max-w-5xl space-y-6 px-0">
       <Carousel images={images} />
-      <div className="space-y-6 px-2 sm:px-0">
+      <div className="space-y-6 px-2 text-midnight sm:px-0 dark:text-white">
         <Heading className="truncate">{title} </Heading>
 
         <div className="flex items-center space-x-5">
           {user.usernameURL && (
-            <Link className=" hover:text-sky-700" href={`/${user.usernameURL}`}>
+            <Link className="hover:text-primary" href={`/${user.usernameURL}`}>
               {user.username}
             </Link>
           )}
@@ -133,7 +132,9 @@ const StampPage = ({
           </div>
 
           <div className="hidden grow space-x-5 text-sm md:flex">
-            <div className=" capitalize text-accent">{region}</div>
+            <div className=" capitalize text-accent dark:text-accent">
+              {region}
+            </div>
 
             {category === 'production' && (
               <div className="capitalize text-gray-500">{good}</div>
@@ -176,7 +177,7 @@ const StampPage = ({
             Updated: {distanceUnixTimeToNow(changedAt)}
           </div>
         )}
-        <p className="col-span-3 break-words text-lg">{description}</p>
+        <Text className="col-span-3 break-words text-lg">{description}</Text>
       </div>
     </Container>
   )
