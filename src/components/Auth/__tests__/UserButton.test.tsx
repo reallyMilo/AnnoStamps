@@ -1,5 +1,5 @@
 import { act, render, screen, userEvent } from '../../../__tests__/test-utils'
-import UserButton from '../UserButton'
+import { UserButton } from '../UserButton'
 
 describe('UserButton', () => {
   it('renders for unauthenticated user', () => {
