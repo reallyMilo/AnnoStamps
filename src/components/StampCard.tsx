@@ -2,7 +2,7 @@ import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { Avatar, Heading } from '@/components/ui'
+import { Avatar, Heading, Subheading } from '@/components/ui'
 import type { StampWithRelations } from '@/lib/prisma/queries'
 import { distanceUnixTimeToNow } from '@/lib/utils'
 
@@ -33,7 +33,7 @@ const StampCard = ({
   const srcUrl = images[0]?.smallUrl ?? images[0].originalUrl
 
   return (
-    <div className="group relative flex flex-col rounded-lg bg-white shadow-md">
+    <div className="group relative flex flex-col rounded-lg bg-white shadow-md dark:bg-zinc-800">
       <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200 group-hover:opacity-75 ">
         <Image
           src={srcUrl}
@@ -57,10 +57,17 @@ const StampCard = ({
 
       <div className="flex h-full flex-col gap-y-2 p-4">
         <div className="flex items-baseline justify-between">
-          <h4 id="stamp-region" className="text-sm capitalize text-accent">
+          <Subheading
+            id="stamp-region"
+            level={4}
+            className="text-sm capitalize text-accent dark:text-accent"
+          >
             {region}
-          </h4>
-          <div className="text-sm" suppressHydrationWarning>
+          </Subheading>
+          <div
+            className="text-sm text-midnight dark:text-white"
+            suppressHydrationWarning
+          >
             {distanceUnixTimeToNow(createdAt)}
           </div>
         </div>
@@ -82,7 +89,7 @@ const StampCard = ({
         {user?.username ? (
           <Link
             href={`/${user.usernameURL}`}
-            className="z-10 flex h-11 w-fit items-center gap-1 text-slate-500 hover:text-sky-700"
+            className="z-10 flex h-11 w-fit items-center gap-1 text-slate-500 hover:text-primary  dark:text-white"
             prefetch={false}
           >
             <Avatar src={user.image} className="size-5" />
@@ -94,7 +101,7 @@ const StampCard = ({
 
         <div className="mt-auto flex justify-between">
           <StampCategoryIcon category={category} />
-          <div className="flex items-end">
+          <div className="flex items-end text-midnight dark:text-white">
             <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5 self-center" />
             <span data-testid="stamp-card-downloads">{downloads}</span>
           </div>
