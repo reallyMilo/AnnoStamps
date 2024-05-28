@@ -11,8 +11,7 @@ export const Heading = ({ className, level = 1, ...props }: HeadingProps) => {
     <Element
       {...props}
       className={cn(
-        //DARKMODE: dark:text-white
-        'text-2xl/8 font-semibold text-midnight sm:text-xl/8 ',
+        'text-2xl/8 font-semibold text-midnight sm:text-xl/8 dark:text-white',
         className
       )}
     />
@@ -30,8 +29,7 @@ export const Subheading = ({
     <Element
       {...props}
       className={cn(
-        // DARKMODE: dark:text-white
-        'text-base/7 font-semibold text-midnight sm:text-sm/6 ',
+        'text-base/7 font-semibold text-midnight sm:text-sm/6 dark:text-white',
         className
       )}
     />
