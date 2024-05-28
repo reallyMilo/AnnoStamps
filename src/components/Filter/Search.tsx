@@ -3,7 +3,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Input, InputGroup } from '@/components/ui'
 import { useQueryParams } from '@/lib/hooks/useQueryParams'
 
-const Search = () => {
+export const Search = () => {
   const [query, setQuery] = useQueryParams()
   const defaultValue = new URLSearchParams(query).get('search')
 
@@ -34,5 +34,3 @@ const Search = () => {
     </form>
   )
 }
-
-export default Search

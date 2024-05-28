@@ -1,7 +1,7 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
-import Filter from '@/components/Filter/Filter'
+import { Filter } from '@/components/Filter/Filter'
 import { Pagination } from '@/components/Filter/Pagination'
 import { StampCard } from '@/components/StampCard'
 import { Container, Grid } from '@/components/ui'

@@ -13,8 +13,8 @@ import { useRouter } from 'next/router'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import LikeButton from '@/components/LikeButton'
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
+import { StampLikeButton } from '@/components/StampLikeButton'
 import { buttonStyles, Container, Heading } from '@/components/ui'
 import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
@@ -153,7 +153,7 @@ const StampPage = ({
               {distanceUnixTimeToNow(createdAt)}
             </div>
           </div>
-          <LikeButton id={id} initialLikes={likedBy.length} />
+          <StampLikeButton id={id} initialLikes={likedBy.length} />
 
           <a
             href={stampFileUrl}

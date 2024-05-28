@@ -5,7 +5,7 @@ import {
   screen,
   userEvent,
 } from '../../__tests__/test-utils'
-import StampCard from '../StampCard'
+import { StampCard } from '../StampCard'
 
 const render = (props?: Partial<StampWithRelations>) => ({
   ...renderRTL(
