@@ -8,16 +8,17 @@ export const Link = React.forwardRef(
       React.ComponentPropsWithoutRef<'a'>,
     ref: React.ForwardedRef<HTMLAnchorElement>
   ) => {
-    if (props.htmlLink) {
+    const { htmlLink, ...rest } = props
+    if (htmlLink) {
       return (
         <Headless.DataInteractive>
-          <a {...props} ref={ref}></a>
+          <a {...rest} ref={ref}></a>
         </Headless.DataInteractive>
       )
     }
     return (
       <Headless.DataInteractive>
-        <NextLink prefetch={false} {...props} ref={ref} />
+        <NextLink prefetch={false} {...rest} ref={ref} />
       </Headless.DataInteractive>
     )
   }
