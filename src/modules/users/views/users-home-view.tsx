@@ -13,7 +13,7 @@ import { StampCard } from '@/components/StampCard'
 import { Container, Grid, Subheading } from '@/components/ui'
 
 import { UserBanner } from '../../../components/UserBanner'
-import { type getStaticProps } from './users-view.getStaticProps'
+import type { getStaticProps } from './users-view.getStaticProps'
 
 /**
  * TODO: home-view additions
