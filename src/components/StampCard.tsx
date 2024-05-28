@@ -2,13 +2,12 @@ import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { StampCategoryIcon } from '@/components/StampCategoryIcon'
 import { Avatar, Heading, Subheading } from '@/components/ui'
 import type { StampWithRelations } from '@/lib/prisma/queries'
 import { distanceUnixTimeToNow } from '@/lib/utils'
 
-import StampCategoryIcon from './StampCategoryIcon'
-
-const StampCard = ({
+export const StampCard = ({
   id,
   title,
   category,
@@ -110,5 +109,3 @@ const StampCard = ({
     </div>
   )
 }
-
-export default StampCard

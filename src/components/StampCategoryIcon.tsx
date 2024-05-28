@@ -38,7 +38,11 @@ const categoryMap: Record<CategoryValues, CategoryInfo> = {
   },
 }
 
-const Category = ({ category = 'general' }: { category: string }) => {
+export const StampCategoryIcon = ({
+  category = 'general',
+}: {
+  category: string
+}) => {
   const { icon, color } = categoryMap[category as CategoryValues]
   return (
     <span
@@ -49,5 +53,3 @@ const Category = ({ category = 'general' }: { category: string }) => {
     </span>
   )
 }
-
-export default Category

@@ -14,7 +14,7 @@ import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import LikeButton from '@/components/LikeButton'
-import StampCategoryIcon from '@/components/StampCategoryIcon'
+import { StampCategoryIcon } from '@/components/StampCategoryIcon'
 import { buttonStyles, Container, Heading } from '@/components/ui'
 import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'

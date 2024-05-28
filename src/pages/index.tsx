@@ -7,7 +7,7 @@ import newWorld from 'public/NewWorld.webp'
 import oldWorld from 'public/OldWorld.webp'
 import qs from 'qs'
 
-import StampCard from '@/components/StampCard'
+import { StampCard } from '@/components/StampCard'
 import { Container, Grid, Heading, Link } from '@/components/ui'
 import { REGIONS_1800 } from '@/lib/constants/1800/data'
 import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
