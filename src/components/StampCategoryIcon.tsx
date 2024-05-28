@@ -30,7 +30,7 @@ const categoryMap: Record<CategoryValues, CategoryInfo> = {
   },
   island: {
     icon: <GlobeEuropeAfricaIcon className="h-5 w-5" />,
-    color: 'bg-midnight text-default',
+    color: 'bg-midnight text-default dark:text-midnight dark:bg-default',
   },
   general: {
     icon: <TagIcon className="h-5 w-5" />,
