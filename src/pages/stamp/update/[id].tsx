@@ -7,7 +7,7 @@ import { useMemo } from 'react'
 import useSWR from 'swr'
 
 import { StampForm } from '@/components/StampForm/StampForm'
-import { Container, Heading } from '@/components/ui'
+import { Container, Heading, Text } from '@/components/ui'
 import type { UserWithStamps } from '@/lib/prisma/queries'
 
 const useUserStamps = () => {
@@ -122,7 +122,7 @@ const EditStampPage = () => {
             />
           </div>
           <div className="ml-3">
-            <p className="text-sm text-yellow-700">
+            <Text className="text-sm text-yellow-700">
               This account currently does not have a username set.{' '}
               <Link
                 href={`/${session?.user.id}/settings`}
@@ -130,7 +130,7 @@ const EditStampPage = () => {
               >
                 Please set your username.
               </Link>
-            </p>
+            </Text>
           </div>
         </div>
       </Container>
@@ -153,7 +153,7 @@ const EditStampPage = () => {
           </StampForm.Form>
         </StampForm.Root>
       ) : (
-        <p> not your stamp </p>
+        <Text> not your stamp </Text>
       )}
     </Container>
   )

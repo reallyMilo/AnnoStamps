@@ -145,10 +145,12 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <link rel="icon" href="/favicon.svg" />
       </Head>
 
-      <div className="flex min-h-screen flex-col justify-between bg-default dark:bg-zinc-900">
+      <div className="flex min-h-screen flex-col bg-default dark:bg-zinc-900">
         <Navbar />
 
-        <main className="relative mx-auto min-h-full w-full ">{children}</main>
+        <main className="relative mx-auto min-h-full w-full flex-grow">
+          {children}
+        </main>
 
         <Footer />
       </div>

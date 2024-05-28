@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { getProviders, signIn } from 'next-auth/react'
 
 import { auth } from '@/auth'
-import { Container, Heading } from '@/components/ui'
+import { Container, Heading, Text } from '@/components/ui'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await auth(context.req, context.res)
@@ -54,7 +54,7 @@ const SignInPage = ({
 
       <Heading className="mt-6 text-center">Welcome!</Heading>
 
-      <div className="mt-10 flex flex-col space-y-4 border">
+      <div className="mt-10 flex flex-col space-y-4">
         {providers &&
           Object.values(providers).map((provider) => (
             <button
@@ -76,10 +76,10 @@ const SignInPage = ({
             </button>
           ))}
       </div>
-      <p className="mt-4">
+      <Text className="mt-4">
         Please contact us on Discord to transfer your Stamps made with email
         login.
-      </p>
+      </Text>
     </Container>
   )
 }

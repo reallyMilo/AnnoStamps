@@ -1,7 +1,7 @@
 import type { InferGetStaticPropsType } from 'next'
 
 import { StampCard } from '@/components/StampCard'
-import { Container, Grid } from '@/components/ui'
+import { Container, Grid, Text } from '@/components/ui'
 
 import { UserBanner } from '../../../components/UserBanner'
 import { type getStaticProps } from './users-view.getStaticProps'
@@ -14,7 +14,7 @@ const UserPublicPage = ({
     return (
       <Container>
         <UserBanner user={user} stats={stats} />
-        <p>User has no stamps</p>
+        <Text>User has no stamps</Text>
       </Container>
     )
   }

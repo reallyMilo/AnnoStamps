@@ -4,7 +4,7 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { Filter } from '@/components/Filter/Filter'
 import { Pagination } from '@/components/Filter/Pagination'
 import { StampCard } from '@/components/StampCard'
-import { Container, Grid } from '@/components/ui'
+import { Container, Grid, Text } from '@/components/ui'
 import { queryParamsSchema } from '@/lib/hooks/useQueryParams'
 import { StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
@@ -52,10 +52,10 @@ const StampsPage = ({
     return (
       <Container>
         <Filter>
-          <p className="inline-flex max-w-max items-center space-x-1 rounded-md bg-amber-100 px-4 py-2 text-amber-700">
+          <Text>
             <ExclamationCircleIcon className="mt-px h-5 w-5 shrink-0" />
             <span>No stamps found.</span>
-          </p>
+          </Text>
         </Filter>
       </Container>
     )
