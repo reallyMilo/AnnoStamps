@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Fragment, useState } from 'react'
 
-import StampCard from '@/components/StampCard'
+import { StampCard } from '@/components/StampCard'
 import { Container, Grid, Subheading } from '@/components/ui'
 
 import { UserBanner } from '../../../components/UserBanner'

@@ -3,7 +3,7 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
 import Filter from '@/components/Filter/Filter'
 import { Pagination } from '@/components/Filter/Pagination'
-import StampCard from '@/components/StampCard'
+import { StampCard } from '@/components/StampCard'
 import { Container, Grid } from '@/components/ui'
 import { queryParamsSchema } from '@/lib/hooks/useQueryParams'
 import { StampWithRelations } from '@/lib/prisma/queries'
