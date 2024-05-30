@@ -32,14 +32,6 @@ const stamps = [
   },
 ] as unknown as StampWithRelations[]
 
-const ResizeObserverMock = vi.fn(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}))
-
-vi.stubGlobal('ResizeObserver', ResizeObserverMock)
-
 describe('Stamps Page', () => {
   it('render StampsPage with filter and without stamps', () => {
     render(<StampsPage count={0} stamps={[]} pageNumber={1} />)
