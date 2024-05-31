@@ -1,16 +1,16 @@
-import { Dialog, Transition } from '@headlessui/react'
 import { FunnelIcon } from '@heroicons/react/20/solid'
-import { XMarkIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/router'
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 
 import {
+  Button,
   Checkbox,
   CheckboxField,
   Field,
   Fieldset,
   Label,
   Legend,
+  MobileSidebar,
   Select,
   Subheading,
 } from '@/components/ui'
@@ -42,7 +42,10 @@ const FilterForm = ({ className }: { className: string }) => {
   const router = useRouter()
   const [query, setQuery] = useQueryParams()
   return (
-    <form className={cn('space-y-6 divide-y divide-gray-200', className)}>
+    <form
+      aria-label="Filters"
+      className={cn('space-y-6 divide-y divide-gray-200', className)}
+    >
       {filters.map((section, sectionIdx) => (
         <div key={`${section.id}-${sectionIdx}`} className="pt-6 first:pt-0">
           <Fieldset>
@@ -94,66 +97,23 @@ const FilterForm = ({ className }: { className: string }) => {
   )
 }
 const MobileFilter = () => {
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
-      <button
+      <Button
         type="button"
+        className="self-end lg:hidden"
         data-testid="mobile-filter-button"
-        className="-m-2 ml-4 p-2 text-secondary hover:text-secondary/75 sm:ml-6 lg:hidden"
-        onClick={() => setMobileFiltersOpen(true)}
+        color="secondary"
+        onClick={() => setIsOpen(true)}
       >
-        <span className="sr-only">Filters</span>
-        <FunnelIcon className="h-5 w-5" aria-hidden="true" />
-      </button>
-      <Transition.Root show={mobileFiltersOpen} as={Fragment}>
-        <Dialog
-          className="relative z-40 lg:hidden"
-          onClose={setMobileFiltersOpen}
-        >
-          <Transition.Child
-            as={Fragment}
-            enter="transition-opacity ease-linear duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity ease-linear duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
+        <FunnelIcon />
+      </Button>
 
-          <div className="fixed inset-0 z-40 flex">
-            <Transition.Child
-              as={Fragment}
-              enter="transition ease-in-out duration-300 transform"
-              enterFrom="translate-x-full"
-              enterTo="translate-x-0"
-              leave="transition ease-in-out duration-300 transform"
-              leaveFrom="translate-x-0"
-              leaveTo="translate-x-full"
-            >
-              <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-default py-4 pb-6 shadow-xl">
-                <div className="flex items-center justify-between px-4">
-                  <Subheading>Filters</Subheading>
-                  <button
-                    type="button"
-                    data-testid="mobile-close-filter-button"
-                    className="-mr-2 flex h-10 w-10 items-center justify-center p-2 text-midnight hover:text-midnight/75"
-                    onClick={() => setMobileFiltersOpen(false)}
-                  >
-                    <span className="sr-only">Close menu</span>
-                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-                </div>
-
-                <FilterForm className="px-4 pt-6" />
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </Dialog>
-      </Transition.Root>
+      <MobileSidebar open={isOpen} close={() => setIsOpen(false)}>
+        <FilterForm className="px-4 pt-6" />
+      </MobileSidebar>
     </>
   )
 }
@@ -179,8 +139,8 @@ export const Filter = ({
 
           <div className="lg:col-span-5">
             <div className="flex items-baseline justify-between pb-6">
-              <Subheading className="sm:self-start">{`${starting} to ${ending} of ${count}`}</Subheading>
-              <div className="flex items-center">
+              <Subheading className="self-end sm:self-start">{`${starting} to ${ending} of ${count}`}</Subheading>
+              <div className="flex items-center space-x-5">
                 <div className="relative inline-block text-left md:ml-auto">
                   <Field>
                     <Label className="absolute left-0 z-10 ml-2 -translate-y-2.5 bg-default text-sm capitalize sm:text-sm dark:bg-transparent">

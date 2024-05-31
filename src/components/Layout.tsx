@@ -1,16 +1,24 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useState } from 'react'
 
 import { UserButton } from '@/components/Auth/UserButton'
 import { Search } from '@/components/Filter/Search'
 import {
   Container,
   Link,
+  MobileSidebar,
   Navbar as NavbarRoot,
   NavbarDivider,
   NavbarItem,
   NavbarSection,
   NavbarSpacer,
+  OpenMenuIcon,
+  Sidebar,
+  SidebarBody,
+  SidebarHeader,
+  SidebarItem,
+  SidebarSection,
 } from '@/components/ui'
 
 import headerLogo from '../../public/anno-stamps-logo.svg'
@@ -40,13 +48,53 @@ const socials = [
     src: github,
   },
 ]
-
+const MobileNavBar = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  return (
+    <>
+      <NavbarItem
+        onClick={() => setIsOpen(true)}
+        aria-label="Open navigation"
+        className="md:hidden"
+      >
+        <OpenMenuIcon />
+      </NavbarItem>
+      <MobileSidebar open={isOpen} close={() => setIsOpen(false)}>
+        <Sidebar>
+          <SidebarHeader>
+            <Link id="header-logo" href="/">
+              <Image
+                src={headerLogo}
+                alt="Anno Stamps"
+                style={{
+                  width: '100%',
+                  maxWidth: '160px',
+                  height: 'auto',
+                }}
+              />
+            </Link>
+          </SidebarHeader>
+          <SidebarBody>
+            <SidebarSection>
+              {navigation.map((item) => (
+                <SidebarItem key={item.text} href={item.href}>
+                  {item.text}
+                </SidebarItem>
+              ))}
+            </SidebarSection>
+          </SidebarBody>
+        </Sidebar>
+      </MobileSidebar>
+    </>
+  )
+}
 const Navbar = () => {
   return (
     <header>
       <Container className="py-0">
         <NavbarRoot>
-          <Link id="header-logo" href="/">
+          <MobileNavBar />
+          <Link id="header-logo" href="/" className="max-lg:hidden">
             <Image
               src={headerLogo}
               alt="Anno Stamps"
@@ -58,7 +106,7 @@ const Navbar = () => {
             />
           </Link>
           <NavbarDivider className="max-lg:hidden" />
-          <NavbarSection className="max-lg:hidden">
+          <NavbarSection className="max-md:hidden">
             {navigation.map((item) => (
               <NavbarItem key={item.text} href={item.href}>
                 {item.text}
@@ -79,7 +127,7 @@ const Footer = () => {
     <footer>
       <Container className="py-0">
         <NavbarRoot>
-          <Link id="header-logo" href="/" className="max-lg:hidden">
+          <Link id="header-logo" href="/" className="max-sm:hidden">
             <Image
               src={headerLogo}
               alt="Anno Stamps"
