@@ -95,7 +95,7 @@ const EditStampPage = () => {
     return (
       <Container>
         <Heading>Error</Heading>
-        <p>{error.info.message}</p>
+        <Text>{error.info.message}</Text>
       </Container>
     )
   }
