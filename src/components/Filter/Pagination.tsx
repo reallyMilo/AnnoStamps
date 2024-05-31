@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 import {
@@ -16,8 +17,8 @@ type PaginationProps = {
   page: number
 }
 
+// max elements for screen size 768 and greater
 const maxPaginationList = 11
-
 // paginate that does not shift number of elements
 const paginate = (
   totalPageCount: number,
@@ -28,7 +29,7 @@ const paginate = (
   }
   const range = Math.floor(maxPaginationList / 2)
   const isLeftGap = currentPage - range - 1 > 2
-  const isRightGap = totalPageCount - currentPage - range - 1 >= 2
+  const isRightGap = totalPageCount - currentPage - range - 1 > 2
   const pages: (number | null)[] = [1]
 
   let leftStartNumber
@@ -37,14 +38,16 @@ const paginate = (
   } else if (!isLeftGap) {
     leftStartNumber = 2
   } else {
-    // fix: some edge cases with totalPageCount near range limit
     leftStartNumber = totalPageCount - maxPaginationList + 1
   }
 
   for (let index = 1, inc = 0; index <= maxPaginationList; index++) {
     if (
       (isLeftGap && index === 1) ||
-      (isRightGap && index === maxPaginationList)
+      (isRightGap && index === maxPaginationList) ||
+      (!isLeftGap &&
+        leftStartNumber + inc !== totalPageCount &&
+        index === maxPaginationList)
     ) {
       pages.push(null)
     } else {
@@ -57,18 +60,25 @@ const paginate = (
 }
 
 export const Pagination = ({ count, page }: PaginationProps) => {
+  const router = useRouter()
   const [query, setQuery] = useQueryParams()
-  const queryPage = new URLSearchParams(query).get('page')
-  useEffect(() => {
-    if (page === 1 && Number(queryPage) !== 1 && queryPage) {
-      setQuery({ payload: '1', type: 'page' })
-    }
-  })
   const totalPageCount = Math.ceil(count / STAMPS_PER_PAGE)
   const pageNumbers = paginate(totalPageCount, page)
+  const queryPage = new URLSearchParams(query).get('page')
+
+  useEffect(() => {
+    if (page === 1 && Number(queryPage) !== 1 && queryPage) {
+      router.replace({
+        pathname: router.pathname,
+        query: { ...router.query, page: 1 },
+      })
+    }
+  })
   return (
     <PaginationRoot>
-      <PaginationPrevious href={page === 1 ? null : '1'} />
+      <PaginationPrevious
+        href={page === 1 ? null : setQuery({ ...router.query, page: page - 1 })}
+      />
       <PaginationList>
         {pageNumbers.map((pageNum, idx) => {
           if (!pageNum) {
@@ -76,7 +86,7 @@ export const Pagination = ({ count, page }: PaginationProps) => {
           }
           return (
             <PaginationPage
-              href={'20'}
+              href={setQuery({ ...router.query, page: pageNum })}
               key={pageNum + '-pagination'}
               current={pageNum === page}
             >
@@ -85,7 +95,13 @@ export const Pagination = ({ count, page }: PaginationProps) => {
           )
         })}
       </PaginationList>
-      <PaginationNext href={page === totalPageCount ? null : '10'} />
+      <PaginationNext
+        href={
+          page === totalPageCount
+            ? null
+            : setQuery({ ...router.query, page: page + 1 })
+        }
+      />
     </PaginationRoot>
   )
 }
