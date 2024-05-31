@@ -68,8 +68,8 @@ export const styles = {
       '[--btn-icon:theme(colors.midnight)] data-[active]:[--btn-icon:theme(colors.midnight)] data-[hover]:[--btn-icon:theme(colors.midnight/90%)]',
     ],
     accent: [
-      'text-midnight [--btn-hover-overlay:theme(colors.white/10%)] [--btn-bg:theme(colors.accent)] [--btn-border:theme(colors.accent/90%)]',
-      '[--btn-icon:theme(colors.midnight)] data-[active]:[--btn-icon:theme(colors.midnight)] data-[hover]:[--btn-icon:theme(colors.midnight)]',
+      'text-white [--btn-hover-overlay:theme(colors.white/10%)] [--btn-bg:theme(colors.accent)] [--btn-border:theme(colors.accent/90%)]',
+      '[--btn-icon:theme(colors.white)] data-[active]:[--btn-icon:theme(colors.midnight)] data-[hover]:[--btn-icon:theme(colors.midnight)]',
     ],
   },
 }

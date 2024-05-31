@@ -1,16 +1,24 @@
-import { Dialog, Transition } from '@headlessui/react'
 import {
   PencilSquareIcon,
   PlusIcon,
   TrashIcon,
 } from '@heroicons/react/20/solid'
 import type { InferGetStaticPropsType } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 
 import { StampCard } from '@/components/StampCard'
-import { Container, Grid, Subheading } from '@/components/ui'
+import {
+  Button,
+  Container,
+  Grid,
+  Modal,
+  ModalActions,
+  ModalDescription,
+  ModalTitle,
+  Subheading,
+  Text,
+} from '@/components/ui'
 
 import { UserBanner } from '../../../components/UserBanner'
 import type { getStaticProps } from './users-view.getStaticProps'
@@ -42,73 +50,27 @@ const StampDeleteModal = ({
   }
   return (
     <>
-      <button
+      <Button
         data-testid="delete-stamp"
-        className="rounded-md px-4 py-2"
+        color="accent"
         onClick={() => setIsOpen(true)}
       >
-        <TrashIcon className="h-5 w-5 text-red-600" />
-      </button>
+        <TrashIcon />
+      </Button>
 
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-10"
-          onClose={() => setIsOpen(false)}
-        >
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black/25" />
-          </Transition.Child>
+      <Modal open={isOpen} onClose={setIsOpen}>
+        <ModalTitle>Delete {title}?</ModalTitle>
+        <ModalDescription>This action is not reversible.</ModalDescription>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-md transform space-y-5 overflow-hidden rounded-2xl bg-gray-200 p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                    Delete {title}?
-                  </Dialog.Title>
-
-                  <p>This action cannot be undone.</p>
-                  <div className="flex justify-between">
-                    <button
-                      className="rounded-md border border-black px-4 py-2 hover:bg-gray-100"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      No, cancel
-                    </button>
-
-                    <button
-                      className="rounded-md bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-400"
-                      onClick={deleteStamp}
-                    >
-                      Yes, delete
-                    </button>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition>
+        <ModalActions>
+          <Button plain onClick={() => setIsOpen(false)}>
+            No, cancel
+          </Button>
+          <Button color="accent" onClick={deleteStamp}>
+            Yes, delete
+          </Button>
+        </ModalActions>
+      </Modal>
     </>
   )
 }
@@ -138,17 +100,12 @@ const UserHomePage = ({
             />
           </svg>
           <Subheading level={3}>No Stamps</Subheading>
-          <p className="mt-1 text-sm text-gray-500">
-            Get started by creating a new stamp.
-          </p>
+          <Text>Get started by creating a new stamp.</Text>
           <div className="mt-6">
-            <Link
-              href={'/stamp/create'}
-              className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-primary/75"
-            >
-              <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
+            <Button href={'/stamp/create'}>
+              <PlusIcon />
               New Stamp
-            </Link>
+            </Button>
           </div>
         </div>
       </Container>
@@ -162,15 +119,13 @@ const UserHomePage = ({
       <Grid>
         {user.listedStamps.map((stamp) => (
           <div key={stamp.id} className="flex flex-col">
-            <div className="mb-1 flex">
+            <div className="mb-1 flex justify-between">
               <StampDeleteModal {...stamp} />
 
-              <Link
-                className="mb-1 ml-auto flex rounded-md bg-primary px-4 py-2 text-sm font-bold text-midnight transition hover:bg-accent focus:outline-none focus:ring-4 focus:ring-accent focus:ring-opacity-50"
-                href={`/stamp/update/${stamp.id}`}
-              >
-                <PencilSquareIcon className="mr-2 h-5 w-5" /> Edit Stamp{' '}
-              </Link>
+              <Button href={`/stamp/update/${stamp.id}`}>
+                <PencilSquareIcon />
+                Edit Stamp
+              </Button>
             </div>
             <StampCard user={user} {...stamp} />
           </div>
