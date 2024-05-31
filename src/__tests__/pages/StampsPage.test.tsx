@@ -59,7 +59,9 @@ describe('Stamps Page', () => {
         await userEvent.click(screen.getByTestId('mobile-filter-button'))
     )
 
-    expect(screen.getByRole('heading'), 'Filters').toBeVisible()
-    expect(screen.getByTestId('mobile-close-filter-button')).toBeVisible()
+    expect(
+      screen.getByRole('button', { name: 'Close navigation' })
+    ).toBeVisible()
+    expect(screen.getByRole('form', { name: 'Filters' })).toBeVisible()
   })
 })
