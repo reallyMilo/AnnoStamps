@@ -18,7 +18,6 @@ describe('Filtering stamps', () => {
     cy.url().should('include', '?category=production&region=enbesa')
 
     cy.findAllByText('enbesa').should('have.length.greaterThan', 2)
-
     cy.get('select#sort').select('newest').invoke('val').should('eq', 'newest')
     cy.url().should('include', 'category=production&region=enbesa&sort=newest')
 
@@ -42,8 +41,8 @@ describe('Filtering stamps', () => {
   })
 
   it('pagination reset on exceeding pages through search functionality', () => {
-    cy.get('[value=13]').click()
-    cy.url().should('include', 'page=13')
+    cy.findByLabelText('Page 10').click()
+    cy.url().should('include', 'page=10')
 
     cy.get('#search').type('Stamp-800{enter}')
 

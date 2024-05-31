@@ -15,13 +15,7 @@ const queryParamsSchema = z
 
 type QueryParams = z.infer<typeof queryParamsSchema>
 
-type Action = {
-  isAddParam?: boolean
-  payload: string
-  type: Required<keyof QueryParams>
-}
-
-const queryParamsOrder: Action['type'][] = [
+const queryParamsOrder = [
   'category',
   'region',
   'capital',
@@ -30,50 +24,21 @@ const queryParamsOrder: Action['type'][] = [
   'search',
 ]
 
-const useQueryParams = (pathToQuery = '/stamps') => {
+const useQueryParams = () => {
   const router = useRouter()
-  const { asPath } = router
+  const { pathname, asPath } = router
 
-  const setQuery = ({ type, payload, isAddParam = true }: Action) => {
-    const queryParams = asPath.slice(pathToQuery.length)
-    const newQuery = isAddParam
-      ? `${queryParams}&${type}=${payload}`
-      : queryParams
-    const parsedQuery = qs.parse(newQuery, {
-      ignoreQueryPrefix: true,
-      duplicates: 'combine',
-    })
-
-    if (type === 'search' || type === 'sort' || type === 'page') {
-      parsedQuery[type] = payload.length > 0 ? payload : undefined
-    }
-
-    const queryString = qs.stringify(parsedQuery, {
+  const setQuery = (params: object) => {
+    const queryString = qs.stringify(params, {
       arrayFormat: 'repeat',
-      sort: (a, b) =>
-        queryParamsOrder.indexOf(a as Action['type']) -
-        queryParamsOrder.indexOf(b as Action['type']),
-      filter: (prefix, value) => {
-        if (isAddParam === false && prefix === type && value === payload) {
-          return
-        }
-        return value
-      },
+      sort: (a, b) => queryParamsOrder.indexOf(a) - queryParamsOrder.indexOf(b),
       skipNulls: true,
     })
+    const isEmpty = queryString.length === 0
 
-    if (payload === 'page') {
-      router.push({
-        pathname: pathToQuery,
-        query: queryString,
-      })
-      return
-    }
-    router.replace({
-      pathname: pathToQuery,
-      query: queryString,
-    })
+    return isEmpty ? pathname : `${pathname}?${queryString}`
   }
+
   const query = asPath.split('?')[1]
   return [query, setQuery] as const
 }

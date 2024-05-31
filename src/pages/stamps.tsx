@@ -4,7 +4,7 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { Filter } from '@/components/Filter/Filter'
 import { Pagination } from '@/components/Filter/Pagination'
 import { StampCard } from '@/components/StampCard'
-import { Container, Grid, Text } from '@/components/ui'
+import { Container, Grid, Heading, Text } from '@/components/ui'
 import { queryParamsSchema } from '@/lib/hooks/useQueryParams'
 import { StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
@@ -51,7 +51,8 @@ const StampsPage = ({
   if (stamps.length === 0) {
     return (
       <Container>
-        <Filter>
+        <Heading className="sm:text-4xl/8">1800 Stamps</Heading>
+        <Filter count={0} page={0}>
           <Text>
             <ExclamationCircleIcon className="mt-px h-5 w-5 shrink-0" />
             <span>No stamps found.</span>
@@ -62,8 +63,9 @@ const StampsPage = ({
   }
   return (
     <Container>
-      <Filter>
-        <div className="flex flex-col">
+      <Heading className="sm:text-4xl/8">1800 Stamps</Heading>
+      <Filter page={pageNumber} count={count}>
+        <div className="flex flex-col space-y-6">
           <Grid>
             {stamps.map((stamp) => (
               <StampCard key={stamp.id} {...stamp} />
