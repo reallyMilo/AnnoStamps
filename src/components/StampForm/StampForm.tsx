@@ -1,12 +1,12 @@
 import { createId } from '@paralleldrive/cuid2'
-import JSZip, { JSZipObjectWithData } from 'jszip'
+import JSZip, { type JSZipObjectWithData } from 'jszip'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import * as React from 'react'
 
 import { Button, Heading, Text } from '@/components/ui'
-import { Asset } from '@/lib/hooks/useUpload'
-import { UserWithStamps } from '@/lib/prisma/queries'
+import type { Asset } from '@/lib/hooks/useUpload'
+import type { UserWithStamps } from '@/lib/prisma/queries'
 import { upload } from '@/lib/upload'
 
 import { FileUpload } from './FileUpload'
