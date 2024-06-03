@@ -1,5 +1,5 @@
 import { createId } from '@paralleldrive/cuid2'
-import JSZip, { JSZipObject } from 'jszip'
+import JSZip, { JSZipObjectWithData } from 'jszip'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import * as React from 'react'
@@ -17,9 +17,11 @@ type Stamp = UserWithStamps['listedStamps'][0]
 type Image = Stamp['images'][0]
 
 export type StampFormContextValue = {
-  files: (Asset | JSZipObject)[]
+  files: (Asset | JSZipObjectWithData)[]
   images: (Asset | Image)[]
-  setFiles: React.Dispatch<React.SetStateAction<(Asset | JSZipObject)[]>>
+  setFiles: React.Dispatch<
+    React.SetStateAction<(Asset | JSZipObjectWithData)[]>
+  >
   setImages: React.Dispatch<React.SetStateAction<(Asset | Image)[]>>
   setStatus: React.Dispatch<
     React.SetStateAction<StampFormContextValue['status']>
@@ -76,7 +78,7 @@ export type FormProps = {
   ) => Promise<Response>
 }
 
-const isAsset = (b: Asset | JSZipObject | Image): b is Asset => {
+const isAsset = (b: Asset | JSZipObjectWithData | Image): b is Asset => {
   return (b as Asset).rawFile !== undefined
 }
 
@@ -187,7 +189,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
 type RootProps = {
   children: React.ReactNode
   stamp?: Stamp
-  zipFiles?: JSZipObject[]
+  zipFiles?: JSZipObjectWithData[]
 }
 
 const Root = ({ children, stamp, zipFiles }: RootProps) => {
