@@ -1,5 +1,5 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
-import JSZip from 'jszip'
+import JSZip, { type JSZipObjectWithData } from 'jszip'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
@@ -140,7 +140,10 @@ const EditStampPage = () => {
   return (
     <Container className="md:max-w-5xl">
       {stamp && stampZip ? (
-        <StampForm.Root stamp={stamp} zipFiles={Object.values(stampZip.files)}>
+        <StampForm.Root
+          stamp={stamp}
+          zipFiles={Object.values(stampZip.files) as JSZipObjectWithData[]}
+        >
           <StampForm.Form onSubmit={handleOnSubmit}>
             <StampForm.Header
               title="Edit your stamp"
