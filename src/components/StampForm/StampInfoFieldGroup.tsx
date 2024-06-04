@@ -1,16 +1,22 @@
+import { marked } from 'marked'
 import { useState } from 'react'
 
 import {
+  Button,
+  Description,
   Field,
   FieldGroup,
   Input,
   Label,
   Select,
+  Strong,
   Textarea,
+  TextLink,
 } from '@/components/ui'
 import { CATEGORIES } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 
+import { StampMarkdownHTML } from '../StampMarkdownHTML'
 import { useStampFormContext } from './StampForm'
 
 const presetCategories = Object.values(CATEGORIES)
@@ -21,6 +27,10 @@ export const StampInfoFieldGroup = () => {
   const { stamp } = useStampFormContext()
 
   const [category, setCategory] = useState(stamp?.category)
+
+  const [previewMarkdown, setPreviewMarkdown] = useState<
+    string | Promise<string>
+  >('')
 
   return (
     <FieldGroup>
@@ -139,15 +149,44 @@ export const StampInfoFieldGroup = () => {
       </Field>
       <Field>
         <Label>Description</Label>
+        <Description>
+          <Strong>This field now has markdown support! </Strong>
+          Only links are styled currently.{' '}
+          <TextLink
+            htmlLink
+            href="https://support.discord.com/hc/en-us/articles/210298617-Markdown-Text-101-Chat-Formatting-Bold-Italic-Underline"
+          >
+            Uses Discord markdown style.
+          </TextLink>
+        </Description>
         <Textarea
           id="description"
           name="description"
-          placeholder='Add some two letter fields for searching at the start of the description, see anno wiki
-            production layouts for reference."'
+          placeholder="Use markdown to create better links, [TheMod](https://mod.io/goodmod)"
           defaultValue={stamp?.description}
           rows={5}
         />
       </Field>
+      <div className="flex justify-end">
+        <Button
+          className="font-normal"
+          color="secondary"
+          onClick={() => {
+            const textarea = document.getElementById(
+              'description'
+            ) as HTMLTextAreaElement
+
+            setPreviewMarkdown(marked.parse(textarea?.value ?? ''))
+          }}
+        >
+          Preview
+        </Button>
+      </div>
+      {previewMarkdown ? (
+        <StampMarkdownHTML description={previewMarkdown as string} />
+      ) : (
+        <div></div>
+      )}
     </FieldGroup>
   )
 }
