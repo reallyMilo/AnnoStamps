@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { auth } from '@/auth'
-import { StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
 interface Req extends NextApiRequest {
@@ -14,7 +13,6 @@ export default async function likesHandler(
   res: NextApiResponse<{
     message: string | unknown
     ok: boolean
-    stamp?: Pick<StampWithRelations, 'likedBy'>
   }>
 ) {
   if (req.method !== 'PUT') {
@@ -31,7 +29,7 @@ export default async function likesHandler(
   }
 
   try {
-    const updateStampLikes = await prisma.stamp.update({
+    await prisma.stamp.update({
       where: { id },
       include: { likedBy: true },
       data: {
@@ -43,7 +41,6 @@ export default async function likesHandler(
 
     return res.status(200).json({
       ok: true,
-      stamp: updateStampLikes,
       message: 'stamp successfully liked',
     })
   } catch (e) {

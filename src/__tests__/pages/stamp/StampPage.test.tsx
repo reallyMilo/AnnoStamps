@@ -21,27 +21,13 @@ const stamp = {
   modded: true,
   downloads: 999,
   user: {
-    id: 'clmsefb46002rk9xxdwbuimjn',
-    name: null,
-    email: null,
-    emailVerified: null,
     image: null,
     username: 'user100',
     usernameURL: 'user100',
-    biography: 'user100 amazing stamp creator',
   },
-  likedBy: [
-    {
-      id: 'clmsefb2w0005k9xx34svkimf',
-      name: null,
-      email: null,
-      emailVerified: null,
-      image: null,
-      username: 'user6',
-      usernameURL: 'user6',
-      biography: 'user6 amazing stamp creator',
-    },
-  ],
+  _count: {
+    likedBy: 1,
+  },
   images: [
     {
       id: 'clmsefbny02bok9xx8vcct39s',

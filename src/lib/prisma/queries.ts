@@ -9,8 +9,18 @@ import { CATEGORIES } from '../constants'
 //expected output type and break type safety. Will have to keep exporting this
 //unfortunately or every statement call would have to be cast
 export const stampIncludeStatement = {
-  user: true,
-  likedBy: true,
+  user: {
+    select: {
+      image: true,
+      username: true,
+      usernameURL: true,
+    },
+  },
+  _count: {
+    select: {
+      likedBy: true,
+    },
+  },
   images: true,
 } satisfies Prisma.StampInclude
 
