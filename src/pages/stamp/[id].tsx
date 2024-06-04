@@ -107,7 +107,7 @@ const StampPage = ({
     images,
     user,
     collection,
-    likedBy,
+    _count: likes,
     createdAt,
     changedAt,
   } = stamp
@@ -157,7 +157,7 @@ const StampPage = ({
               {distanceUnixTimeToNow(createdAt)}
             </div>
           </div>
-          <StampLikeButton id={id} initialLikes={likedBy.length} />
+          <StampLikeButton id={id} initialLikes={likes.likedBy} />
 
           <a
             href={stampFileUrl}
