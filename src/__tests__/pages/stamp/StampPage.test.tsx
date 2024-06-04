@@ -1,4 +1,4 @@
-import { StampWithRelations } from '@/lib/prisma/queries'
+import type { StampWithRelations } from '@/lib/prisma/queries'
 import StampPage from '@/pages/stamp/[id]'
 
 import { render as renderRTL, screen, userEvent } from '../../test-utils'
@@ -11,15 +11,10 @@ const stamp = {
   description: 'My greatest Stamp',
   category: 'production',
   region: 'new world',
-  imageUrl: '/stamp-name.jpg',
   stampFileUrl: '/stamp.zip',
-  goodCategory: 'agricultural products',
   good: 'calamari',
   collection: true,
-  population: null,
   capital: null,
-  townhall: false,
-  tradeUnion: true,
   createdAt: 1695253939,
   changedAt: 1695253939,
   updatedAt: 1695253939,
@@ -27,34 +22,24 @@ const stamp = {
   downloads: 999,
   user: {
     id: 'clmsefb46002rk9xxdwbuimjn',
-    name: 'User 100',
+    name: null,
     email: null,
     emailVerified: null,
     image: null,
     username: 'user100',
     usernameURL: 'user100',
     biography: 'user100 amazing stamp creator',
-    discord: 'user100',
-    reddit: 'user100',
-    emailContact: null,
-    twitch: 'user100',
-    twitter: 'user100',
   },
   likedBy: [
     {
       id: 'clmsefb2w0005k9xx34svkimf',
-      name: 'User 6',
+      name: null,
       email: null,
       emailVerified: null,
       image: null,
       username: 'user6',
       usernameURL: 'user6',
       biography: 'user6 amazing stamp creator',
-      discord: 'user6',
-      reddit: 'user6',
-      emailContact: null,
-      twitch: 'user6',
-      twitter: 'user6',
     },
   ],
   images: [
@@ -75,8 +60,7 @@ const stamp = {
       stampId: 'clmsefb5m00ujk9xxenynap1z',
     },
   ],
-}
-
+} satisfies StampWithRelations
 const render = (props?: Partial<StampWithRelations>) => ({
   ...renderRTL(<StampPage stamp={{ ...stamp, ...props }} />),
   user: userEvent.setup(),
@@ -87,6 +71,7 @@ describe('Stamp Page', () => {
     render()
 
     expect(screen.getByText('Stamp-Calamari-999')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'user100' })).toBeInTheDocument()
     expect(screen.getByText('My greatest Stamp')).toBeInTheDocument()
     expect(screen.getByText('production')).toBeInTheDocument()
     expect(screen.getByText('new world')).toBeInTheDocument()
@@ -111,5 +96,14 @@ describe('Stamp Page', () => {
     })
 
     expect(screen.getByText('Updated:', { exact: false })).toBeInTheDocument()
+  })
+  it('renders markdown text', () => {
+    render({
+      description: `## Heading\n\n[TheBestMod](mod.io)`,
+    })
+    expect(screen.getByRole('link', { name: 'TheBestMod' })).toHaveProperty(
+      'href',
+      'https://mod.io/'
+    )
   })
 })
