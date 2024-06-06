@@ -23,25 +23,26 @@ model Image {
 }
 
 model Stamp {
-  id           String   @id
-  userId       String
-  game         String
-  title        String
-  description  String
-  category     String
-  region       String
-  stampFileUrl String
-  good         String?
-  capital      String?
-  collection   Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  changedAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  modded       Boolean  @default(false)
-  downloads    Int      @default(0)
-  user         User     @relation("StampCreator", fields: [userId], references: [id], onDelete: NoAction)
-  likedBy      User[]   @relation("StampLiker")
-  images       Image[]  @relation("StampImage")
+  id                  String   @id
+  userId              String
+  game                String
+  title               String
+  description         String
+  markdownDescription String?
+  category            String
+  region              String
+  stampFileUrl        String
+  good                String?
+  capital             String?
+  collection          Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  changedAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  modded              Boolean  @default(false)
+  downloads           Int      @default(0)
+  user                User     @relation("StampCreator", fields: [userId], references: [id], onDelete: NoAction)
+  likedBy             User[]   @relation("StampLiker")
+  images              Image[]  @relation("StampImage")
 }
 
 model Account {
