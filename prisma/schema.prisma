@@ -27,7 +27,7 @@ model Stamp {
   userId              String
   game                String
   title               String
-  description         String
+  unsafeDescription   String
   markdownDescription String?
   category            String
   region              String
