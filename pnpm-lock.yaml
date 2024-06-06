@@ -46,15 +46,9 @@ importers:
       handlebars:
         specifier: ^4.7.8
         version: 4.7.8
-      isomorphic-dompurify:
-        specifier: ^2.11.0
-        version: 2.11.0
       jszip:
         specifier: ^3.10.1
         version: 3.10.1
-      marked:
-        specifier: ^12.0.2
-        version: 12.0.2
       next:
         specifier: ^14.2.2
         version: 14.2.2(@babel/core@7.24.5)(@opentelemetry/api@1.8.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2944,12 +2938,6 @@ packages:
         integrity: sha512-40Zk8qR147RABiQ7NQnBzWzDcjKzNrntB5BAmeGCb2p/MIyOE+4BVvc17wumsUqUw00bJYqoXFHYygQnEFh4/Q==,
       }
 
-  '@types/dompurify@3.0.5':
-    resolution:
-      {
-        integrity: sha512-1Wg0g3BtQF7sSb27fJQAKck1HECM6zV1EB66j8JH9i3LCjYabJa0FSdiSgsD5K/RbrsR0SiraKacLB+T8ZVYAg==,
-      }
-
   '@types/eslint-scope@3.7.7':
     resolution:
       {
@@ -3146,12 +3134,6 @@ packages:
     resolution:
       {
         integrity: sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==,
-      }
-
-  '@types/trusted-types@2.0.7':
-    resolution:
-      {
-        integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==,
       }
 
   '@types/yauzl@2.10.3':
@@ -4457,12 +4439,6 @@ packages:
     resolution:
       {
         integrity: sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg==,
-      }
-
-  dompurify@3.1.5:
-    resolution:
-      {
-        integrity: sha512-lwG+n5h8QNpxtyrJW/gJWckL+1/DQiYMX8f7t8Z2AZTPw1esVrqjI63i7Zc2Gz0aKzLVMYC1V1PL/ky+aY/NgA==,
       }
 
   dotenv@16.4.5:
@@ -5903,13 +5879,6 @@ packages:
         integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==,
       }
 
-  isomorphic-dompurify@2.11.0:
-    resolution:
-      {
-        integrity: sha512-PNGGCbbSH7+zF45UKu4Kh+yI8hm1bWA8kIZQow4KMImnjYQtrqJA0ZmwHamYUU7+M5tQ84z7xXMWmZF/v5t5eA==,
-      }
-    engines: { node: '>=18' }
-
   isstream@0.1.2:
     resolution:
       {
@@ -6302,14 +6271,6 @@ packages:
       {
         integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==,
       }
-
-  marked@12.0.2:
-    resolution:
-      {
-        integrity: sha512-qXUm7e/YKFoqFPYPa3Ukg9xlI5cyAtGmyEIzMfW//m6kXwCy2Ps9DYf5ioijFKQ8qyuscrHoY04iJGctu2Kg0Q==,
-      }
-    engines: { node: '>= 18' }
-    hasBin: true
 
   merge-stream@2.0.0:
     resolution:
@@ -11043,10 +11004,6 @@ snapshots:
       '@types/keygrip': 1.0.6
       '@types/node': 20.12.12
 
-  '@types/dompurify@3.0.5':
-    dependencies:
-      '@types/trusted-types': 2.0.7
-
   '@types/eslint-scope@3.7.7':
     dependencies:
       '@types/eslint': 8.56.10
@@ -11171,8 +11128,6 @@ snapshots:
   '@types/sinonjs__fake-timers@8.1.1': {}
 
   '@types/sizzle@2.3.3': {}
-
-  '@types/trusted-types@2.0.7': {}
 
   '@types/yauzl@2.10.3':
     dependencies:
@@ -12028,8 +11983,6 @@ snapshots:
       esutils: 2.0.3
 
   dom-accessibility-api@0.5.16: {}
-
-  dompurify@3.1.5: {}
 
   dotenv@16.4.5: {}
 
@@ -13077,17 +13030,6 @@ snapshots:
 
   isexe@2.0.0: {}
 
-  isomorphic-dompurify@2.11.0:
-    dependencies:
-      '@types/dompurify': 3.0.5
-      dompurify: 3.1.5
-      jsdom: 24.0.0
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - supports-color
-      - utf-8-validate
-
   isstream@0.1.2: {}
 
   iterator.prototype@1.1.2:
@@ -13342,8 +13284,6 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.4.15
 
   make-error@1.3.6: {}
-
-  marked@12.0.2: {}
 
   merge-stream@2.0.0: {}
 

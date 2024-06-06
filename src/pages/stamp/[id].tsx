@@ -14,12 +14,8 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
 import { StampLikeButton } from '@/components/StampLikeButton'
-import { StampMarkdownHTML } from '@/components/StampMarkdownHTML'
 import { buttonStyles, Container, Heading, Link, Text } from '@/components/ui'
-import {
-  stampIncludeStatement,
-  type StampWithRelations,
-} from '@/lib/prisma/queries'
+import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 import { cn, distanceUnixTimeToNow } from '@/lib/utils'
 
@@ -94,12 +90,13 @@ const StampPage = ({
       </Container>
     )
   }
+
   const {
     id,
     title,
     category,
     region,
-    description: unsafeDescription,
+    description,
     stampFileUrl,
     modded,
     good,
@@ -180,8 +177,7 @@ const StampPage = ({
             Updated: {distanceUnixTimeToNow(changedAt)}
           </div>
         )}
-
-        <StampMarkdownHTML description={unsafeDescription} />
+        <Text className="col-span-3 break-words text-lg">{description}</Text>
       </div>
     </Container>
   )
