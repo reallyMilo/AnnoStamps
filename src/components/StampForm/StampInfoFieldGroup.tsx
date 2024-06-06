@@ -189,7 +189,7 @@ export const StampInfoFieldGroup = () => {
               setPreviewMarkdown(parseAndSanitizedMarkdown(textarea.value))
             }}
           >
-            Preview
+            Preview Markdown
           </Button>
         </div>
         <div
