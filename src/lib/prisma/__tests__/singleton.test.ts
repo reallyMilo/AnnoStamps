@@ -22,9 +22,6 @@ describe('buildFilterWhereClause', () => {
       title: {
         search: 'Cool | stamp',
       },
-      description: {
-        search: 'Cool | stamp',
-      },
     })
   })
 
@@ -37,9 +34,6 @@ describe('buildFilterWhereClause', () => {
     const result = buildFilterWhereClause(filter)
     expect(result).toEqual({
       title: {
-        search: 'Test',
-      },
-      description: {
         search: 'Test',
       },
     })

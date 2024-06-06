@@ -116,8 +116,8 @@ describe('Stamp creation', () => {
       .type('cypress test title')
       .should('have.value', 'cypress test title')
     cy.get('#description')
-      .type('cypress test description')
-      .should('have.value', 'cypress test description')
+      .type('# H1 Heading')
+      .should('have.value', '# H1 Heading')
 
     cy.findByText('Submit Stamp').click()
 
@@ -151,7 +151,8 @@ describe('Stamp creation', () => {
           'modded',
           'capital',
           'title',
-          'description',
+          'unsafeDescription',
+          'markdownDescription',
           'stampFileUrl',
           'collection',
           'downloads',
@@ -163,7 +164,8 @@ describe('Stamp creation', () => {
         ])
         .and('contain', {
           userId: 'testSeedUserId',
-          description: 'cypress test description',
+          unsafeDescription: '# H1 Heading',
+          markdownDescription: '<h1>H1 Heading</h1>\n',
           modded: false,
           category: 'general',
           region: 'arctic',

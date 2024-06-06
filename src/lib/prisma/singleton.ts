@@ -92,9 +92,6 @@ export const buildFilterWhereClause = (
           title: {
             search: parsedQuery,
           },
-          description: {
-            search: parsedQuery,
-          },
         }
       : {}),
   }
