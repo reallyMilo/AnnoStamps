@@ -165,7 +165,7 @@ describe('Stamp creation', () => {
         .and('contain', {
           userId: 'testSeedUserId',
           unsafeDescription: '# H1 Heading',
-          markdownDescription: '<h1> H1 Heading </h1>',
+          markdownDescription: '<h1>H1 Heading</h1>\n',
           modded: false,
           category: 'general',
           region: 'arctic',
