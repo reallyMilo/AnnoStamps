@@ -12,7 +12,7 @@ export const Link = React.forwardRef(
     if (htmlLink) {
       return (
         <Headless.DataInteractive>
-          <a {...rest} ref={ref} target="_blank" rel="noreferrer"></a>
+          <a {...rest} ref={ref}></a>
         </Headless.DataInteractive>
       )
     }

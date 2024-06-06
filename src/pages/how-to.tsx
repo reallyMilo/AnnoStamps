@@ -18,7 +18,6 @@ const HowTo = () => {
         with others. For a detailed guide, check the{' '}
         <TextLink
           target="_blank"
-          rel="noreferrer"
           htmlLink
           href="https://anno1800.fandom.com/wiki/Stamps"
         >
@@ -86,7 +85,6 @@ const HowTo = () => {
             unavailable download{' '}
             <TextLink
               target="_blank"
-              rel="noreferrer"
               className="font-bold"
               href="https://www.7-zip.org/"
             >
