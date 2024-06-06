@@ -28,7 +28,7 @@ model Stamp {
   game                String
   title               String
   unsafeDescription   String
-  markdownDescription String?
+  markdownDescription String
   category            String
   region              String
   stampFileUrl        String
