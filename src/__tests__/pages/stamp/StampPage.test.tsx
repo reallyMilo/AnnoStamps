@@ -9,7 +9,7 @@ const stamp = {
   game: '1800',
   title: 'Stamp-Calamari-999',
   unsafeDescription: 'My greatest Stamp',
-  markdownDescription: '<h2>test</h2>',
+  markdownDescription: '<h2>My greatest Stamp</h2>',
   category: 'production',
   region: 'new world',
   imageUrl: '/stamp-name.jpg',
