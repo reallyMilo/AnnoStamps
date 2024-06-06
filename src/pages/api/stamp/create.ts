@@ -2,6 +2,7 @@ import { Prisma } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { auth } from '@/auth'
+import { parseAndSanitizedMarkdown } from '@/lib/markdown'
 import prisma from '@/lib/prisma/singleton'
 
 type Response = {
@@ -13,7 +14,7 @@ type FieldInput = Pick<
   Prisma.StampUncheckedCreateInput,
   | 'category'
   | 'region'
-  | 'description'
+  | 'unsafeDescription'
   | 'title'
   | 'modded'
   | 'collection'
@@ -41,8 +42,14 @@ export default async function createStampHandler(
   }
 
   try {
-    const { addImages, stampId, stampFileUrl, ...fields }: FieldInput = req.body
-
+    const {
+      addImages,
+      stampId,
+      stampFileUrl,
+      unsafeDescription,
+      ...fields
+    }: FieldInput = req.body
+    const sanitizedMarkdown = parseAndSanitizedMarkdown(unsafeDescription)
     await prisma.stamp.create({
       data: {
         id: stampId,
@@ -60,6 +67,8 @@ export default async function createStampHandler(
             }
           }),
         },
+        unsafeDescription,
+        markdownDescription: sanitizedMarkdown,
         ...fields,
       },
     })

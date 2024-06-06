@@ -40,7 +40,8 @@ export interface StampWithRelations
 const stampSchema = z.object({
   id: z.string(),
   title: z.string(),
-  description: z.string(),
+  unsafeDescription: z.string(),
+  markdownDescription: z.string(),
   userId: z.string(),
   category: z.nativeEnum(CATEGORIES),
   region: z.nativeEnum(REGIONS_1800),

@@ -96,7 +96,7 @@ const StampPage = ({
     title,
     category,
     region,
-    description,
+    markdownDescription,
     stampFileUrl,
     modded,
     good,
@@ -177,7 +177,10 @@ const StampPage = ({
             Updated: {distanceUnixTimeToNow(changedAt)}
           </div>
         )}
-        <Text className="col-span-3 break-words text-lg">{description}</Text>
+        <div
+          className="stamp-markdown-html-wrapper"
+          dangerouslySetInnerHTML={{ __html: markdownDescription ?? '' }}
+        ></div>
       </div>
     </Container>
   )

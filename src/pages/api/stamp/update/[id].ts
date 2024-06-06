@@ -1,7 +1,8 @@
-import { Prisma } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { auth } from '@/auth'
+import { parseAndSanitizedMarkdown } from '@/lib/markdown'
 import prisma from '@/lib/prisma/singleton'
 
 interface Req extends NextApiRequest {
@@ -9,7 +10,7 @@ interface Req extends NextApiRequest {
     Prisma.StampUncheckedCreateInput,
     | 'category'
     | 'region'
-    | 'description'
+    | 'unsafeDescription'
     | 'title'
     | 'modded'
     | 'collection'
@@ -31,7 +32,7 @@ export default async function updateStampHandler(
     })
   }
   const { id: stampId } = req.query
-  const { addImages, deleteImages, ...fields } = req.body
+  const { addImages, deleteImages, unsafeDescription, ...fields } = req.body
 
   const session = await auth(req, res)
 
@@ -43,6 +44,7 @@ export default async function updateStampHandler(
   }
 
   try {
+    const markdownDescription = parseAndSanitizedMarkdown(unsafeDescription)
     await prisma.$transaction(async (tx) => {
       const userStamp = await tx.user.findUnique({
         select: {
@@ -89,6 +91,8 @@ export default async function updateStampHandler(
             },
           }),
           changedAt: new Date().toISOString(),
+          unsafeDescription,
+          markdownDescription,
           ...fields,
         },
       })

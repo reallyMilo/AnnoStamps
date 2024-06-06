@@ -1,15 +1,18 @@
 import { useState } from 'react'
 
 import {
+  Button,
   Field,
   FieldGroup,
   Input,
   Label,
   Select,
+  Subheading,
   Textarea,
 } from '@/components/ui'
 import { CATEGORIES } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
+import { parseAndSanitizedMarkdown } from '@/lib/markdown'
 
 import { useStampFormContext } from './StampForm'
 
@@ -22,6 +25,7 @@ export const StampInfoFieldGroup = () => {
 
   const [category, setCategory] = useState(stamp?.category)
 
+  const [previewMarkdown, setPreviewMarkdown] = useState('')
   return (
     <FieldGroup>
       <div className="flex space-x-6">
@@ -141,13 +145,36 @@ export const StampInfoFieldGroup = () => {
         <Label>Description</Label>
         <Textarea
           id="description"
-          name="description"
+          name="unsafeDescription"
           placeholder='Add some two letter fields for searching at the start of the description, see anno wiki
             production layouts for reference."'
-          defaultValue={stamp?.description}
+          defaultValue={stamp?.unsafeDescription}
           rows={5}
         />
       </Field>
+
+      <div className="flex flex-col">
+        <div className="flex justify-between">
+          <Subheading> Preview Markdown </Subheading>
+          <Button
+            className="font-normal"
+            color="secondary"
+            onClick={() => {
+              const textarea = document.getElementById(
+                'description'
+              ) as HTMLTextAreaElement
+
+              setPreviewMarkdown(parseAndSanitizedMarkdown(textarea.value))
+            }}
+          >
+            Preview
+          </Button>
+        </div>
+        <div
+          className="stamp-markdown-html-wrapper"
+          dangerouslySetInnerHTML={{ __html: previewMarkdown }}
+        ></div>
+      </div>
     </FieldGroup>
   )
 }
