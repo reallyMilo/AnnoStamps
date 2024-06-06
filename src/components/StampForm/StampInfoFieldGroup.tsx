@@ -2,13 +2,17 @@ import { useState } from 'react'
 
 import {
   Button,
+  Description,
   Field,
   FieldGroup,
   Input,
   Label,
   Select,
+  Strong,
   Subheading,
+  Text,
   Textarea,
+  TextLink,
 } from '@/components/ui'
 import { CATEGORIES } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
@@ -25,7 +29,16 @@ export const StampInfoFieldGroup = () => {
 
   const [category, setCategory] = useState(stamp?.category)
 
-  const [previewMarkdown, setPreviewMarkdown] = useState('')
+  const [previewMarkdown, setPreviewMarkdown] = useState(
+    stamp?.markdownDescription ??
+      `
+    <p>Use markdown to create better links,   
+      <a target="_blank" href="https://mod.io/goodmod">
+        TheMod
+      </a>
+    </p>
+    `
+  )
   return (
     <FieldGroup>
       <div className="flex space-x-6">
@@ -143,19 +156,28 @@ export const StampInfoFieldGroup = () => {
       </Field>
       <Field>
         <Label>Description</Label>
+        <Description>
+          <Strong>This field now has markdown support! </Strong>
+
+          <TextLink
+            htmlLink
+            href="https://support.discord.com/hc/en-us/articles/210298617-Markdown-Text-101-Chat-Formatting-Bold-Italic-Underline"
+          >
+            Uses Discord markdown style.
+          </TextLink>
+        </Description>
         <Textarea
           id="description"
           name="unsafeDescription"
-          placeholder='Add some two letter fields for searching at the start of the description, see anno wiki
-            production layouts for reference."'
+          placeholder="Use markdown to create better links, [TheMod](https://mod.io/goodmod)"
           defaultValue={stamp?.unsafeDescription}
           rows={5}
         />
       </Field>
-
-      <div className="flex flex-col">
+      <Text>Only links are styled currently.</Text>
+      <div className="flex flex-col space-y-6">
         <div className="flex justify-between">
-          <Subheading> Preview Markdown </Subheading>
+          <Subheading>Preview </Subheading>
           <Button
             className="font-normal"
             color="secondary"
