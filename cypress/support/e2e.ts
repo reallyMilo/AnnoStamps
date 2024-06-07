@@ -21,5 +21,5 @@ import './commands'
 
 beforeEach(() => {
   //sentry
-  cy.intercept('/monitoring?*', { statusCode: 200 })
+  cy.intercept('https://*.ingest.sentry.io/api/**', { statusCode: 200 })
 })
