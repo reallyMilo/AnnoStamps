@@ -153,6 +153,9 @@ export const userIncludeStatement = {
       },
       images: true,
     },
+    orderBy: {
+      changedAt: 'desc',
+    },
   },
 } satisfies Prisma.UserInclude
 
