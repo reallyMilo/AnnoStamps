@@ -9,7 +9,6 @@ describe('Download Stamp from stamp page', () => {
         cy.visit(link.attr('href'))
       })
 
-    cy.reload(true)
     cy.getBySel('stamp-downloads')
       .invoke('text')
       .then(Number)
