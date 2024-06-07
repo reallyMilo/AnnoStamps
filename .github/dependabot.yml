@@ -6,5 +6,5 @@ updates:
       interval: 'weekly'
     open-pull-requests-limit: 10
     ignore:
-      - dependency-name: '@aws*'
+      - dependency-name: '@aws-sdk/*'
       - dependency-name: 'sharp'
