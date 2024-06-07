@@ -29,7 +29,6 @@ const userStamps = {
       stampFileUrl: '/test-stamp.zip',
       good: null,
       capital: null,
-      collection: false,
       createdAt: 1713225892,
       changedAt: 1713225892,
       updatedAt: 1713225892,
