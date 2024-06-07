@@ -21,7 +21,7 @@ import {
   SidebarSection,
 } from '@/components/ui'
 
-import headerLogo from '../../public/anno-stamps-logo.svg'
+import logo from '../../public/cropped-anno-stamps-logo.png'
 import discordWhite from '../../public/discord-white-icon.svg'
 import github from '../../public/github-mark.svg'
 
@@ -64,7 +64,7 @@ const MobileNavBar = () => {
           <SidebarHeader>
             <Link id="header-logo" href="/">
               <Image
-                src={headerLogo}
+                src={logo}
                 alt="Anno Stamps"
                 style={{
                   width: '100%',
@@ -96,7 +96,7 @@ const Navbar = () => {
           <MobileNavBar />
           <Link id="header-logo" href="/" className="max-lg:hidden">
             <Image
-              src={headerLogo}
+              src={logo}
               alt="Anno Stamps"
               style={{
                 width: '100%',
@@ -129,7 +129,7 @@ const Footer = () => {
         <NavbarRoot>
           <Link id="header-logo" href="/" className="max-sm:hidden">
             <Image
-              src={headerLogo}
+              src={logo}
               alt="Anno Stamps"
               style={{
                 width: '100%',
