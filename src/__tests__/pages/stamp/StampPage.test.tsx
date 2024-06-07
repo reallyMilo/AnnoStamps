@@ -16,7 +16,6 @@ const stamp = {
   stampFileUrl: '/stamp.zip',
   goodCategory: 'agricultural products',
   good: 'calamari',
-  collection: true,
   population: null,
   capital: null,
   townhall: false,
@@ -69,18 +68,15 @@ describe('Stamp Page', () => {
     expect(screen.getByText('new world')).toBeInTheDocument()
     expect(screen.getByText('calamari')).toBeInTheDocument()
     expect(screen.getByText('mods')).toBeInTheDocument()
-    expect(screen.getByText('Collection')).toBeInTheDocument()
     expect(screen.getByText('999')).toBeInTheDocument()
     expect(screen.getByRole('img')).toBeInTheDocument()
     expect(screen.getByText('ago', { exact: false })).toBeInTheDocument()
   })
   it('does not display false props', () => {
     render({
-      collection: false,
       modded: false,
     })
     expect(screen.queryByText('mods')).not.toBeInTheDocument()
-    expect(screen.queryByText('collection')).not.toBeInTheDocument()
   })
   it('displays stamp updated time', () => {
     render({
