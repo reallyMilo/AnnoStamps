@@ -63,7 +63,6 @@ export const generateStampData = (
       region: rndRegion,
       modded: index % 20 === 0 ? true : false,
       stampFileUrl: 'http://localhost:3000/test-stamp.zip',
-      collection: index % 15 === 0 ? true : false,
       good: rndCategory === 'production' ? getGood() : null,
       capital: getCapital(),
       downloads: index,

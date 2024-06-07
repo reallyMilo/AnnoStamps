@@ -154,7 +154,6 @@ describe('Stamp creation', () => {
           'unsafeDescription',
           'markdownDescription',
           'stampFileUrl',
-          'collection',
           'downloads',
           'game',
           'good',
