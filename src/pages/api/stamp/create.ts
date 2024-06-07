@@ -17,7 +17,6 @@ type FieldInput = Pick<
   | 'unsafeDescription'
   | 'title'
   | 'modded'
-  | 'collection'
   | 'stampFileUrl'
 > & { addImages: string[]; stampId: string }
 

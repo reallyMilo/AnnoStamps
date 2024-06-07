@@ -103,7 +103,6 @@ const StampPage = ({
     downloads,
     images,
     user,
-    collection,
     _count: likes,
     createdAt,
     changedAt,
@@ -140,7 +139,6 @@ const StampPage = ({
               <div className="capitalize text-gray-500">{good}</div>
             )}
 
-            {collection && <div>Collection</div>}
             {/* TODO: views */}
             {/* <div className="">
             <EyeIcon className="mr-2 inline-block h-5 w-5" /> Views

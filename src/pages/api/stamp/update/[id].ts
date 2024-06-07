@@ -13,7 +13,6 @@ interface Req extends NextApiRequest {
     | 'unsafeDescription'
     | 'title'
     | 'modded'
-    | 'collection'
     | 'stampFileUrl'
   > & { addImages: string[]; deleteImages: string[] }
   query: {
