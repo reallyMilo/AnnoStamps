@@ -175,7 +175,7 @@ describe('Stamp creation', () => {
 
     cy.findByText('cypress test title').should('be.visible')
     cy.getBySel('stamp-card-link')
-      .last()
+      .first()
       .invoke('attr', 'href')
       .should('be.a', 'string')
       .invoke('split', '/')
