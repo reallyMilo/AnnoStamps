@@ -34,7 +34,6 @@ model Stamp {
   stampFileUrl        String
   good                String?
   capital             String?
-  collection          Boolean  @default(false)
   createdAt           DateTime @default(now())
   changedAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt

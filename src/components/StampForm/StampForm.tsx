@@ -130,7 +130,6 @@ const Form = ({ children, onSubmit }: FormProps) => {
       zip.file(file.name, file.async('blob'))
     }
     const zipped = await zip.generateAsync({ type: 'blob' })
-    formData.set('collection', files.length > 1 ? 'true' : 'false')
 
     let uploadedImageUrls: string[] = []
     let uploadedStampZipUrl: string | null = null

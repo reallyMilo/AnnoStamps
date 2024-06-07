@@ -101,7 +101,6 @@ export default defineConfig({
               category: 'cosmetic',
               region: 'old world',
               stampFileUrl: '/stamp.zip',
-              collection: true,
               downloads: 123,
               images: {
                 create: [

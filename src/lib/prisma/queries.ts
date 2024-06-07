@@ -48,7 +48,6 @@ const stampSchema = z.object({
   game: z.enum(['1800']),
   good: z.string().optional(),
   capital: z.string().optional(),
-  collection: z.string().optional(),
   downloads: z.object({ increment: z.number() }).optional(),
   modded: z.string(),
   imageUrl: z.string().optional(),
@@ -76,15 +75,13 @@ const stampSchema = z.object({
 
 const createStampSchema = stampSchema
   .omit({ downloads: true, likedBy: true })
-  .transform(({ modded, collection, ...schema }) => ({
+  .transform(({ modded, ...schema }) => ({
     modded: modded === 'true',
-    collection: collection === 'true',
     ...schema,
   })) satisfies z.Schema<
   Prisma.StampUncheckedCreateInput,
   z.ZodTypeDef,
-  Omit<Prisma.StampUncheckedCreateInput, 'modded' | 'collection'> & {
-    collection?: string
+  Omit<Prisma.StampUncheckedCreateInput, 'modded'> & {
     modded: string
   }
 >
@@ -93,15 +90,13 @@ const updateStampSchema = stampSchema
   .omit({ id: true, userId: true, game: true })
   .extend({ changedAt: z.string().datetime() })
   .partial()
-  .transform(({ modded, collection, ...schema }) => ({
+  .transform(({ modded, ...schema }) => ({
     modded: modded === 'true',
-    collection: collection === 'true',
     ...schema,
   })) satisfies z.Schema<
   Prisma.StampUncheckedUpdateInput,
   z.ZodTypeDef,
-  Omit<Prisma.StampUncheckedUpdateInput, 'modded' | 'collection'> & {
-    collection?: string
+  Omit<Prisma.StampUncheckedUpdateInput, 'modded'> & {
     modded?: string
   }
 >
