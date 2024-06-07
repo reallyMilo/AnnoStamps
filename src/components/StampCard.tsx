@@ -54,7 +54,7 @@ export const StampCard = ({
         )}
       </div>
 
-      <div className="flex h-full flex-col gap-y-2 p-4">
+      <div className="flex h-full min-h-[200px] flex-col gap-y-2 px-3 py-2">
         <div className="flex items-baseline justify-between">
           <Subheading
             id="stamp-region"
@@ -73,7 +73,7 @@ export const StampCard = ({
         <Heading
           level={2}
           id="stamp-title"
-          className="line-clamp-2 min-h-[45px] w-full overflow-hidden text-ellipsis"
+          className="line-clamp-2 w-full flex-grow overflow-hidden text-ellipsis"
         >
           <Link
             href={`/stamp/${id}`}
