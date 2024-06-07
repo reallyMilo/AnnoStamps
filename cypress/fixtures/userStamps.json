@@ -25,11 +25,9 @@
         "updatedAt": "2023-08-21T18:22:47.189Z",
         "modded": false,
         "downloads": 0,
-        "likedBy": [
-          {
-            "id": "clll7fytx0017em827ji8ry6b"
-          }
-        ]
+        "_count": {
+          "likedBy": 1
+        }
       }
     ]
   }
