@@ -88,6 +88,7 @@ export const StampCard = ({
         {user?.username ? (
           <Link
             href={`/${user.usernameURL}`}
+            data-testid="stamp-card-username-link"
             className="z-10 flex h-11 w-fit items-center gap-1 text-slate-500 hover:text-primary  dark:text-white"
             prefetch={false}
           >

@@ -13,44 +13,41 @@ export default defineConfig({
 
           return data
         },
-        async 'db:seed'() {
-          // use main seed for now
-        },
         async 'db:removeTestUser'() {
-          await prisma.image.deleteMany({
-            where: {
-              OR: [
-                {
-                  stampId: 'testSeedUserStampId',
-                },
-                { id: 'anno-stamps-logo' },
-              ],
-            },
-          })
-
-          await prisma.stamp.deleteMany({
-            where: {
-              userId: {
-                contains: 'testSeedUserId',
+          return await prisma.$transaction([
+            prisma.image.deleteMany({
+              where: {
+                OR: [
+                  {
+                    stampId: 'testSeedUserStampId',
+                  },
+                  { id: 'anno-stamps-logo' },
+                ],
               },
-            },
-          })
-
-          await prisma.session.delete({
-            where: {
-              id: 'testSeedUserSessionId',
-            },
-          })
-          await prisma.account.delete({
-            where: {
-              id: 'testSeedAccountId',
-            },
-          })
-          return await prisma.user.delete({
-            where: {
-              id: 'testSeedUserId',
-            },
-          })
+            }),
+            prisma.stamp.deleteMany({
+              where: {
+                userId: {
+                  contains: 'testSeedUserId',
+                },
+              },
+            }),
+            prisma.session.delete({
+              where: {
+                id: 'testSeedUserSessionId',
+              },
+            }),
+            prisma.account.delete({
+              where: {
+                id: 'testSeedAccountId',
+              },
+            }),
+            prisma.user.delete({
+              where: {
+                id: 'testSeedUserId',
+              },
+            }),
+          ])
         },
         async 'db:testUser'(setUsername?: boolean) {
           const username = {
@@ -67,54 +64,54 @@ export default defineConfig({
             biography: null,
             ...(setUsername ? username : null),
           }
-
-          await prisma.user.create({
-            data: testSeedUser,
-          })
-          await prisma.account.create({
-            data: {
-              id: 'testSeedAccountId',
-              userId: 'testSeedUserId',
-              type: 'oauth',
-              provider: 'discord',
-              providerAccountId: '123213123123',
-              access_token: 'abcdefghijklmnopqrst',
-            },
-          })
-          await prisma.session.create({
-            data: {
-              id: 'testSeedUserSessionId',
-              sessionToken: 'cdc4b0fb-77b5-44b5-947a-dde785af2676',
-              userId: 'testSeedUserId',
-              expires: '3000-01-01T00:00:00.000Z',
-            },
-          })
-
-          return await prisma.stamp.create({
-            data: {
-              id: 'testSeedUserStampId',
-              userId: 'testSeedUserId',
-              game: '1800',
-              title: `Test-Seed-User-Stamp`,
-              unsafeDescription: `Test seed user stamp`,
-              markdownDescription: `<h1>Test seed user stamp</h1>`,
-              category: 'cosmetic',
-              region: 'old world',
-              stampFileUrl: '/stamp.zip',
-              downloads: 123,
-              images: {
-                create: [
-                  {
-                    id: 'testSeedStampImageId',
-                    originalUrl:
-                      'https://placehold.co/2000x2000.png?text=Original',
-                    largeUrl: `https://placehold.co/1024x576.png?text=Large`,
-                    smallUrl: `https://placehold.co/500x281.png?text=Small`,
-                  },
-                ],
+          return await prisma.$transaction([
+            prisma.user.create({
+              data: testSeedUser,
+            }),
+            prisma.account.create({
+              data: {
+                id: 'testSeedAccountId',
+                userId: 'testSeedUserId',
+                type: 'oauth',
+                provider: 'discord',
+                providerAccountId: '123213123123',
+                access_token: 'abcdefghijklmnopqrst',
               },
-            },
-          })
+            }),
+            prisma.session.create({
+              data: {
+                id: 'testSeedUserSessionId',
+                sessionToken: 'cdc4b0fb-77b5-44b5-947a-dde785af2676',
+                userId: 'testSeedUserId',
+                expires: '3000-01-01T00:00:00.000Z',
+              },
+            }),
+            prisma.stamp.create({
+              data: {
+                id: 'testSeedUserStampId',
+                userId: 'testSeedUserId',
+                game: '1800',
+                title: `Test-Seed-User-Stamp`,
+                unsafeDescription: `Test seed user stamp`,
+                markdownDescription: `<h1>Test seed user stamp</h1>`,
+                category: 'cosmetic',
+                region: 'old world',
+                stampFileUrl: '/stamp.zip',
+                downloads: 123,
+                images: {
+                  create: [
+                    {
+                      id: 'testSeedStampImageId',
+                      originalUrl:
+                        'https://placehold.co/2000x2000.png?text=Original',
+                      largeUrl: `https://placehold.co/1024x576.png?text=Large`,
+                      smallUrl: `https://placehold.co/500x281.png?text=Small`,
+                    },
+                  ],
+                },
+              },
+            }),
+          ])
         },
       })
     },
