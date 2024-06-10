@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import { createId } from '@paralleldrive/cuid2'
 import { PrismaClient, User } from '@prisma/client'
 
@@ -19,14 +20,23 @@ const goods = [OLD_WORLD_GOODS, NEW_WORLD_GOODS, ENBESA_GOODS, ARCTIC_GOODS]
 export const generateUserData = (
   length: number
 ): Omit<User, 'image' | 'emailVerified'>[] =>
-  Array.from({ length }, (_, index) => ({
-    id: createId(),
-    name: `User ${index + 1}`,
-    email: `user${index + 1}@example.com`,
-    username: `user${index + 1}`,
-    usernameURL: `user${index + 1}`,
-    biography: `user${index + 1} amazing stamp creator`,
-  }))
+  Array.from({ length }, () => {
+    const firstName = faker.person.firstName()
+    const lastName = faker.person.lastName()
+    const username = faker.internet.userName({ firstName, lastName })
+    return {
+      id: createId(),
+      name: faker.person.fullName({ firstName, lastName }),
+      email: faker.internet.email({
+        firstName,
+        lastName,
+        provider: 'example.fakerjs.dev',
+      }),
+      username,
+      usernameURL: username.toLowerCase(),
+      biography: faker.person.bio(),
+    }
+  })
 
 export const generateStampData = (
   length: number,
@@ -52,11 +62,12 @@ export const generateStampData = (
       return null
     }
 
+    const timestamp = faker.date.past()
     return {
       id: createId(),
       userId: users[index % users.length].id,
       game: '1800',
-      title: `Stamp-${index}`,
+      title: `Stamp-${index}-${faker.lorem.words({ min: 0, max: 12 })}`,
       unsafeDescription: `## Stamp-${index}`,
       markdownDescription: `<h2> Stamp-${index} </h2>`,
       category: rndCategory,
@@ -64,6 +75,9 @@ export const generateStampData = (
       modded: index % 20 === 0 ? true : false,
       stampFileUrl: 'http://localhost:3000/test-stamp.zip',
       good: rndCategory === 'production' ? getGood() : null,
+      createdAt: timestamp,
+      changedAt: timestamp,
+      updatedAt: timestamp,
       capital: getCapital(),
       downloads: index,
     }
