@@ -22,7 +22,14 @@ describe('Update user profile', () => {
     cy.newUserSession('/testSeedUserId/settings')
     cy.intercept('PUT', '/api/user').as('setUsername')
 
-    cy.findByLabelText('Username').type('user1')
+    cy.database(`SELECT * FROM "User" LIMIT 1;`).then((users) => {
+      const user = users[0]
+      cy.wrap(user)
+        .its('username')
+        .then((username) => {
+          cy.findByLabelText('Username').type(username)
+        })
+    })
 
     cy.findByRole('button', { name: 'Save' }).click()
     cy.wait('@setUsername').its('response.statusCode').should('eq', 400)
