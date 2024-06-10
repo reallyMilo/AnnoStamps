@@ -97,6 +97,7 @@ export const generatePlaceHoldImages = () => {
   })
 }
 async function seed() {
+  console.time('Database seed time elapsed')
   const userData = generateUserData(100)
   const stampData = generateStampData(1000, userData)
   await prisma.user.createMany({ data: userData })
@@ -123,7 +124,7 @@ async function seed() {
       },
     })
   }
-
+  console.timeEnd('Database seed time elapsed')
   console.log('Seed completed successfully')
 }
 
