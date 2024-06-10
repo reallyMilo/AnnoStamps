@@ -7,25 +7,34 @@ describe('Delete stamp', () => {
   })
 
   it('user cannot see stamp commands nor delete other stamps', () => {
-    cy.usernameSession('/user100')
-    cy.getBySel('delete-stamp').should('not.exist')
-    cy.getBySel('stamp-card-link')
+    cy.visit('/')
+    cy.getBySel('stamp-card-username-link')
       .last()
-      .invoke('attr', 'href')
-      .should('be.a', 'string')
-      .invoke('split', '/')
-      .its(2)
-      .should('have.length', 24)
-      .then((id) => {
-        cy.request({
-          url: `/api/stamp/delete/${id}`,
-          method: 'DELETE',
-          failOnStatusCode: false,
-        }).then((response) => {
-          expect(response.status).to.eq(500)
-          expect(response.body).to.have.property('ok', false)
-          expect(response.body).to.have.property('message', 'Not stamp owner')
-        })
+      .then((link) => {
+        // use text here to catch upper case
+        cy.usernameSession(`/${link.text()}`)
+        cy.getBySel('delete-stamp').should('not.exist')
+        cy.getBySel('stamp-card-link')
+          .last()
+          .invoke('attr', 'href')
+          .should('be.a', 'string')
+          .invoke('split', '/')
+          .its(2)
+          .should('have.length', 24)
+          .then((id) => {
+            cy.request({
+              url: `/api/stamp/delete/${id}`,
+              method: 'DELETE',
+              failOnStatusCode: false,
+            }).then((response) => {
+              expect(response.status).to.eq(500)
+              expect(response.body).to.have.property('ok', false)
+              expect(response.body).to.have.property(
+                'message',
+                'Not stamp owner'
+              )
+            })
+          })
       })
   })
 
