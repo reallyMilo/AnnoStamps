@@ -24,7 +24,7 @@ export const getStaticProps = (async ({ params }) => {
   const user = await prisma.user.findFirst({
     include: userIncludeStatement,
     where: {
-      OR: [{ usernameURL: params.user }, { id: params.user }],
+      OR: [{ usernameURL: params.user.toLowerCase() }, { id: params.user }],
     },
   })
 
