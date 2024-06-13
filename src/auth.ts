@@ -8,7 +8,6 @@ import Google from 'next-auth/providers/google'
 import type { UserWithStamps } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
-import { sendWelcomeEmail } from './email'
 //TODO:initial user setup page shares pages/[user]/settings view
 
 const providers = [Google, Discord] satisfies Provider[]
@@ -36,6 +35,7 @@ const config = {
     },
   },
   session: { strategy: 'database' },
+  trustHost: true,
   debug: process.env.NODE_ENV !== 'production' ? true : false,
 } satisfies NextAuthConfig
 
