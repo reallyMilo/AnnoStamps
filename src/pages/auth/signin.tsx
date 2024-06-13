@@ -10,7 +10,7 @@ import { auth } from '@/auth'
 import { Container, Heading, Text } from '@/components/ui'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await auth(context.req, context.res)
+  const session = await auth(context)
 
   if (session) {
     return { redirect: { destination: '/' } }
