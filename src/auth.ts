@@ -1,21 +1,18 @@
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { PrismaClient } from '@prisma/client'
-import type {
-  GetServerSidePropsContext,
-  NextApiRequest,
-  NextApiResponse,
-} from 'next'
-import type { NextAuthOptions } from 'next-auth'
-import { getServerSession } from 'next-auth'
-import DiscordProvider from 'next-auth/providers/discord'
-import GoogleProvider from 'next-auth/providers/google'
+import { PrismaAdapter } from '@auth/prisma-adapter'
+import type { DefaultSession, NextAuthConfig } from 'next-auth'
+import NextAuth from 'next-auth'
+import type { Provider } from 'next-auth/providers'
+import Discord from 'next-auth/providers/discord'
+import Google from 'next-auth/providers/google'
 
+import type { UserWithStamps } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 
-import { sendWelcomeEmail } from './email'
 //TODO:initial user setup page shares pages/[user]/settings view
-export const config = {
-  secret: process.env.NEXTAUTH_SECRET,
+
+const providers = [Google, Discord] satisfies Provider[]
+
+const config = {
   pages: {
     signIn: '/auth/signin',
     newUser: '/',
@@ -23,18 +20,9 @@ export const config = {
     error: '/auth/error',
     verifyRequest: '/',
   },
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID ?? '',
-      clientSecret: process.env.GOOGLE_SECRET ?? '',
-    }),
-    DiscordProvider({
-      clientId: process.env.DISCORD_CLIENT_ID ?? '',
-      clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
-    }),
-  ],
-  adapter: PrismaAdapter(prisma as unknown as PrismaClient),
-  events: { createUser: sendWelcomeEmail },
+  providers,
+  adapter: PrismaAdapter(prisma),
+  // events: { createUser: sendWelcomeEmail },
   callbacks: {
     session: async ({ session, user }) => {
       if (session?.user) {
@@ -46,13 +34,29 @@ export const config = {
       return session
     },
   },
-} satisfies NextAuthOptions
+  session: { strategy: 'database' },
+  trustHost: true,
+  debug: process.env.NODE_ENV !== 'production' ? true : false,
+} satisfies NextAuthConfig
 
-export function auth(
-  ...args:
-    | [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']]
-    | [NextApiRequest, NextApiResponse]
-    | []
-) {
-  return getServerSession(...args, config)
+// export const providerMap = providers.map((provider) => {
+//   return { id: provider.id, name: provider.name }
+// })
+export const { handlers, auth, signIn, signOut } = NextAuth(config)
+declare module 'next-auth' {
+  /**
+   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface Session {
+    user: Pick<
+      UserWithStamps,
+      'id' | 'biography' | 'username' | 'usernameURL'
+    > &
+      DefaultSession['user']
+  }
+  interface User {
+    biography: string
+    username: string
+    usernameURL: string
+  }
 }

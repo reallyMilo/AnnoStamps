@@ -7,7 +7,7 @@ describe('Stamp liking', () => {
   })
 
   it('unauthorized user redirected to sign in with callback to stamp', () => {
-    cy.intercept('/api/auth/session', [])
+    cy.intercept('/api/auth/session')
     cy.visit('/')
     cy.getBySel('stamp-card-link')
       .last()

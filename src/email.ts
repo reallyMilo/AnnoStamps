@@ -29,7 +29,7 @@ export const sendWelcomeEmail = async ({ user }: { user: User }) => {
       to: email as string,
       subject: 'Welcome to Anno Stamps! 🎉',
       html: emailTemplate({
-        base_url: process.env.NEXTAUTH_URL,
+        base_url: process.env.AUTH_URL,
         support_email: 'annostampsite@gmail.com',
       }),
     })

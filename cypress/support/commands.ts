@@ -8,8 +8,7 @@ Cypress.Commands.add('usernameSession', (route: string) => {
   cy.intercept('/api/auth/session', { fixture: 'usernameSession.json' }).as(
     'usernameSession'
   )
-  cy.setCookie('next-auth.session-token', Cypress.env('sessionToken'))
-  cy.setCookie('csrfToken', Cypress.env('csrfToken'))
+  cy.setCookie('authjs.session-token', Cypress.env('sessionToken'))
   cy.visit(route)
   cy.wait('@usernameSession')
 })
@@ -18,8 +17,7 @@ Cypress.Commands.add('newUserSession', (route: string) => {
   cy.intercept('/api/auth/session', { fixture: 'newUserSession.json' }).as(
     'newUserSession'
   )
-  cy.setCookie('next-auth.session-token', Cypress.env('sessionToken'))
-  cy.setCookie('csrfToken', Cypress.env('csrfToken'))
+  cy.setCookie('authjs.session-token', Cypress.env('sessionToken'))
   cy.visit(route)
   cy.wait('@newUserSession')
 })
