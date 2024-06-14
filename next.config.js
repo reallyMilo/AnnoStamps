@@ -1,5 +1,8 @@
 module.exports = {
   reactStrictMode: true,
+  experimental: {
+    typedRoutes: true,
+  },
   images: {
     remotePatterns: [
       {
