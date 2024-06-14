@@ -2,95 +2,37 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
-import type {
-  GetStaticPaths,
-  GetStaticProps,
-  InferGetStaticPropsType,
-} from 'next'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { Navigation } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
+import { unstable_cache } from 'next/cache'
+import { notFound } from 'next/navigation'
+import { SessionProvider } from 'next-auth/react'
 
+import { auth } from '@/auth'
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
-import { StampLikeButton } from '@/components/StampLikeButton'
-import { buttonStyles, Container, Heading, Link, Text } from '@/components/ui'
-import { stampIncludeStatement, StampWithRelations } from '@/lib/prisma/queries'
+import { buttonStyles, Container, Heading, Link } from '@/components/ui'
+import { stampIncludeStatement } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
 import { cn, distanceUnixTimeToNow } from '@/lib/utils'
 
-export const getStaticPaths = (async () => {
-  const stamps = await prisma.stamp.findMany({
-    select: { id: true },
-    orderBy: { downloads: 'desc' },
-    take: 20,
-  })
+import { CarouselImage } from './CarouselImage'
+import { StampLikeButton } from './StampLikeButton'
 
-  return {
-    paths: stamps.map((stamp) => ({
-      params: { id: stamp.id },
-    })),
-    fallback: true,
-  }
-}) satisfies GetStaticPaths
+const getStamp = unstable_cache(
+  async (id: string) => {
+    return prisma.stamp.findUnique({
+      include: stampIncludeStatement,
+      where: { id },
+    })
+  },
+  ['getStamp'],
+  { revalidate: 3600 }
+)
 
-export const getStaticProps = (async ({ params }) => {
-  if (typeof params?.id !== 'string') {
-    return {
-      notFound: true,
-    }
-  }
-  const stamp = await prisma.stamp.findUnique({
-    include: stampIncludeStatement,
-    where: { id: params.id },
-  })
-
+const StampPage = async ({ params }: { params: { id: string } }) => {
+  const stamp = await getStamp(params.id)
+  const session = await auth()
   if (!stamp) {
-    return {
-      notFound: true,
-    }
+    notFound()
   }
-  return {
-    props: {
-      stamp,
-    },
-    revalidate: 3600, // revalidate every hour to update stats
-  }
-}) satisfies GetStaticProps<{ stamp: StampWithRelations }>
-
-type CarouselProps = {
-  images: StampWithRelations['images']
-}
-const Carousel = ({ images }: CarouselProps) => {
-  return (
-    <Swiper navigation={true} modules={[Navigation]} className="">
-      {images.map((image) => (
-        <SwiperSlide key={image.id}>
-          <Image
-            src={image.largeUrl ?? image.originalUrl}
-            alt="anno stamp image"
-            className="max-h-[768px] w-full object-contain object-center"
-            height={768}
-            width={1024}
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  )
-}
-const StampPage = ({
-  stamp,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const router = useRouter()
-
-  if (router.isFallback) {
-    return (
-      <Container>
-        <Text>Loading...</Text>
-      </Container>
-    )
-  }
-
   const {
     id,
     title,
@@ -110,7 +52,7 @@ const StampPage = ({
 
   return (
     <Container className="max-w-5xl space-y-6 px-0">
-      <Carousel images={images} />
+      <CarouselImage images={images} />
       <div className="space-y-6 px-2 text-midnight sm:px-0 dark:text-white">
         <Heading className="truncate">{title} </Heading>
 
@@ -152,7 +94,9 @@ const StampPage = ({
               {distanceUnixTimeToNow(createdAt)}
             </div>
           </div>
-          <StampLikeButton id={id} initialLikes={likes.likedBy} />
+          <SessionProvider session={session}>
+            <StampLikeButton id={id} initialLikes={likes.likedBy} />
+          </SessionProvider>
 
           <a
             href={stampFileUrl}
@@ -162,7 +106,6 @@ const StampPage = ({
               buttonStyles.solid,
               buttonStyles.colors.primary
             )}
-            onClick={() => fetch(`/api/stamp/download/${id}`)}
             download={title}
           >
             <ArrowDownTrayIcon />
