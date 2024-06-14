@@ -55,8 +55,8 @@ declare module 'next-auth' {
       DefaultSession['user']
   }
   interface User {
-    biography: string
-    username: string
-    usernameURL: string
+    biography: string | null
+    username: string | null
+    usernameURL: string | null
   }
 }

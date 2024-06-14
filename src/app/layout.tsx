@@ -4,30 +4,24 @@ import { GoogleTagManager } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import Image from 'next/image'
-import { useState } from 'react'
 
 import { UserButton } from '@/components/Auth/UserButton'
 import { Search } from '@/components/Filter/Search'
 import {
   Container,
   Link,
-  MobileSidebar,
   Navbar as NavbarRoot,
   NavbarDivider,
   NavbarItem,
   NavbarSection,
   NavbarSpacer,
-  OpenMenuIcon,
-  Sidebar,
-  SidebarBody,
-  SidebarHeader,
   SidebarItem,
-  SidebarSection,
 } from '@/components/ui'
 
 import logo from '../../public/cropped-anno-stamps-logo.png'
 import discordWhite from '../../public/discord-white-icon.svg'
 import github from '../../public/github-mark.svg'
+import { MobileNavbar } from './MobileNavbar'
 
 export const metadata: Metadata = {
   title: 'Anno 1800 Stamps | Stamp Sharing',
@@ -81,52 +75,19 @@ const socials = [
     src: github,
   },
 ]
-const MobileNavBar = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  return (
-    <>
-      <NavbarItem
-        onClick={() => setIsOpen(true)}
-        aria-label="Open navigation"
-        className="md:hidden"
-      >
-        <OpenMenuIcon />
-      </NavbarItem>
-      <MobileSidebar open={isOpen} close={() => setIsOpen(false)}>
-        <Sidebar>
-          <SidebarHeader>
-            <Link id="header-logo" href="/">
-              <Image
-                src={logo}
-                alt="Anno Stamps"
-                style={{
-                  width: '100%',
-                  maxWidth: '160px',
-                  height: 'auto',
-                }}
-              />
-            </Link>
-          </SidebarHeader>
-          <SidebarBody>
-            <SidebarSection>
-              {navigation.map((item) => (
-                <SidebarItem key={item.text} href={item.href}>
-                  {item.text}
-                </SidebarItem>
-              ))}
-            </SidebarSection>
-          </SidebarBody>
-        </Sidebar>
-      </MobileSidebar>
-    </>
-  )
-}
+
 const Navbar = () => {
   return (
     <header>
       <Container className="py-0">
         <NavbarRoot>
-          <MobileNavBar />
+          <MobileNavbar>
+            {navigation.map((item) => (
+              <SidebarItem key={item.text} href={item.href}>
+                {item.text}
+              </SidebarItem>
+            ))}
+          </MobileNavbar>
           <Link id="header-logo" href="/" className="max-lg:hidden">
             <Image
               src={logo}
@@ -149,6 +110,7 @@ const Navbar = () => {
           <NavbarSpacer />
           <Search />
           <NavbarSpacer />
+
           <UserButton />
         </NavbarRoot>
       </Container>
