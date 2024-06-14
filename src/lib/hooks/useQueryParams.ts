@@ -1,4 +1,6 @@
-import { useRouter } from 'next/router'
+'use client'
+
+import { usePathname, useSearchParams } from 'next/navigation'
 import qs from 'qs'
 import { z } from 'zod'
 
@@ -25,8 +27,8 @@ const queryParamsOrder = [
 ]
 
 const useQueryParams = () => {
-  const router = useRouter()
-  const { pathname, asPath } = router
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   const setQuery = (params: object) => {
     const queryString = qs.stringify(params, {
@@ -39,8 +41,7 @@ const useQueryParams = () => {
     return isEmpty ? pathname : `${pathname}?${queryString}`
   }
 
-  const query = asPath.split('?')[1]
-  return [query, setQuery] as const
+  return [searchParams, setQuery] as const
 }
 
 export { type QueryParams, queryParamsSchema, useQueryParams }

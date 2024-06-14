@@ -1,3 +1,5 @@
+'use client'
+
 import * as Headless from '@headlessui/react'
 import React, { Fragment } from 'react'
 

@@ -1,30 +1,57 @@
-import Head from 'next/head'
+import './globals.css'
+
+import { GoogleTagManager } from '@next/third-parties/google'
+import type { Metadata } from 'next'
+import { Poppins } from 'next/font/google'
 import Image from 'next/image'
-import { useState } from 'react'
 
 import { UserButton } from '@/components/Auth/UserButton'
 import { Search } from '@/components/Filter/Search'
 import {
   Container,
   Link,
-  MobileSidebar,
   Navbar as NavbarRoot,
   NavbarDivider,
   NavbarItem,
   NavbarSection,
   NavbarSpacer,
-  OpenMenuIcon,
-  Sidebar,
-  SidebarBody,
-  SidebarHeader,
   SidebarItem,
-  SidebarSection,
 } from '@/components/ui'
 
 import logo from '../../public/cropped-anno-stamps-logo.png'
 import discordWhite from '../../public/discord-white-icon.svg'
 import github from '../../public/github-mark.svg'
+import { MobileNavbar } from './MobileNavbar'
 
+export const metadata: Metadata = {
+  title: 'Anno 1800 Stamps | Stamp Sharing',
+  description:
+    'A community site for uploading and sharing stamps for Anno 1800',
+  keywords: ['Anno', 'Anno 1800', 'Stamps', 'Anno Stamps'],
+  openGraph: {
+    title: 'Anno 1800 Stamps | Stamp Sharing',
+    description:
+      'A community site for uploading and sharing stamps for Anno 1800',
+    url: 'https://annostamps.com',
+    siteName: 'Annostamps',
+    images: [
+      {
+        url: 'https://annostamps.com/header.jpg',
+        width: 1230,
+        height: 600,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  metadataBase: new URL('https://annostamps.com'),
+}
+
+const poppins = Poppins({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+})
 const navigation = [
   {
     href: '/stamps',
@@ -48,52 +75,19 @@ const socials = [
     src: github,
   },
 ]
-const MobileNavBar = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  return (
-    <>
-      <NavbarItem
-        onClick={() => setIsOpen(true)}
-        aria-label="Open navigation"
-        className="md:hidden"
-      >
-        <OpenMenuIcon />
-      </NavbarItem>
-      <MobileSidebar open={isOpen} close={() => setIsOpen(false)}>
-        <Sidebar>
-          <SidebarHeader>
-            <Link id="header-logo" href="/">
-              <Image
-                src={logo}
-                alt="Anno Stamps"
-                style={{
-                  width: '100%',
-                  maxWidth: '160px',
-                  height: 'auto',
-                }}
-              />
-            </Link>
-          </SidebarHeader>
-          <SidebarBody>
-            <SidebarSection>
-              {navigation.map((item) => (
-                <SidebarItem key={item.text} href={item.href}>
-                  {item.text}
-                </SidebarItem>
-              ))}
-            </SidebarSection>
-          </SidebarBody>
-        </Sidebar>
-      </MobileSidebar>
-    </>
-  )
-}
+
 const Navbar = () => {
   return (
     <header>
       <Container className="py-0">
         <NavbarRoot>
-          <MobileNavBar />
+          <MobileNavbar>
+            {navigation.map((item) => (
+              <SidebarItem key={item.text} href={item.href}>
+                {item.text}
+              </SidebarItem>
+            ))}
+          </MobileNavbar>
           <Link id="header-logo" href="/" className="max-lg:hidden">
             <Image
               src={logo}
@@ -116,6 +110,7 @@ const Navbar = () => {
           <NavbarSpacer />
           <Search />
           <NavbarSpacer />
+
           <UserButton />
         </NavbarRoot>
       </Container>
@@ -176,32 +171,21 @@ const Footer = () => {
   )
 }
 
-export const Layout = ({ children }: { children: React.ReactNode }) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
-      <Head>
-        <title>Anno 1800 Stamps | Stamp Sharing</title>
-        <meta
-          name="description"
-          content="A community site for uploading and sharing stamps for Anno 1800"
-        ></meta>
-        <meta name="og:title" content="Anno 1800 Stamps | Stamp Sharing" />
-        <meta
-          name="og:description"
-          content="A community site for uploading and sharing stamps for Anno 1800"
-        />
-        <link rel="icon" href="/favicon.svg" />
-      </Head>
-
-      <div className="flex min-h-screen flex-col bg-default dark:bg-zinc-900">
-        <Navbar />
-
-        <main className="relative mx-auto min-h-full w-full flex-grow">
-          {children}
-        </main>
-
-        <Footer />
-      </div>
-    </>
+    <html lang="en" className={poppins.className}>
+      <body>
+        <div className="flex min-h-screen flex-col bg-default dark:bg-zinc-900">
+          <Navbar />
+          <main className="relative mx-auto min-h-full w-full flex-grow">
+            {children}
+          </main>
+          <Footer />
+        </div>
+      </body>
+      <GoogleTagManager gtmId="G-9KT01SRSVX" />
+    </html>
   )
 }
+
+export default RootLayout
