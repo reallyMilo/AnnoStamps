@@ -1,11 +1,17 @@
+'use client'
+
 import { HandThumbUpIcon } from '@heroicons/react/24/solid'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { startTransition, useOptimistic } from 'react'
 import useSWR from 'swr'
 
 import { Button } from '@/components/ui'
 import { StampWithRelations, UserWithStamps } from '@/lib/prisma/queries'
 import { cn } from '@/lib/utils'
+
+import { likeStamp } from './action'
 
 type LikeButtonProps = {
   id: StampWithRelations['id']
@@ -14,33 +20,58 @@ type LikeButtonProps = {
 
 export const StampLikeButton = ({ id, initialLikes }: LikeButtonProps) => {
   const router = useRouter()
+  const pathname = usePathname()
   const { status } = useSession()
   const isUserAuth = status === 'authenticated'
+
   const { data: userData, mutate } = useSWR<{
     data?: UserWithStamps
     message: string
   }>(isUserAuth ? '/api/user' : null, (url) =>
     fetch(url).then((res) => res.json())
   )
-
   const isStampLiked =
     userData?.data?.likedStamps.some((stamp) => stamp.id === id) ?? false
+
+  const [optimisticLikes, mutateOptimisticLike] = useOptimistic(
+    {
+      likes: initialLikes,
+      isLiked: isStampLiked,
+    },
+    (state, action: 'add' | 'remove') => {
+      switch (action) {
+        case 'add':
+          return {
+            likes: state.likes + 1,
+            isLiked: true,
+          }
+        case 'remove':
+          return {
+            likes: state.likes - 1,
+            isLiked: false,
+          }
+        default:
+          return state
+      }
+    }
+  )
+
   const addLikeToStamp = async () => {
     if (!isUserAuth) {
-      router.push({
-        pathname: '/auth/signin',
-        query: { callbackUrl: router.asPath },
-      })
-      return
+      router.push(`/auth/signin?callbackUrl=${pathname}`)
     }
-    if (isStampLiked) {
+    if (isStampLiked || optimisticLikes.isLiked === true) {
       //TODO: cant unlike until debouncing / rate limiting implemented
       return
     }
-    const res = await fetch(`/api/stamp/like/${id}`, {
-      method: 'PUT',
+    startTransition(() => {
+      mutateOptimisticLike('add')
     })
+
+    const res = await likeStamp(id)
+
     if (!res.ok) {
+      mutateOptimisticLike('remove')
       return
     }
 
