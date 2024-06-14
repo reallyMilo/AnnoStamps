@@ -39,9 +39,16 @@ const config = {
   debug: process.env.NODE_ENV !== 'production' ? true : false,
 } satisfies NextAuthConfig
 
-// export const providerMap = providers.map((provider) => {
-//   return { id: provider.id, name: provider.name }
-// })
+export const providerMap = providers.map((provider) => {
+  if (typeof provider === 'function') {
+    //@ts-expect-error not callable
+    const providerData = provider()
+    return { id: providerData.id, name: providerData.name }
+  } else {
+    //@ts-expect-error property does not exist
+    return { id: provider.id, name: provider.name }
+  }
+})
 export const { handlers, auth, signIn, signOut } = NextAuth(config)
 declare module 'next-auth' {
   /**
