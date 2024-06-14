@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     description:
       'A community site for uploading and sharing stamps for Anno 1800',
     url: 'https://annostamps.com',
-    siteName: 'Annostamps',
+    siteName: 'AnnoStamps',
     images: [
       {
         url: 'https://annostamps.com/header.jpg',
