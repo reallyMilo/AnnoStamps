@@ -1,4 +1,5 @@
-import { useRouter } from 'next/router'
+'use client'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 import {
@@ -61,23 +62,24 @@ const paginate = (
 
 export const Pagination = ({ count, page }: PaginationProps) => {
   const router = useRouter()
-  const [query, setQuery] = useQueryParams()
+  const [, parsedQuery, stringifyQuery] = useQueryParams()
   const totalPageCount = Math.ceil(count / STAMPS_PER_PAGE)
   const pageNumbers = paginate(totalPageCount, page)
-  const queryPage = new URLSearchParams(query).get('page')
 
   useEffect(() => {
-    if (page === 1 && Number(queryPage) !== 1 && queryPage) {
-      router.replace({
-        pathname: router.pathname,
-        query: { ...router.query, page: 1 },
-      })
+    if (page === 1 && Number(parsedQuery.page) !== 1 && parsedQuery.page) {
+      router.replace(
+        //@ts-expect-error route
+        `${stringifyQuery({ ...parsedQuery, page: 1 })}`
+      )
     }
   })
   return (
     <PaginationRoot>
       <PaginationPrevious
-        href={page === 1 ? null : setQuery({ ...router.query, page: page - 1 })}
+        href={
+          page === 1 ? null : stringifyQuery({ ...parsedQuery, page: page - 1 })
+        }
       />
       <PaginationList>
         {pageNumbers.map((pageNum, idx) => {
@@ -86,7 +88,7 @@ export const Pagination = ({ count, page }: PaginationProps) => {
           }
           return (
             <PaginationPage
-              href={setQuery({ ...router.query, page: pageNum })}
+              href={stringifyQuery({ ...parsedQuery, page: pageNum }) ?? ''}
               key={pageNum + '-pagination'}
               current={pageNum === page}
             >
@@ -99,7 +101,7 @@ export const Pagination = ({ count, page }: PaginationProps) => {
         href={
           page === totalPageCount
             ? null
-            : setQuery({ ...router.query, page: page + 1 })
+            : stringifyQuery({ ...parsedQuery, page: page + 1 })
         }
       />
     </PaginationRoot>

@@ -1,53 +1,33 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { unstable_cache } from 'next/cache'
 
 import { Filter } from '@/components/Filter/Filter'
 import { Pagination } from '@/components/Filter/Pagination'
 import { StampCard } from '@/components/StampCard'
 import { Container, Grid, Heading, Text } from '@/components/ui'
-import { queryParamsSchema } from '@/lib/hooks/useQueryParams'
-import { StampWithRelations } from '@/lib/prisma/queries'
+import { type QueryParams, queryParamsSchema } from '@/lib/constants'
 import prisma from '@/lib/prisma/singleton'
 
-type StampsPageProps = {
-  count: number
-  pageNumber: number
-  stamps: StampWithRelations[]
-}
+const getFilteredStamps = unstable_cache(
+  async (query: QueryParams) => {
+    return prisma.stamp.filterFindManyWithCount(query)
+  },
+  ['filterStamps'],
+  {
+    tags: ['filterStamps'],
+    revalidate: 900,
+  }
+)
 
-export const getServerSideProps = (async ({ query, res }) => {
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=600, stale-while-revalidate=900'
+const StampsPage = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) => {
+  const parseResult = queryParamsSchema.safeParse(searchParams)
+  const [count, stamps, pageNumber] = await getFilteredStamps(
+    parseResult.success ? parseResult.data : {}
   )
-  const parseResult = queryParamsSchema.safeParse(query)
-
-  if (!parseResult.success) {
-    return {
-      props: {
-        count: 0,
-        stamps: [],
-        pageNumber: 1,
-      },
-    }
-  }
-  const [count, stamps, pageNumber] =
-    await prisma.stamp.filterFindManyWithCount(parseResult.data)
-
-  return {
-    props: {
-      count,
-      stamps,
-      pageNumber,
-    },
-  }
-}) satisfies GetServerSideProps<StampsPageProps>
-
-const StampsPage = ({
-  count,
-  stamps,
-  pageNumber,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   if (stamps.length === 0) {
     return (
       <Container>
