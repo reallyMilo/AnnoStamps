@@ -83,8 +83,8 @@ importers:
         specifier: 11.0.3
         version: 11.0.3
       swr:
-        specifier: ^2.2.2
-        version: 2.2.2(react@18.3.1)
+        specifier: ^2.2.5
+        version: 2.2.5(react@18.3.1)
       tailwind-merge:
         specifier: ^1.14.0
         version: 1.14.0
@@ -4576,10 +4576,10 @@ packages:
         integrity: sha512-132O1XCd7zcTkzS3FgkAzKmnBuNJjK8WjcTtNuoylj7MYbqw5eXehjQ5OK91g0zm7OTKIPeaAG4CPoRfD9M1Mg==,
       }
 
-  electron-to-chromium@1.4.802:
+  electron-to-chromium@1.4.803:
     resolution:
       {
-        integrity: sha512-TnTMUATbgNdPXVSHsxvNVSG0uEd6cSZsANjm8c9HbvflZVVn1yTRcmVXYT1Ma95/ssB/Dcd30AHweH2TE+dNpA==,
+        integrity: sha512-61H9mLzGOCLLVsnLiRzCbc63uldP0AniRYPV3hbGVtONA1pI7qSGILdbofR7A8TMbOypDocEAjH/e+9k1QIe3g==,
       }
 
   emoji-regex@10.3.0:
@@ -8041,10 +8041,10 @@ packages:
       }
     engines: { node: '>= 4.7.0' }
 
-  swr@2.2.2:
+  swr@2.2.5:
     resolution:
       {
-        integrity: sha512-CbR41AoMD4TQBQw9ic3GTXspgfM9Y8Mdhb5Ob4uIKXhWqnRLItwA5fpGvB7SmSw3+zEjb0PdhiEumtUvYoQ+bQ==,
+        integrity: sha512-QtxqyclFeAsxEUeZIYmsaQ0UjimSq1RZ9Un7I68/0ClKK/U3LoyQunwkQfJZr2fc22DfIXLNDc2wFyTEikCUpg==,
       }
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
@@ -11737,7 +11737,7 @@ snapshots:
   browserslist@4.23.1:
     dependencies:
       caniuse-lite: 1.0.30001634
-      electron-to-chromium: 1.4.802
+      electron-to-chromium: 1.4.803
       node-releases: 2.0.14
       update-browserslist-db: 1.0.16(browserslist@4.23.1)
 
@@ -12105,7 +12105,7 @@ snapshots:
 
   electron-to-chromium@1.4.774: {}
 
-  electron-to-chromium@1.4.802: {}
+  electron-to-chromium@1.4.803: {}
 
   emoji-regex@10.3.0: {}
 
@@ -14318,7 +14318,7 @@ snapshots:
 
   swiper@11.0.3: {}
 
-  swr@2.2.2(react@18.3.1):
+  swr@2.2.5(react@18.3.1):
     dependencies:
       client-only: 0.0.1
       react: 18.3.1
