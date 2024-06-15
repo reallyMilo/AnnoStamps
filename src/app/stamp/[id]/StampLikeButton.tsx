@@ -27,7 +27,7 @@ export const StampLikeButton = ({ id, initialLikes }: LikeButtonProps) => {
   const { data: userData, mutate } = useSWR<{
     data?: UserWithStamps
     message: string
-  }>(isUserAuth ? '/api/user' : null, (url) =>
+  }>(isUserAuth ? '/api/user' : null, (url: string) =>
     fetch(url).then((res) => res.json())
   )
   const isStampLiked =
@@ -75,8 +75,7 @@ export const StampLikeButton = ({ id, initialLikes }: LikeButtonProps) => {
       return
     }
 
-    userData?.data?.likedStamps.push({ id })
-    mutate(userData)
+    mutate()
   }
   return (
     <Button
