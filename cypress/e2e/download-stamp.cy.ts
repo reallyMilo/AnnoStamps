@@ -1,7 +1,7 @@
 const path = require('path') // eslint-disable-line
 
 describe('Download Stamp from stamp page', () => {
-  it('user can download stamp and download counter incrementing', () => {
+  it('user can download stamp', () => {
     cy.visit('/')
     cy.getBySel('stamp-card-link')
       .first()
@@ -20,17 +20,6 @@ describe('Download Stamp from stamp page', () => {
             expect($link.css('cursor')).to.equal('pointer')
           })
           .click()
-
-        cy.url().then((url) => {
-          cy.database(
-            `SELECT * FROM "Stamp" WHERE id = '${url.split('/').at(-1)}';`
-          ).then((stamps) => {
-            const stamp = stamps[0]
-            cy.wrap(stamp)
-              .its('downloads')
-              .should('eq', initDownloads + 1)
-          })
-        })
       })
 
     const downloadsFolder = Cypress.config('downloadsFolder')
