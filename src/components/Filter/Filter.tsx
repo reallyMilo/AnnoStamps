@@ -1,5 +1,6 @@
+'use client'
 import { FunnelIcon } from '@heroicons/react/20/solid'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import {
@@ -14,9 +15,10 @@ import {
   Select,
   Subheading,
 } from '@/components/ui'
+import type { QueryParams } from '@/lib/constants'
 import { CATEGORIES, SORT_OPTIONS, STAMPS_PER_PAGE } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
-import { type QueryParams, useQueryParams } from '@/lib/hooks/useQueryParams'
+import { useQueryParams } from '@/lib/hooks/useQueryParams'
 import { cn } from '@/lib/utils'
 
 const sortOptions = Object.values(SORT_OPTIONS)
@@ -40,7 +42,9 @@ const filters = [
 
 const FilterForm = ({ className }: { className: string }) => {
   const router = useRouter()
-  const [query, setQuery] = useQueryParams()
+  const [searchParams, parsedQuery, stringifyQuery] = useQueryParams()
+  const searchParamsString = searchParams?.toString()
+
   return (
     <form
       aria-label="Filters"
@@ -57,21 +61,21 @@ const FilterForm = ({ className }: { className: string }) => {
                     id={`${option}`}
                     name={`${option}`}
                     value={option}
-                    defaultChecked={decodeURIComponent(query)?.includes(
+                    defaultChecked={searchParamsString?.includes(
                       `${section.id}=${option}`
                     )}
                     data-section={section.id}
                     onChange={(isChecked) => {
-                      const existingParams = new URLSearchParams(query).getAll(
-                        section.id
-                      )
+                      const existingParams =
+                        searchParams?.getAll(section.id) ?? []
 
                       if (isChecked) {
                         existingParams.push(option)
 
                         router.push(
-                          setQuery({
-                            ...router.query,
+                          //@ts-expect-error route type
+                          stringifyQuery({
+                            ...parsedQuery,
                             [section.id]: existingParams,
                           })
                         )
@@ -82,7 +86,11 @@ const FilterForm = ({ className }: { className: string }) => {
                         (param) => param !== option
                       )
                       router.push(
-                        setQuery({ ...router.query, [section.id]: filtered })
+                        //@ts-expect-error route types
+                        stringifyQuery({
+                          ...parsedQuery,
+                          [section.id]: filtered,
+                        })
                       )
                     }}
                   />
@@ -123,8 +131,8 @@ export const Filter = ({
   count,
 }: React.PropsWithChildren<{ count: number; page: number }>) => {
   const router = useRouter()
-  const [query, setQuery] = useQueryParams()
-  const currentSortValue = new URLSearchParams(query).get('sort')
+  const [, parsedQuery, stringifyQuery] = useQueryParams()
+
   const starting = (page - 1) * STAMPS_PER_PAGE + 1
   const ending = Math.min(starting + STAMPS_PER_PAGE - 1, count)
   return (
@@ -150,10 +158,16 @@ export const Filter = ({
                       id="sort"
                       name="sort"
                       className="before:bg-default"
-                      defaultValue={currentSortValue ?? undefined}
+                      defaultValue={
+                        (parsedQuery['sort'] as string) ?? undefined
+                      }
                       onChange={(e) =>
                         router.push(
-                          setQuery({ ...router.query, sort: e.target.value })
+                          //@ts-expect-error route type
+                          stringifyQuery({
+                            ...parsedQuery,
+                            sort: e.target.value,
+                          })
                         )
                       }
                     >

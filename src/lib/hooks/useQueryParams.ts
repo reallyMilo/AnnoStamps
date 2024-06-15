@@ -2,20 +2,8 @@
 
 import { usePathname, useSearchParams } from 'next/navigation'
 import qs from 'qs'
-import { z } from 'zod'
 
-const queryParamsSchema = z
-  .object({
-    capital: z.union([z.string().array(), z.string()]),
-    category: z.union([z.string().array(), z.string()]),
-    page: z.string(),
-    region: z.union([z.string().array(), z.string()]),
-    search: z.string(),
-    sort: z.string(),
-  })
-  .partial()
-
-type QueryParams = z.infer<typeof queryParamsSchema>
+import type { QueryParams } from '../constants'
 
 const queryParamsOrder = [
   'category',
@@ -24,16 +12,20 @@ const queryParamsOrder = [
   'sort',
   'page',
   'search',
-]
+] satisfies (keyof QueryParams)[]
 
 const useQueryParams = () => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  const setQuery = (params: object) => {
+  const parsedQuery = qs.parse(searchParams?.toString() ?? '') as QueryParams
+
+  const stringifyQuery = (params: object) => {
     const queryString = qs.stringify(params, {
       arrayFormat: 'repeat',
-      sort: (a, b) => queryParamsOrder.indexOf(a) - queryParamsOrder.indexOf(b),
+      sort: (a, b) =>
+        queryParamsOrder.indexOf(a as keyof QueryParams) -
+        queryParamsOrder.indexOf(b as keyof QueryParams),
       skipNulls: true,
     })
     const isEmpty = queryString.length === 0
@@ -41,7 +33,7 @@ const useQueryParams = () => {
     return isEmpty ? pathname : `${pathname}?${queryString}`
   }
 
-  return [searchParams, setQuery] as const
+  return [searchParams, parsedQuery, stringifyQuery] as const
 }
 
-export { type QueryParams, queryParamsSchema, useQueryParams }
+export { useQueryParams }
