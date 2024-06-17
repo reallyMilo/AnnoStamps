@@ -1,88 +1,29 @@
-import {
-  PencilSquareIcon,
-  PlusIcon,
-  TrashIcon,
-} from '@heroicons/react/20/solid'
-import type { InferGetStaticPropsType } from 'next'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { PencilSquareIcon, PlusIcon } from '@heroicons/react/20/solid'
 
 import { StampCard } from '@/components/StampCard'
-import {
-  Button,
-  Container,
-  Grid,
-  Modal,
-  ModalActions,
-  ModalDescription,
-  ModalTitle,
-  Subheading,
-  Text,
-} from '@/components/ui'
+import { Button, Container, Grid, Subheading, Text } from '@/components/ui'
+import type { UserWithStamps } from '@/lib/prisma/queries'
 
-import { UserBanner } from '../../../components/UserBanner'
-import type { getStaticProps } from './users-view.getStaticProps'
-
+import { StampDeleteModal } from './StampDeleteModal'
+import { UserBanner } from './UserBanner'
 /**
  * TODO: home-view additions
  *  1. Dropdown with 3 vertical dots for stamp options (edit / delete)
  *  2. Customize button that goes to /settings
  */
 
-const StampDeleteModal = ({
-  id,
-  title,
-}: InferGetStaticPropsType<
-  typeof getStaticProps
->['user']['listedStamps'][0]) => {
-  const router = useRouter()
-  const [isOpen, setIsOpen] = useState(false)
-
-  const deleteStamp = async () => {
-    const deleteStampRes = await fetch(`/api/stamp/delete/${id}`, {
-      method: 'DELETE',
-    })
-
-    if (!deleteStampRes.ok) {
-      return
-    }
-    router.reload()
-  }
-  return (
-    <>
-      <Button
-        data-testid="delete-stamp"
-        color="accent"
-        onClick={() => setIsOpen(true)}
-      >
-        <TrashIcon />
-      </Button>
-
-      <Modal open={isOpen} onClose={setIsOpen}>
-        <ModalTitle>Delete {title}?</ModalTitle>
-        <ModalDescription>This action is not reversible.</ModalDescription>
-
-        <ModalActions>
-          <Button plain onClick={() => setIsOpen(false)}>
-            No, cancel
-          </Button>
-          <Button color="accent" onClick={deleteStamp}>
-            Yes, delete
-          </Button>
-        </ModalActions>
-      </Modal>
-    </>
-  )
+type UserPublicPageProps = {
+  stats: { downloads: number; likes: number }
+  user: UserWithStamps
 }
+export const UserHomePage = ({ user, stats }: UserPublicPageProps) => {
+  const { username, biography } = user
+  const userBannerProps = { ...stats, username, biography }
 
-const UserHomePage = ({
-  user,
-  stats,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (user.listedStamps.length === 0) {
     return (
       <Container>
-        <UserBanner user={user} stats={stats} />
+        <UserBanner {...userBannerProps} />
         <div className="text-center">
           <svg
             className="mx-auto h-12 w-12 text-gray-400"
@@ -114,7 +55,7 @@ const UserHomePage = ({
 
   return (
     <Container>
-      <UserBanner user={user} stats={stats} />
+      <UserBanner {...userBannerProps} />
 
       <Grid>
         {user.listedStamps.map((stamp) => (
@@ -134,5 +75,3 @@ const UserHomePage = ({
     </Container>
   )
 }
-
-export default UserHomePage

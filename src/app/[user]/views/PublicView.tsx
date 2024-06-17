@@ -1,19 +1,21 @@
-import type { InferGetStaticPropsType } from 'next'
-
 import { StampCard } from '@/components/StampCard'
 import { Container, Grid, Text } from '@/components/ui'
+import type { UserWithStamps } from '@/lib/prisma/queries'
 
-import { UserBanner } from '../../../components/UserBanner'
-import type { getStaticProps } from './users-view.getStaticProps'
+import { UserBanner } from './UserBanner'
 
-const UserPublicPage = ({
-  user,
-  stats,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+type UserPublicPageProps = {
+  stats: { downloads: number; likes: number }
+  user: UserWithStamps
+}
+export const UserPublicPage = ({ user, stats }: UserPublicPageProps) => {
+  const { username, biography } = user
+  const userBannerProps = { ...stats, username, biography }
+
   if (user.listedStamps.length === 0) {
     return (
       <Container>
-        <UserBanner user={user} stats={stats} />
+        <UserBanner {...userBannerProps} />
         <Text>User has no stamps</Text>
       </Container>
     )
@@ -21,7 +23,7 @@ const UserPublicPage = ({
 
   return (
     <Container>
-      <UserBanner user={user} stats={stats} />
+      <UserBanner {...userBannerProps} />
       <Grid>
         {user.listedStamps.map((stamp) => (
           <StampCard key={stamp.id} user={user} {...stamp} />
@@ -30,5 +32,3 @@ const UserPublicPage = ({
     </Container>
   )
 }
-
-export default UserPublicPage

@@ -1,22 +1,60 @@
-import { useSession } from 'next-auth/react'
+import { unstable_cache } from 'next/cache'
+import { notFound } from 'next/navigation'
 
-import UserHomePage from '@/modules/users/views/users-home-view'
-import UserPublicPage from '@/modules/users/views/users-public-view'
-import {
-  getStaticPaths as _getStaticPaths,
-  getStaticProps as _getStaticProps,
-  type UsernamePageProps,
-} from '@/modules/users/views/users-view.getStaticProps'
+import { auth } from '@/auth'
+import { userIncludeStatement } from '@/lib/prisma/queries'
+import prisma from '@/lib/prisma/singleton'
 
-export const getStaticPaths = _getStaticPaths
-export const getStaticProps = _getStaticProps
-const Page = (props: UsernamePageProps) => {
-  const { data: session } = useSession()
-  return props?.user?.id === session?.user.id ? (
-    <UserHomePage {...props} />
+import { UserHomePage } from './views/HomeView'
+import { UserPublicPage } from './views/PublicView'
+
+export function generateStaticParams() {
+  return [] // add content creators here to generate path at build time
+}
+
+const getUserWithStamps = unstable_cache(
+  async (user: string) => {
+    return prisma.user.findFirst({
+      include: userIncludeStatement,
+      where: {
+        OR: [{ usernameURL: user.toLowerCase() }, { id: user }],
+      },
+    })
+  },
+  ['getUserWithStamps'],
+  {
+    tags: ['getUserWithStamps'],
+    revalidate: 86400,
+  }
+)
+
+const UserPage = async ({ params }: { params: { user: string } }) => {
+  const session = await auth()
+
+  const user = await getUserWithStamps(params.user)
+
+  if (!user) {
+    notFound()
+  }
+
+  const stats = user.listedStamps.reduce(
+    (acc, curr) => {
+      return {
+        downloads: acc.downloads + curr.downloads,
+        likes: acc.likes + curr._count.likedBy,
+      }
+    },
+    {
+      downloads: 0,
+      likes: 0,
+    }
+  )
+
+  return user.id === session?.user.id ? (
+    <UserHomePage user={user} stats={stats} />
   ) : (
-    <UserPublicPage {...props} />
+    <UserPublicPage user={user} stats={stats} />
   )
 }
 
-export default Page
+export default UserPage
