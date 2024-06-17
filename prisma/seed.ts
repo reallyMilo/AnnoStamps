@@ -23,7 +23,10 @@ export const generateUserData = (
   Array.from({ length }, () => {
     const firstName = faker.person.firstName()
     const lastName = faker.person.lastName()
-    const username = faker.internet.userName({ firstName, lastName })
+    const username = faker.internet
+      .userName({ firstName, lastName })
+      .replace(/\./g, '_')
+
     return {
       id: createId(),
       name: faker.person.fullName({ firstName, lastName }),
