@@ -10,15 +10,20 @@ export const likeStamp = async (id: StampWithRelations['id']) => {
     return { ok: false, likes: null }
   }
 
-  const updateStampLikes = await prisma.stamp.update({
-    where: { id },
-    include: { likedBy: true },
-    data: {
-      likedBy: {
-        connect: { id: session.user.id },
+  try {
+    const updateStampLikes = await prisma.stamp.update({
+      where: { id },
+      include: { likedBy: true },
+      data: {
+        likedBy: {
+          connect: { id: session.user.id },
+        },
       },
-    },
-  })
+    })
 
-  return { ok: true, likes: updateStampLikes.likedBy.length }
+    return { ok: true, likes: updateStampLikes.likedBy.length }
+  } catch (e) {
+    console.error(e)
+    return { ok: false, likes: null }
+  }
 }
