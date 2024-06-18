@@ -1,13 +1,12 @@
 'use server'
 
 import { Prisma } from '@prisma/client'
-import z from 'zod'
 
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
 
 export const updateUserSettings = async (
-  prevState: { message: string | null; status: string },
+  _: { message: string | null; status: string },
   formData: FormData
 ): Promise<{
   message: string | null
@@ -15,16 +14,14 @@ export const updateUserSettings = async (
 }> => {
   const session = await auth()
   if (!session) {
-    throw new Error('Not authenticated.')
+    return { message: 'Unauthorized.', status: 'error' }
   }
 
   try {
-    const userSettingsScehma = z.object({
-      username: z.string(),
-      biography: z.string(),
-    })
-    const formDataEntries = Object.fromEntries(formData)
-    const { username, biography } = userSettingsScehma.parse(formDataEntries)
+    const { username, biography } = Object.fromEntries(formData) as {
+      biography: string
+      username: string
+    }
 
     const updateData = session.user.username
       ? { biography }
@@ -46,6 +43,7 @@ export const updateUserSettings = async (
         return { message: 'Username already taken.', status: 'error' }
       }
     }
+    console.error(e)
     return { message: 'Server error, contact discord.', status: 'error' }
   }
 }
