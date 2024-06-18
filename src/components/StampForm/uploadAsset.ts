@@ -1,4 +1,4 @@
-export const upload = async (
+export const uploadAsset = async (
   stampId: string,
   body: Blob | File,
   type: string,

@@ -6,13 +6,13 @@ import * as React from 'react'
 import { useFormStatus } from 'react-dom'
 
 import { Button, Heading, Text } from '@/components/ui'
-import type { Asset } from '@/lib/hooks/useUpload'
 import type { UserWithStamps } from '@/lib/prisma/queries'
-import { upload } from '@/lib/upload'
 
 import { FileUpload } from './FileUpload'
 import { ImageUpload } from './ImageUpload'
 import { StampInfoFieldGroup } from './StampInfoFieldGroup'
+import { uploadAsset } from './uploadAsset'
+import type { Asset } from './useUpload'
 
 type Stamp = UserWithStamps['listedStamps'][0]
 type Image = Stamp['images'][0]
@@ -123,7 +123,7 @@ const Form = ({
     const [uploadedImageUrls, uploadedStampZipUrl] = await Promise.all([
       Promise.all(
         imagesToUpload.map(async (image) => {
-          const imagePath = await upload(
+          const imagePath = await uploadAsset(
             stampId,
             image.rawFile,
             image.rawFile.type,
@@ -132,7 +132,7 @@ const Form = ({
           return imagePath
         })
       ),
-      upload(stampId, zipped, 'zip', formData.get('title') as string),
+      uploadAsset(stampId, zipped, 'zip', formData.get('title') as string),
     ])
 
     formData.set('stampFileUrl', uploadedStampZipUrl)
