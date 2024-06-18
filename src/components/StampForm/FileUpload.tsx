@@ -1,3 +1,4 @@
+'use client'
 import type { JSZipObjectWithData } from 'jszip'
 
 import {
