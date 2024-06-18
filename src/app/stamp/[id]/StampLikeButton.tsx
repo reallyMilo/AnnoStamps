@@ -11,7 +11,7 @@ import { Button } from '@/components/ui'
 import { StampWithRelations, UserWithStamps } from '@/lib/prisma/queries'
 import { cn } from '@/lib/utils'
 
-import { likeStamp } from './action'
+import { likeStamp } from './actions'
 
 type LikeButtonProps = {
   id: StampWithRelations['id']
