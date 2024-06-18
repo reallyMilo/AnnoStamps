@@ -2,7 +2,6 @@
 
 import { createId } from '@paralleldrive/cuid2'
 import { outputFileSync } from 'fs-extra'
-import { NextApiRequest, NextApiResponse } from 'next'
 import sharp from 'sharp'
 
 import { auth } from '@/auth'
@@ -49,40 +48,36 @@ export const config = {
   },
 }
 
-interface Req extends NextApiRequest {
-  query: { fileType: string; filename: string; stampId: string }
-}
-type Response = {
-  message: string
-  ok: boolean
-  path?: string
-}
-export default async function localHandler(
-  req: Req,
-  res: NextApiResponse<Response>
-) {
+export const POST = auth(async (req) => {
   if (process.env.NODE_ENV !== 'development') {
-    return res.status(500).json({ ok: false, message: 'only in dev mode' })
-  }
-  const session = await auth(req, res)
-
-  if (!session?.user?.id) {
-    return res.status(401).json({ ok: false, message: 'Unauthorized.' })
+    return Response.json(
+      { ok: false, message: 'only in dev mode' },
+      { status: 500 }
+    )
   }
 
-  const { filename, fileType, stampId } = req.query
+  if (!req.auth) {
+    return Response.json(
+      { ok: false, message: 'Unauthorized.' },
+      { status: 401 }
+    )
+  }
+  const searchParams = req.nextUrl.searchParams
+  const stampId = searchParams.get('stampId')
+  const filename = searchParams.get('filename')
+  const fileType = searchParams.get('fileType')
 
-  const base64Image = req.body.split('base64,')?.[1]
-  const buffer = Buffer.from(base64Image, 'base64')
+  const arrayBuffer = await req.arrayBuffer()
+
   const name = fileType === 'zip' ? createId() + '.zip' : filename
   const filepath = `public/tmp/${stampId}/${name}`
-  outputFileSync(filepath, buffer)
+  outputFileSync(filepath, Buffer.from(arrayBuffer))
   if (fileType !== 'zip') {
-    await generateResponsiveImages(filepath, name)
+    await generateResponsiveImages(filepath, name ?? 'nofilename')
   }
-  return res.status(200).json({
+  return Response.json({
     ok: true,
     message: 'asset uploaded',
     path: `/tmp/${stampId}/${name}`,
   })
-}
+})

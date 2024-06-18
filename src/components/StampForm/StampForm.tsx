@@ -1,8 +1,9 @@
+'use client'
+
 import { createId } from '@paralleldrive/cuid2'
 import JSZip, { type JSZipObjectWithData } from 'jszip'
-import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
 import * as React from 'react'
+import { useFormStatus } from 'react-dom'
 
 import { Button, Heading, Text } from '@/components/ui'
 import type { Asset } from '@/lib/hooks/useUpload'
@@ -27,7 +28,7 @@ export type StampFormContextValue = {
     React.SetStateAction<StampFormContextValue['status']>
   >
   stamp?: Stamp
-  status: 'idle' | 'loading' | 'error' | 'success' | 'images' | 'zip'
+  status: 'idle' | 'error' | 'success' | 'images' | 'zip'
 }
 
 const StampFormContext = React.createContext<StampFormContextValue | null>(null)
@@ -41,17 +42,16 @@ const useStampFormContext = () => {
 }
 
 const Submit = ({ children }: { children: React.ReactNode }) => {
-  const { status } = useStampFormContext()
-  const isMutating = status === 'loading'
-  const isDisabled = status === 'error' || isMutating
+  const { pending } = useFormStatus()
+
   return (
     <Button
       type="submit"
       color="secondary"
       className="ml-auto font-normal"
-      disabled={isDisabled}
+      disabled={pending}
     >
-      {isMutating ? 'Loading...' : children}
+      {pending ? 'Loading...' : children}
     </Button>
   )
 }
@@ -69,29 +69,19 @@ const Header = ({ title, subTitle }: HeaderProps) => {
   )
 }
 
-export type FormProps = {
-  children: React.ReactNode
-  onSubmit: (
-    formData: FormData,
-    addImages: string[],
-    removeImages?: string[]
-  ) => Promise<Response>
-}
-
 const isAsset = (b: Asset | JSZipObjectWithData | Image): b is Asset => {
   return (b as Asset).rawFile !== undefined
 }
 
-const Form = ({ children, onSubmit }: FormProps) => {
+const Form = ({
+  children,
+  action,
+}: React.PropsWithChildren<{
+  action: (formData: FormData) => Promise<{ message: string; ok: boolean }>
+}>) => {
   const { stamp, images, files, setStatus } = useStampFormContext()
-  const [errorMessage, setErrorMessage] = React.useState<object | null>(null)
-  const router = useRouter()
-  const { data: session } = useSession()
 
-  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setStatus('loading')
-
+  const handleOnSubmit = async (formData: FormData) => {
     if (images.length === 0) {
       setStatus('images')
       return
@@ -101,7 +91,6 @@ const Form = ({ children, onSubmit }: FormProps) => {
       return
     }
 
-    const formData = new FormData(e.currentTarget)
     formData.delete('images')
     formData.delete('stamps')
     const stampId = stamp?.id ?? createId()
@@ -131,56 +120,39 @@ const Form = ({ children, onSubmit }: FormProps) => {
     }
     const zipped = await zip.generateAsync({ type: 'blob' })
 
-    let uploadedImageUrls: string[] = []
-    let uploadedStampZipUrl: string | null = null
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-extra-semi
-      ;[uploadedImageUrls, uploadedStampZipUrl] = await Promise.all([
-        Promise.all(
-          imagesToUpload.map(async (image) => {
-            const imagePath = await upload(
-              stampId,
-              image.rawFile,
-              image.rawFile.type,
-              image.name
-            )
-            return imagePath
-          })
-        ),
-        upload(stampId, zipped, 'zip', formData.get('title') as string),
-      ])
-    } catch (e) {
-      setErrorMessage({ message: 'Error uploading assets' })
-      setStatus('error')
-      return
-    }
+    const [uploadedImageUrls, uploadedStampZipUrl] = await Promise.all([
+      Promise.all(
+        imagesToUpload.map(async (image) => {
+          const imagePath = await upload(
+            stampId,
+            image.rawFile,
+            image.rawFile.type,
+            image.name
+          )
+          return imagePath
+        })
+      ),
+      upload(stampId, zipped, 'zip', formData.get('title') as string),
+    ])
 
     formData.set('stampFileUrl', uploadedStampZipUrl)
+    formData.set('uploadedImageUrls', JSON.stringify(uploadedImageUrls))
+    formData.set('imageIdsToRemove', JSON.stringify(imageIdsToRemove))
 
-    const res = await onSubmit(formData, uploadedImageUrls, imageIdsToRemove)
+    const result = await action(formData)
 
-    if (!res.ok) {
-      const json = (await res.json()) as { message: object; ok: boolean }
-      setErrorMessage(json.message)
-      setStatus('error')
-      return
+    if (!result.ok) {
+      throw new Error(result.message)
     }
-    setStatus('success')
-    router.push(`/${session?.user.usernameURL}`)
   }
 
   return (
     <form
       className="mt-8 flex flex-col space-y-8"
       data-testid="stamp-form"
-      onSubmit={handleOnSubmit}
+      action={handleOnSubmit}
     >
       {children}
-      {errorMessage && (
-        <pre>
-          post this to the discord {JSON.stringify(errorMessage, undefined, 2)}
-        </pre>
-      )}
     </form>
   )
 }
