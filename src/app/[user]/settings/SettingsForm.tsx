@@ -15,7 +15,7 @@ import {
 } from '@/components/ui'
 import type { UserWithStamps } from '@/lib/prisma/queries'
 
-import { updateUserSettings } from './action'
+import { updateUserSettings } from './actions'
 export const SettingsForm = ({
   username,
   biography,
