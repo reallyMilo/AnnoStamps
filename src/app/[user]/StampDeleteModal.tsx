@@ -1,6 +1,5 @@
 'use client'
 import { TrashIcon } from '@heroicons/react/20/solid'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import {
@@ -12,23 +11,14 @@ import {
 } from '@/components/ui'
 import { UserWithStamps } from '@/lib/prisma/queries'
 
+import { deleteStamp } from './actions'
+
 export const StampDeleteModal = ({
   id,
   title,
 }: Pick<UserWithStamps['listedStamps'][0], 'id' | 'title'>) => {
-  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
 
-  const deleteStamp = async () => {
-    const deleteStampRes = await fetch(`/api/stamp/delete/${id}`, {
-      method: 'DELETE',
-    })
-
-    if (!deleteStampRes.ok) {
-      return
-    }
-    router.refresh()
-  }
   return (
     <>
       <Button
@@ -47,7 +37,7 @@ export const StampDeleteModal = ({
           <Button plain onClick={() => setIsOpen(false)}>
             No, cancel
           </Button>
-          <Button color="accent" onClick={deleteStamp}>
+          <Button color="accent" onClick={async () => await deleteStamp(id)}>
             Yes, delete
           </Button>
         </ModalActions>
