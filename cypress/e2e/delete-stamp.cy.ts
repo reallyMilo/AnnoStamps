@@ -1,6 +1,7 @@
 describe('Delete stamp', () => {
   beforeEach(() => {
     cy.task('db:testUser', true)
+    cy.setSessionCookie()
   })
   afterEach(() => {
     cy.task('db:removeTestUser')
@@ -12,7 +13,7 @@ describe('Delete stamp', () => {
       .last()
       .then((link) => {
         // use text here to catch upper case
-        cy.usernameSession(`/${link.text()}`)
+        cy.visit(`/${link.text()}`)
         cy.getBySel('delete-stamp').should('not.exist')
         cy.getBySel('stamp-card-link')
           .last()
@@ -23,7 +24,7 @@ describe('Delete stamp', () => {
           .should('have.length', 24)
           .then((id) => {
             cy.request({
-              url: `/api/stamp/delete/${id}`,
+              url: `/${link.text()}/delete/${id}`,
               method: 'DELETE',
               failOnStatusCode: false,
             }).then((response) => {
@@ -40,7 +41,7 @@ describe('Delete stamp', () => {
 
   it('user can delete own stamp', () => {
     cy.intercept('/api/stamp/delete/*').as('deleteStamp')
-    cy.usernameSession('/testseeduser')
+    cy.visit('/testseeduser')
     //FIXME: Need to revalidate the path for [username]
     cy.getBySel('delete-stamp').first().click()
     cy.findByRole('button', { name: 'Yes, delete' })

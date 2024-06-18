@@ -40,14 +40,6 @@ const generateResponsiveImages = async (filepath: string, filename: string) => {
   }
 }
 
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '20mb',
-    },
-  },
-}
-
 export const POST = auth(async (req) => {
   if (process.env.NODE_ENV !== 'development') {
     return Response.json(
