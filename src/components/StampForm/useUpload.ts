@@ -16,7 +16,7 @@ const fileToAsset = (rawFile: File) => {
   }
 }
 
-const useUpload = <T>(
+export const useUpload = <T>(
   files: T[],
   setFiles: React.Dispatch<React.SetStateAction<T[]>>
 ) => {
@@ -54,5 +54,3 @@ const useUpload = <T>(
     handleRemove,
   }
 }
-
-export { useUpload }
