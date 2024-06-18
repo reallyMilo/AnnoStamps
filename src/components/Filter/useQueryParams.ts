@@ -3,7 +3,7 @@
 import { usePathname, useSearchParams } from 'next/navigation'
 import qs from 'qs'
 
-import type { QueryParams } from '../constants'
+import type { QueryParams } from '../../lib/constants'
 
 const queryParamsOrder = [
   'category',

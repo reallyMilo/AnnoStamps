@@ -11,7 +11,8 @@ import {
   PaginationPrevious,
 } from '@/components/ui'
 import { STAMPS_PER_PAGE } from '@/lib/constants'
-import { useQueryParams } from '@/lib/hooks/useQueryParams'
+
+import { useQueryParams } from './useQueryParams'
 
 type PaginationProps = {
   count: number

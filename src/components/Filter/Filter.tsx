@@ -18,8 +18,9 @@ import {
 import type { QueryParams } from '@/lib/constants'
 import { CATEGORIES, SORT_OPTIONS, STAMPS_PER_PAGE } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
-import { useQueryParams } from '@/lib/hooks/useQueryParams'
 import { cn } from '@/lib/utils'
+
+import { useQueryParams } from './useQueryParams'
 
 const sortOptions = Object.values(SORT_OPTIONS)
 const filters = [
