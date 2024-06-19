@@ -31,6 +31,7 @@ describe('Updating Stamp', () => {
       cy.task('db:removeTestUser')
     })
     it('user trying to edit another stamp is denied', () => {
+      cy.intercept('GET', '/stamp.zip').as('getStampZip')
       cy.on('uncaught:exception', (err) => {
         expect(err.message).to.include('Not your stamp')
 
@@ -52,7 +53,8 @@ describe('Updating Stamp', () => {
         .its(2)
         .then((id) => {
           cy.visit(`/stamp/update/${id}`, { failOnStatusCode: false })
-          cy.findByText('Something went wrong!').should('be.visible')
+          cy.wait('@getStampZip')
+          cy.findByText('Something went wrong').should('be.visible')
           cy.findByRole('button', { name: 'Update Stamp' }).should('not.exist')
         })
     })
@@ -74,7 +76,7 @@ describe('Updating Stamp', () => {
     })
 
     it('user can click the edit stamp link and update the stamp', () => {
-      cy.intercept('/api/stamp/update/*').as('updateStamp')
+      cy.intercept('/stamp/update/*').as('updateStamp')
 
       cy.intercept('GET', '/stamp.zip', {
         fixture: 'test-stamp.zip',
@@ -110,7 +112,7 @@ describe('Updating Stamp', () => {
 
       cy.findByRole('button', { name: 'Update Stamp' }).click()
       cy.wait(['@uploadAsset', '@S3Put'])
-      cy.wait('@updateStamp').its('response.statusCode').should('eq', 200)
+      cy.wait('@updateStamp').its('response.statusCode').should('eq', 303)
 
       cy.database(
         `SELECT * FROM "Stamp" WHERE title = 'Test-Seed-User-Stamp-Updated';`
