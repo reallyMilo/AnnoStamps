@@ -2,6 +2,7 @@ import { render, RenderOptions } from '@testing-library/react'
 import { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import { ReactElement } from 'react'
+import { Suspense } from 'react'
 
 const customRender = (
   ui: ReactElement,
@@ -10,7 +11,9 @@ const customRender = (
 ) =>
   render(ui, {
     wrapper: ({ children }) => (
-      <SessionProvider session={session}>{children}</SessionProvider>
+      <Suspense>
+        <SessionProvider session={session}>{children}</SessionProvider>
+      </Suspense>
     ),
     ...options,
   })
