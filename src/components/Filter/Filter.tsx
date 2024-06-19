@@ -74,7 +74,6 @@ const FilterForm = ({ className }: { className: string }) => {
                         existingParams.push(option)
 
                         router.push(
-                          //@ts-expect-error route type
                           stringifyQuery({
                             ...parsedQuery,
                             [section.id]: existingParams,
@@ -87,7 +86,6 @@ const FilterForm = ({ className }: { className: string }) => {
                         (param) => param !== option
                       )
                       router.push(
-                        //@ts-expect-error route types
                         stringifyQuery({
                           ...parsedQuery,
                           [section.id]: filtered,
@@ -164,7 +162,6 @@ export const Filter = ({
                       }
                       onChange={(e) =>
                         router.push(
-                          //@ts-expect-error route type
                           stringifyQuery({
                             ...parsedQuery,
                             sort: e.target.value,

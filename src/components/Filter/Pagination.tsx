@@ -69,10 +69,7 @@ export const Pagination = ({ count, page }: PaginationProps) => {
 
   useEffect(() => {
     if (page === 1 && Number(parsedQuery.page) !== 1 && parsedQuery.page) {
-      router.replace(
-        //@ts-expect-error route
-        `${stringifyQuery({ ...parsedQuery, page: 1 })}`
-      )
+      router.replace(`${stringifyQuery({ ...parsedQuery, page: 1 })}`)
     }
   })
   return (

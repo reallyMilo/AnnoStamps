@@ -20,7 +20,6 @@ export const Search = () => {
 
         if (!formData.get('search')) {
           router.push(
-            //@ts-expect-error route type
             stringifyQuery({
               ...parsedQuery,
               search: null,
@@ -29,7 +28,6 @@ export const Search = () => {
           return
         }
         router.push(
-          //@ts-expect-error route type
           stringifyQuery({
             ...parsedQuery,
             search: formData.get('search'),
