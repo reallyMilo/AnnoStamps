@@ -52,6 +52,7 @@ describe('Updating Stamp', () => {
         .its(2)
         .then((id) => {
           cy.visit(`/stamp/update/${id}`, { failOnStatusCode: false })
+
           cy.findByText('Something went wrong!').should('be.visible')
           cy.findByRole('button', { name: 'Update Stamp' }).should('not.exist')
         })
@@ -74,7 +75,7 @@ describe('Updating Stamp', () => {
     })
 
     it('user can click the edit stamp link and update the stamp', () => {
-      cy.intercept('/api/stamp/update/*').as('updateStamp')
+      cy.intercept('/stamp/update/*').as('updateStamp')
 
       cy.intercept('GET', '/stamp.zip', {
         fixture: 'test-stamp.zip',

@@ -34,7 +34,7 @@ export const updateStamp = async (formData: FormData) => {
     uploadedImageUrls,
     unsafeDescription,
     ...fields
-  } = formData as unknown as FormDataEntries
+  } = Object.fromEntries(formData) as unknown as FormDataEntries
 
   const deleteImages = JSON.parse(imageIdsToRemove) as string[]
   const addImages = JSON.parse(uploadedImageUrls) as string[]

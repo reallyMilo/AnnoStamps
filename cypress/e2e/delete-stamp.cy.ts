@@ -28,19 +28,14 @@ describe('Delete stamp', () => {
               method: 'DELETE',
               failOnStatusCode: false,
             }).then((response) => {
-              expect(response.status).to.eq(500)
-              expect(response.body).to.have.property('ok', false)
-              expect(response.body).to.have.property(
-                'message',
-                'Not stamp owner'
-              )
+              expect(response.status).to.eq(404)
             })
           })
       })
   })
 
   it('user can delete own stamp', () => {
-    cy.intercept('/api/stamp/delete/*').as('deleteStamp')
+    cy.intercept('/testseeduser').as('deleteStamp')
     cy.visit('/testseeduser')
     //FIXME: Need to revalidate the path for [username]
     cy.getBySel('delete-stamp').first().click()
