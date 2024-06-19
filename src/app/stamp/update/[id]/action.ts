@@ -1,47 +1,43 @@
+'use server'
 import type { Prisma } from '@prisma/client'
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 import { auth } from '@/auth'
 import { parseAndSanitizedMarkdown } from '@/lib/markdown'
 import prisma from '@/lib/prisma/singleton'
 
-interface Req extends NextApiRequest {
-  body: Pick<
-    Prisma.StampUncheckedCreateInput,
-    | 'category'
-    | 'region'
-    | 'unsafeDescription'
-    | 'title'
-    | 'modded'
-    | 'stampFileUrl'
-  > & { addImages: string[]; deleteImages: string[] }
-  query: {
-    id: string
-  }
-}
+type FormDataEntries = Pick<
+  Prisma.StampUncheckedCreateInput,
+  | 'category'
+  | 'region'
+  | 'unsafeDescription'
+  | 'title'
+  | 'modded'
+  | 'stampFileUrl'
+> & { imageIdsToRemove: string; stampId: string; uploadedImageUrls: string }
 
-export default async function updateStampHandler(
-  req: Req,
-  res: NextApiResponse
-) {
-  if (req.method !== 'PUT') {
-    return res.status(405).json({
-      ok: false,
-      message: `HTTP method ${req.method} is not supported.`,
-    })
-  }
-  const { id: stampId } = req.query
-  const { addImages, deleteImages, unsafeDescription, ...fields } = req.body
-
-  const session = await auth(req, res)
+export const updateStamp = async (formData: FormData) => {
+  const session = await auth()
 
   if (!session?.user.id) {
-    return res.status(401).json({ ok: false, message: 'Unauthorized.' })
-  }
-  if (!session.user.usernameURL) {
-    return res.status(400).json({ ok: false, message: 'UsernameURL not set' })
+    return { ok: false, message: 'Unauthorized.' }
   }
 
+  if (!session.user.usernameURL) {
+    return { ok: false, message: 'UsernameURL not set' }
+  }
+
+  const {
+    stampId,
+    imageIdsToRemove,
+    uploadedImageUrls,
+    unsafeDescription,
+    ...fields
+  } = formData as unknown as FormDataEntries
+
+  const deleteImages = JSON.parse(imageIdsToRemove) as string[]
+  const addImages = JSON.parse(uploadedImageUrls) as string[]
   try {
     const markdownDescription = parseAndSanitizedMarkdown(unsafeDescription)
     await prisma.$transaction(async (tx) => {
@@ -96,10 +92,11 @@ export default async function updateStampHandler(
         },
       })
     })
-    await res.revalidate(`/stamp/${stampId}`)
-    await res.revalidate(`/${session.user.usernameURL}`)
-    return res.status(200).json({ ok: true, message: 'successfully updated' })
   } catch (e) {
-    return res.status(500).json({ ok: false, message: e })
+    console.error(e)
+    return { ok: false, message: 'Server error.' }
   }
+  revalidatePath(`/stamp/${stampId}`)
+  revalidatePath(`/${session.user.usernameURL}`)
+  redirect(`/${session.user.usernameURL}`)
 }
