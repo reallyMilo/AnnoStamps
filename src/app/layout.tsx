@@ -4,6 +4,7 @@ import { GoogleTagManager } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import Image from 'next/image'
+import { Suspense } from 'react'
 
 import { UserButton } from '@/components/Auth/UserButton'
 import { Search } from '@/components/Filter/Search'
@@ -108,7 +109,9 @@ const Navbar = () => {
             ))}
           </NavbarSection>
           <NavbarSpacer />
-          <Search />
+          <Suspense>
+            <Search />
+          </Suspense>
           <NavbarSpacer />
 
           <UserButton />
