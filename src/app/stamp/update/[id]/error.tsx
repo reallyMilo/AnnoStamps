@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 
 import { Heading, Text } from '@/components/ui'
 
-const CreateStampErrorPage = ({
+const UpdateStampErrorPage = ({
   error,
 }: {
   error: Error & { digest?: string }
@@ -25,4 +25,4 @@ const CreateStampErrorPage = ({
   )
 }
 
-export default CreateStampErrorPage
+export default UpdateStampErrorPage
