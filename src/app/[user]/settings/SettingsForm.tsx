@@ -1,5 +1,8 @@
 'use client'
-import { useFormState, useFormStatus } from 'react-dom'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+import { useState } from 'react'
+import { useFormStatus } from 'react-dom'
 
 import {
   Button,
@@ -13,23 +16,50 @@ import {
   Label,
   Textarea,
 } from '@/components/ui'
-import type { UserWithStamps } from '@/lib/prisma/queries'
 
 import { updateUserSettings } from './actions'
-export const SettingsForm = ({
-  username,
-  biography,
-}: Pick<UserWithStamps, 'username' | 'biography'>) => {
-  const [formState, formAction] = useFormState(updateUserSettings, {
+
+const SubmitButton = () => {
+  const { pending } = useFormStatus()
+  return (
+    <Button
+      type="submit"
+      disabled={pending}
+      color="secondary"
+      className="justify-self-end font-normal"
+    >
+      Save
+    </Button>
+  )
+}
+export const SettingsForm = () => {
+  const router = useRouter()
+  const { data: session, status } = useSession<true>()
+
+  const [formState, setFormState] = useState<
+    Awaited<ReturnType<typeof updateUserSettings>>
+  >({
     status: 'idle',
     message: null,
   })
-  const { pending } = useFormStatus()
+
+  if (status === 'loading') return null
+
+  const { username, biography } = session.user
 
   return (
     <form
       id="user-settings"
-      action={formAction}
+      action={async (formData) => {
+        const { status, message } = await updateUserSettings(formData)
+        if (status === 'success') {
+          // update from useSession not documented
+          // no longer works as expected with only database
+          // update()
+          router.refresh()
+        }
+        setFormState({ status, message })
+      }}
       className="grid max-w-3xl space-y-8"
     >
       <fieldset>
@@ -49,9 +79,9 @@ export const SettingsForm = ({
               <Input
                 type="text"
                 name="username"
-                id="username"
                 defaultValue={username ?? ''}
                 readOnly={username ? true : false}
+                autoComplete="false"
                 onInvalid={(e) =>
                   e.currentTarget.setCustomValidity(
                     'Select a username containing only alphanumeric characters, dashes (-), and underscores (_).'
@@ -71,7 +101,6 @@ export const SettingsForm = ({
           <Field>
             <Label>About</Label>
             <Textarea
-              id="biography"
               name="biography"
               placeholder="To be displayed on your page banner."
               defaultValue={biography ?? ''}
@@ -80,15 +109,7 @@ export const SettingsForm = ({
           </Field>
         </FieldGroup>
       </fieldset>
-
-      <Button
-        type="submit"
-        disabled={pending}
-        color="secondary"
-        className="justify-self-end font-normal"
-      >
-        Save
-      </Button>
+      <SubmitButton />
     </form>
   )
 }

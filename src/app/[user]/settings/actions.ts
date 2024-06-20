@@ -6,7 +6,6 @@ import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
 
 export const updateUserSettings = async (
-  _: { message: string | null; status: string },
   formData: FormData
 ): Promise<{
   message: string | null
@@ -16,7 +15,6 @@ export const updateUserSettings = async (
   if (!session) {
     return { message: 'Unauthorized.', status: 'error' }
   }
-
   try {
     const { username, biography } = Object.fromEntries(formData) as {
       biography: string

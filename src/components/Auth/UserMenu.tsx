@@ -7,11 +7,11 @@ import {
   PlusIcon,
   UserIcon,
 } from '@heroicons/react/24/outline'
-import type { Session } from 'next-auth'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 
 import {
   AvatarButton,
+  Button,
   Dropdown,
   DropdownButton,
   DropdownDivider,
@@ -20,12 +20,14 @@ import {
   DropdownMenu,
 } from '@/components/ui'
 
-export const UserMenu = ({
-  id,
-  image,
-  username,
-  usernameURL,
-}: Pick<Session['user'], 'username' | 'usernameURL' | 'id' | 'image'>) => {
+export const UserMenu = () => {
+  const { data: session } = useSession()
+
+  if (!session) {
+    return <Button href="/auth/signin">Add Stamp</Button>
+  }
+
+  const { id, username, usernameURL, image } = session.user
   const userPath = usernameURL ? `/${usernameURL}` : `/${id}`
 
   const menuItems = [

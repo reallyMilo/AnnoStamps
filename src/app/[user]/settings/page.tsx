@@ -5,7 +5,6 @@ import { auth } from '@/auth'
 import { Container } from '@/components/ui'
 
 import { SettingsForm } from './SettingsForm'
-SessionProvider
 
 const UserSettingsPage = async () => {
   const session = await auth()
@@ -15,10 +14,9 @@ const UserSettingsPage = async () => {
 
   return (
     <Container>
-      <SettingsForm
-        username={session.user.username}
-        biography={session.user.biography}
-      />
+      <SessionProvider session={session}>
+        <SettingsForm />
+      </SessionProvider>
     </Container>
   )
 }

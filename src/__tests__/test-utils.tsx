@@ -4,15 +4,21 @@ import { SessionProvider } from 'next-auth/react'
 import { ReactElement } from 'react'
 import { Suspense } from 'react'
 
+type RecursivePartial<T> = {
+  [P in keyof T]?: RecursivePartial<T[P]>
+}
+
 const customRender = (
   ui: ReactElement,
-  session: Session | null = null,
+  session: RecursivePartial<Session> | null = null,
   options: RenderOptions = {}
 ) =>
   render(ui, {
     wrapper: ({ children }) => (
       <Suspense>
-        <SessionProvider session={session}>{children}</SessionProvider>
+        <SessionProvider session={session as Session}>
+          {children}
+        </SessionProvider>
       </Suspense>
     ),
     ...options,

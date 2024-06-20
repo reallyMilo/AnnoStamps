@@ -1,13 +1,13 @@
 import { PrismaAdapter } from '@auth/prisma-adapter'
-import type { DefaultSession, NextAuthConfig } from 'next-auth'
+import type { Prisma } from '@prisma/client'
+import type { NextAuthConfig } from 'next-auth'
 import NextAuth from 'next-auth'
+import type { AdapterSession, AdapterUser } from 'next-auth/adapters'
 import type { Provider } from 'next-auth/providers'
 import Discord from 'next-auth/providers/discord'
 import Google from 'next-auth/providers/google'
 
-import type { UserWithStamps } from '@/lib/prisma/queries'
 import prisma from '@/lib/prisma/singleton'
-
 //TODO:initial user setup page shares pages/[user]/settings view
 
 const providers = [Google, Discord] satisfies Provider[]
@@ -25,13 +25,16 @@ const config = {
   // events: { createUser: sendWelcomeEmail },
   callbacks: {
     session: async ({ session, user }) => {
-      if (session?.user) {
-        session.user.id = user.id
-        session.user.username = user.username
-        session.user.biography = user.biography
-        session.user.usernameURL = user.usernameURL
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+          biography: user.biography,
+          username: user.username,
+          usernameURL: user.usernameURL,
+        },
       }
-      return session
     },
   },
   session: { strategy: 'database' },
@@ -54,16 +57,12 @@ declare module 'next-auth' {
   /**
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
-  interface Session {
-    user: Pick<
-      UserWithStamps,
-      'id' | 'biography' | 'username' | 'usernameURL'
-    > &
-      DefaultSession['user']
+
+  //eslint-disable-next-line
+  interface Session extends AdapterSession {
+    user: Pick<User, 'id' | 'biography' | 'username' | 'usernameURL'> &
+      AdapterUser
   }
-  interface User {
-    biography: string | null
-    username: string | null
-    usernameURL: string | null
-  }
+  //eslint-disable-next-line
+  interface User extends Prisma.UserGetPayload<true> {}
 }
