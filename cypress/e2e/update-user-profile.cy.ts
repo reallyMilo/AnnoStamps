@@ -12,7 +12,7 @@ describe('Update user profile', () => {
 
       cy.findByLabelText('Username').type('cypress tester')
       cy.findByRole('button', { name: 'Save' }).click()
-      cy.get('#username')
+      cy.findByLabelText('Username')
         .invoke('prop', 'validationMessage')
         .should(
           'equal',

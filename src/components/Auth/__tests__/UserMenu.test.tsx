@@ -2,9 +2,13 @@ import { act, render, screen, userEvent } from '../../../__tests__/test-utils'
 import { UserMenu } from '../UserMenu'
 
 describe('UserMenu', () => {
+  it('renders login button for unauthenticated users', () => {
+    render(<UserMenu />)
+    expect(screen.getByRole('link', { name: 'Add Stamp' })).toBeInTheDocument()
+  })
   it('user-menu prompts to set username for authenticated users without username set', async () => {
     const user = { id: '1', username: null, usernameURL: null, biography: null }
-    render(<UserMenu {...user} />)
+    render(<UserMenu />, { user })
 
     const button = screen.getByRole('button')
     expect(button).toBeInTheDocument()
@@ -32,7 +36,7 @@ describe('UserMenu', () => {
       usernameURL: 'stampcreator',
       biography: null,
     }
-    render(<UserMenu {...user} />)
+    render(<UserMenu />, { user })
 
     await act(async () => await userEvent.click(screen.getByRole('button')))
     expect(screen.getByRole('menuitem', { name: 'My stamps' })).toHaveAttribute(

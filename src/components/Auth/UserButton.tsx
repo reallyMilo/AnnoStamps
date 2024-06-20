@@ -1,12 +1,15 @@
+import { SessionProvider } from 'next-auth/react'
+
 import { auth } from '@/auth'
-import { Button } from '@/components/ui'
 
 import { UserMenu } from './UserMenu'
 
 export const UserButton = async () => {
   const session = await auth()
 
-  if (!session) return <Button href="/auth/signin">Add Stamp</Button>
-
-  return <UserMenu {...session.user} />
+  return (
+    <SessionProvider session={session}>
+      <UserMenu />
+    </SessionProvider>
+  )
 }
