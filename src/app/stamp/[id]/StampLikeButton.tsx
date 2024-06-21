@@ -71,7 +71,9 @@ export const StampLikeButton = ({ id, initialLikes }: LikeButtonProps) => {
     const res = await likeStamp(id)
 
     if (!res.ok) {
-      mutateOptimisticLike('remove')
+      startTransition(() => {
+        mutateOptimisticLike('remove')
+      })
       return
     }
 
