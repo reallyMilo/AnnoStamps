@@ -4,10 +4,8 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import Image from 'next/image'
-import { Suspense } from 'react'
 
 import { UserButton } from '@/components/Auth/UserButton'
-import { Search } from '@/components/Filter/Search'
 import {
   Container,
   Link,
@@ -89,7 +87,8 @@ const Navbar = () => {
               </SidebarItem>
             ))}
           </MobileNavbar>
-          <Link id="header-logo" href="/" className="max-lg:hidden">
+          <NavbarSpacer className="md:hidden" />
+          <Link id="header-logo" href="/">
             <Image
               src={logo}
               alt="Anno Stamps"
@@ -108,10 +107,6 @@ const Navbar = () => {
               </NavbarItem>
             ))}
           </NavbarSection>
-          <NavbarSpacer />
-          <Suspense>
-            <Search />
-          </Suspense>
           <NavbarSpacer />
 
           <UserButton />
