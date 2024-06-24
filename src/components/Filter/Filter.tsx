@@ -1,4 +1,5 @@
 'use client'
+import * as Headless from '@headlessui/react'
 import { FunnelIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -7,19 +8,18 @@ import {
   Button,
   Checkbox,
   CheckboxField,
-  Field,
   Fieldset,
   Label,
   Legend,
   MobileSidebar,
   Select,
-  Subheading,
 } from '@/components/ui'
 import type { QueryParams } from '@/lib/constants'
-import { CATEGORIES, SORT_OPTIONS, STAMPS_PER_PAGE } from '@/lib/constants'
+import { CATEGORIES, SORT_OPTIONS } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 import { cn } from '@/lib/utils'
 
+import { Search } from './Search'
 import { useQueryParams } from './useQueryParams'
 
 const sortOptions = Object.values(SORT_OPTIONS)
@@ -103,6 +103,40 @@ const FilterForm = ({ className }: { className: string }) => {
     </form>
   )
 }
+const SortOptionsSelect = () => {
+  const router = useRouter()
+  const [, parsedQuery, stringifyQuery] = useQueryParams()
+
+  return (
+    <Headless.Field className="flex items-baseline justify-center gap-4">
+      <Label>Sort</Label>
+      <Select
+        name="sort"
+        className="max-w-48"
+        aria-placeholder=""
+        defaultValue={(parsedQuery['sort'] as string) ?? undefined}
+        onChange={(e) =>
+          router.push(
+            stringifyQuery({
+              ...parsedQuery,
+              sort: e.target.value,
+            })
+          )
+        }
+      >
+        {sortOptions.map((option, idx) => (
+          <option
+            key={`sort-${option}-${idx}`}
+            className="capitalize"
+            value={option}
+          >
+            {option}
+          </option>
+        ))}
+      </Select>
+    </Headless.Field>
+  )
+}
 const MobileFilter = () => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -124,71 +158,21 @@ const MobileFilter = () => {
     </>
   )
 }
-export const Filter = ({
-  children,
-  page,
-  count,
-}: React.PropsWithChildren<{ count: number; page: number }>) => {
-  const router = useRouter()
-  const [, parsedQuery, stringifyQuery] = useQueryParams()
-
-  const starting = (page - 1) * STAMPS_PER_PAGE + 1
-  const ending = Math.min(starting + STAMPS_PER_PAGE - 1, count)
+export const Filter = ({ children }: React.PropsWithChildren) => {
   return (
-    <>
-      <section aria-labelledby="stamps-heading" className="pt-6">
-        <Subheading id="stamps-heading" className="sr-only">
-          Stamps
-        </Subheading>
+    <div className="grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-6">
+      <FilterForm className="hidden lg:block" />
 
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-6">
-          <FilterForm className="hidden lg:block" />
+      <div className="space-y-6 lg:col-span-5">
+        <div className="flex items-baseline justify-between space-x-5 space-y-6">
+          <Search />
 
-          <div className="lg:col-span-5">
-            <div className="flex items-baseline justify-between pb-6">
-              <Subheading className="self-end sm:self-start">{`${starting} to ${ending} of ${count}`}</Subheading>
-              <div className="flex items-center space-x-5">
-                <div className="relative inline-block text-left md:ml-auto">
-                  <Field>
-                    <Label className="absolute left-0 z-10 ml-2 -translate-y-2.5 bg-default text-sm capitalize sm:text-sm dark:bg-transparent">
-                      Sort
-                    </Label>
-                    <Select
-                      id="sort"
-                      name="sort"
-                      className="before:bg-default"
-                      defaultValue={
-                        (parsedQuery['sort'] as string) ?? undefined
-                      }
-                      onChange={(e) =>
-                        router.push(
-                          stringifyQuery({
-                            ...parsedQuery,
-                            sort: e.target.value,
-                          })
-                        )
-                      }
-                    >
-                      {sortOptions.map((option, idx) => (
-                        <option
-                          key={`sort-${option}-${idx}`}
-                          className="capitalize"
-                          value={option}
-                        >
-                          {option}
-                        </option>
-                      ))}
-                    </Select>
-                  </Field>
-                </div>
-                <MobileFilter />
-              </div>
-            </div>
-
-            {children}
-          </div>
+          <SortOptionsSelect />
+          <MobileFilter />
         </div>
-      </section>
-    </>
+
+        {children}
+      </div>
+    </div>
   )
 }

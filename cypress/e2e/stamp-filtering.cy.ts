@@ -18,7 +18,10 @@ describe('Filtering stamps', () => {
     cy.url().should('include', '?category=production&region=enbesa')
 
     cy.findAllByText('enbesa').should('have.length.greaterThan', 2)
-    cy.get('select#sort').select('newest').invoke('val').should('eq', 'newest')
+    cy.findByLabelText('Sort')
+      .select('newest')
+      .invoke('val')
+      .should('eq', 'newest')
     cy.url().should('include', 'category=production&region=enbesa&sort=newest')
 
     // flakey
