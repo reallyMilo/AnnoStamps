@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
 import { Avatar, Heading, Subheading } from '@/components/ui'
-import type { StampWithRelations } from '@/lib/prisma/queries'
+import type { StampWithRelations } from '@/lib/prisma/models'
 import { distanceUnixTimeToNow } from '@/lib/utils'
 
 export const StampCard = ({

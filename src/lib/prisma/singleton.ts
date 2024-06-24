@@ -7,7 +7,7 @@ import {
   stampIncludeStatement,
   StampWithRelations,
   userExtension,
-} from './queries'
+} from './models'
 
 const prismaClientSingleton = () => {
   return new PrismaClient()

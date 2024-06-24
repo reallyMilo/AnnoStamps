@@ -1,7 +1,7 @@
 'use server'
 
 import { auth } from '@/auth'
-import type { StampWithRelations } from '@/lib/prisma/queries'
+import type { StampWithRelations } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 
 export const likeStamp = async (id: StampWithRelations['id']) => {

@@ -1,5 +1,5 @@
 import { Heading, Text } from '@/components/ui'
-import type { UserWithStamps } from '@/lib/prisma/queries'
+import type { UserWithStamps } from '@/lib/prisma/models'
 
 type UserBannerProps = {
   downloads: number

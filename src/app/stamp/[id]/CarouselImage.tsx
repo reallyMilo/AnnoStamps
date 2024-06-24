@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import type { StampWithRelations } from '@/lib/prisma/queries'
+import type { StampWithRelations } from '@/lib/prisma/models'
 
 type CarouselProps = {
   images: StampWithRelations['images']

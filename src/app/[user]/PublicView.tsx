@@ -1,6 +1,6 @@
 import { StampCard } from '@/components/StampCard'
 import { Container, Grid, Text } from '@/components/ui'
-import type { UserWithStamps } from '@/lib/prisma/queries'
+import type { UserWithStamps } from '@/lib/prisma/models'
 
 import { UserBanner } from './UserBanner'
 

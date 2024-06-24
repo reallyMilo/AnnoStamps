@@ -5,7 +5,7 @@ import useSWR from 'swr'
 
 import { StampForm } from '@/components/StampForm/StampForm'
 import { Heading } from '@/components/ui'
-import type { UserWithStamps } from '@/lib/prisma/queries'
+import type { UserWithStamps } from '@/lib/prisma/models'
 
 import { updateStamp } from './action'
 

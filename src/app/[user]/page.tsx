@@ -2,7 +2,7 @@ import { unstable_cache } from 'next/cache'
 import { notFound } from 'next/navigation'
 
 import { auth } from '@/auth'
-import { userIncludeStatement } from '@/lib/prisma/queries'
+import { userIncludeStatement } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 
 import { UserHomePage } from './HomeView'

@@ -8,7 +8,7 @@ import { startTransition, useOptimistic } from 'react'
 import useSWR from 'swr'
 
 import { Button } from '@/components/ui'
-import { StampWithRelations, UserWithStamps } from '@/lib/prisma/queries'
+import { StampWithRelations, UserWithStamps } from '@/lib/prisma/models'
 import { cn } from '@/lib/utils'
 
 import { likeStamp } from './actions'

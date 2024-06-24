@@ -10,7 +10,7 @@ import qs from 'qs'
 import { StampCard } from '@/components/StampCard'
 import { Container, Grid, Heading, Link } from '@/components/ui'
 import { REGIONS_1800 } from '@/lib/constants/1800/data'
-import { stampIncludeStatement } from '@/lib/prisma/queries'
+import { stampIncludeStatement } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 
 const regionLinks = [

@@ -2,7 +2,7 @@ import { PencilSquareIcon, PlusIcon } from '@heroicons/react/20/solid'
 
 import { StampCard } from '@/components/StampCard'
 import { Button, Container, Grid, Subheading, Text } from '@/components/ui'
-import type { UserWithStamps } from '@/lib/prisma/queries'
+import type { UserWithStamps } from '@/lib/prisma/models'
 
 import { StampDeleteModal } from './StampDeleteModal'
 import { UserBanner } from './UserBanner'

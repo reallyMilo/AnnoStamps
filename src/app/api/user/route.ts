@@ -1,5 +1,5 @@
 import { auth } from '@/auth'
-import { userIncludeStatement } from '@/lib/prisma/queries'
+import { userIncludeStatement } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 
 export const GET = auth(async (req) => {

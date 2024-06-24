@@ -9,7 +9,7 @@ import { SessionProvider } from 'next-auth/react'
 import { auth } from '@/auth'
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
 import { buttonStyles, Container, Heading, Link } from '@/components/ui'
-import { stampIncludeStatement } from '@/lib/prisma/queries'
+import { stampIncludeStatement } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 import { cn, distanceUnixTimeToNow } from '@/lib/utils'
 

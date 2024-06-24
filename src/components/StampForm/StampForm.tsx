@@ -6,7 +6,7 @@ import * as React from 'react'
 import { useFormStatus } from 'react-dom'
 
 import { Button, Heading, Text } from '@/components/ui'
-import type { UserWithStamps } from '@/lib/prisma/queries'
+import type { UserWithStamps } from '@/lib/prisma/models'
 
 import { FileUpload } from './FileUpload'
 import { ImageUpload } from './ImageUpload'

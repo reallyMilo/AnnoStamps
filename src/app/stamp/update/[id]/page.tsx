@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 
 import { auth } from '@/auth'
 import { Container, Text } from '@/components/ui'
-import { userIncludeStatement } from '@/lib/prisma/queries'
+import { userIncludeStatement } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 
 import { UpdateStampForm } from './UpdateStampForm'
