@@ -5,8 +5,8 @@ import { auth } from '@/auth'
 import { userIncludeStatement } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 
-import { UserHomePage } from './HomeView'
-import { UserPublicPage } from './PublicView'
+import { UserHomePage } from './UserHomePage'
+import { UserPublicPage } from './UserPublicPage'
 
 // export function generateStaticParams() {
 //   return [] // add content creators here to generate path at build time
