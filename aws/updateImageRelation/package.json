@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.43.5"
+  },
+  "packageManager": "npm@10.8.1"
+}
