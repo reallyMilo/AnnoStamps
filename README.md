@@ -34,4 +34,4 @@ pnpm migrate
 
 ![Create-Stamps](https://d16532dqapk4x.cloudfront.net/diagram/annostamps-create.png)
 
-![Download-Stamp](https://d16532dqapk4x.cloudfront.net/diagram/downloads.png)
+![Download-Stamp](https://d16532dqapk4x.cloudfront.net/diagram/downloads2.png)

@@ -1,6 +1,6 @@
 import './globals.css'
 
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import Image from 'next/image'
@@ -181,8 +181,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <Footer />
         </div>
       </body>
-      <GoogleAnalytics gaId="G-MLZY95VRWF" />
-      <GoogleTagManager gtmId="GTM-P2XBRWZL" />
+      <GoogleAnalytics
+        gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS as string}
+      />
     </html>
   )
 }
