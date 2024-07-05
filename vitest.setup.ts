@@ -9,5 +9,17 @@ const ResizeObserverMock = vi.fn(() => ({
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 beforeAll(() => {
-  vi.mock('next/router', () => require('next-router-mock'))
+  vi.mock('next/navigation', () => ({
+    useRouter() {
+      return {
+        prefetch: () => null,
+      }
+    },
+    usePathname() {
+      return {}
+    },
+    useSearchParams() {
+      return {}
+    },
+  }))
 })

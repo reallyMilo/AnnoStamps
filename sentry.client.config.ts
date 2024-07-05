@@ -20,7 +20,7 @@ Sentry.init({
   replaysSessionSampleRate: 0.1,
 
   enabled: process.env.NODE_ENV === 'production',
-
+  allowUrls: ['https://annostamps.com'],
   // You can remove this option if you're not planning to use the Sentry Session Replay feature:
   integrations: [
     Sentry.replayIntegration({

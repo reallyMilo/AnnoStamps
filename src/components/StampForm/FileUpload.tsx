@@ -1,3 +1,4 @@
+'use client'
 import type { JSZipObjectWithData } from 'jszip'
 
 import {
@@ -10,10 +11,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui'
-import { Asset, useUpload } from '@/lib/hooks/useUpload'
 import { cn } from '@/lib/utils'
 
 import { useStampFormContext } from './StampForm'
+import { type Asset, useUpload } from './useUpload'
 
 const isJSZip = (b: Asset | JSZipObjectWithData): b is JSZipObjectWithData => {
   return (b as JSZipObjectWithData)._data !== undefined

@@ -1,13 +1,15 @@
+'use client'
+
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 import { Input, InputGroup } from '@/components/ui'
-import { useQueryParams } from '@/lib/hooks/useQueryParams'
+
+import { useQueryParams } from './useQueryParams'
 
 export const Search = () => {
   const router = useRouter()
-  const [query, setQuery] = useQueryParams()
-  const defaultValue = new URLSearchParams(query).get('search')
+  const [searchParams, parsedQuery, stringifyQuery] = useQueryParams()
 
   return (
     <form
@@ -17,15 +19,17 @@ export const Search = () => {
         const formData = new FormData(e.currentTarget)
 
         if (!formData.get('search')) {
-          router.push({
-            ...router.query,
-            search: null,
-          })
+          router.push(
+            stringifyQuery({
+              ...parsedQuery,
+              search: null,
+            })
+          )
           return
         }
         router.push(
-          setQuery({
-            ...router.query,
+          stringifyQuery({
+            ...parsedQuery,
             search: formData.get('search'),
           })
         )
@@ -38,7 +42,7 @@ export const Search = () => {
           name="search"
           autoComplete="off"
           aria-label="Search"
-          defaultValue={defaultValue ?? undefined}
+          defaultValue={searchParams?.get('search') ?? undefined}
           placeholder="Search Stamps"
         />
       </InputGroup>

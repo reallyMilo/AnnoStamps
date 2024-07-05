@@ -22,4 +22,6 @@ import './commands'
 beforeEach(() => {
   //sentry
   cy.intercept('https://*.ingest.sentry.io/api/**', { statusCode: 200 })
+  // google analytics
+  cy.intercept('https://www.google-analtyics.com/*', { statusCode: 200 })
 })

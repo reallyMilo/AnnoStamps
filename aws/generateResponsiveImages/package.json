@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "sharp": "0.32.6"
+  },
+  "packageManager": "npm@10.8.1"
+}

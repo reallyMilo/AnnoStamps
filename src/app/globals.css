@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.stamp-markdown-html-wrapper {
+  @apply text-midnight dark:text-white;
+}
+.stamp-markdown-html-wrapper a {
+  @apply underline;
+}

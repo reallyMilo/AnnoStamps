@@ -57,8 +57,6 @@ model Account {
   scope              String?
   id_token           String?
   session_state      String?
-  oauth_token_secret String?
-  oauth_token        String?
   user               User    @relation(fields: [userId], references: [id], onDelete: NoAction)
 
   @@unique([provider, providerAccountId])

@@ -7,23 +7,23 @@ describe('Stamp liking', () => {
   })
 
   it('unauthorized user redirected to sign in with callback to stamp', () => {
-    cy.intercept('/api/auth/session', [])
+    cy.intercept('/api/auth/session')
     cy.visit('/')
     cy.getBySel('stamp-card-link')
       .last()
       .then((link) => {
         cy.visit(link.attr('href'))
-        cy.getBySel('like-stamp').click()
-        cy.url().should(
-          'include',
-          `callbackUrl=${encodeURIComponent(link.attr('href'))}`
-        )
+        cy.getBySel('like-stamp')
+          .click()
+          .then(() => {
+            cy.url().should('include', `callbackUrl=${link.attr('href')}`)
+          })
       })
   })
 
   it('user can like stamp', () => {
-    cy.intercept('/api/stamp/like/*').as('likeStamp')
-    cy.newUserSession('/')
+    cy.visit('/')
+    cy.setSessionCookie()
     cy.getBySel('stamp-card-link').last().click()
 
     cy.getBySel('like-stamp')
@@ -38,7 +38,6 @@ describe('Stamp liking', () => {
             expect($link.css('cursor')).to.equal('pointer')
           })
           .click()
-        cy.wait('@likeStamp')
 
         cy.database(
           `SELECT * FROM "User" INNER JOIN "_StampLiker" ON "User".id = "_StampLiker"."B" WHERE id = 'testSeedUserId';`

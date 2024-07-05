@@ -1,21 +1,18 @@
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { PrismaClient } from '@prisma/client'
-import type {
-  GetServerSidePropsContext,
-  NextApiRequest,
-  NextApiResponse,
-} from 'next'
-import type { NextAuthOptions } from 'next-auth'
-import { getServerSession } from 'next-auth'
-import DiscordProvider from 'next-auth/providers/discord'
-import GoogleProvider from 'next-auth/providers/google'
+import { PrismaAdapter } from '@auth/prisma-adapter'
+import type { Prisma } from '@prisma/client'
+import type { NextAuthConfig } from 'next-auth'
+import NextAuth from 'next-auth'
+import type { AdapterSession, AdapterUser } from 'next-auth/adapters'
+import type { Provider } from 'next-auth/providers'
+import Discord from 'next-auth/providers/discord'
+import Google from 'next-auth/providers/google'
 
 import prisma from '@/lib/prisma/singleton'
-
-import { sendWelcomeEmail } from './email'
 //TODO:initial user setup page shares pages/[user]/settings view
-export const config = {
-  secret: process.env.NEXTAUTH_SECRET,
+
+const providers = [Google, Discord] satisfies Provider[]
+
+const config = {
   pages: {
     signIn: '/auth/signin',
     newUser: '/',
@@ -23,36 +20,49 @@ export const config = {
     error: '/auth/error',
     verifyRequest: '/',
   },
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID ?? '',
-      clientSecret: process.env.GOOGLE_SECRET ?? '',
-    }),
-    DiscordProvider({
-      clientId: process.env.DISCORD_CLIENT_ID ?? '',
-      clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
-    }),
-  ],
-  adapter: PrismaAdapter(prisma as unknown as PrismaClient),
-  events: { createUser: sendWelcomeEmail },
+  providers,
+  adapter: PrismaAdapter(prisma),
+  // events: { createUser: sendWelcomeEmail },
   callbacks: {
     session: async ({ session, user }) => {
-      if (session?.user) {
-        session.user.id = user.id
-        session.user.username = user.username
-        session.user.biography = user.biography
-        session.user.usernameURL = user.usernameURL
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+          biography: user.biography,
+          username: user.username,
+          usernameURL: user.usernameURL,
+        },
       }
-      return session
     },
   },
-} satisfies NextAuthOptions
+  session: { strategy: 'database' },
+  trustHost: true,
+  debug: process.env.NODE_ENV !== 'production' ? true : false,
+} satisfies NextAuthConfig
 
-export function auth(
-  ...args:
-    | [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']]
-    | [NextApiRequest, NextApiResponse]
-    | []
-) {
-  return getServerSession(...args, config)
+export const providerMap = providers.map((provider) => {
+  if (typeof provider === 'function') {
+    //@ts-expect-error not callable
+    const providerData = provider()
+    return { id: providerData.id, name: providerData.name }
+  } else {
+    //@ts-expect-error property does not exist
+    return { id: provider.id, name: provider.name }
+  }
+})
+export const { handlers, auth, signIn, signOut } = NextAuth(config)
+declare module 'next-auth' {
+  /**
+   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+
+  //eslint-disable-next-line
+  interface Session extends AdapterSession {
+    user: Pick<User, 'id' | 'biography' | 'username' | 'usernameURL'> &
+      AdapterUser
+  }
+  //eslint-disable-next-line
+  interface User extends Prisma.UserGetPayload<true> {}
 }

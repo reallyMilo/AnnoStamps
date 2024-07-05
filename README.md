@@ -27,3 +27,11 @@ Finally run the following commands..
 pnpm i
 pnpm migrate
 ```
+
+### AWS
+
+[Eraser Diagram](https://app.eraser.io/workspace/7bgyufQrutIRtW89jbxx?origin=share)
+
+![Create-Stamps](https://d16532dqapk4x.cloudfront.net/diagram/annostamps-create.png)
+
+![Download-Stamp](https://d16532dqapk4x.cloudfront.net/diagram/downloads2.png)

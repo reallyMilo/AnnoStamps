@@ -2,7 +2,7 @@ import { marked } from 'marked'
 import type sanitize from 'sanitize-html'
 import sanitizeHtml from 'sanitize-html'
 
-import type { StampWithRelations } from './prisma/queries'
+import type { StampWithRelations } from '@/lib/prisma/models'
 //https://github.com/apostrophecms/sanitize-html?tab=readme-ov-file#default-options
 const sanitizeOptions = {
   allowedTags: [

@@ -1,12 +1,13 @@
+'use client'
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 
 import { buttonStyles, Grid, Subheading, Text } from '@/components/ui'
-import { Asset, useUpload } from '@/lib/hooks/useUpload'
-import { Image } from '@/lib/prisma/queries'
+import { Image } from '@/lib/prisma/models'
 import { cn } from '@/lib/utils'
 
 import { useStampFormContext } from './StampForm'
+import { type Asset, useUpload } from './useUpload'
 
 const isImage = (b: Asset | Image): b is Image => {
   return (b as Image).id !== undefined

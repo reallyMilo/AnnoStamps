@@ -1,14 +1,13 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 
-import { STAMPS_PER_PAGE } from '../constants'
-import { QueryParams } from '../hooks/useQueryParams'
+import { type QueryParams, STAMPS_PER_PAGE } from '../constants'
 import {
   imageExtension,
   stampExtensions,
   stampIncludeStatement,
   StampWithRelations,
   userExtension,
-} from './queries'
+} from './models'
 
 const prismaClientSingleton = () => {
   return new PrismaClient()
