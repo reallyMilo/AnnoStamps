@@ -6,7 +6,7 @@ export const GET = auth(async (req) => {
   if (!req.auth) {
     return Response.json(
       { message: 'Unauthorized.', data: null },
-      { status: 401 }
+      { status: 401 },
     )
   }
 
@@ -22,7 +22,7 @@ export const GET = auth(async (req) => {
     if (!user) {
       return Response.json(
         { message: 'No user found.', data: null },
-        { status: 404 }
+        { status: 404 },
       )
     }
     return Response.json({ message: 'User with stamps.', data: user })

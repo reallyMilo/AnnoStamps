@@ -13,7 +13,7 @@ export const Textarea = forwardRef(
       Headless.TextareaProps,
       'className'
     >,
-    ref: React.ForwardedRef<HTMLTextAreaElement>
+    ref: React.ForwardedRef<HTMLTextAreaElement>,
   ) => {
     return (
       <span
@@ -56,6 +56,6 @@ export const Textarea = forwardRef(
         />
       </span>
     )
-  }
+  },
 )
 Textarea.displayName = 'Textarea'

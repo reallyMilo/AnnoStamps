@@ -44,14 +44,14 @@ export const POST = auth(async (req) => {
   if (process.env.NODE_ENV !== 'development') {
     return Response.json(
       { ok: false, message: 'only in dev mode' },
-      { status: 500 }
+      { status: 500 },
     )
   }
 
   if (!req.auth) {
     return Response.json(
       { ok: false, message: 'Unauthorized.' },
-      { status: 401 }
+      { status: 401 },
     )
   }
   const searchParams = req.nextUrl.searchParams

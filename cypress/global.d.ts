@@ -5,7 +5,7 @@ declare namespace Cypress {
     database(rawQuery: string, log?: boolean): Chainable<any>
     getBySel(
       dataTestAttribute: string,
-      args?: any
+      args?: any,
     ): Chainable<JQuery<HTMLElement>>
     setSessionCookie()
   }

@@ -12,7 +12,7 @@ export const Text = ({
       {...props}
       className={cn(
         'text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400',
-        className
+        className,
       )}
     />
   )
@@ -27,7 +27,7 @@ export const TextLink = ({
       {...props}
       className={cn(
         'text-midnight underline decoration-midnight/50 data-[hover]:decoration-midnight dark:text-white dark:decoration-white/50 dark:data-[hover]:decoration-white',
-        className
+        className,
       )}
     />
   )

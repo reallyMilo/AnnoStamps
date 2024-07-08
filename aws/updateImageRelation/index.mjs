@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 
 export const handler = async (event) => {
   const srcKey = decodeURIComponent(
-    event.Records[0].s3.object.key.replace(/\+/g, ' ')
+    event.Records[0].s3.object.key.replace(/\+/g, ' '),
   )
 
   const startKeyIdx = srcKey.lastIndexOf('/')
@@ -15,7 +15,7 @@ export const handler = async (event) => {
 
   const supabase = createClient(
     process.env.SUPA_DB,
-    process.env.SUPA_SERVICE_KEY
+    process.env.SUPA_SERVICE_KEY,
   )
   try {
     const { error } = await supabase

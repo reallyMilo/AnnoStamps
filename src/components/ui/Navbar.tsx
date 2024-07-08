@@ -70,7 +70,7 @@ export const NavbarItem = React.forwardRef(
       | Omit<Headless.ButtonProps, 'className'>
       | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
     ),
-    ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>
+    ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>,
   ) => {
     const classes = cn(
       // Base
@@ -88,7 +88,7 @@ export const NavbarItem = React.forwardRef(
       // Dark mode
       'dark:text-white dark:data-[slot=icon]:*:fill-zinc-400',
       'dark:data-[hover]:bg-white/5 dark:data-[slot=icon]:*:data-[hover]:fill-white',
-      'dark:data-[active]:bg-white/5 dark:data-[slot=icon]:*:data-[active]:fill-white'
+      'dark:data-[active]:bg-white/5 dark:data-[slot=icon]:*:data-[active]:fill-white',
     )
 
     return (
@@ -115,7 +115,7 @@ export const NavbarItem = React.forwardRef(
         )}
       </span>
     )
-  }
+  },
 )
 NavbarItem.displayName = 'NavbarItem'
 

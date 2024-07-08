@@ -46,13 +46,13 @@ export const Table = ({
           {...props}
           className={cn(
             '-mx-[--gutter] overflow-x-auto whitespace-nowrap',
-            className
+            className,
           )}
         >
           <div
             className={cn(
               'inline-block min-w-full align-middle',
-              !bleed && 'sm:px-[--gutter]'
+              !bleed && 'sm:px-[--gutter]',
             )}
           >
             <table className="min-w-full text-left text-sm/6 text-midnight dark:text-white">
@@ -120,7 +120,7 @@ export const TableRow = ({
           href &&
             !striped &&
             'hover:bg-midnight/[2.5%] dark:hover:bg-white/[2.5%]',
-          className
+          className,
         )}
       />
     </TableRowContext.Provider>
@@ -141,7 +141,7 @@ export const TableHeader = ({
         grid &&
           'border-l border-l-midnight/5 first:border-l-0 dark:border-l-white/5',
         !bleed && 'sm:first:pl-1 sm:last:pr-1',
-        className
+        className,
       )}
     />
   )
@@ -167,7 +167,7 @@ export const TableCell = ({
           'border-l border-l-midnight/5 first:border-l-0 dark:border-l-white/5',
         dense ? 'py-2.5' : 'py-4',
         !bleed && 'sm:first:pl-1 sm:last:pr-1',
-        className
+        className,
       )}
     >
       {href && (

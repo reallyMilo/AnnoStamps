@@ -18,7 +18,7 @@ const region = Object.values(REGIONS_1800)
 const goods = [OLD_WORLD_GOODS, NEW_WORLD_GOODS, ENBESA_GOODS, ARCTIC_GOODS]
 
 export const generateUserData = (
-  length: number
+  length: number,
 ): Omit<User, 'image' | 'emailVerified'>[] =>
   Array.from({ length }, () => {
     const firstName = faker.person.firstName()
@@ -43,7 +43,7 @@ export const generateUserData = (
 
 export const generateStampData = (
   length: number,
-  users: Omit<User, 'image' | 'emailVerified'>[]
+  users: Omit<User, 'image' | 'emailVerified'>[],
 ) =>
   Array.from({ length: length }, (_, index) => {
     const categoryIdx = Math.floor(Math.random() * categories.length)

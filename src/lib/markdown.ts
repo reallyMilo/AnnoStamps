@@ -100,7 +100,7 @@ const sanitizeOptions = {
 } satisfies sanitize.IOptions
 
 export const parseAndSanitizedMarkdown = (
-  description: StampWithRelations['unsafeDescription']
+  description: StampWithRelations['unsafeDescription'],
 ) => {
   const renderer = {
     link(href: string, _: string | null | undefined, text: string) {

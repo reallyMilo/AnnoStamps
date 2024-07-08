@@ -25,7 +25,7 @@ const getUserWithStamps = unstable_cache(
   {
     tags: ['getUserWithStamps'],
     revalidate: 86400,
-  }
+  },
 )
 
 const UserPage = async ({ params }: { params: { user: string } }) => {
@@ -47,7 +47,7 @@ const UserPage = async ({ params }: { params: { user: string } }) => {
     {
       downloads: 0,
       likes: 0,
-    }
+    },
   )
 
   return user.id === session?.user.id ? (

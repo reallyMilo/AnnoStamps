@@ -31,7 +31,7 @@ export const handler = async () => {
   console.log(`${response.rowCount} rows received`)
   const supabase = createClient(
     process.env.SUPA_DB,
-    process.env.SUPA_SERVICE_KEY
+    process.env.SUPA_SERVICE_KEY,
   )
 
   for (const row of response.rows) {

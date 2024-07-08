@@ -35,7 +35,7 @@ export const FileUpload = () => {
             buttonStyles.base,
             buttonStyles.solid,
             buttonStyles.colors.secondary,
-            'font-normal hover:opacity-90'
+            'font-normal hover:opacity-90',
           )}
         >
           Add Stamps

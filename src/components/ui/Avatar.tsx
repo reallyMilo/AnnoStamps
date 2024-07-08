@@ -36,7 +36,7 @@ export const Avatar = ({
         square
           ? 'rounded-[--avatar-radius] *:rounded-[--avatar-radius]'
           : 'rounded-full *:rounded-full',
-        className
+        className,
       )}
     >
       {initials && (
@@ -81,12 +81,12 @@ export const AvatarButton = React.forwardRef(
         | Omit<Headless.ButtonProps, 'className'>
         | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
       ),
-    ref: React.ForwardedRef<HTMLElement>
+    ref: React.ForwardedRef<HTMLElement>,
   ) => {
     const classes = cn(
       square ? 'rounded-[20%]' : 'rounded-full',
       'relative focus:outline-none data-[focus]:outline data-[focus]:outline-2 data-[focus]:outline-offset-2 data-[focus]:outline-blue-500',
-      className
+      className,
     )
 
     return 'href' in props ? (
@@ -106,7 +106,7 @@ export const AvatarButton = React.forwardRef(
         </TouchTarget>
       </Headless.Button>
     )
-  }
+  },
 )
 
 AvatarButton.displayName = 'AvatarButton'

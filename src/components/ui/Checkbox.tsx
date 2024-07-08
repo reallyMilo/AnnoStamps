@@ -16,7 +16,7 @@ export const CheckboxGroup = ({
         'space-y-3',
         // With descriptions
         'has-[[data-slot=description]]:space-y-6 [&_[data-slot=label]]:has-[[data-slot=description]]:font-medium',
-        className
+        className,
       )}
     />
   )
@@ -41,7 +41,7 @@ export const CheckboxField = ({
         '[&>[data-slot=description]]:col-start-2 [&>[data-slot=description]]:row-start-2',
         // With description
         '[&_[data-slot=label]]:has-[[data-slot=description]]:font-medium',
-        className
+        className,
       )}
     />
   )

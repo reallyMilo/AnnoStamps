@@ -16,7 +16,7 @@ describe('Update user profile', () => {
         .invoke('prop', 'validationMessage')
         .should(
           'equal',
-          'Select a username containing only alphanumeric characters, dashes (-), and underscores (_).'
+          'Select a username containing only alphanumeric characters, dashes (-), and underscores (_).',
         )
     })
 
@@ -57,11 +57,11 @@ describe('Update user profile', () => {
         .invoke('val')
         .should('equal', 'cypress tester biography')
       cy.findByText(
-        'If you wish to change your username please contact us via the discord server.'
+        'If you wish to change your username please contact us via the discord server.',
       ).should('exist')
 
       cy.database(
-        `SELECT * FROM "User" WHERE username = 'cypressTester';`
+        `SELECT * FROM "User" WHERE username = 'cypressTester';`,
       ).then((users) => {
         const user = users[0]
         cy.wrap(user).its('username').should('eq', 'cypressTester')
@@ -105,7 +105,7 @@ describe('Update user profile', () => {
           cy.wrap(user)
             .its('biography')
             .should('eq', 'cypress tester biography')
-        }
+        },
       )
     })
   })

@@ -17,7 +17,7 @@ describe('Updating Stamp', () => {
       cy.findByRole('link', { name: 'Please set your username.' }).should(
         'have.attr',
         'href',
-        '/testSeedUserId/settings'
+        '/testSeedUserId/settings',
       )
       cy.findByLabelText('Add Images').should('not.exist')
     })
@@ -114,7 +114,7 @@ describe('Updating Stamp', () => {
       cy.wait('@updateStamp').its('response.statusCode').should('eq', 200)
 
       cy.database(
-        `SELECT * FROM "Stamp" WHERE title = 'Test-Seed-User-Stamp-Updated';`
+        `SELECT * FROM "Stamp" WHERE title = 'Test-Seed-User-Stamp-Updated';`,
       ).then((stamps) => {
         const stamp = stamps[0]
         cy.wrap(stamp).its('userId').should('eq', 'testSeedUserId')

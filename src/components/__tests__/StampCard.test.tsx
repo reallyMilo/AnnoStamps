@@ -39,7 +39,7 @@ const render = (props?: Partial<StampWithRelations>) => ({
         },
       ]}
       {...props}
-    />
+    />,
   ),
   user: userEvent.setup(),
 })
@@ -50,7 +50,7 @@ describe('Stamp Card', () => {
 
     expect(screen.getByTestId('stamp-card-link')).toHaveAttribute(
       'href',
-      '/stamp/urlID'
+      '/stamp/urlID',
     )
     expect(screen.getByAltText('Stamp Title')).toBeInTheDocument()
     expect(screen.getByText('mods')).toBeInTheDocument()

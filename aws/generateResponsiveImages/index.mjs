@@ -12,12 +12,12 @@ const s3 = new S3Client({ region: 'eu-central-1' })
 export const handler = async (event) => {
   console.log(
     'Reading options from event:\n',
-    util.inspect(event, { depth: 5 })
+    util.inspect(event, { depth: 5 }),
   )
   const srcBucket = event.Records[0].s3.bucket.name
 
   const srcKey = decodeURIComponent(
-    event.Records[0].s3.object.key.replace(/\+/g, ' ')
+    event.Records[0].s3.object.key.replace(/\+/g, ' '),
   )
   const dstBucket = srcBucket
   const startIdx = srcKey.lastIndexOf('/')
@@ -88,7 +88,7 @@ export const handler = async (event) => {
             ' and uploaded to ' +
             dstBucket +
             '/' +
-            dstKey
+            dstKey,
         )
       } else if (breakpoint > width && breakpoint > height && size > 100000) {
         await s3.send(new PutObjectCommand(destinationParams))
@@ -100,7 +100,7 @@ export const handler = async (event) => {
             ' and uploaded to ' +
             dstBucket +
             '/' +
-            dstKey
+            dstKey,
         )
       }
     }

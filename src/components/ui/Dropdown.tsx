@@ -44,7 +44,7 @@ export const DropdownMenu = ({
           'shadow-lg ring-1 ring-midnight/10 dark:ring-inset dark:ring-white/10',
           // Define grid at the menu level if subgrid is supported
           'supports-[grid-template-columns:subgrid]:grid supports-[grid-template-columns:subgrid]:grid-cols-[auto_1fr_1.5rem_0.5rem_auto]',
-          className
+          className,
         )}
       />
     </Headless.Transition>
@@ -76,7 +76,7 @@ export const DropdownItem = ({
     '[&>[data-slot=icon]]:text-zinc-500 [&>[data-slot=icon]]:data-[focus]:text-white [&>[data-slot=icon]]:dark:text-zinc-400 [&>[data-slot=icon]]:data-[focus]:dark:text-white',
     // Avatar
     '[&>[data-slot=avatar]]:-ml-1 [&>[data-slot=avatar]]:mr-2.5 [&>[data-slot=avatar]]:size-6 sm:[&>[data-slot=avatar]]:mr-2 sm:[&>[data-slot=avatar]]:size-5',
-    className
+    className,
   )
 
   return 'href' in props ? (
@@ -113,7 +113,7 @@ export const DropdownSection = ({
       className={cn(
         // Define grid at the section level instead of the item level if subgrid is supported
         'col-span-full supports-[grid-template-columns:subgrid]:grid supports-[grid-template-columns:subgrid]:grid-cols-[auto_1fr_1.5rem_0.5rem_auto]',
-        className
+        className,
       )}
     />
   )
@@ -128,7 +128,7 @@ export const DropdownHeading = ({
       {...props}
       className={cn(
         'col-span-full grid grid-cols-[1fr,auto] gap-x-12 px-3.5 pb-1 pt-2 text-sm/5 font-medium text-zinc-500 sm:px-3 sm:text-xs/5 dark:text-zinc-400',
-        className
+        className,
       )}
     />
   )
@@ -143,7 +143,7 @@ export const DropdownDivider = ({
       {...props}
       className={cn(
         'col-span-full mx-3.5 my-1 h-px border-0 bg-midnight/5 sm:mx-3 dark:bg-white/10 forced-colors:bg-[CanvasText]',
-        className
+        className,
       )}
     />
   )
@@ -173,7 +173,7 @@ export const DropdownDescription = ({
       {...props}
       className={cn(
         'col-span-2 col-start-2 row-start-2 text-sm/5 text-zinc-500 group-data-[focus]:text-white sm:text-xs/5 dark:text-zinc-400 forced-colors:group-data-[focus]:text-[HighlightText]',
-        className
+        className,
       )}
     />
   )

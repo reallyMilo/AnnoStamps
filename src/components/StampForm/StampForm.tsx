@@ -127,10 +127,10 @@ const Form = ({
             stampId,
             image.rawFile,
             image.rawFile.type,
-            image.name
+            image.name,
           )
           return imagePath
-        })
+        }),
       ),
       uploadAsset(stampId, zipped, 'zip', formData.get('title') as string),
     ])
@@ -168,11 +168,11 @@ const Root = ({ children, stamp, zipFiles }: RootProps) => {
     React.useState<StampFormContextValue['status']>('idle')
 
   const [images, setImages] = React.useState<StampFormContextValue['images']>(
-    stamp?.images ?? []
+    stamp?.images ?? [],
   )
 
   const [files, setFiles] = React.useState<StampFormContextValue['files']>(
-    zipFiles ?? []
+    zipFiles ?? [],
   )
 
   const context = React.useMemo(
@@ -185,7 +185,7 @@ const Root = ({ children, stamp, zipFiles }: RootProps) => {
       images,
       setImages,
     }),
-    [status, setStatus, files, setFiles, images, setImages, stamp]
+    [status, setStatus, files, setFiles, images, setImages, stamp],
   )
 
   return (

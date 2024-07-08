@@ -8,7 +8,7 @@ export const GET = auth(async (req) => {
   if (!req.auth) {
     return Response.json(
       { ok: false, message: 'Unauthorized.' },
-      { status: 401 }
+      { status: 401 },
     )
   }
 
@@ -22,7 +22,7 @@ export const GET = auth(async (req) => {
   if (!stampId || !filename || !fileType) {
     return Response.json(
       { message: 'Missing params field', ok: false },
-      { status: 400 }
+      { status: 400 },
     )
   }
 

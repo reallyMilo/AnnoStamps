@@ -63,7 +63,7 @@ const FilterForm = ({ className }: { className: string }) => {
                     name={`${option}`}
                     value={option}
                     defaultChecked={searchParamsString?.includes(
-                      `${section.id}=${option}`
+                      `${section.id}=${option}`,
                     )}
                     data-section={section.id}
                     onChange={(isChecked) => {
@@ -77,19 +77,19 @@ const FilterForm = ({ className }: { className: string }) => {
                           stringifyQuery({
                             ...parsedQuery,
                             [section.id]: existingParams,
-                          })
+                          }),
                         )
 
                         return
                       }
                       const filtered = existingParams.filter(
-                        (param) => param !== option
+                        (param) => param !== option,
                       )
                       router.push(
                         stringifyQuery({
                           ...parsedQuery,
                           [section.id]: filtered,
-                        })
+                        }),
                       )
                     }}
                   />
@@ -120,7 +120,7 @@ const SortOptionsSelect = () => {
             stringifyQuery({
               ...parsedQuery,
               sort: e.target.value,
-            })
+            }),
           )
         }
       >
