@@ -16,10 +16,10 @@ export const InputGroup = ({
         '[&>[data-slot=icon]:first-child]:left-3 sm:[&>[data-slot=icon]:first-child]:left-2.5 [&>[data-slot=icon]:last-child]:right-3 sm:[&>[data-slot=icon]:last-child]:right-2.5',
         '[&>[data-slot=icon]]:text-zinc-500 dark:[&>[data-slot=icon]]:text-zinc-400',
         // hack for text
-        '[&_input]:has-[[data-slot=custom-text]:first-child]:pl-[165px] [&_input]:has-[[data-slot=custom-text]:last-child]:pr-10 ',
+        '[&_input]:has-[[data-slot=custom-text]:first-child]:pl-[165px] [&_input]:has-[[data-slot=custom-text]:last-child]:pr-10',
         '[&>[data-slot=custom-text]]:absolute [&>[data-slot=custom-text]]:top-[11px] [&>[data-slot=custom-text]]:z-10 sm:[&>[data-slot=custom-text]]:top-[7px]',
         '[&>[data-slot=custom-text]:first-child]:left-3',
-        '[&>[data-slot=custom-text]]:text-zinc-500 dark:[&>[data-slot=custom-text]]:text-zinc-400'
+        '[&>[data-slot=custom-text]]:text-zinc-500 dark:[&>[data-slot=custom-text]]:text-zinc-400',
       )}
     >
       {children}
@@ -47,7 +47,7 @@ export const Input = forwardRef(
         | 'url'
         | DateType
     } & Omit<Headless.InputProps, 'className'>,
-    ref: React.ForwardedRef<HTMLInputElement>
+    ref: React.ForwardedRef<HTMLInputElement>,
   ) => {
     return (
       <span
@@ -106,7 +106,7 @@ export const Input = forwardRef(
         />
       </span>
     )
-  }
+  },
 )
 
 Input.displayName = 'Input'

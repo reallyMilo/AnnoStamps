@@ -86,16 +86,16 @@ type ButtonProps = (
 export const Button = React.forwardRef(
   (
     { color, outline, plain, className, children, ...props }: ButtonProps,
-    ref: React.ForwardedRef<HTMLElement>
+    ref: React.ForwardedRef<HTMLElement>,
   ) => {
     const classes = cn(
       styles.base,
       outline
         ? styles.outline
         : plain
-        ? styles.plain
-        : cn(styles.solid, styles.colors[color ?? 'primary']),
-      className
+          ? styles.plain
+          : cn(styles.solid, styles.colors[color ?? 'primary']),
+      className,
     )
 
     return 'href' in props ? (
@@ -115,7 +115,7 @@ export const Button = React.forwardRef(
         <TouchTarget>{children}</TouchTarget>
       </Headless.Button>
     )
-  }
+  },
 )
 Button.displayName = 'Button'
 /* Expand the hit area to at least 44×44px on touch devices */
