@@ -169,8 +169,8 @@ importers:
         specifier: ^14.2.4
         version: 14.2.4(eslint@8.57.0)(typescript@5.2.2)
       eslint-plugin-jsonc:
-        specifier: ^2.15.1
-        version: 2.15.1(eslint@8.57.0)
+        specifier: ^2.16.0
+        version: 2.16.0(eslint@8.57.0)
       eslint-plugin-react-compiler:
         specifier: 0.0.0-experimental-c8b3f72-20240517
         version: 0.0.0-experimental-c8b3f72-20240517(eslint@8.57.0)
@@ -2950,8 +2950,8 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  eslint-plugin-jsonc@2.15.1:
-    resolution: {integrity: sha512-PVFrqIJa8BbM/e828RSn0SwB/Z5ye+2LDuy2XqG6AymNgPsfApRRcznsbxP7VrjdLEU4Nb+g9n/d6opyp0jp9A==}
+  eslint-plugin-jsonc@2.16.0:
+    resolution: {integrity: sha512-Af/ZL5mgfb8FFNleH6KlO4/VdmDuTqmM+SPnWcdoWywTetv7kq+vQe99UyQb9XO3b0OWLVuTH7H0d/PXYCMdSg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: '>=6.0.0'
@@ -5534,7 +5534,7 @@ snapshots:
       '@smithy/util-defaults-mode-node': 2.0.18
       '@smithy/util-retry': 2.0.4
       '@smithy/util-utf8': 2.0.0
-      tslib: 2.6.2
+      tslib: 2.6.3
     transitivePeerDependencies:
       - aws-crt
 
@@ -5586,7 +5586,7 @@ snapshots:
       '@aws-sdk/types': 3.425.0
       '@smithy/property-provider': 2.0.12
       '@smithy/types': 2.3.5
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@aws-sdk/credential-provider-ini@3.427.0':
     dependencies:
@@ -5599,7 +5599,7 @@ snapshots:
       '@smithy/property-provider': 2.0.12
       '@smithy/shared-ini-file-loader': 2.2.0
       '@smithy/types': 2.3.5
-      tslib: 2.6.2
+      tslib: 2.6.3
     transitivePeerDependencies:
       - aws-crt
 
@@ -5625,7 +5625,7 @@ snapshots:
       '@smithy/property-provider': 2.0.12
       '@smithy/shared-ini-file-loader': 2.2.0
       '@smithy/types': 2.3.5
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@aws-sdk/credential-provider-sso@3.427.0':
     dependencies:
@@ -5635,7 +5635,7 @@ snapshots:
       '@smithy/property-provider': 2.0.12
       '@smithy/shared-ini-file-loader': 2.2.0
       '@smithy/types': 2.3.5
-      tslib: 2.6.2
+      tslib: 2.6.3
     transitivePeerDependencies:
       - aws-crt
 
@@ -5644,7 +5644,7 @@ snapshots:
       '@aws-sdk/types': 3.425.0
       '@smithy/property-provider': 2.0.12
       '@smithy/types': 2.3.5
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@aws-sdk/middleware-bucket-endpoint@3.425.0':
     dependencies:
@@ -5714,7 +5714,7 @@ snapshots:
       '@aws-sdk/middleware-signing': 3.425.0
       '@aws-sdk/types': 3.425.0
       '@smithy/types': 2.3.5
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@aws-sdk/middleware-signing@3.425.0':
     dependencies:
@@ -5803,7 +5803,7 @@ snapshots:
       '@smithy/util-defaults-mode-node': 2.0.18
       '@smithy/util-retry': 2.0.4
       '@smithy/util-utf8': 2.0.0
-      tslib: 2.6.2
+      tslib: 2.6.3
     transitivePeerDependencies:
       - aws-crt
 
@@ -5814,7 +5814,7 @@ snapshots:
 
   '@aws-sdk/util-arn-parser@3.310.0':
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@aws-sdk/util-endpoints@3.427.0':
     dependencies:
@@ -5831,7 +5831,7 @@ snapshots:
 
   '@aws-sdk/util-locate-window@3.310.0':
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@aws-sdk/util-user-agent-browser@3.425.0':
     dependencies:
@@ -5849,7 +5849,7 @@ snapshots:
 
   '@aws-sdk/util-utf8-browser@3.259.0':
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@aws-sdk/xml-builder@3.310.0':
     dependencies:
@@ -7060,16 +7060,16 @@ snapshots:
   '@smithy/abort-controller@2.0.11':
     dependencies:
       '@smithy/types': 2.3.5
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/chunked-blob-reader-native@2.0.0':
     dependencies:
       '@smithy/util-base64': 2.0.0
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/chunked-blob-reader@2.0.0':
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/config-resolver@2.0.14':
     dependencies:
@@ -7085,14 +7085,14 @@ snapshots:
       '@smithy/property-provider': 2.0.12
       '@smithy/types': 2.3.5
       '@smithy/url-parser': 2.0.11
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/eventstream-codec@2.0.11':
     dependencies:
       '@aws-crypto/crc32': 3.0.0
       '@smithy/types': 2.3.5
       '@smithy/util-hex-encoding': 2.0.0
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/eventstream-serde-browser@2.0.11':
     dependencies:
@@ -7115,7 +7115,7 @@ snapshots:
     dependencies:
       '@smithy/eventstream-codec': 2.0.11
       '@smithy/types': 2.3.5
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/fetch-http-handler@2.2.2':
     dependencies:
@@ -7152,7 +7152,7 @@ snapshots:
 
   '@smithy/is-array-buffer@2.0.0':
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/md5-js@2.0.11':
     dependencies:
@@ -7196,7 +7196,7 @@ snapshots:
   '@smithy/middleware-serde@2.0.10':
     dependencies:
       '@smithy/types': 2.3.4
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/middleware-serde@2.0.11':
     dependencies:
@@ -7226,7 +7226,7 @@ snapshots:
   '@smithy/property-provider@2.0.12':
     dependencies:
       '@smithy/types': 2.3.5
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/protocol-http@3.0.6':
     dependencies:
@@ -7242,17 +7242,17 @@ snapshots:
     dependencies:
       '@smithy/types': 2.3.5
       '@smithy/util-uri-escape': 2.0.0
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/querystring-parser@2.0.10':
     dependencies:
       '@smithy/types': 2.3.4
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/querystring-parser@2.0.11':
     dependencies:
       '@smithy/types': 2.3.5
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/service-error-classification@2.0.4':
     dependencies:
@@ -7261,7 +7261,7 @@ snapshots:
   '@smithy/shared-ini-file-loader@2.2.0':
     dependencies:
       '@smithy/types': 2.3.5
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/signature-v4@2.0.11':
     dependencies:
@@ -7272,7 +7272,7 @@ snapshots:
       '@smithy/util-middleware': 2.0.4
       '@smithy/util-uri-escape': 2.0.0
       '@smithy/util-utf8': 2.0.0
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/smithy-client@2.1.10':
     dependencies:
@@ -7293,7 +7293,7 @@ snapshots:
     dependencies:
       '@smithy/querystring-parser': 2.0.10
       '@smithy/types': 2.3.4
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/url-parser@2.0.11':
     dependencies:
@@ -7317,11 +7317,11 @@ snapshots:
   '@smithy/util-buffer-from@2.0.0':
     dependencies:
       '@smithy/is-array-buffer': 2.0.0
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/util-config-provider@2.0.0':
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/util-defaults-mode-browser@2.0.14':
     dependencies:
@@ -7343,17 +7343,17 @@ snapshots:
 
   '@smithy/util-hex-encoding@2.0.0':
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/util-middleware@2.0.3':
     dependencies:
       '@smithy/types': 2.3.4
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/util-middleware@2.0.4':
     dependencies:
       '@smithy/types': 2.3.5
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/util-retry@2.0.4':
     dependencies:
@@ -7374,7 +7374,7 @@ snapshots:
 
   '@smithy/util-uri-escape@2.0.0':
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@smithy/util-utf8@2.0.0':
     dependencies:
@@ -7391,7 +7391,7 @@ snapshots:
 
   '@swc/helpers@0.5.11':
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   '@swc/helpers@0.5.5':
     dependencies:
@@ -7894,22 +7894,17 @@ snapshots:
 
   '@xtuc/long@4.2.2': {}
 
-  acorn-import-assertions@1.9.0(acorn@8.11.3):
-    dependencies:
-      acorn: 8.11.3
-    optional: true
-
   acorn-import-assertions@1.9.0(acorn@8.12.1):
     dependencies:
       acorn: 8.12.1
 
-  acorn-import-attributes@1.9.5(acorn@8.11.3):
+  acorn-import-attributes@1.9.5(acorn@8.12.1):
     dependencies:
-      acorn: 8.11.3
+      acorn: 8.12.1
 
-  acorn-jsx@5.3.2(acorn@8.11.3):
+  acorn-jsx@5.3.2(acorn@8.12.1):
     dependencies:
-      acorn: 8.11.3
+      acorn: 8.12.1
 
   acorn-walk@8.2.0: {}
 
@@ -8742,7 +8737,7 @@ snapshots:
   eslint-compat-utils@0.5.0(eslint@8.57.0):
     dependencies:
       eslint: 8.57.0
-      semver: 7.6.0
+      semver: 7.6.2
 
   eslint-config-next@14.2.4(eslint@8.57.0)(typescript@5.2.2):
     dependencies:
@@ -8825,7 +8820,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-jsonc@2.15.1(eslint@8.57.0):
+  eslint-plugin-jsonc@2.16.0(eslint@8.57.0):
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.57.0)
       eslint: 8.57.0
@@ -8974,8 +8969,8 @@ snapshots:
 
   espree@9.6.1:
     dependencies:
-      acorn: 8.11.3
-      acorn-jsx: 5.3.2(acorn@8.11.3)
+      acorn: 8.12.1
+      acorn-jsx: 5.3.2(acorn@8.12.1)
       eslint-visitor-keys: 3.4.3
 
   esquery@1.5.0:
@@ -9394,16 +9389,16 @@ snapshots:
 
   import-in-the-middle@1.4.2:
     dependencies:
-      acorn: 8.11.3
-      acorn-import-assertions: 1.9.0(acorn@8.11.3)
+      acorn: 8.12.1
+      acorn-import-assertions: 1.9.0(acorn@8.12.1)
       cjs-module-lexer: 1.3.1
       module-details-from-path: 1.0.3
     optional: true
 
   import-in-the-middle@1.7.4:
     dependencies:
-      acorn: 8.11.3
-      acorn-import-attributes: 1.9.5(acorn@8.11.3)
+      acorn: 8.12.1
+      acorn-import-attributes: 1.9.5(acorn@8.12.1)
       cjs-module-lexer: 1.3.1
       module-details-from-path: 1.0.3
 
@@ -9649,10 +9644,10 @@ snapshots:
 
   jsonc-eslint-parser@2.4.0:
     dependencies:
-      acorn: 8.11.3
+      acorn: 8.12.1
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
-      semver: 7.6.0
+      semver: 7.6.2
 
   jsonc-parser@3.2.0: {}
 
@@ -9873,7 +9868,7 @@ snapshots:
 
   mlly@1.4.2:
     dependencies:
-      acorn: 8.11.3
+      acorn: 8.12.1
       pathe: 1.1.1
       pkg-types: 1.0.3
       ufo: 1.3.2
@@ -10449,7 +10444,7 @@ snapshots:
 
   rxjs@7.8.1:
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   safe-array-concat@1.1.2:
     dependencies:
@@ -10773,7 +10768,7 @@ snapshots:
 
   synckit@0.6.2:
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.6.3
 
   tabbable@6.2.0: {}
 
@@ -11025,7 +11020,7 @@ snapshots:
 
   unplugin@1.0.1:
     dependencies:
-      acorn: 8.11.3
+      acorn: 8.12.1
       chokidar: 3.6.0
       webpack-sources: 3.2.3
       webpack-virtual-modules: 0.5.0
