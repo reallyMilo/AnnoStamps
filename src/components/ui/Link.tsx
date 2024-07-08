@@ -6,7 +6,7 @@ export const Link = React.forwardRef(
   (
     props: { htmlLink?: boolean } & LinkProps &
       React.ComponentPropsWithoutRef<'a'>,
-    ref: React.ForwardedRef<HTMLAnchorElement>
+    ref: React.ForwardedRef<HTMLAnchorElement>,
   ) => {
     const { htmlLink, ...rest } = props
     if (htmlLink) {
@@ -21,7 +21,7 @@ export const Link = React.forwardRef(
         <NextLink prefetch={false} {...rest} ref={ref} />
       </Headless.DataInteractive>
     )
-  }
+  },
 )
 
 Link.displayName = 'Link'

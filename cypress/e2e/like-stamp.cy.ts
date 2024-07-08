@@ -40,7 +40,7 @@ describe('Stamp liking', () => {
           .click()
 
         cy.database(
-          `SELECT * FROM "User" INNER JOIN "_StampLiker" ON "User".id = "_StampLiker"."B" WHERE id = 'testSeedUserId';`
+          `SELECT * FROM "User" INNER JOIN "_StampLiker" ON "User".id = "_StampLiker"."B" WHERE id = 'testSeedUserId';`,
         ).then((users) => {
           cy.wrap(users).should('have.length', 1)
         })
@@ -48,7 +48,7 @@ describe('Stamp liking', () => {
         cy.getBySel('like-icon').should(
           'have.css',
           'color',
-          'rgb(109, 211, 192)'
+          'rgb(109, 211, 192)',
         )
         cy.getBySel('like-stamp')
           .invoke('text')

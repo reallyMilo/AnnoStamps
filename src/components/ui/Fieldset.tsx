@@ -12,7 +12,7 @@ export const Fieldset = ({
       {...props}
       className={cn(
         '[&>*+[data-slot=control]]:mt-6 [&>[data-slot=text]]:mt-1',
-        className
+        className,
       )}
     />
   )
@@ -28,7 +28,7 @@ export const Legend = ({
       {...props}
       className={cn(
         'text-base/6 font-semibold text-midnight data-[disabled]:opacity-50 sm:text-sm/6 dark:text-white',
-        className
+        className,
       )}
     />
   )
@@ -61,7 +61,7 @@ export const Field = ({
         '[&>[data-slot=control]+[data-slot=description]]:mt-3',
         '[&>[data-slot=control]+[data-slot=error]]:mt-3',
         '[&>[data-slot=label]]:font-medium',
-        className
+        className,
       )}
     />
   )
@@ -77,7 +77,7 @@ export const Label = ({
       {...props}
       className={cn(
         'select-none text-base/6 text-midnight data-[disabled]:opacity-50 dark:text-white',
-        className
+        className,
       )}
     />
   )
@@ -93,7 +93,7 @@ export const Description = ({
       {...props}
       className={cn(
         'text-base/6 text-zinc-500 data-[disabled]:opacity-50 sm:text-sm/6 dark:text-zinc-400',
-        className
+        className,
       )}
     />
   )
@@ -109,7 +109,7 @@ export const ErrorMessage = ({
       {...props}
       className={cn(
         'text-base/6 text-accent data-[disabled]:opacity-50 sm:text-sm/6 dark:text-accent',
-        className
+        className,
       )}
     />
   )

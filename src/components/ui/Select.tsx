@@ -10,7 +10,7 @@ export const Select = forwardRef(
       multiple,
       ...props
     }: { className?: string } & Omit<Headless.SelectProps, 'className'>,
-    ref: React.ForwardedRef<HTMLSelectElement>
+    ref: React.ForwardedRef<HTMLSelectElement>,
   ) => {
     return (
       <span
@@ -58,7 +58,7 @@ export const Select = forwardRef(
         />
       </span>
     )
-  }
+  },
 )
 
 Select.displayName = 'Select'

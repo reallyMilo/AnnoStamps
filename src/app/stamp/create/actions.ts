@@ -18,7 +18,7 @@ type FormDataEntries = Pick<
 > & { imageIdsToRemove: string; stampId: string; uploadedImageUrls: string }
 
 export const createStamp = async (
-  formData: FormData
+  formData: FormData,
 ): Promise<{
   message: string
   ok: boolean

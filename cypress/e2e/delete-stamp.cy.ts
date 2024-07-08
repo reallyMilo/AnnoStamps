@@ -45,7 +45,7 @@ describe('Delete stamp', () => {
     cy.wait('@deleteStamp')
 
     cy.database(
-      `SELECT * FROM "Stamp" WHERE title = 'cypress test title';`
+      `SELECT * FROM "Stamp" WHERE title = 'cypress test title';`,
     ).then((stamps) => {
       cy.wrap(stamps).should('have.length', 0)
     })

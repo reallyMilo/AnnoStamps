@@ -12,7 +12,7 @@ export const Heading = ({ className, level = 1, ...props }: HeadingProps) => {
       {...props}
       className={cn(
         'text-2xl/8 font-semibold text-midnight sm:text-xl/8 dark:text-white',
-        className
+        className,
       )}
     />
   )
@@ -30,7 +30,7 @@ export const Subheading = ({
       {...props}
       className={cn(
         'text-base/7 font-semibold text-midnight sm:text-sm/6 dark:text-white',
-        className
+        className,
       )}
     />
   )

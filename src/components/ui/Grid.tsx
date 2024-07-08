@@ -9,7 +9,7 @@ export const Grid = ({ children, className }: GridProps) => {
     <div
       className={cn(
         'grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
-        className
+        className,
       )}
     >
       {children}

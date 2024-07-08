@@ -24,7 +24,7 @@ const maxPaginationList = 11
 // paginate that does not shift number of elements
 const paginate = (
   totalPageCount: number,
-  currentPage: number
+  currentPage: number,
 ): (number | null)[] => {
   if (totalPageCount <= maxPaginationList + 2) {
     return Array.from({ length: totalPageCount }, (_, i) => i + 1)

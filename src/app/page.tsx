@@ -46,7 +46,7 @@ const getHomePageStamps = unstable_cache(
   ['homepage-stamps'],
   {
     revalidate: 3600,
-  }
+  },
 )
 
 const HomePage = async () => {

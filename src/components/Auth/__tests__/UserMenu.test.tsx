@@ -15,17 +15,17 @@ describe('UserMenu', () => {
 
     await act(async () => await userEvent.click(button))
     expect(
-      screen.getByRole('menuitem', { name: 'Please set username!' })
+      screen.getByRole('menuitem', { name: 'Please set username!' }),
     ).toHaveAttribute('href', '/1/settings')
     expect(
-      screen.getByRole('menuitem', { name: 'My Account' })
+      screen.getByRole('menuitem', { name: 'My Account' }),
     ).toHaveAttribute('href', '/1/settings')
     expect(screen.getByRole('menuitem', { name: 'My stamps' })).toHaveAttribute(
       'href',
-      '/1'
+      '/1',
     )
     expect(
-      screen.getByRole('menuitem', { name: 'Add new stamp' })
+      screen.getByRole('menuitem', { name: 'Add new stamp' }),
     ).toHaveAttribute('href', '/stamp/create')
     expect(screen.getByRole('menuitem', { name: 'Logout' })).toBeInTheDocument()
   })
@@ -41,7 +41,7 @@ describe('UserMenu', () => {
     await act(async () => await userEvent.click(screen.getByRole('button')))
     expect(screen.getByRole('menuitem', { name: 'My stamps' })).toHaveAttribute(
       'href',
-      '/stampcreator'
+      '/stampcreator',
     )
   })
 })

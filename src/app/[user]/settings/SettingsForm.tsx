@@ -84,7 +84,7 @@ export const SettingsForm = () => {
                 autoComplete="false"
                 onInvalid={(e) =>
                   e.currentTarget.setCustomValidity(
-                    'Select a username containing only alphanumeric characters, dashes (-), and underscores (_).'
+                    'Select a username containing only alphanumeric characters, dashes (-), and underscores (_).',
                   )
                 }
                 pattern={`^[a-zA-Z0-9_\\-]+$`}

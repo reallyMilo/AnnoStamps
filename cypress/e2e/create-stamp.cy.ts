@@ -13,7 +13,7 @@ describe('Stamp creation', () => {
       cy.findByRole('link', { name: 'Please set your username.' }).should(
         'have.attr',
         'href',
-        '/testSeedUserId/settings'
+        '/testSeedUserId/settings',
       )
       cy.findByLabelText('Add Images').should('not.exist')
     })
@@ -49,7 +49,7 @@ describe('Stamp creation', () => {
         'cypress/fixtures/cypress-test-image.png',
         {
           force: true,
-        }
+        },
       )
       cy.findByAltText('stamp image preview').should('exist')
       cy.findByText('Submit Stamp').click()
@@ -106,7 +106,7 @@ describe('Stamp creation', () => {
         'cypress/fixtures/cypress-test-image.png',
         {
           force: true,
-        }
+        },
       )
       cy.findByAltText('stamp image preview').should('exist')
 
@@ -144,7 +144,7 @@ describe('Stamp creation', () => {
       cy.wait('@createStamp').its('response.statusCode').should('eq', 303)
 
       cy.database(
-        `SELECT * FROM "Stamp" WHERE title = 'cypress test title';`
+        `SELECT * FROM "Stamp" WHERE title = 'cypress test title';`,
       ).then((stamps) => {
         const stamp = stamps[0]
         cy.wrap(stamp)

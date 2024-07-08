@@ -18,7 +18,7 @@ const prismaClientSingleton = () => {
       model: {
         stamp: {
           async filterFindManyWithCount(
-            query: QueryParams
+            query: QueryParams,
           ): Promise<[number, StampWithRelations[], number]> {
             const { page, sort, ...filter } = query
             let pageNumber = parseInt(page ?? '1', 10)
@@ -62,7 +62,7 @@ export default prisma
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 export const buildFilterWhereClause = (
-  filter: Omit<QueryParams, 'sort' | 'page'>
+  filter: Omit<QueryParams, 'sort' | 'page'>,
 ): Prisma.StampWhereInput => {
   const { capital, region, category, search } = filter
 
@@ -96,7 +96,7 @@ export const buildFilterWhereClause = (
   }
 }
 export const buildOrderByClause = (
-  orderBy?: QueryParams['sort']
+  orderBy?: QueryParams['sort'],
 ): Prisma.StampOrderByWithRelationAndSearchRelevanceInput => {
   switch (orderBy) {
     case 'likes':

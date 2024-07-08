@@ -22,7 +22,7 @@ const getFilteredStamps = unstable_cache(
   {
     tags: ['filterStamps'],
     revalidate: 900,
-  }
+  },
 )
 
 const Stamps = async ({
@@ -32,7 +32,7 @@ const Stamps = async ({
 }) => {
   const parseResult = queryParamsSchema.safeParse(searchParams)
   const [count, stamps, pageNumber] = await getFilteredStamps(
-    parseResult.success ? parseResult.data : {}
+    parseResult.success ? parseResult.data : {},
   )
 
   const starting = (pageNumber - 1) * STAMPS_PER_PAGE + 1

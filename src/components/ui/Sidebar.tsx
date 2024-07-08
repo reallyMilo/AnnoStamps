@@ -24,7 +24,7 @@ export const SidebarHeader = ({
       {...props}
       className={cn(
         'flex flex-col border-b border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5',
-        className
+        className,
       )}
     />
   )
@@ -39,7 +39,7 @@ export const SidebarBody = ({
       {...props}
       className={cn(
         'flex flex-1 flex-col overflow-y-auto p-4 [&>[data-slot=section]+[data-slot=section]]:mt-8',
-        className
+        className,
       )}
     />
   )
@@ -54,7 +54,7 @@ export const SidebarFooter = ({
       {...props}
       className={cn(
         'flex flex-col border-t border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5',
-        className
+        className,
       )}
     />
   )
@@ -82,7 +82,7 @@ export const SidebarDivider = ({
       {...props}
       className={cn(
         'my-4 border-t border-zinc-950/5 lg:-mx-4 dark:border-white/5',
-        className
+        className,
       )}
     />
   )
@@ -110,7 +110,7 @@ export const SidebarHeading = ({
       {...props}
       className={cn(
         'mb-1 px-2 text-xs/6 font-medium text-zinc-500 dark:text-zinc-400',
-        className
+        className,
       )}
     />
   )
@@ -127,7 +127,7 @@ export const SidebarItem = React.forwardRef(
       | Omit<Headless.ButtonProps, 'className'>
       | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'type' | 'className'>
     ),
-    ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>
+    ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>,
   ) => {
     const classes = cn(
       // Base
@@ -148,7 +148,7 @@ export const SidebarItem = React.forwardRef(
       'dark:text-white dark:data-[slot=icon]:*:fill-zinc-400',
       'dark:data-[hover]:bg-white/5 dark:data-[slot=icon]:*:data-[hover]:fill-white',
       'dark:data-[active]:bg-white/5 dark:data-[slot=icon]:*:data-[active]:fill-white',
-      'dark:data-[slot=icon]:*:data-[current]:fill-white'
+      'dark:data-[slot=icon]:*:data-[current]:fill-white',
     )
 
     return (
@@ -175,7 +175,7 @@ export const SidebarItem = React.forwardRef(
         )}
       </span>
     )
-  }
+  },
 )
 SidebarItem.displayName = 'SidebarItem'
 

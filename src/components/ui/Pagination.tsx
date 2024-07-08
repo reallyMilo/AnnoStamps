@@ -113,7 +113,7 @@ export const PaginationPage = ({
       className={cn(
         'min-w-[2.25rem] before:absolute before:-inset-px before:rounded-lg',
         current && 'before:bg-midnight/5 dark:before:bg-white/10',
-        className
+        className,
       )}
     >
       <span className="-mx-0.5">{children}</span>
@@ -133,7 +133,7 @@ export const PaginationGap = ({
       {...props}
       className={cn(
         'w-[2.25rem] select-none text-center text-sm/6 font-semibold text-midnight dark:text-white',
-        className
+        className,
       )}
     >
       {children}

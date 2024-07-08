@@ -57,7 +57,7 @@ export const Modal = ({
                 className={cn(
                   sizes[size],
                   'row-start-2 w-full min-w-0 rounded-t-3xl bg-white p-[--gutter] shadow-lg ring-1 ring-midnight/10 [--gutter:theme(spacing.8)] sm:mb-auto sm:rounded-2xl dark:bg-zinc-900 dark:ring-white/10 forced-colors:outline',
-                  className
+                  className,
                 )}
               >
                 {children}
@@ -79,7 +79,7 @@ export const ModalTitle = ({
       {...props}
       className={cn(
         'text-balance text-lg/6 font-semibold text-midnight sm:text-base/6 dark:text-white',
-        className
+        className,
       )}
     />
   )
@@ -117,7 +117,7 @@ export const ModalActions = ({
       {...props}
       className={cn(
         'mt-8 flex flex-col-reverse items-center justify-end gap-3 *:w-full sm:flex-row sm:*:w-auto',
-        className
+        className,
       )}
     />
   )

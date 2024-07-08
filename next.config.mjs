@@ -49,5 +49,5 @@ export default withBundleAnalyzer(
     authToken: process.env.SENTRY_AUTH_TOKEN,
 
     silent: true, // Can be used to suppress logs
-  })
+  }),
 )

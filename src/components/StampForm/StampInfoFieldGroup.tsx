@@ -39,7 +39,7 @@ export const StampInfoFieldGroup = () => {
         TheMod
       </a>
     </p>
-    `
+    `,
   )
   return (
     <FieldGroup>
@@ -185,7 +185,7 @@ export const StampInfoFieldGroup = () => {
             color="secondary"
             onClick={() => {
               const textarea = document.getElementById(
-                'description'
+                'description',
               ) as HTMLTextAreaElement
 
               setPreviewMarkdown(parseAndSanitizedMarkdown(textarea.value))

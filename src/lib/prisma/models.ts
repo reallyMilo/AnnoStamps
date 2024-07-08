@@ -61,7 +61,7 @@ const stampSchema = z.object({
         smallUrl: z.string().optional(),
         mediumUrl: z.string().optional(),
         largeUrl: z.string().optional(),
-      })
+      }),
     ),
   }),
   likedBy: z

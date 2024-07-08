@@ -18,7 +18,7 @@ const fileToAsset = (rawFile: File) => {
 
 export const useUpload = <T>(
   files: T[],
-  setFiles: React.Dispatch<React.SetStateAction<T[]>>
+  setFiles: React.Dispatch<React.SetStateAction<T[]>>,
 ) => {
   const [isError, setIsError] = useState(false)
 

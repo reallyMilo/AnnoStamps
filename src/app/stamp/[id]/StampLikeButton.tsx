@@ -28,7 +28,7 @@ export const StampLikeButton = ({ id, initialLikes }: LikeButtonProps) => {
     data?: UserWithStamps
     message: string
   }>(isUserAuth ? '/api/user' : null, (url: string) =>
-    fetch(url).then((res) => res.json())
+    fetch(url).then((res) => res.json()),
   )
   const isStampLiked =
     userData?.data?.likedStamps.some((stamp) => stamp.id === id) ?? false
@@ -53,7 +53,7 @@ export const StampLikeButton = ({ id, initialLikes }: LikeButtonProps) => {
         default:
           return state
       }
-    }
+    },
   )
 
   const addLikeToStamp = async () => {
@@ -86,7 +86,7 @@ export const StampLikeButton = ({ id, initialLikes }: LikeButtonProps) => {
       plain
       className={cn(
         'cursor-pointer [&>[data-slot=icon]]:sm:size-6',
-        isStampLiked && '[&>[data-slot=icon]]:sm:text-primary'
+        isStampLiked && '[&>[data-slot=icon]]:sm:text-primary',
       )}
     >
       <HandThumbUpIcon data-testid="like-icon" />

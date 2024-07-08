@@ -23,7 +23,7 @@ export const Search = () => {
             stringifyQuery({
               ...parsedQuery,
               search: null,
-            })
+            }),
           )
           return
         }
@@ -31,7 +31,7 @@ export const Search = () => {
           stringifyQuery({
             ...parsedQuery,
             search: formData.get('search'),
-          })
+          }),
         )
       }}
     >

@@ -28,19 +28,19 @@ describe('Pagination', () => {
     render(<Pagination count={1000} page={currentPage} />)
 
     expect(
-      screen.getByRole('link', { name: 'Previous page' })
+      screen.getByRole('link', { name: 'Previous page' }),
     ).toBeInTheDocument()
     expect(screen.getByRole('link', { current: 'page' })).toHaveTextContent(
-      '25'
+      '25',
     )
     const allLinks = screen.getAllByRole('link', { name: /Page \d+/ })
     expect(allLinks).toHaveLength(11)
     expect(allLinks[0]).toHaveTextContent(/^1$/)
     expect(allLinks[1]).toHaveTextContent(
-      new RegExp(`^${(currentPage - 4).toString()}$`)
+      new RegExp(`^${(currentPage - 4).toString()}$`),
     )
     expect(allLinks[9]).toHaveTextContent(
-      new RegExp(`^${(currentPage + 4).toString()}$`)
+      new RegExp(`^${(currentPage + 4).toString()}$`),
     )
     expect(allLinks[10]).toHaveTextContent(/^50$/)
     expect(screen.getAllByTestId('pagination-gap')).toHaveLength(2)

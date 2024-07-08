@@ -6,7 +6,7 @@ import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
 
 export const updateUserSettings = async (
-  formData: FormData
+  formData: FormData,
 ): Promise<{
   message: string | null
   status: 'idle' | 'error' | 'success'

@@ -10,7 +10,7 @@ describe('Filtering stamps', () => {
 
     cy.findAllByText('Production', { exact: false }).should(
       'have.length.greaterThan',
-      10
+      10,
     )
 
     cy.get('#enbesa').click()
