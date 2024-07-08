@@ -97,7 +97,7 @@ export const buildFilterWhereClause = (
 }
 export const buildOrderByClause = (
   orderBy?: QueryParams['sort'],
-): Prisma.StampOrderByWithRelationAndSearchRelevanceInput => {
+): Prisma.StampOrderByWithRelationInput => {
   switch (orderBy) {
     case 'likes':
       return { likedBy: { _count: 'desc' } }
