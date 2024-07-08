@@ -24,7 +24,7 @@ const getStamp = unstable_cache(
     })
   },
   ['getStamp'],
-  { revalidate: 3600 }
+  { revalidate: 3600 },
 )
 
 const StampPage = async ({ params }: { params: { id: string } }) => {
@@ -73,7 +73,7 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
           </div>
 
           <div className="hidden grow space-x-5 text-sm md:flex">
-            <div className=" capitalize text-accent dark:text-accent">
+            <div className="capitalize text-accent dark:text-accent">
               {region}
             </div>
 
@@ -104,7 +104,7 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
             className={cn(
               buttonStyles.base,
               buttonStyles.solid,
-              buttonStyles.colors.primary
+              buttonStyles.colors.primary,
             )}
             download={title}
           >

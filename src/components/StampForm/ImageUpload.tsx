@@ -17,7 +17,7 @@ export const ImageUpload = () => {
   const { status, images, setImages } = useStampFormContext()
   const { isError, handleChange, handleRemove } = useUpload<Asset | Image>(
     images,
-    setImages
+    setImages,
   )
   return (
     <div className="flex flex-col space-y-2">
@@ -33,7 +33,7 @@ export const ImageUpload = () => {
             buttonStyles.base,
             buttonStyles.solid,
             buttonStyles.colors.secondary,
-            'h-fit font-normal hover:opacity-90'
+            'h-fit font-normal hover:opacity-90',
           )}
         >
           Add Images
@@ -56,7 +56,7 @@ export const ImageUpload = () => {
         >
           <ArrowUpIcon className="mx-auto h-6 w-6 text-gray-400" />
 
-          <span className="mt-2 block text-sm font-semibold  text-gray-500">
+          <span className="mt-2 block text-sm font-semibold text-gray-500">
             Upload
           </span>
         </label>

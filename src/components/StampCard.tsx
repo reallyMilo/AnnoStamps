@@ -33,7 +33,7 @@ export const StampCard = ({
 
   return (
     <div className="group relative flex flex-col rounded-lg bg-white shadow-md dark:bg-zinc-800">
-      <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200 group-hover:opacity-75 ">
+      <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200 group-hover:opacity-75">
         <Image
           src={srcUrl}
           alt={title ?? 'image alt'}
@@ -89,7 +89,7 @@ export const StampCard = ({
           <Link
             href={`/${user.usernameURL}`}
             data-testid="stamp-card-username-link"
-            className="z-10 flex h-11 w-fit items-center gap-1 text-slate-500 hover:text-primary  dark:text-white"
+            className="z-10 flex h-11 w-fit items-center gap-1 text-slate-500 hover:text-primary dark:text-white"
             prefetch={false}
           >
             <Avatar src={user.image} className="size-5" />
