@@ -12,13 +12,14 @@ Schedule expression: rate(1 day) // UTC+0
 
 _Supabase UI -> Project Settings -> API_
 
+```
 SUPA_DB
-
 SUPA_SERVICE_KEY
+```
 
 _Google Cloud Dashboard -> APIs & Services -> Enabled APIs -> Google Analytics Data API -> Credentials_
 
-GOOGLE_APPLICATION_CREDENTIALS = credentials.json
+`GOOGLE_APPLICATION_CREDENTIALS = credentials.json`
 
 ## Supabase
 
@@ -30,11 +31,28 @@ grant all on "Stamp" in schema public to service_role;
 
 _Need to create RPC in Database -> Functions_
 
-incdownloads
+create function loopdownloads
 
-update "Stamp"
-set downloads = downloads + increment_amount
-where id = row_id
+```
+DECLARE
+    item jsonb;
+    stamp_id text;
+    increment_amount int;
+BEGIN
+    FOR item IN SELECT * FROM jsonb_array_elements(jsonb_collection) LOOP
+        stamp_id := item->>'stampId';
+        increment_amount := (item->>'increment')::int;
+
+        RAISE LOG 'Processing item: %', item;
+        RAISE LOG 'Stamp ID: %, Increment Amount: %', stamp_id,increment_amount;
+
+        UPDATE "Stamp"
+        SET downloads = downloads + increment_amount
+        WHERE id = stamp_id;
+    END LOOP;
+END;
+
+```
 
 ## Google Analytics
 

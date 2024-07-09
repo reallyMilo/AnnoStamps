@@ -34,11 +34,13 @@ export const handler = async () => {
     process.env.SUPA_SERVICE_KEY,
   )
 
-  for (const row of response.rows) {
-    const { error } = await supabase.rpc('incdownloads', {
-      increment_amount: Number(row.metricValues[0].value),
-      row_id: row.dimensionValues[0].value.split('/')[2],
-    })
-    console.log(error)
-  }
+  const collection = response.rows.map((row) => ({
+    stampId: row.dimensionValues[0].value.split('/')[2],
+    increment_amount: Number(row.metricValues[0].value),
+  }))
+
+  const { error } = await supabase.rpc('loopdownloads', {
+    jsonb_collection: collection,
+  })
+  console.log(error)
 }
