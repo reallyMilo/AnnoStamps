@@ -36,7 +36,7 @@ export const handler = async () => {
 
   const collection = response.rows.map((row) => ({
     stampId: row.dimensionValues[0].value.split('/')[2],
-    increment_amount: Number(row.metricValues[0].value),
+    increment: Number(row.metricValues[0].value),
   }))
 
   const { error } = await supabase.rpc('loopdownloads', {
