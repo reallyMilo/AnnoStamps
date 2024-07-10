@@ -12,7 +12,7 @@ export const StampCard = ({
   category,
   region,
   modded,
-  downloads,
+  suffixDownloads,
   images,
   user,
   createdAt,
@@ -23,7 +23,7 @@ export const StampCard = ({
   | 'category'
   | 'region'
   | 'modded'
-  | 'downloads'
+  | 'suffixDownloads'
   | 'images'
   | 'user'
   | 'createdAt'
@@ -102,7 +102,7 @@ export const StampCard = ({
           <StampCategoryIcon category={category} />
           <div className="flex items-end text-midnight dark:text-white">
             <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5 self-center" />
-            <span data-testid="stamp-card-downloads">{downloads}</span>
+            <span data-testid="stamp-card-downloads">{suffixDownloads}</span>
           </div>
         </div>
       </div>

@@ -37,23 +37,10 @@ const UserPage = async ({ params }: { params: { user: string } }) => {
     notFound()
   }
 
-  const stats = user.listedStamps.reduce(
-    (acc, curr) => {
-      return {
-        downloads: acc.downloads + curr.downloads,
-        likes: acc.likes + curr._count.likedBy,
-      }
-    },
-    {
-      downloads: 0,
-      likes: 0,
-    },
-  )
-
   return user.id === session?.user.id ? (
-    <UserHomePage user={user} stats={stats} />
+    <UserHomePage user={user} />
   ) : (
-    <UserPublicPage user={user} stats={stats} />
+    <UserPublicPage user={user} />
   )
 }
 
