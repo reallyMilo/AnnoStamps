@@ -30,12 +30,12 @@ export interface StampWithRelations
     Prisma.StampGetPayload<{
       include: typeof stampIncludeStatement
     }>,
-    'createdAt' | 'updatedAt' | 'images' | 'changedAt' | 'downloads'
+    'createdAt' | 'updatedAt' | 'images' | 'changedAt'
   > {
   changedAt: string
   createdAt: string
-  downloads: string
   images: Image[]
+  suffixDownloads: string
   updatedAt: string
 }
 
@@ -133,7 +133,8 @@ export const stampExtensions = Prisma.defineExtension({
           return distanceUnixTimeToNow(getUnixTime(new Date(changedAt)))
         },
       },
-      downloads: {
+      suffixDownloads: {
+        needs: { downloads: true },
         compute({ downloads }) {
           return formatIntegerWithSuffix(downloads)
         },

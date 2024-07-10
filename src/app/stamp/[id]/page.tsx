@@ -42,7 +42,7 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
     stampFileUrl,
     modded,
     good,
-    downloads,
+    suffixDownloads,
     images,
     user,
     _count: likes,
@@ -87,7 +87,7 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
           </div> */}
             <div>
               <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5" />
-              <span data-testid="stamp-downloads">{downloads}</span>
+              <span data-testid="stamp-downloads">{suffixDownloads}</span>
             </div>
 
             <div suppressHydrationWarning>{createdAt}</div>

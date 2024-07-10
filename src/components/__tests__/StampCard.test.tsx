@@ -14,7 +14,8 @@ const render = (props?: Partial<StampWithRelations>) => ({
       title="Stamp Title"
       category="production"
       region="old world"
-      downloads="123"
+      downloads={123}
+      suffixDownloads="123"
       createdAt="12 days ago"
       updatedAt="12 days ago"
       modded
