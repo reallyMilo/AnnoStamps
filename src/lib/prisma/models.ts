@@ -5,6 +5,7 @@ import z from 'zod'
 import { REGIONS_1800 } from '@/lib/constants/1800/data'
 
 import { CATEGORIES } from '../constants'
+import { distanceUnixTimeToNow, formatIntegerWithSuffix } from './utils'
 //Exception: you cannot mutate include or select because that would change the
 //expected output type and break type safety. Will have to keep exporting this
 //unfortunately or every statement call would have to be cast
@@ -29,12 +30,13 @@ export interface StampWithRelations
     Prisma.StampGetPayload<{
       include: typeof stampIncludeStatement
     }>,
-    'createdAt' | 'updatedAt' | 'images' | 'changedAt'
+    'createdAt' | 'updatedAt' | 'images' | 'changedAt' | 'downloads'
   > {
-  changedAt: number
-  createdAt: number
+  changedAt: string
+  createdAt: string
+  downloads: string
   images: Image[]
-  updatedAt: number
+  updatedAt: string
 }
 
 const stampSchema = z.object({
@@ -118,17 +120,22 @@ export const stampExtensions = Prisma.defineExtension({
     stamp: {
       createdAt: {
         compute({ createdAt }) {
-          return getUnixTime(new Date(createdAt))
+          return distanceUnixTimeToNow(getUnixTime(new Date(createdAt)))
         },
       },
       updatedAt: {
         compute({ updatedAt }) {
-          return getUnixTime(new Date(updatedAt))
+          return distanceUnixTimeToNow(getUnixTime(new Date(updatedAt)))
         },
       },
       changedAt: {
         compute({ changedAt }) {
-          return getUnixTime(new Date(changedAt))
+          return distanceUnixTimeToNow(getUnixTime(new Date(changedAt)))
+        },
+      },
+      downloads: {
+        compute({ downloads }) {
+          return formatIntegerWithSuffix(downloads)
         },
       },
     },

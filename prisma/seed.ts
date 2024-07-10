@@ -82,7 +82,7 @@ export const generateStampData = (
       changedAt: timestamp,
       updatedAt: timestamp,
       capital: getCapital(),
-      downloads: index,
+      downloads: faker.number.int({ min: 0, max: 1000000 }),
     }
   })
 

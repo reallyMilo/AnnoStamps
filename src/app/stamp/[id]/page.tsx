@@ -11,7 +11,7 @@ import { StampCategoryIcon } from '@/components/StampCategoryIcon'
 import { buttonStyles, Container, Heading, Link } from '@/components/ui'
 import { stampIncludeStatement } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
-import { cn, distanceUnixTimeToNow } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 
 import { CarouselImage } from './CarouselImage'
 import { StampLikeButton } from './StampLikeButton'
@@ -90,9 +90,7 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
               <span data-testid="stamp-downloads">{downloads}</span>
             </div>
 
-            <div suppressHydrationWarning>
-              {distanceUnixTimeToNow(createdAt)}
-            </div>
+            <div suppressHydrationWarning>{createdAt}</div>
           </div>
           <SessionProvider session={session}>
             <StampLikeButton id={id} initialLikes={likes.likedBy} />
@@ -115,7 +113,7 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
 
         {createdAt !== changedAt && (
           <div className="italic" suppressHydrationWarning>
-            Updated: {distanceUnixTimeToNow(changedAt)}
+            Updated: {changedAt}
           </div>
         )}
         <div
