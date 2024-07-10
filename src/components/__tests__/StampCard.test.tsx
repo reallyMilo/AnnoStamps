@@ -14,12 +14,12 @@ const render = (props?: Partial<StampWithRelations>) => ({
       title="Stamp Title"
       category="production"
       region="old world"
-      downloads={123}
-      createdAt={1709335430}
-      updatedAt={1709397567}
+      downloads="123"
+      createdAt="12 days ago"
+      updatedAt="12 days ago"
       modded
       user={{ username: 'stampCreator' } as StampWithRelations['user']}
-      likedBy={[{ id: '10' }, { id: '11' }] as StampWithRelations['likedBy']}
+      _count={12}
       images={[
         {
           id: 'dhxl6xoa9rdz7dspjv7m5wnu',
