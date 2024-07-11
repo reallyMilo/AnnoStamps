@@ -4,8 +4,10 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import Image from 'next/image'
+import { SessionProvider } from 'next-auth/react'
 
-import { UserButton } from '@/components/Auth/UserButton'
+import { auth } from '@/auth'
+import { UserMenu } from '@/components/Auth/UserMenu'
 import {
   Container,
   Link,
@@ -75,7 +77,8 @@ const socials = [
   },
 ]
 
-const Navbar = () => {
+const Navbar = async () => {
+  const session = await auth()
   return (
     <header>
       <Container className="py-0">
@@ -109,7 +112,9 @@ const Navbar = () => {
           </NavbarSection>
           <NavbarSpacer />
 
-          <UserButton />
+          <SessionProvider session={session}>
+            <UserMenu />
+          </SessionProvider>
         </NavbarRoot>
       </Container>
     </header>
