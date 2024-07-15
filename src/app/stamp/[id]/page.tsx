@@ -9,27 +9,52 @@ import { SessionProvider } from 'next-auth/react'
 import { auth } from '@/auth'
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
 import { buttonStyles, Container, Heading, Link } from '@/components/ui'
-import { stampIncludeStatement } from '@/lib/prisma/models'
+import {
+  stampIncludeStatement,
+  userIncludeStatement,
+} from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 import { cn } from '@/lib/utils'
 
 import { CarouselImage } from './CarouselImage'
 import { StampLikeButton } from './StampLikeButton'
 
-const getStamp = unstable_cache(
-  async (id: string) => {
-    return prisma.stamp.findUnique({
-      include: stampIncludeStatement,
-      where: { id },
+const getStampAndUserLiked = unstable_cache(
+  async (id: string, userId: string | undefined) => {
+    return prisma.$transaction(async (q) => {
+      const stamp = q.stamp.findUnique({
+        include: stampIncludeStatement,
+        where: { id },
+      })
+
+      return userId
+        ? Promise.all([
+            stamp,
+            q.user.findUnique({
+              where: {
+                id: userId,
+                likedStamps: {
+                  some: {
+                    id,
+                  },
+                },
+              },
+              include: userIncludeStatement,
+            }),
+          ])
+        : Promise.all([stamp])
     })
   },
-  ['getStamp'],
+  ['getStampAndUserLiked'],
   { revalidate: 3600 },
 )
 
 const StampPage = async ({ params }: { params: { id: string } }) => {
-  const stamp = await getStamp(params.id)
   const session = await auth()
+  const [stamp, userLikes] = await getStampAndUserLiked(
+    params.id,
+    session?.userId,
+  )
   if (!stamp) {
     notFound()
   }
@@ -81,10 +106,6 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
               <div className="capitalize text-gray-500">{good}</div>
             )}
 
-            {/* TODO: views */}
-            {/* <div className="">
-            <EyeIcon className="mr-2 inline-block h-5 w-5" /> Views
-          </div> */}
             <div>
               <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5" />
               <span data-testid="stamp-downloads">{suffixDownloads}</span>
@@ -93,7 +114,11 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
             <div suppressHydrationWarning>{createdAt}</div>
           </div>
           <SessionProvider session={session}>
-            <StampLikeButton id={id} initialLikes={likes.likedBy} />
+            <StampLikeButton
+              id={id}
+              initialLikes={likes.likedBy}
+              isLiked={!!userLikes}
+            />
           </SessionProvider>
 
           <a

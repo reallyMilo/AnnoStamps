@@ -5,50 +5,42 @@ import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { startTransition, useOptimistic } from 'react'
-import useSWR from 'swr'
 
 import { Button } from '@/components/ui'
-import { StampWithRelations, UserWithStamps } from '@/lib/prisma/models'
+import { StampWithRelations } from '@/lib/prisma/models'
 import { cn } from '@/lib/utils'
 
-import { likeStamp } from './actions'
+import { likeMutation } from './actions'
 
 type LikeButtonProps = {
   id: StampWithRelations['id']
   initialLikes: number
+  isLiked: boolean
 }
 
-export const StampLikeButton = ({ id, initialLikes }: LikeButtonProps) => {
+export const StampLikeButton = ({
+  id,
+  initialLikes,
+  isLiked,
+}: LikeButtonProps) => {
   const router = useRouter()
   const pathname = usePathname()
   const { status } = useSession()
   const isUserAuth = status === 'authenticated'
 
-  const { data: userData, mutate } = useSWR<{
-    data?: UserWithStamps
-    message: string
-  }>(isUserAuth ? '/api/user' : null, (url: string) =>
-    fetch(url).then((res) => res.json()),
-  )
-  const isStampLiked =
-    userData?.data?.likedStamps.some((stamp) => stamp.id === id) ?? false
-
-  const [optimisticLikes, mutateOptimisticLike] = useOptimistic(
+  const [optimisticLike, mutateOptimisticLike] = useOptimistic(
     {
-      likes: initialLikes,
-      isLiked: isStampLiked,
+      isLiked,
+      likeCount: initialLikes,
     },
     (state, action: 'add' | 'remove') => {
       switch (action) {
         case 'add':
-          return {
-            likes: state.likes + 1,
-            isLiked: true,
-          }
+          return { isLiked: true, likeCount: state.likeCount + 1 }
         case 'remove':
           return {
-            likes: state.likes - 1,
             isLiked: false,
+            likeCount: state.likeCount - 1,
           }
         default:
           return state
@@ -60,15 +52,15 @@ export const StampLikeButton = ({ id, initialLikes }: LikeButtonProps) => {
     if (!isUserAuth) {
       router.push(`/auth/signin?callbackUrl=${pathname}`)
     }
-    if (isStampLiked || optimisticLikes.isLiked === true) {
+    if (isLiked && optimisticLike) {
       //TODO: cant unlike until debouncing / rate limiting implemented
       return
     }
+
     startTransition(() => {
       mutateOptimisticLike('add')
     })
-
-    const res = await likeStamp(id)
+    const res = await likeMutation(id)
 
     if (!res.ok) {
       startTransition(() => {
@@ -76,8 +68,6 @@ export const StampLikeButton = ({ id, initialLikes }: LikeButtonProps) => {
       })
       return
     }
-
-    mutate()
   }
   return (
     <Button
@@ -86,11 +76,11 @@ export const StampLikeButton = ({ id, initialLikes }: LikeButtonProps) => {
       plain
       className={cn(
         'cursor-pointer [&>[data-slot=icon]]:sm:size-6',
-        isStampLiked && '[&>[data-slot=icon]]:sm:text-primary',
+        optimisticLike.isLiked && '[&>[data-slot=icon]]:sm:text-primary',
       )}
     >
       <HandThumbUpIcon data-testid="like-icon" />
-      {isStampLiked ? initialLikes + 1 : initialLikes}
+      {optimisticLike.likeCount}
     </Button>
   )
 }
