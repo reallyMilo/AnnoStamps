@@ -1,17 +1,19 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
+
 import { auth } from '@/auth'
 import type { StampWithRelations } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 
-export const likeStamp = async (id: StampWithRelations['id']) => {
+export const likeMutation = async (id: StampWithRelations['id']) => {
   const session = await auth()
   if (!session) {
-    return { ok: false, likes: null }
+    return { ok: false }
   }
 
   try {
-    const updateStampLikes = await prisma.stamp.update({
+    await prisma.stamp.update({
       where: { id },
       include: { likedBy: true },
       data: {
@@ -20,10 +22,11 @@ export const likeStamp = async (id: StampWithRelations['id']) => {
         },
       },
     })
-
-    return { ok: true, likes: updateStampLikes.likedBy.length }
   } catch (e) {
     console.error(e)
-    return { ok: false, likes: null }
+    return { ok: false }
   }
+
+  revalidatePath(`/stamp/${id}`)
+  return { ok: true }
 }
