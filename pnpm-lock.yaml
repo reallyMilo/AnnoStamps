@@ -40,6 +40,9 @@ importers:
       '@tailwindcss/forms':
         specifier: ^0.5.7
         version: 0.5.7(tailwindcss@3.4.3(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
+      '@tanstack/react-query':
+        specifier: ^5.51.9
+        version: 5.51.9(react@18.3.1)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -85,9 +88,6 @@ importers:
       swiper:
         specifier: 11.0.3
         version: 11.0.3
-      swr:
-        specifier: ^2.2.5
-        version: 2.2.5(react@18.3.1)
       tailwind-merge:
         specifier: ^1.14.0
         version: 1.14.0
@@ -3148,6 +3148,20 @@ packages:
       }
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
+
+  '@tanstack/query-core@5.51.9':
+    resolution:
+      {
+        integrity: sha512-HsAwaY5J19MD18ykZDS3aVVh+bAt0i7m6uQlFC2b77DLV9djo+xEN7MWQAQQTR8IM+7r/zbozTQ7P0xr0bHuew==,
+      }
+
+  '@tanstack/react-query@5.51.9':
+    resolution:
+      {
+        integrity: sha512-F8j6i42wfKvFrRcxfOyFyYME+bPfNthAGOSkjdv4UwZZXJjnBnBs/yRQGT0bD23LVCTuBzlIfZ0GKSIyclZ9rQ==,
+      }
+    peerDependencies:
+      react: ^18.0.0
 
   '@tanstack/react-virtual@3.8.3':
     resolution:
@@ -8413,14 +8427,6 @@ packages:
       }
     engines: { node: '>= 4.7.0' }
 
-  swr@2.2.5:
-    resolution:
-      {
-        integrity: sha512-QtxqyclFeAsxEUeZIYmsaQ0UjimSq1RZ9Un7I68/0ClKK/U3LoyQunwkQfJZr2fc22DfIXLNDc2wFyTEikCUpg==,
-      }
-    peerDependencies:
-      react: ^16.11.0 || ^17.0.0 || ^18.0.0
-
   symbol-tree@3.2.4:
     resolution:
       {
@@ -8882,14 +8888,6 @@ packages:
     peerDependencies:
       immer: '>=2.0.0'
       react: ^16.8.0 || ^17.0.1 || ^18.0.0
-
-  use-sync-external-store@1.2.0:
-    resolution:
-      {
-        integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==,
-      }
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   util-deprecate@1.0.2:
     resolution:
@@ -11500,6 +11498,13 @@ snapshots:
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.3(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
+
+  '@tanstack/query-core@5.51.9': {}
+
+  '@tanstack/react-query@5.51.9(react@18.3.1)':
+    dependencies:
+      '@tanstack/query-core': 5.51.9
+      react: 18.3.1
 
   '@tanstack/react-virtual@3.8.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -14903,12 +14908,6 @@ snapshots:
 
   swiper@11.0.3: {}
 
-  swr@2.2.5(react@18.3.1):
-    dependencies:
-      client-only: 0.0.1
-      react: 18.3.1
-      use-sync-external-store: 1.2.0(react@18.3.1)
-
   symbol-tree@3.2.4: {}
 
   synckit@0.6.2:
@@ -15210,10 +15209,6 @@ snapshots:
   use-immer@0.9.0(immer@10.1.1)(react@18.3.1):
     dependencies:
       immer: 10.1.1
-      react: 18.3.1
-
-  use-sync-external-store@1.2.0(react@18.3.1):
-    dependencies:
       react: 18.3.1
 
   util-deprecate@1.0.2: {}
