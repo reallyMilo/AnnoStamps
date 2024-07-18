@@ -1,10 +1,10 @@
 import * as Headless from '@headlessui/react'
-import { UserIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import React from 'react'
 
 import { cn } from '@/lib/utils'
 
+import defaultAvatar from '../../../public/anno-stamps-stamp.png'
 import { TouchTarget } from './Button'
 import { Link } from './Link'
 
@@ -61,7 +61,12 @@ export const Avatar = ({
       {src ? (
         <Image src={src} alt={alt} height={36} width={36} />
       ) : (
-        <UserIcon />
+        <Image
+          src={defaultAvatar}
+          alt="default avatar icon"
+          height={36}
+          width={36}
+        />
       )}
     </span>
   )
