@@ -5,7 +5,7 @@ import { Suspense } from 'react'
 import { Filter } from '@/components/Filter/Filter'
 import { Pagination } from '@/components/Filter/Pagination'
 import { StampCard } from '@/components/StampCard'
-import { StampCardSkeleton } from '@/components/StampCard'
+import { StampCardSkeleton } from '@/components/StampCardSkeleton'
 import { Container, Grid, Heading, Subheading, Text } from '@/components/ui'
 import {
   type QueryParams,
