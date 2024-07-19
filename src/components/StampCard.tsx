@@ -1,5 +1,4 @@
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
-import Image from 'next/image'
 import Link from 'next/link'
 
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
@@ -33,11 +32,10 @@ export const StampCard = ({
   return (
     <div className="group relative flex flex-col rounded-lg bg-white shadow-md dark:bg-zinc-800">
       <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200 group-hover:opacity-75">
-        <Image
+        <img
           src={srcUrl}
           alt={title ?? 'image alt'}
           className="transition hover:opacity-80"
-          fill
           sizes="(max-width: 320px) 700px
                 (max-width: 768px) 390px,
                 (max-width: 1200px) 290px"
