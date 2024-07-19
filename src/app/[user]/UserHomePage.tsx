@@ -45,8 +45,14 @@ export const UserHomeBanner = ({
   )
 }
 
-export const UserHomePage = ({ user }: { user: UserWithStamps }) => {
-  const stats = user.listedStamps.reduce(
+export const UserHomePage = ({
+  biography,
+  listedStamps,
+  image,
+  usernameURL,
+  username,
+}: UserWithStamps) => {
+  const stats = listedStamps.reduce(
     (acc, curr) => {
       return {
         downloads: acc.downloads + curr.downloads,
@@ -59,15 +65,14 @@ export const UserHomePage = ({ user }: { user: UserWithStamps }) => {
     },
   )
 
-  const { username, biography } = user
   const userBannerProps = {
     ...stats,
     username,
     biography,
-    stampCount: user.listedStamps.length,
+    stampCount: listedStamps.length,
   }
 
-  if (user.listedStamps.length === 0) {
+  if (listedStamps.length === 0) {
     return (
       <Container>
         <UserHomeBanner {...userBannerProps} />
@@ -103,9 +108,8 @@ export const UserHomePage = ({ user }: { user: UserWithStamps }) => {
   return (
     <Container>
       <UserHomeBanner {...userBannerProps} />
-
       <Grid>
-        {user.listedStamps.map((stamp) => (
+        {listedStamps.map((stamp) => (
           <div key={stamp.id} className="flex flex-col">
             <div className="mb-1 flex justify-between">
               <StampDeleteModal {...stamp} />
@@ -115,7 +119,7 @@ export const UserHomePage = ({ user }: { user: UserWithStamps }) => {
                 Edit Stamp
               </Button>
             </div>
-            <StampCard user={user} {...stamp} />
+            <StampCard user={{ image, username, usernameURL }} {...stamp} />
           </div>
         ))}
       </Grid>

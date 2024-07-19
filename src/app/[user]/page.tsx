@@ -38,9 +38,9 @@ const UserPage = async ({ params }: { params: { user: string } }) => {
   }
 
   return user.id === session?.user.id ? (
-    <UserHomePage user={user} />
+    <UserHomePage {...user} />
   ) : (
-    <UserPublicPage user={user} />
+    <UserPublicPage {...user} />
   )
 }
 
