@@ -1,4 +1,4 @@
-import { StampCardSkeleton } from '@/components/StampCardSkeleton'
+import { StampCardSkeleton } from '@/components/StampCard'
 import { Container, Grid } from '@/components/ui'
 const UserPageLoading = () => {
   return (
