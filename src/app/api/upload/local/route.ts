@@ -1,5 +1,3 @@
-//TODO: Local stack or aws sandbox removes this
-
 import { createId } from '@paralleldrive/cuid2'
 import { outputFileSync } from 'fs-extra'
 import sharp from 'sharp'

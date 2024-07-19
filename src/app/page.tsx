@@ -1,5 +1,5 @@
 import { unstable_cache } from 'next/cache'
-import Image, { StaticImageData } from 'next/image'
+import Image, { type StaticImageData } from 'next/image'
 import anno1800Header from 'public/Anno1800Header.webp'
 import arctic from 'public/Arctic.webp'
 import enbesa from 'public/Enbesa.webp'
