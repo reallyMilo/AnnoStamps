@@ -1,7 +1,8 @@
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
+import Image from 'next/image'
+import Link from 'next/link'
 
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
-import { Link } from '@/components/ui'
 import { Avatar, Heading, Subheading } from '@/components/ui'
 import type { StampWithRelations } from '@/lib/prisma/models'
 
@@ -32,10 +33,11 @@ export const StampCard = ({
   return (
     <div className="group relative flex flex-col rounded-lg bg-white shadow-md dark:bg-zinc-800">
       <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200 group-hover:opacity-75">
-        <img
+        <Image
           src={srcUrl}
           alt={title ?? 'image alt'}
           className="transition hover:opacity-80"
+          fill
           sizes="(max-width: 320px) 700px
                 (max-width: 768px) 390px,
                 (max-width: 1200px) 290px"
@@ -45,7 +47,7 @@ export const StampCard = ({
         />
         {modded && (
           <div className="absolute right-2 top-2 ml-auto flex h-fit w-fit flex-row items-center rounded-full bg-accent px-2 py-1 text-xs text-default">
-            <WrenchIcon className="mr-1 size-3" />
+            <WrenchIcon className="mr-1 h-3 w-3" />
             mods
           </div>
         )}
@@ -103,23 +105,6 @@ export const StampCard = ({
             <span data-testid="stamp-card-downloads">{suffixDownloads}</span>
           </div>
         </div>
-      </div>
-    </div>
-  )
-}
-
-export const StampCardSkeleton = () => {
-  return (
-    <div className="group relative flex animate-pulse flex-col rounded-lg bg-white shadow-md dark:bg-zinc-800">
-      <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200 group-hover:opacity-75"></div>
-
-      <div className="flex h-full min-h-[200px] flex-col gap-y-2 px-3 py-2">
-        <div className="flex items-baseline justify-between"></div>
-        <div className="line-clamp-2 w-full flex-grow overflow-hidden text-ellipsis"></div>
-
-        <span className="h-11"></span>
-
-        <div className="mt-auto flex justify-between"></div>
       </div>
     </div>
   )
