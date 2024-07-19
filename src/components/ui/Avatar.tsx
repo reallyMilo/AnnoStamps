@@ -59,7 +59,7 @@ export const Avatar = ({
         </svg>
       )}
       {src ? (
-        <Image src={src} alt={alt} height={36} width={36} />
+        <img src={src} alt={alt} height={36} width={36} />
       ) : (
         <Image
           src={defaultAvatar}

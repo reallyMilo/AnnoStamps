@@ -3,7 +3,6 @@
 import 'swiper/css'
 import 'swiper/css/navigation'
 
-import Image from 'next/image'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -17,7 +16,7 @@ export const CarouselImage = ({ images }: CarouselProps) => {
     <Swiper navigation={true} modules={[Navigation]} className="">
       {images.map((image) => (
         <SwiperSlide key={image.id}>
-          <Image
+          <img
             src={image.largeUrl ?? image.originalUrl}
             alt="anno stamp image"
             className="max-h-[768px] w-full object-contain object-center"
