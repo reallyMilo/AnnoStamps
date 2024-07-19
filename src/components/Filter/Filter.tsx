@@ -8,6 +8,7 @@ import {
   Button,
   Checkbox,
   CheckboxField,
+  CheckboxGroup,
   Fieldset,
   Label,
   Legend,
@@ -55,12 +56,11 @@ const FilterForm = ({ className }: { className: string }) => {
         <div key={`${section.id}-${sectionIdx}`} className="pt-6 first:pt-0">
           <Fieldset>
             <Legend className="capitalize">{section.id}</Legend>
-            <div className="space-y-2 pt-3">
+            <CheckboxGroup>
               {section.options.map((option, optionIdx) => (
                 <CheckboxField key={`${section.id}-${option}-${optionIdx}`}>
                   <Checkbox
-                    id={`${option}`}
-                    name={`${option}`}
+                    name={option}
                     value={option}
                     defaultChecked={searchParamsString?.includes(
                       `${section.id}=${option}`,
@@ -96,7 +96,7 @@ const FilterForm = ({ className }: { className: string }) => {
                   <Label className="capitalize">{option}</Label>
                 </CheckboxField>
               ))}
-            </div>
+            </CheckboxGroup>
           </Fieldset>
         </div>
       ))}
