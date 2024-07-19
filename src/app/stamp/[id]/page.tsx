@@ -21,29 +21,26 @@ import { StampLikeButton } from './StampLikeButton'
 
 const getStampAndUserLiked = unstable_cache(
   async (id: string, userId: string | undefined) => {
-    return prisma.$transaction(async (q) => {
-      const stamp = q.stamp.findUnique({
-        include: stampIncludeStatement,
-        where: { id },
-      })
-
-      return userId
-        ? Promise.all([
-            stamp,
-            q.user.findUnique({
-              where: {
-                id: userId,
-                likedStamps: {
-                  some: {
-                    id,
-                  },
+    const getStamp = prisma.stamp.findUnique({
+      include: stampIncludeStatement,
+      where: { id },
+    })
+    return userId
+      ? prisma.$transaction([
+          getStamp,
+          prisma.user.findUnique({
+            where: {
+              id: userId,
+              likedStamps: {
+                some: {
+                  id,
                 },
               },
-              include: userIncludeStatement,
-            }),
-          ])
-        : Promise.all([stamp])
-    })
+            },
+            include: userIncludeStatement,
+          }),
+        ])
+      : prisma.$transaction([getStamp])
   },
   ['getStampAndUserLiked'],
   { revalidate: 3600 },
