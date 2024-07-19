@@ -7,7 +7,6 @@ export const uploadAsset = async (
   const filename = encodeURIComponent(name)
   const fileType = encodeURIComponent(type)
 
-  //TODO: Localstack or aws sandbox can remove this
   if (process.env.NODE_ENV === 'development') {
     const localRes = await fetch(
       `/api/upload/local?stampId=${stampId}&filename=${filename}&fileType=${fileType}`,
