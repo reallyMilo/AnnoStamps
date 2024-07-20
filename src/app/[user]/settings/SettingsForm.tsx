@@ -1,4 +1,5 @@
 'use client'
+import { CheckBadgeIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
@@ -10,10 +11,11 @@ import {
   ErrorMessage,
   Field,
   FieldGroup,
-  Heading,
+  Fieldset,
   Input,
   InputGroup,
   Label,
+  Legend,
   Textarea,
 } from '@/components/ui'
 
@@ -53,19 +55,17 @@ export const SettingsForm = () => {
       action={async (formData) => {
         const { status, message } = await updateUserSettings(formData)
         if (status === 'success') {
-          // update from useSession not documented
+          //FIXME: update from useSession not documented
           // no longer works as expected with only database
-          // update()
+          // https://authjs.dev/reference/nextjs/react#updatesession
           router.refresh()
         }
         setFormState({ status, message })
       }}
       className="grid max-w-3xl space-y-8"
     >
-      <fieldset>
-        <legend>
-          <Heading>Profile</Heading>
-        </legend>
+      <Fieldset>
+        <Legend>Profile</Legend>
         <FieldGroup>
           <Field>
             <Label>Username</Label>
@@ -74,13 +74,13 @@ export const SettingsForm = () => {
               If you wish to change your username please contact us via the
               discord server.{' '}
             </Description>
-            <InputGroup>
+            <InputGroup className="[&>[data-slot=icon]]:text-green-500 dark:[&>[data-slot=icon]]:text-green-500">
               <span data-slot="custom-text">annostamps.com/</span>
               <Input
                 type="text"
                 name="username"
                 defaultValue={username ?? ''}
-                readOnly={username ? true : false}
+                readOnly={!!username}
                 autoComplete="false"
                 onInvalid={(e) =>
                   e.currentTarget.setCustomValidity(
@@ -91,6 +91,9 @@ export const SettingsForm = () => {
                 title="Select a username containing only alphanumeric characters, dashes (-), and underscores (_)."
                 required
               />
+              {formState.status === 'success' && (
+                <CheckBadgeIcon data-testid="check-badge-icon" />
+              )}
             </InputGroup>
 
             {formState.status === 'error' && (
@@ -108,7 +111,7 @@ export const SettingsForm = () => {
             />
           </Field>
         </FieldGroup>
-      </fieldset>
+      </Fieldset>
       <SubmitButton />
     </form>
   )

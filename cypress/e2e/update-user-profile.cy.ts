@@ -46,6 +46,8 @@ describe('Update user profile', () => {
       cy.visit('/testSeedUserId/settings')
       cy.findByLabelText('Username').type('cypressTester')
       cy.findByLabelText('About').type('cypress tester biography')
+
+      cy.getBySel('check-badge-icon').should('not.exist')
       cy.findByRole('button', { name: 'Save' }).click()
 
       cy.wait('@setUsername')
@@ -60,6 +62,7 @@ describe('Update user profile', () => {
         'If you wish to change your username please contact us via the discord server.',
       ).should('exist')
 
+      cy.getBySel('check-badge-icon').should('exist')
       cy.database(
         `SELECT * FROM "User" WHERE username = 'cypressTester';`,
       ).then((users) => {

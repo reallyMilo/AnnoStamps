@@ -4,6 +4,7 @@ import { forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 
 export const InputGroup = ({
+  className,
   children,
 }: React.ComponentPropsWithoutRef<'span'>) => {
   return (
@@ -20,6 +21,7 @@ export const InputGroup = ({
         '[&>[data-slot=custom-text]]:absolute [&>[data-slot=custom-text]]:top-[11px] [&>[data-slot=custom-text]]:z-10 sm:[&>[data-slot=custom-text]]:top-[7px]',
         '[&>[data-slot=custom-text]:first-child]:left-3',
         '[&>[data-slot=custom-text]]:text-zinc-500 dark:[&>[data-slot=custom-text]]:text-zinc-400',
+        className,
       )}
     >
       {children}

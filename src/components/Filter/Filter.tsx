@@ -60,6 +60,7 @@ const FilterForm = ({ className }: { className: string }) => {
               {section.options.map((option, optionIdx) => (
                 <CheckboxField key={`${section.id}-${option}-${optionIdx}`}>
                   <Checkbox
+                    id={option}
                     name={option}
                     value={option}
                     defaultChecked={searchParamsString?.includes(
