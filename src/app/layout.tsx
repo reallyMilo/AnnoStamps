@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import Image from 'next/image'
 import { SessionProvider } from 'next-auth/react'
+import { Suspense } from 'react'
 
 import { auth } from '@/auth'
 import { UserMenu } from '@/components/Auth/UserMenu'
@@ -77,8 +78,15 @@ const socials = [
   },
 ]
 
-const Navbar = async () => {
+const UserButton = async () => {
   const session = await auth()
+  return (
+    <SessionProvider session={session}>
+      <UserMenu />
+    </SessionProvider>
+  )
+}
+const Navbar = () => {
   return (
     <header>
       <Container className="py-0">
@@ -112,9 +120,9 @@ const Navbar = async () => {
           </NavbarSection>
           <NavbarSpacer />
 
-          <SessionProvider session={session}>
-            <UserMenu />
-          </SessionProvider>
+          <Suspense fallback={null}>
+            <UserButton />
+          </Suspense>
         </NavbarRoot>
       </Container>
     </header>
