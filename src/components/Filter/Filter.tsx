@@ -2,7 +2,7 @@
 import * as Headless from '@headlessui/react'
 import { FunnelIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 
 import {
   Button,
@@ -162,14 +162,17 @@ const MobileFilter = () => {
 export const Filter = ({ children }: React.PropsWithChildren) => {
   return (
     <div className="grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-6">
-      <FilterForm className="hidden lg:block" />
+      <Suspense>
+        <FilterForm className="hidden lg:block" />
+      </Suspense>
 
       <div className="space-y-6 lg:col-span-5">
         <div className="flex items-baseline justify-between space-x-5 space-y-6">
-          <Search />
-
-          <SortOptionsSelect />
-          <MobileFilter />
+          <Suspense>
+            <Search />
+            <SortOptionsSelect />
+            <MobileFilter />
+          </Suspense>
         </div>
 
         {children}
