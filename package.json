@@ -51,7 +51,7 @@
     "react-dom": "18.3.1",
     "sanitize-html": "^2.13.0",
     "sharp": "0.32.6",
-    "swiper": "11.0.3",
+    "swiper": "11.1.8",
     "swr": "^2.2.5",
     "tailwind-merge": "^1.14.0",
     "use-immer": "^0.9.0",
