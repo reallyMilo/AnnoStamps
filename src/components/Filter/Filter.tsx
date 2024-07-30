@@ -114,7 +114,6 @@ const SortOptionsSelect = () => {
       <Select
         name="sort"
         className="max-w-48"
-        aria-placeholder=""
         defaultValue={(parsedQuery['sort'] as string) ?? undefined}
         onChange={(e) =>
           router.push(
