@@ -55,7 +55,7 @@ export const StampCard = ({
         <div className="flex items-baseline justify-between">
           <Text
             id="stamp-region"
-            className="font-semibold capitalize text-accent dark:text-accent"
+            className="font-semibold capitalize text-accent dark:text-rose-400"
           >
             {region}
           </Text>
