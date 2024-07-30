@@ -2,7 +2,7 @@ import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
 import Link from 'next/link'
 
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
-import { Avatar, Heading, Subheading } from '@/components/ui'
+import { Avatar, Heading, Text } from '@/components/ui'
 import type { StampWithRelations } from '@/lib/prisma/models'
 
 export const StampCard = ({
@@ -53,19 +53,18 @@ export const StampCard = ({
 
       <div className="flex h-full min-h-[200px] flex-col gap-y-2 px-3 py-2">
         <div className="flex items-baseline justify-between">
-          <Subheading
+          <Text
             id="stamp-region"
-            level={4}
-            className="text-sm capitalize text-accent dark:text-accent"
+            className="font-semibold capitalize text-accent dark:text-accent"
           >
             {region}
-          </Subheading>
-          <div
-            className="text-sm text-midnight dark:text-white"
+          </Text>
+          <Text
+            className="text-midnight dark:text-white"
             suppressHydrationWarning
           >
             {createdAt}
-          </div>
+          </Text>
         </div>
         <Heading
           level={2}
