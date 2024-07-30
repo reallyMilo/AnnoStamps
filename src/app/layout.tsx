@@ -10,6 +10,7 @@ import { Suspense } from 'react'
 import { auth } from '@/auth'
 import { UserMenu } from '@/components/Auth/UserMenu'
 import {
+  Button,
   Container,
   Link,
   Navbar as NavbarRoot,
@@ -120,7 +121,7 @@ const Navbar = () => {
           </NavbarSection>
           <NavbarSpacer />
 
-          <Suspense fallback={null}>
+          <Suspense fallback={<Button href="/auth/signin">Add Stamp</Button>}>
             <UserButton />
           </Suspense>
         </NavbarRoot>
