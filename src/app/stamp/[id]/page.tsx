@@ -5,13 +5,16 @@ import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
 import { unstable_cache } from 'next/cache'
 import { notFound } from 'next/navigation'
 import { SessionProvider } from 'next-auth/react'
+import { Suspense } from 'react'
 
 import { auth } from '@/auth'
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
-import { buttonStyles, Container, Heading, Link } from '@/components/ui'
+import { buttonStyles, Container, Heading, Link, Text } from '@/components/ui'
 import {
   stampIncludeStatement,
+  type StampWithRelations,
   userIncludeStatement,
+  type UserWithStamps,
 } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 import { cn } from '@/lib/utils'
@@ -19,39 +22,54 @@ import { cn } from '@/lib/utils'
 import { CarouselImage } from './CarouselImage'
 import { StampLikeButton } from './StampLikeButton'
 
-const getStampAndUserLiked = unstable_cache(
-  async (id: string, userId: string | undefined) => {
-    const getStamp = prisma.stamp.findUnique({
+const getStamp = unstable_cache(
+  async (id: string) =>
+    prisma.stamp.findUnique({
       include: stampIncludeStatement,
       where: { id },
-    })
-    return userId
-      ? prisma.$transaction([
-          getStamp,
-          prisma.user.findUnique({
-            where: {
-              id: userId,
-              likedStamps: {
-                some: {
-                  id,
-                },
-              },
-            },
-            include: userIncludeStatement,
-          }),
-        ])
-      : prisma.$transaction([getStamp])
-  },
-  ['getStampAndUserLiked'],
+    }),
+  ['getStamp'],
   { revalidate: 3600 },
 )
 
-const StampPage = async ({ params }: { params: { id: string } }) => {
+const getUserLikedStamp = unstable_cache(
+  async (userId: UserWithStamps['id'], id: StampWithRelations['id']) =>
+    prisma.user.findUnique({
+      where: {
+        id: userId,
+        likedStamps: {
+          some: {
+            id,
+          },
+        },
+      },
+      include: userIncludeStatement,
+    }),
+  ['getUserLikedStamp'],
+)
+
+const LikeButton = async ({ id }: Pick<StampWithRelations, 'id'>) => {
   const session = await auth()
-  const [stamp, userLikes] = await getStampAndUserLiked(
-    params.id,
-    session?.userId,
+  const stamp = await getStamp(id)
+
+  let userLikes = null
+  if (session) {
+    userLikes = await getUserLikedStamp(session.userId, id)
+  }
+
+  return (
+    <SessionProvider session={session}>
+      <StampLikeButton
+        id={id}
+        initialLikes={stamp?._count.likedBy ?? 0}
+        isLiked={!!userLikes}
+      />
+    </SessionProvider>
   )
+}
+
+const StampPage = async ({ params }: { params: { id: string } }) => {
+  const stamp = await getStamp(params.id)
   if (!stamp) {
     notFound()
   }
@@ -95,9 +113,9 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
           </div>
 
           <div className="hidden grow space-x-5 text-sm md:flex">
-            <div className="capitalize text-accent dark:text-accent">
+            <Text className="capitalize text-accent dark:text-rose-400">
               {region}
-            </div>
+            </Text>
 
             {category === 'production' && (
               <div className="capitalize text-gray-500">{good}</div>
@@ -110,13 +128,19 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
 
             <div suppressHydrationWarning>{createdAt}</div>
           </div>
-          <SessionProvider session={session}>
-            <StampLikeButton
-              id={id}
-              initialLikes={likes.likedBy}
-              isLiked={!!userLikes}
-            />
-          </SessionProvider>
+          <Suspense
+            fallback={
+              <SessionProvider session={null}>
+                <StampLikeButton
+                  id={id}
+                  initialLikes={likes.likedBy ?? 0}
+                  isLiked={false}
+                />
+              </SessionProvider>
+            }
+          >
+            <LikeButton id={params.id} />
+          </Suspense>
 
           <a
             href={stampFileUrl}
