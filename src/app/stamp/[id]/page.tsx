@@ -48,6 +48,21 @@ const getUserLikedStamp = unstable_cache(
   ['getUserLikedStamp'],
 )
 
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { id: string }
+}) => {
+  const stamp = await getStamp(params.id)
+
+  return {
+    title: `${stamp?.title}`,
+    openGraph: {
+      images: [`${stamp?.images[0].smallUrl ?? stamp?.images[0].originalUrl}`],
+    },
+  }
+}
+
 const LikeButton = async ({ id }: Pick<StampWithRelations, 'id'>) => {
   const session = await auth()
   const stamp = await getStamp(id)
