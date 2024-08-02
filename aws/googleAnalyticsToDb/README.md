@@ -1,3 +1,13 @@
+# Note
+
+Only a small number of stamps get the majority of downloads, that is why this process is batched.
+
+Current usage statistics (Aug 2, 2024):
+
+Average: 1-2K daily downloads
+
+Spike (due to content creators linking stamps): 7-8K daily downloads
+
 ## AWS
 
 _Lambda -> Functions -> googleAnalyticsToDb -> Configuration_
