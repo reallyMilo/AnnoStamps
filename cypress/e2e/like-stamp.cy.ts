@@ -45,9 +45,11 @@ describe('Stamp liking', () => {
           cy.wrap(users).should('have.length', 1)
         })
 
-        cy.getBySel('like-stamp')
-          .siblings('svg')
-          .should('have.css', 'color', 'rgb(109, 211, 192)')
+        cy.getBySel('like-stamp', 'svg').should(
+          'have.css',
+          'color',
+          'rgb(109, 211, 192)',
+        )
         cy.getBySel('like-stamp')
           .invoke('text')
           .then(Number)
