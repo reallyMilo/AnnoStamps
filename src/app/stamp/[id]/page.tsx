@@ -8,6 +8,7 @@ import { SessionProvider } from 'next-auth/react'
 import { Suspense } from 'react'
 
 import { auth } from '@/auth'
+import { LikeButton } from '@/components/LikeButton'
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
 import { buttonStyles, Container, Heading, Link, Text } from '@/components/ui'
 import {
@@ -19,8 +20,8 @@ import {
 import prisma from '@/lib/prisma/singleton'
 import { cn } from '@/lib/utils'
 
+import { likeMutation } from './actions'
 import { CarouselImage } from './CarouselImage'
-import { StampLikeButton } from './StampLikeButton'
 
 const getStamp = unstable_cache(
   async (id: string) =>
@@ -63,7 +64,7 @@ export const generateMetadata = async ({
   }
 }
 
-const LikeButton = async ({ id }: Pick<StampWithRelations, 'id'>) => {
+const StampLikeButton = async ({ id }: Pick<StampWithRelations, 'id'>) => {
   const session = await auth()
   const stamp = await getStamp(id)
 
@@ -74,10 +75,12 @@ const LikeButton = async ({ id }: Pick<StampWithRelations, 'id'>) => {
 
   return (
     <SessionProvider session={session}>
-      <StampLikeButton
+      <LikeButton
         id={id}
         initialLikes={stamp?._count.likedBy ?? 0}
         isLiked={!!userLikes}
+        likeButtonAction={likeMutation}
+        testId="like-stamp"
       />
     </SessionProvider>
   )
@@ -146,15 +149,17 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
           <Suspense
             fallback={
               <SessionProvider session={null}>
-                <StampLikeButton
+                <LikeButton
                   id={id}
                   initialLikes={likes.likedBy ?? 0}
                   isLiked={false}
+                  likeButtonAction={likeMutation}
+                  testId="like-stamp"
                 />
               </SessionProvider>
             }
           >
-            <LikeButton id={params.id} />
+            <StampLikeButton id={params.id} />
           </Suspense>
 
           <a
