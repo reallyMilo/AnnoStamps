@@ -5,7 +5,7 @@ import {
   imageExtension,
   stampExtensions,
   stampIncludeStatement,
-  StampWithRelations,
+  type StampWithRelations,
   userExtension,
 } from './models'
 
