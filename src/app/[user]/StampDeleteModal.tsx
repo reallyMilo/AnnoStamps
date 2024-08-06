@@ -9,7 +9,7 @@ import {
   ModalDescription,
   ModalTitle,
 } from '@/components/ui'
-import { UserWithStamps } from '@/lib/prisma/models'
+import type { UserWithStamps } from '@/lib/prisma/models'
 
 import { deleteStamp } from './actions'
 

@@ -3,7 +3,7 @@ import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 
 import { buttonStyles, Grid, Subheading, Text } from '@/components/ui'
-import { Image } from '@/lib/prisma/models'
+import type { Image } from '@/lib/prisma/models'
 import { cn } from '@/lib/utils'
 
 import { useStampFormContext } from './StampForm'

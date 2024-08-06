@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react'
 import { startTransition, useOptimistic } from 'react'
 
 import { Button } from '@/components/ui'
-import { StampWithRelations } from '@/lib/prisma/models'
+import type { StampWithRelations } from '@/lib/prisma/models'
 import { cn } from '@/lib/utils'
 
 import { likeMutation } from './actions'

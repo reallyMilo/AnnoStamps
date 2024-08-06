@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { createId } from '@paralleldrive/cuid2'
-import { PrismaClient, User } from '@prisma/client'
+import { PrismaClient, type User } from '@prisma/client'
 
 import { CATEGORIES } from '../src/lib/constants'
 import {
