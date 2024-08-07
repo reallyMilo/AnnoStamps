@@ -8,25 +8,26 @@ import { startTransition, useOptimistic } from 'react'
 
 import { Button } from '@/components/ui'
 import type { StampWithRelations } from '@/lib/prisma/models'
-import { cn } from '@/lib/utils'
-
-import { likeMutation } from './actions'
+import { cn, type ServerAction } from '@/lib/utils'
 
 type LikeButtonProps = {
   id: StampWithRelations['id']
   initialLikes: number
   isLiked: boolean
+  likeButtonAction: ServerAction<StampWithRelations['id'], { ok: boolean }>
+  testId: string
 }
 
-export const StampLikeButton = ({
+export const LikeButton = ({
   id,
   initialLikes,
   isLiked,
+  likeButtonAction,
+  testId,
 }: LikeButtonProps) => {
   const router = useRouter()
   const pathname = usePathname()
-  const { status } = useSession()
-  const isUserAuth = status === 'authenticated'
+  const { status: userAuthStatus } = useSession()
 
   const [optimisticLike, mutateOptimisticLike] = useOptimistic(
     {
@@ -48,8 +49,8 @@ export const StampLikeButton = ({
     },
   )
 
-  const addLikeToStamp = async () => {
-    if (!isUserAuth) {
+  const addLike = async () => {
+    if (userAuthStatus !== 'authenticated') {
       router.push(`/auth/signin?callbackUrl=${pathname}`)
     }
     if (isLiked && optimisticLike) {
@@ -60,7 +61,7 @@ export const StampLikeButton = ({
     startTransition(() => {
       mutateOptimisticLike('add')
     })
-    const res = await likeMutation(id)
+    const res = await likeButtonAction(id)
 
     if (!res.ok) {
       return
@@ -68,15 +69,15 @@ export const StampLikeButton = ({
   }
   return (
     <Button
-      data-testid="like-stamp"
-      onClick={addLikeToStamp}
+      data-testid={testId}
+      onClick={addLike}
       plain
       className={cn(
         'cursor-pointer [&>[data-slot=icon]]:sm:size-6',
         optimisticLike.isLiked && '[&>[data-slot=icon]]:sm:text-primary',
       )}
     >
-      <HandThumbUpIcon data-testid="like-icon" />
+      <HandThumbUpIcon />
       {optimisticLike.likeCount}
     </Button>
   )
