@@ -52,6 +52,7 @@ export const LikeButton = ({
   const addLike = async () => {
     if (userAuthStatus !== 'authenticated') {
       router.push(`/auth/signin?callbackUrl=${pathname}`)
+      return
     }
     if (isLiked && optimisticLike) {
       //TODO: cant unlike until debouncing / rate limiting implemented
