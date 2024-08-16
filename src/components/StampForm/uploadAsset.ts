@@ -11,8 +11,8 @@ export const uploadAsset = async (
     const localRes = await fetch(
       `/api/upload/local?stampId=${stampId}&filename=${filename}&fileType=${fileType}`,
       {
-        method: 'POST',
         body,
+        method: 'POST',
       },
     )
 
@@ -26,11 +26,11 @@ export const uploadAsset = async (
   const presigned = await fetch(
     `/api/upload/presigned?stampId=${stampId}&filename=${filename}&fileType=${fileType}`,
   )
-  const { url, path }: { path: string; url: string } = await presigned.json()
+  const { path, url }: { path: string; url: string } = await presigned.json()
 
   const putObject = await fetch(url, {
-    method: 'PUT',
     body,
+    method: 'PUT',
   })
 
   if (!putObject.ok) {

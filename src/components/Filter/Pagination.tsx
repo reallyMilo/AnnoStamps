@@ -3,12 +3,12 @@ import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 import {
-  Pagination as PaginationRoot,
   PaginationGap,
   PaginationList,
   PaginationNext,
   PaginationPage,
   PaginationPrevious,
+  Pagination as PaginationRoot,
 } from '@/components/ui'
 import { STAMPS_PER_PAGE } from '@/lib/constants'
 
@@ -25,14 +25,14 @@ const maxPaginationList = 11
 const paginate = (
   totalPageCount: number,
   currentPage: number,
-): (number | null)[] => {
+): (null | number)[] => {
   if (totalPageCount <= maxPaginationList + 2) {
     return Array.from({ length: totalPageCount }, (_, i) => i + 1)
   }
   const range = Math.floor(maxPaginationList / 2)
   const isLeftGap = currentPage - range - 1 > 2
   const isRightGap = totalPageCount - currentPage - range - 1 > 2
-  const pages: (number | null)[] = [1]
+  const pages: (null | number)[] = [1]
 
   let leftStartNumber
   if (isLeftGap && isRightGap) {
@@ -43,7 +43,7 @@ const paginate = (
     leftStartNumber = totalPageCount - maxPaginationList + 1
   }
 
-  for (let index = 1, inc = 0; index <= maxPaginationList; index++) {
+  for (let inc = 0, index = 1; index <= maxPaginationList; index++) {
     if (
       (isLeftGap && index === 1) ||
       (isRightGap && index === maxPaginationList) ||
@@ -86,9 +86,9 @@ export const Pagination = ({ count, page }: PaginationProps) => {
           }
           return (
             <PaginationPage
+              current={pageNum === page}
               href={stringifyQuery({ ...parsedQuery, page: pageNum }) ?? ''}
               key={pageNum + '-pagination'}
-              current={pageNum === page}
             >
               {pageNum}
             </PaginationPage>

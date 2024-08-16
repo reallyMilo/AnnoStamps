@@ -1,5 +1,6 @@
-import * as Headless from '@headlessui/react'
 import type React from 'react'
+
+import * as Headless from '@headlessui/react'
 
 import { cn } from '@/lib/utils'
 

@@ -5,10 +5,10 @@ import { Suspense } from 'react'
 
 import { Container, Heading, Text } from '@/components/ui'
 const errorMap = {
-  Configuration: 'There is a problem with the server configuration.',
   AccessDenied: 'Access denied.',
-  Verification: 'The token has expired or has already been used.',
+  Configuration: 'There is a problem with the server configuration.',
   Default: 'Unable to sign-in.',
+  Verification: 'The token has expired or has already been used.',
 } as const
 
 const Wrap = () => {

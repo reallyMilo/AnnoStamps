@@ -1,3 +1,4 @@
+/* eslint-disable perfectionist/sort-objects */
 export const REGIONS_1800 = {
   OldWorld: 'old world',
   NewWorld: 'new world',

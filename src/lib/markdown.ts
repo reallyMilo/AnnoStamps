@@ -1,10 +1,17 @@
-import { marked } from 'marked'
 import type sanitize from 'sanitize-html'
+
+import { marked } from 'marked'
 import sanitizeHtml from 'sanitize-html'
 
 import type { StampWithRelations } from '@/lib/prisma/models'
 //https://github.com/apostrophecms/sanitize-html?tab=readme-ov-file#default-options
 const sanitizeOptions = {
+  allowedAttributes: {
+    a: ['href', 'target'],
+  },
+  allowedSchemes: ['https'],
+  allowedSchemesAppliedToAttributes: ['href', 'src', 'cite'],
+  allowedSchemesByTag: {},
   allowedTags: [
     'h1',
     'h2',
@@ -51,6 +58,9 @@ const sanitizeOptions = {
     'thead',
     'tr',
   ],
+  allowProtocolRelative: true,
+  disallowedTagsMode: 'discard',
+  enforceHtmlBoundary: true,
   nonBooleanAttributes: [
     'class',
     'color',
@@ -76,10 +86,7 @@ const sanitizeOptions = {
     'target',
     'title',
   ],
-  disallowedTagsMode: 'discard',
-  allowedAttributes: {
-    a: ['href', 'target'],
-  },
+  parseStyleAttributes: true,
   selfClosing: [
     'img',
     'br',
@@ -91,19 +98,13 @@ const sanitizeOptions = {
     'link',
     'meta',
   ],
-  allowedSchemes: ['https'],
-  allowedSchemesByTag: {},
-  allowedSchemesAppliedToAttributes: ['href', 'src', 'cite'],
-  allowProtocolRelative: true,
-  enforceHtmlBoundary: true,
-  parseStyleAttributes: true,
 } satisfies sanitize.IOptions
 
 export const parseAndSanitizedMarkdown = (
   description: StampWithRelations['unsafeDescription'],
 ) => {
   const renderer = {
-    link(href: string, _: string | null | undefined, text: string) {
+    link(href: string, _: null | string | undefined, text: string) {
       const prependHttps = href.startsWith('https://')
         ? href
         : href.padStart(href.length + 8, 'https://')

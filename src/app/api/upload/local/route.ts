@@ -16,7 +16,7 @@ type Breakpoint = keyof typeof BREAKPOINTS
 const breakpointKeys = Object.keys(BREAKPOINTS) as Breakpoint[]
 
 const generateResponsiveImages = async (filepath: string, filename: string) => {
-  const { width, height } = await sharp(filepath).metadata()
+  const { height, width } = await sharp(filepath).metadata()
   if (!width || !height) {
     return
   }
@@ -41,14 +41,14 @@ const generateResponsiveImages = async (filepath: string, filename: string) => {
 export const POST = auth(async (req) => {
   if (process.env.NODE_ENV !== 'development') {
     return Response.json(
-      { ok: false, message: 'only in dev mode' },
+      { message: 'only in dev mode', ok: false },
       { status: 500 },
     )
   }
 
   if (!req.auth) {
     return Response.json(
-      { ok: false, message: 'Unauthorized.' },
+      { message: 'Unauthorized.', ok: false },
       { status: 401 },
     )
   }
@@ -66,8 +66,8 @@ export const POST = auth(async (req) => {
     await generateResponsiveImages(filepath, name ?? 'nofilename')
   }
   return Response.json({
-    ok: true,
     message: 'asset uploaded',
+    ok: true,
     path: `/tmp/${stampId}/${name}`,
   })
 })

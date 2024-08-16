@@ -67,8 +67,8 @@ export const SidebarSection = ({
   return (
     <div
       {...props}
-      data-slot="section"
       className={cn('flex flex-col gap-0.5', className)}
+      data-slot="section"
     />
   )
 }
@@ -119,13 +119,13 @@ export const SidebarHeading = ({
 export const SidebarItem = React.forwardRef(
   (
     {
-      current,
-      className,
       children,
+      className,
+      current,
       ...props
     }: { children: React.ReactNode; className?: string; current?: boolean } & (
       | Omit<Headless.ButtonProps, 'className'>
-      | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'type' | 'className'>
+      | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className' | 'type'>
     ),
     ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>,
   ) => {

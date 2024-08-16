@@ -20,8 +20,8 @@ const getFilteredStamps = unstable_cache(
   },
   ['filterStamps'],
   {
-    tags: ['filterStamps'],
     revalidate: 900,
+    tags: ['filterStamps'],
   },
 )
 

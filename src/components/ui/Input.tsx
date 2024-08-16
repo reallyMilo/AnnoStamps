@@ -4,12 +4,11 @@ import { forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 
 export const InputGroup = ({
-  className,
   children,
+  className,
 }: React.ComponentPropsWithoutRef<'span'>) => {
   return (
     <span
-      data-slot="control"
       className={cn(
         'relative isolate block',
         '[&_input]:has-[[data-slot=icon]:first-child]:pl-10 [&_input]:has-[[data-slot=icon]:last-child]:pr-10 sm:[&_input]:has-[[data-slot=icon]:first-child]:pl-8 sm:[&_input]:has-[[data-slot=icon]:last-child]:pr-8',
@@ -23,6 +22,7 @@ export const InputGroup = ({
         '[&>[data-slot=custom-text]]:text-zinc-500 dark:[&>[data-slot=custom-text]]:text-zinc-400',
         className,
       )}
+      data-slot="control"
     >
       {children}
     </span>
@@ -53,7 +53,6 @@ export const Input = forwardRef(
   ) => {
     return (
       <span
-        data-slot="control"
         className={cn([
           // Basic layout
           'relative block w-full',
@@ -69,6 +68,7 @@ export const Input = forwardRef(
           'before:has-[[data-invalid]]:shadow-red-500/10',
           className,
         ])}
+        data-slot="control"
       >
         <Headless.Input
           ref={ref}

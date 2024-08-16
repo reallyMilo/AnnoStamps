@@ -38,11 +38,11 @@ export const Search = () => {
       <InputGroup>
         <MagnifyingGlassIcon />
         <Input
+          aria-label="Search"
+          autoComplete="off"
+          defaultValue={searchParams?.get('search') ?? undefined}
           id="search"
           name="search"
-          autoComplete="off"
-          aria-label="Search"
-          defaultValue={searchParams?.get('search') ?? undefined}
           placeholder="Search Stamps"
         />
       </InputGroup>

@@ -20,8 +20,8 @@ const isJSZip = (b: Asset | JSZipObjectWithData): b is JSZipObjectWithData => {
   return (b as JSZipObjectWithData)._data !== undefined
 }
 export const FileUpload = () => {
-  const { status, files, setFiles } = useStampFormContext()
-  const { isError, handleChange, handleRemove } = useUpload<
+  const { files, setFiles, status } = useStampFormContext()
+  const { handleChange, handleRemove, isError } = useUpload<
     Asset | JSZipObjectWithData
   >(files, setFiles)
 
@@ -30,31 +30,31 @@ export const FileUpload = () => {
       <div className="flex flex-row justify-between">
         <Subheading> Stamp File </Subheading>
         <label
-          htmlFor="stamps"
           className={cn(
             buttonStyles.base,
             buttonStyles.solid,
             buttonStyles.colors.secondary,
             'font-normal hover:opacity-90',
           )}
+          htmlFor="stamps"
         >
           Add Stamps
           <input
-            type="file"
+            formNoValidate
+            hidden
             id="stamps"
+            multiple
             name="stamps"
             onChange={handleChange}
-            multiple
-            hidden
-            formNoValidate
+            type="file"
           />
         </label>
       </div>
 
       <div className="mt-8 flow-root">
         <Table
-          striped
           className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]"
+          striped
         >
           <TableHead>
             <TableRow>
@@ -81,8 +81,8 @@ export const FileUpload = () => {
                     kb
                   </TableCell>
                   <TableCell
-                    onClick={() => handleRemove(file)}
                     className="cursor-pointer text-accent hover:text-accent/75"
+                    onClick={() => handleRemove(file)}
                   >
                     delete
                   </TableCell>

@@ -55,23 +55,23 @@ const HomePage = async () => {
   return (
     <Container className="pt-2">
       <Image
-        src={anno1800Header}
         alt="Anno 1800 game start screen"
-        priority
         className="object-fit max-h-52 rounded-md"
+        priority
+        src={anno1800Header}
       />
       <Grid className="mt-8 grid-cols-2 lg:grid-cols-4">
         {regionLinks.map((region, idx) => (
           <Link
-            key={`${region.href}-img-${idx}`}
             className="hover:opacity-75"
             href={`stamps?${qs.stringify({ region: region.href })}`}
+            key={`${region.href}-img-${idx}`}
           >
             <Image
-              priority
-              src={region.imgSrc}
               alt="anno 1800 game region"
               className="rounded-md shadow-md"
+              priority
+              src={region.imgSrc}
             />
           </Link>
         ))}
@@ -79,7 +79,7 @@ const HomePage = async () => {
       <div className="space-y-4 pt-16">
         <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
           <Heading>New Stamps</Heading>
-          <Link href="/stamps" className="dark:text-white">
+          <Link className="dark:text-white" href="/stamps">
             Browse all stamps
             <span aria-hidden="true"> &rarr;</span>
           </Link>

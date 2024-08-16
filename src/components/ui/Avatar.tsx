@@ -13,15 +13,15 @@ type AvatarProps = {
   className?: string
   initials?: string
   square?: boolean
-  src?: string | null
+  src?: null | string
 }
 
 export const Avatar = ({
-  src = null,
-  square = false,
-  initials,
   alt = '',
   className,
+  initials,
+  square = false,
+  src = null,
   ...props
 }: AvatarProps & React.ComponentPropsWithoutRef<'span'>) => {
   return (
@@ -41,30 +41,30 @@ export const Avatar = ({
     >
       {initials && (
         <svg
+          aria-hidden={alt ? undefined : 'true'}
           className="select-none fill-current text-[48px] font-medium uppercase"
           viewBox="0 0 100 100"
-          aria-hidden={alt ? undefined : 'true'}
         >
           {alt && <title>{alt}</title>}
           <text
-            x="50%"
-            y="50%"
             alignmentBaseline="middle"
             dominantBaseline="middle"
-            textAnchor="middle"
             dy=".125em"
+            textAnchor="middle"
+            x="50%"
+            y="50%"
           >
             {initials}
           </text>
         </svg>
       )}
       {src ? (
-        <img src={src} alt={alt} height={36} width={36} />
+        <img alt={alt} height={36} src={src} width={36} />
       ) : (
         <Image
-          src={defaultAvatar}
           alt="default avatar icon"
           height={36}
+          src={defaultAvatar}
           width={36}
         />
       )}
@@ -75,17 +75,17 @@ export const Avatar = ({
 export const AvatarButton = React.forwardRef(
   (
     {
-      src,
-      square = false,
-      initials,
       alt,
       className,
+      initials,
+      square = false,
+      src,
       ...props
-    }: AvatarProps &
-      (
-        | Omit<Headless.ButtonProps, 'className'>
-        | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
-      ),
+    }: (
+      | Omit<Headless.ButtonProps, 'className'>
+      | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
+    ) &
+      AvatarProps,
     ref: React.ForwardedRef<HTMLElement>,
   ) => {
     const classes = cn(
@@ -101,13 +101,13 @@ export const AvatarButton = React.forwardRef(
         ref={ref as React.ForwardedRef<HTMLAnchorElement>}
       >
         <TouchTarget>
-          <Avatar src={src} square={square} initials={initials} alt={alt} />
+          <Avatar alt={alt} initials={initials} square={square} src={src} />
         </TouchTarget>
       </Link>
     ) : (
       <Headless.Button {...props} className={classes} ref={ref}>
         <TouchTarget>
-          <Avatar src={src} square={square} initials={initials} alt={alt} />
+          <Avatar alt={alt} initials={initials} square={square} src={src} />
         </TouchTarget>
       </Headless.Button>
     )

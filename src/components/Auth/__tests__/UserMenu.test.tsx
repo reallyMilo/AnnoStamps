@@ -7,7 +7,7 @@ describe('UserMenu', () => {
     expect(screen.getByRole('link', { name: 'Add Stamp' })).toBeInTheDocument()
   })
   it('user-menu prompts to set username for authenticated users without username set', async () => {
-    const user = { id: '1', username: null, usernameURL: null, biography: null }
+    const user = { biography: null, id: '1', username: null, usernameURL: null }
     render(<UserMenu />, { user })
 
     const button = screen.getByRole('button')
@@ -31,10 +31,10 @@ describe('UserMenu', () => {
   })
   it('user-menu provides right href for authenticated user with username set', async () => {
     const user = {
+      biography: null,
       id: '1',
       username: 'stampCreator',
       usernameURL: 'stampcreator',
-      biography: null,
     }
     render(<UserMenu />, { user })
 

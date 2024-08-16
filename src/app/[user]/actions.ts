@@ -9,10 +9,10 @@ export const deleteStamp = async (stampId: string) => {
   const session = await auth()
 
   if (!session?.user?.id) {
-    return { ok: false, message: 'Unauthorized.' }
+    return { message: 'Unauthorized.', ok: false }
   }
   if (!session.user.usernameURL) {
-    return { ok: false, message: 'UsernameURL not set' }
+    return { message: 'UsernameURL not set', ok: false }
   }
 
   try {
@@ -48,12 +48,12 @@ export const deleteStamp = async (stampId: string) => {
     })
   } catch (e) {
     if (e instanceof Error) {
-      return { ok: false, message: e.message }
+      return { message: e.message, ok: false }
     }
     console.error(e)
-    return { ok: false, message: `${stampId} - failed to delete` }
+    return { message: `${stampId} - failed to delete`, ok: false }
   }
 
   revalidatePath(`/${session.user.usernameURL}`)
-  return { ok: true, message: `${stampId} - successfully deleted` }
+  return { message: `${stampId} - successfully deleted`, ok: true }
 }

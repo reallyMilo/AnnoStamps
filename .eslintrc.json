@@ -2,9 +2,10 @@
   "extends": [
     "eslint:recommended",
     "next/core-web-vitals",
-    "plugin:typescript-sort-keys/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "plugin:perfectionist/recommended-natural-legacy",
+    "plugin:yml/recommended"
   ],
   "overrides": [
     {
@@ -44,16 +45,20 @@
     "@typescript-eslint",
     "react",
     "react-hooks",
-    "simple-import-sort",
-    "typescript-sort-keys",
+    "perfectionist",
     "testing-library",
-    "react-compiler"
+    "react-compiler",
+    "eslint-plugin-yml"
   ],
   "root": true,
   "rules": {
-    "simple-import-sort/exports": "error",
-    "simple-import-sort/imports": "error",
-    "react-compiler/react-compiler": "error"
+    "react-compiler/react-compiler": "error",
+    "perfectionist/sort-imports": [
+      "error",
+      {
+        "internalPattern": ["./**", "@/**"]
+      }
+    ]
   },
   "settings": {
     "react": {

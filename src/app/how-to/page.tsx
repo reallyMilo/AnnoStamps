@@ -17,9 +17,9 @@ const HowTo = () => {
         Stamps are created in game and generate a file that can then be shared
         with others. For a detailed guide, check the{' '}
         <TextLink
-          target="_blank"
-          htmlLink
           href="https://anno1800.fandom.com/wiki/Stamps"
+          htmlLink
+          target="_blank"
         >
           wiki.
         </TextLink>
@@ -40,22 +40,22 @@ const HowTo = () => {
 
         <div className="col-span-3 md:row-span-2">
           <Image
-            src={stampButton}
             alt="Location of the stamp tool icon in the menu at the bottom of the screen."
+            src={stampButton}
           />
           <Image
-            src={stampHighlight}
             alt="Highlighting of buildings for the creation of the stamp."
+            src={stampHighlight}
           />
           <Image
-            src={stampFolder}
             alt="Accessing created stamps with the ability to rename and organize in folders."
+            src={stampFolder}
           />
         </div>
       </div>
 
       <Subheading level={3}>Locate the stamp file in Windows</Subheading>
-      <Subheading level={5} className="italic">
+      <Subheading className="italic" level={5}>
         C:/Users/[username]/Documents/Anno 1800/stamps/[region]
       </Subheading>
       <div className="md:grid md:grid-cols-3">
@@ -65,9 +65,9 @@ const HowTo = () => {
           folder that can contain multiple stamps.
         </Text>
         <Image
+          alt="The windows folder path where stamps are saved on your computer by default."
           className="col-span-2"
           src={stampPath}
-          alt="The windows folder path where stamps are saved on your computer by default."
         />
       </div>
 
@@ -84,9 +84,9 @@ const HowTo = () => {
             folder by right click on the file and selecting extract. If that is
             unavailable download{' '}
             <TextLink
-              target="_blank"
               className="font-bold"
               href="https://www.7-zip.org/"
+              target="_blank"
             >
               7zip.
             </TextLink>
@@ -96,8 +96,8 @@ const HowTo = () => {
           </Text>
         </div>
         <Image
-          src={stampPage}
           alt="Visiting a stamp page to click the download button to retrieve a stamp."
+          src={stampPage}
         />
       </div>
 
@@ -105,7 +105,7 @@ const HowTo = () => {
         Place the stamp file in your stamps directory
       </Subheading>
 
-      <Subheading level={5} className="italic">
+      <Subheading className="italic" level={5}>
         C:/Users/[username]/Documents/Anno 1800/stamps/[region]
       </Subheading>
       <Text className="font-bold">

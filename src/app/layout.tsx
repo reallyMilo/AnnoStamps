@@ -1,10 +1,9 @@
-import './globals.css'
+import type { Metadata } from 'next'
 
 import { GoogleAnalytics } from '@next/third-parties/google'
-import type { Metadata } from 'next'
+import { SessionProvider } from 'next-auth/react'
 import { Poppins } from 'next/font/google'
 import Image from 'next/image'
-import { SessionProvider } from 'next-auth/react'
 import { Suspense } from 'react'
 
 import { auth } from '@/auth'
@@ -13,9 +12,9 @@ import {
   Button,
   Container,
   Link,
-  Navbar as NavbarRoot,
   NavbarDivider,
   NavbarItem,
+  Navbar as NavbarRoot,
   NavbarSection,
   NavbarSpacer,
   SidebarItem,
@@ -24,36 +23,37 @@ import {
 import logo from '../../public/cropped-anno-stamps-logo.png'
 import discordWhite from '../../public/discord-white-icon.svg'
 import github from '../../public/github-mark.svg'
+import './globals.css'
 import { MobileNavbar } from './MobileNavbar'
 
 export const metadata: Metadata = {
-  title: 'Anno 1800 Stamps | Stamp Sharing',
   description:
     'A community site for uploading and sharing stamps for Anno 1800',
   keywords: ['Anno', 'Anno 1800', 'Stamps', 'Anno Stamps'],
+  metadataBase: new URL('https://annostamps.com'),
   openGraph: {
-    title: 'Anno 1800 Stamps | Stamp Sharing',
     description:
       'A community site for uploading and sharing stamps for Anno 1800',
-    url: 'https://annostamps.com',
-    siteName: 'AnnoStamps',
     images: [
       {
+        height: 600,
         url: 'https://annostamps.com/header.jpg',
         width: 1230,
-        height: 600,
       },
     ],
     locale: 'en_US',
+    siteName: 'AnnoStamps',
+    title: 'Anno 1800 Stamps | Stamp Sharing',
     type: 'website',
+    url: 'https://annostamps.com',
   },
-  metadataBase: new URL('https://annostamps.com'),
+  title: 'Anno 1800 Stamps | Stamp Sharing',
 }
 
 const poppins = Poppins({
-  weight: ['400', '700'],
-  subsets: ['latin'],
   display: 'swap',
+  subsets: ['latin'],
+  weight: ['400', '700'],
 })
 const navigation = [
   {
@@ -69,13 +69,13 @@ const navigation = [
 const socials = [
   {
     name: 'discord',
-    url: 'https://discord.gg/73hfP54qXe',
     src: discordWhite,
+    url: 'https://discord.gg/73hfP54qXe',
   },
   {
     name: 'github',
-    url: 'https://github.com/reallyMilo/AnnoStamps',
     src: github,
+    url: 'https://github.com/reallyMilo/AnnoStamps',
   },
 ]
 
@@ -90,21 +90,21 @@ const UserButton = async () => {
 const SocialIcons = () => {
   return (
     <>
-      {socials.map(({ name, url, src }) => (
+      {socials.map(({ name, src, url }) => (
         <NavbarItem
-          key={`social-icon-${name}`}
           href={url}
+          htmlLink={true}
+          key={`social-icon-${name}`}
           rel="noopener noreferrer"
           target="_blank"
-          htmlLink={true}
         >
           <Image
-            src={src}
             alt={name}
             className="brightness-[0.85] contrast-0 grayscale dark:brightness-[1.7] dark:contrast-100"
+            src={src}
             style={{
-              maxWidth: '100%',
               height: '32px',
+              maxWidth: '100%',
               width: '32px',
             }}
           />{' '}
@@ -120,27 +120,27 @@ const Navbar = () => {
         <NavbarRoot>
           <MobileNavbar socials={<SocialIcons />}>
             {navigation.map((item) => (
-              <SidebarItem key={item.text} href={item.href}>
+              <SidebarItem href={item.href} key={item.text}>
                 {item.text}
               </SidebarItem>
             ))}
           </MobileNavbar>
           <NavbarSpacer className="md:hidden" />
-          <Link id="header-logo" href="/">
+          <Link href="/" id="header-logo">
             <Image
-              src={logo}
               alt="Anno Stamps"
+              src={logo}
               style={{
-                width: '100%',
-                maxWidth: '160px',
                 height: 'auto',
+                maxWidth: '160px',
+                width: '100%',
               }}
             />
           </Link>
           <NavbarDivider className="max-lg:hidden" />
           <NavbarSection className="max-md:hidden">
             {navigation.map((item) => (
-              <NavbarItem key={item.text} href={item.href}>
+              <NavbarItem href={item.href} key={item.text}>
                 {item.text}
               </NavbarItem>
             ))}
@@ -160,14 +160,14 @@ const Footer = () => {
     <footer>
       <Container className="py-0">
         <NavbarRoot>
-          <Link id="header-logo" href="/" className="max-sm:hidden">
+          <Link className="max-sm:hidden" href="/" id="header-logo">
             <Image
-              src={logo}
               alt="Anno Stamps"
+              src={logo}
               style={{
-                width: '100%',
-                maxWidth: '160px',
                 height: 'auto',
+                maxWidth: '160px',
+                width: '100%',
               }}
             />
           </Link>
@@ -175,9 +175,9 @@ const Footer = () => {
           <NavbarSpacer />
           <NavbarSection>
             <NavbarItem
+              href="https://www.buymeacoffee.com/miloK"
               rel="noopener noreferrer"
               target="_blank"
-              href="https://www.buymeacoffee.com/miloK"
             >
               Support AnnoStamps
             </NavbarItem>
@@ -192,7 +192,7 @@ const Footer = () => {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en" className={poppins.className}>
+    <html className={poppins.className} lang="en">
       <body>
         <div className="flex min-h-screen flex-col bg-default dark:bg-zinc-900">
           <Navbar />

@@ -1,31 +1,32 @@
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
 import Link from 'next/link'
 
-import { StampCategoryIcon } from '@/components/StampCategoryIcon'
-import { Avatar, Heading, Text } from '@/components/ui'
 import type { StampWithRelations } from '@/lib/prisma/models'
 
+import { StampCategoryIcon } from '@/components/StampCategoryIcon'
+import { Avatar, Heading, Text } from '@/components/ui'
+
 export const StampCard = ({
-  id,
-  title,
   category,
-  region,
-  modded,
-  suffixDownloads,
-  images,
-  user,
   createdAt,
+  id,
+  images,
+  modded,
+  region,
+  suffixDownloads,
+  title,
+  user,
 }: Pick<
   StampWithRelations,
-  | 'id'
-  | 'title'
   | 'category'
-  | 'region'
-  | 'modded'
-  | 'suffixDownloads'
-  | 'images'
-  | 'user'
   | 'createdAt'
+  | 'id'
+  | 'images'
+  | 'modded'
+  | 'region'
+  | 'suffixDownloads'
+  | 'title'
+  | 'user'
 >) => {
   const srcUrl = images[0]?.smallUrl ?? images[0].originalUrl
 
@@ -33,12 +34,12 @@ export const StampCard = ({
     <div className="group relative flex flex-col rounded-lg bg-white shadow-md dark:bg-zinc-800">
       <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200 group-hover:opacity-75">
         <img
-          src={srcUrl}
           alt={title ?? 'image alt'}
           className="transition hover:opacity-80"
           sizes="(max-width: 320px) 700px
                 (max-width: 768px) 390px,
                 (max-width: 1200px) 290px"
+          src={srcUrl}
           style={{
             objectFit: 'cover',
           }}
@@ -54,8 +55,8 @@ export const StampCard = ({
       <div className="flex h-full min-h-[200px] flex-col gap-y-2 px-3 py-2">
         <div className="flex items-baseline justify-between">
           <Text
-            id="stamp-region"
             className="font-semibold capitalize text-accent dark:text-rose-400"
+            id="stamp-region"
           >
             {region}
           </Text>
@@ -67,13 +68,13 @@ export const StampCard = ({
           </Text>
         </div>
         <Heading
-          level={2}
-          id="stamp-title"
           className="line-clamp-2 w-full flex-grow overflow-hidden text-ellipsis"
+          id="stamp-title"
+          level={2}
         >
           <Link
-            href={`/stamp/${id}`}
             data-testid="stamp-card-link"
+            href={`/stamp/${id}`}
             prefetch={false}
           >
             <span aria-hidden="true" className="absolute inset-0"></span>
@@ -83,12 +84,12 @@ export const StampCard = ({
 
         {user?.username ? (
           <Link
-            href={`/${user.usernameURL}`}
-            data-testid="stamp-card-username-link"
             className="z-10 flex h-11 w-fit items-center gap-1 text-slate-500 hover:text-primary dark:text-white"
+            data-testid="stamp-card-username-link"
+            href={`/${user.usernameURL}`}
             prefetch={false}
           >
-            <Avatar src={user.image} className="size-5" />
+            <Avatar className="size-5" src={user.image} />
             {user.username}
           </Link>
         ) : (

@@ -1,6 +1,7 @@
 'use client'
 
 import type React from 'react'
+
 import { createContext, useContext, useState } from 'react'
 
 import { cn } from '@/lib/utils'
@@ -21,11 +22,11 @@ const TableContext = createContext<{
 
 export const Table = ({
   bleed = false,
+  children,
+  className,
   dense = false,
   grid = false,
   striped = false,
-  className,
-  children,
   ...props
 }: {
   bleed?: boolean
@@ -92,10 +93,10 @@ const TableRowContext = createContext<{
 })
 
 export const TableRow = ({
+  className,
   href,
   target,
   title,
-  className,
   ...props
 }: {
   href?: string
@@ -148,8 +149,8 @@ export const TableHeader = ({
 }
 
 export const TableCell = ({
-  className,
   children,
+  className,
   ...props
 }: React.ComponentPropsWithoutRef<'td'>) => {
   const { bleed, dense, grid, striped } = useContext(TableContext)
@@ -172,12 +173,12 @@ export const TableCell = ({
     >
       {href && (
         <Link
+          aria-label={title}
+          className="absolute inset-0 focus:outline-none"
           data-row-link
           href={href}
-          target={target}
-          aria-label={title}
           tabIndex={cellRef?.previousElementSibling === null ? 0 : -1}
-          className="absolute inset-0 focus:outline-none"
+          target={target}
         />
       )}
       {children}

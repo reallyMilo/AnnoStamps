@@ -23,10 +23,10 @@ const useQueryParams = () => {
   const stringifyQuery = (params: object) => {
     const queryString = qs.stringify(params, {
       arrayFormat: 'repeat',
+      skipNulls: true,
       sort: (a, b) =>
         queryParamsOrder.indexOf(a as keyof QueryParams) -
         queryParamsOrder.indexOf(b as keyof QueryParams),
-      skipNulls: true,
     })
     const isEmpty = queryString.length === 0
 
