@@ -10,13 +10,17 @@ import {
   OpenMenuIcon,
   Sidebar,
   SidebarBody,
+  SidebarFooter,
   SidebarHeader,
   SidebarSection,
 } from '@/components/ui'
 
 import logo from '../../public/cropped-anno-stamps-logo.png'
 
-export const MobileNavbar = ({ children }: React.PropsWithChildren) => {
+export const MobileNavbar = ({
+  children,
+  socials,
+}: React.PropsWithChildren<{ socials: React.ReactNode }>) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <>
@@ -45,6 +49,7 @@ export const MobileNavbar = ({ children }: React.PropsWithChildren) => {
           <SidebarBody>
             <SidebarSection>{children}</SidebarSection>
           </SidebarBody>
+          <SidebarFooter className="flex-row">{socials}</SidebarFooter>
         </Sidebar>
       </MobileSidebar>
     </>

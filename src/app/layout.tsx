@@ -87,12 +87,38 @@ const UserButton = async () => {
     </SessionProvider>
   )
 }
+const SocialIcons = () => {
+  return (
+    <>
+      {socials.map(({ name, url, src }) => (
+        <NavbarItem
+          key={`social-icon-${name}`}
+          href={url}
+          rel="noopener noreferrer"
+          target="_blank"
+          htmlLink={true}
+        >
+          <Image
+            src={src}
+            alt={name}
+            className="brightness-[0.85] contrast-0 grayscale dark:brightness-[1.7] dark:contrast-100"
+            style={{
+              maxWidth: '100%',
+              height: '32px',
+              width: '32px',
+            }}
+          />{' '}
+        </NavbarItem>
+      ))}
+    </>
+  )
+}
 const Navbar = () => {
   return (
     <header>
       <Container className="py-0">
         <NavbarRoot>
-          <MobileNavbar>
+          <MobileNavbar socials={<SocialIcons />}>
             {navigation.map((item) => (
               <SidebarItem key={item.text} href={item.href}>
                 {item.text}
@@ -156,26 +182,7 @@ const Footer = () => {
               Support AnnoStamps
             </NavbarItem>
 
-            {socials.map(({ name, url, src }) => (
-              <NavbarItem
-                key={`${name}-footer`}
-                href={url}
-                rel="noopener noreferrer"
-                target="_blank"
-                htmlLink={true}
-              >
-                <Image
-                  src={src}
-                  alt={name}
-                  className="brightness-[0.85] contrast-0 grayscale dark:brightness-[1.7] dark:contrast-100"
-                  style={{
-                    maxWidth: '100%',
-                    height: '32px',
-                    width: '32px',
-                  }}
-                />{' '}
-              </NavbarItem>
-            ))}
+            <SocialIcons />
           </NavbarSection>
         </NavbarRoot>
       </Container>
