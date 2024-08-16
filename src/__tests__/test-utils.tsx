@@ -10,7 +10,7 @@ type RecursivePartial<T> = {
 
 const customRender = (
   ui: ReactElement,
-  session: RecursivePartial<Session> | null = null,
+  session: null | RecursivePartial<Session> = null,
   options: RenderOptions = {},
 ) =>
   render(ui, {

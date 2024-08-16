@@ -6,13 +6,13 @@ const fileLimit = 10
 export type Asset = ReturnType<typeof fileToAsset>
 const fileToAsset = (rawFile: File) => {
   return {
-    size: rawFile.size / 1000,
     createdAt: new Date(rawFile.lastModified).toISOString(),
-    name: rawFile.name,
-    url: URL.createObjectURL(rawFile),
     ext: rawFile.name.split('.').pop(),
     mime: rawFile.type,
+    name: rawFile.name,
     rawFile,
+    size: rawFile.size / 1000,
+    url: URL.createObjectURL(rawFile),
   }
 }
 
@@ -49,8 +49,8 @@ export const useUpload = <T>(
   }
 
   return {
-    isError,
     handleChange,
     handleRemove,
+    isError,
   }
 }

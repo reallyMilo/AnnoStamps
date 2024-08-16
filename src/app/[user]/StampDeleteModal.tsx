@@ -2,6 +2,8 @@
 import { TrashIcon } from '@heroicons/react/20/solid'
 import { useState } from 'react'
 
+import type { UserWithStamps } from '@/lib/prisma/models'
+
 import {
   Button,
   Modal,
@@ -9,7 +11,6 @@ import {
   ModalDescription,
   ModalTitle,
 } from '@/components/ui'
-import type { UserWithStamps } from '@/lib/prisma/models'
 
 import { deleteStamp } from './actions'
 
@@ -22,19 +23,19 @@ export const StampDeleteModal = ({
   return (
     <>
       <Button
-        data-testid="delete-stamp"
         color="accent"
+        data-testid="delete-stamp"
         onClick={() => setIsOpen(true)}
       >
         <TrashIcon />
       </Button>
 
-      <Modal open={isOpen} onClose={setIsOpen}>
+      <Modal onClose={setIsOpen} open={isOpen}>
         <ModalTitle>Delete {title}?</ModalTitle>
         <ModalDescription>This action is not reversible.</ModalDescription>
 
         <ModalActions>
-          <Button plain onClick={() => setIsOpen(false)}>
+          <Button onClick={() => setIsOpen(false)} plain>
             No, cancel
           </Button>
           <Button color="accent" onClick={async () => await deleteStamp(id)}>

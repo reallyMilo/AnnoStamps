@@ -25,23 +25,23 @@ export const MobileNavbar = ({
   return (
     <>
       <NavbarItem
-        onClick={() => setIsOpen(true)}
         aria-label="Open navigation"
         className="md:hidden"
+        onClick={() => setIsOpen(true)}
       >
         <OpenMenuIcon />
       </NavbarItem>
-      <MobileSidebar open={isOpen} close={() => setIsOpen(false)}>
+      <MobileSidebar close={() => setIsOpen(false)} open={isOpen}>
         <Sidebar>
           <SidebarHeader>
-            <Link id="header-logo" href="/">
+            <Link href="/" id="header-logo">
               <Image
-                src={logo}
                 alt="Anno Stamps"
+                src={logo}
                 style={{
-                  width: '100%',
-                  maxWidth: '160px',
                   height: 'auto',
+                  maxWidth: '160px',
+                  width: '100%',
                 }}
               />
             </Link>

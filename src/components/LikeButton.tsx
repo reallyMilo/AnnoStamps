@@ -1,13 +1,14 @@
 'use client'
 
 import { HandThumbUpIcon } from '@heroicons/react/24/solid'
+import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
-import { useSession } from 'next-auth/react'
 import { startTransition, useOptimistic } from 'react'
 
-import { Button } from '@/components/ui'
 import type { StampWithRelations } from '@/lib/prisma/models'
+
+import { Button } from '@/components/ui'
 import { cn, type ServerAction } from '@/lib/utils'
 
 type LikeButtonProps = {
@@ -70,13 +71,13 @@ export const LikeButton = ({
   }
   return (
     <Button
-      data-testid={testId}
-      onClick={addLike}
-      plain
       className={cn(
         'cursor-pointer [&>[data-slot=icon]]:sm:size-6',
         optimisticLike.isLiked && '[&>[data-slot=icon]]:sm:text-primary',
       )}
+      data-testid={testId}
+      onClick={addLike}
+      plain
     >
       <HandThumbUpIcon />
       {optimisticLike.likeCount}

@@ -7,15 +7,19 @@ import { auth } from '@/auth'
 import { parseAndSanitizedMarkdown } from '@/lib/markdown'
 import prisma from '@/lib/prisma/singleton'
 
-type FormDataEntries = Pick<
+type FormDataEntries = {
+  imageIdsToRemove: string
+  stampId: string
+  uploadedImageUrls: string
+} & Pick<
   Prisma.StampUncheckedCreateInput,
   | 'category'
-  | 'region'
-  | 'unsafeDescription'
-  | 'title'
   | 'modded'
+  | 'region'
   | 'stampFileUrl'
-> & { imageIdsToRemove: string; stampId: string; uploadedImageUrls: string }
+  | 'title'
+  | 'unsafeDescription'
+>
 
 export const createStamp = async (
   formData: FormData,
@@ -26,19 +30,19 @@ export const createStamp = async (
   const session = await auth()
 
   if (!session?.user?.id) {
-    return { ok: false, message: 'Unauthorized.' }
+    return { message: 'Unauthorized.', ok: false }
   }
   if (!session.user.usernameURL) {
-    return { ok: false, message: 'UsernameURL not set.' }
+    return { message: 'UsernameURL not set.', ok: false }
   }
 
   const fromDataEntries = Object.fromEntries(formData)
   try {
     const {
-      uploadedImageUrls,
-      stampId,
       stampFileUrl,
+      stampId,
       unsafeDescription,
+      uploadedImageUrls,
       ...fields
     } = fromDataEntries as unknown as FormDataEntries
 
@@ -48,10 +52,8 @@ export const createStamp = async (
 
     await prisma.stamp.create({
       data: {
-        id: stampId,
-        userId: session.user.id,
         game: '1800',
-        stampFileUrl,
+        id: stampId,
         images: {
           create: addImages.map((image) => {
             const start = image.lastIndexOf('/')
@@ -63,14 +65,16 @@ export const createStamp = async (
             }
           }),
         },
-        unsafeDescription,
         markdownDescription: sanitizedMarkdown,
+        stampFileUrl,
+        unsafeDescription,
+        userId: session.user.id,
         ...fields,
       },
     })
   } catch (e) {
     console.error(e)
-    return { ok: false, message: 'Server error in creating stamps' }
+    return { message: 'Server error in creating stamps', ok: false }
   }
 
   revalidatePath(`/${session.user.usernameURL}`)

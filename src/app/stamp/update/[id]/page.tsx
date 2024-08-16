@@ -22,16 +22,16 @@ const EditStampPage = async ({ params }: { params: { id: string } }) => {
         <div className="flex">
           <div className="flex-shrink-0">
             <ExclamationTriangleIcon
-              className="h-5 w-5 text-yellow-400"
               aria-hidden="true"
+              className="h-5 w-5 text-yellow-400"
             />
           </div>
           <div className="ml-3">
             <Text className="text-sm text-yellow-700">
               This account currently does not have a username set.{' '}
               <Link
-                href={`/${session?.user.id}/settings`}
                 className="font-medium text-yellow-700 underline hover:text-yellow-600"
+                href={`/${session?.user.id}/settings`}
               >
                 Please set your username.
               </Link>

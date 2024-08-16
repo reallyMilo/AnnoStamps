@@ -10,6 +10,12 @@ import { distanceUnixTimeToNow, formatIntegerWithSuffix } from './utils'
 //expected output type and break type safety. Will have to keep exporting this
 //unfortunately or every statement call would have to be cast
 export const stampIncludeStatement = {
+  _count: {
+    select: {
+      likedBy: true,
+    },
+  },
+  images: true,
   user: {
     select: {
       image: true,
@@ -17,12 +23,6 @@ export const stampIncludeStatement = {
       usernameURL: true,
     },
   },
-  _count: {
-    select: {
-      likedBy: true,
-    },
-  },
-  images: true,
 } satisfies Prisma.StampInclude
 
 export interface StampWithRelations
@@ -30,7 +30,7 @@ export interface StampWithRelations
     Prisma.StampGetPayload<{
       include: typeof stampIncludeStatement
     }>,
-    'createdAt' | 'updatedAt' | 'images' | 'changedAt'
+    'changedAt' | 'createdAt' | 'images' | 'updatedAt'
   > {
   changedAt: string
   createdAt: string
@@ -40,32 +40,25 @@ export interface StampWithRelations
 }
 
 const stampSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  unsafeDescription: z.string(),
-  markdownDescription: z.string(),
-  userId: z.string(),
+  capital: z.string().optional(),
   category: z.nativeEnum(CATEGORIES),
-  region: z.nativeEnum(REGIONS_1800),
+  downloads: z.object({ increment: z.number() }).optional(),
   game: z.enum(['1800']),
   good: z.string().optional(),
-  capital: z.string().optional(),
-  downloads: z.object({ increment: z.number() }).optional(),
-  modded: z.string(),
-  imageUrl: z.string().optional(),
-  stampFileUrl: z.string(),
+  id: z.string(),
   images: z.object({
     create: z.array(
       z.object({
         id: z.string(),
-        originalUrl: z.string(),
-        thumbnailUrl: z.string().optional(),
-        smallUrl: z.string().optional(),
-        mediumUrl: z.string().optional(),
         largeUrl: z.string().optional(),
+        mediumUrl: z.string().optional(),
+        originalUrl: z.string(),
+        smallUrl: z.string().optional(),
+        thumbnailUrl: z.string().optional(),
       }),
     ),
   }),
+  imageUrl: z.string().optional(),
   likedBy: z
     .object({
       connect: z.object({
@@ -73,6 +66,13 @@ const stampSchema = z.object({
       }),
     })
     .optional(),
+  markdownDescription: z.string(),
+  modded: z.string(),
+  region: z.nativeEnum(REGIONS_1800),
+  stampFileUrl: z.string(),
+  title: z.string(),
+  unsafeDescription: z.string(),
+  userId: z.string(),
 })
 
 const createStampSchema = stampSchema
@@ -83,13 +83,13 @@ const createStampSchema = stampSchema
   })) satisfies z.Schema<
   Prisma.StampUncheckedCreateInput,
   z.ZodTypeDef,
-  Omit<Prisma.StampUncheckedCreateInput, 'modded'> & {
+  {
     modded: string
-  }
+  } & Omit<Prisma.StampUncheckedCreateInput, 'modded'>
 >
 
 const updateStampSchema = stampSchema
-  .omit({ id: true, userId: true, game: true })
+  .omit({ game: true, id: true, userId: true })
   .extend({ changedAt: z.string().datetime() })
   .partial()
   .transform(({ modded, ...schema }) => ({
@@ -98,9 +98,9 @@ const updateStampSchema = stampSchema
   })) satisfies z.Schema<
   Prisma.StampUncheckedUpdateInput,
   z.ZodTypeDef,
-  Omit<Prisma.StampUncheckedUpdateInput, 'modded'> & {
+  {
     modded?: string
-  }
+  } & Omit<Prisma.StampUncheckedUpdateInput, 'modded'>
 >
 
 export const stampExtensions = Prisma.defineExtension({
@@ -118,25 +118,25 @@ export const stampExtensions = Prisma.defineExtension({
   },
   result: {
     stamp: {
-      createdAt: {
-        compute({ createdAt }) {
-          return distanceUnixTimeToNow(getUnixTime(new Date(createdAt)))
-        },
-      },
-      updatedAt: {
-        compute({ updatedAt }) {
-          return distanceUnixTimeToNow(getUnixTime(new Date(updatedAt)))
-        },
-      },
       changedAt: {
         compute({ changedAt }) {
           return distanceUnixTimeToNow(getUnixTime(new Date(changedAt)))
         },
       },
+      createdAt: {
+        compute({ createdAt }) {
+          return distanceUnixTimeToNow(getUnixTime(new Date(createdAt)))
+        },
+      },
       suffixDownloads: {
-        needs: { downloads: true },
         compute({ downloads }) {
           return formatIntegerWithSuffix(downloads)
+        },
+        needs: { downloads: true },
+      },
+      updatedAt: {
+        compute({ updatedAt }) {
+          return distanceUnixTimeToNow(getUnixTime(new Date(updatedAt)))
         },
       },
     },
@@ -172,21 +172,21 @@ export interface UserWithStamps
     Prisma.UserGetPayload<{
       include: typeof userIncludeStatement
     }>,
-    'listedStamps' | 'name' | 'email' | 'emailVerified'
+    'email' | 'emailVerified' | 'listedStamps' | 'name'
   > {
   email: null
   emailVerified: null
-  listedStamps: (Omit<StampWithRelations, 'user' | 'likedBy'> & {
+  listedStamps: ({
     _count: { likedBy: number }
-  })[]
+  } & Omit<StampWithRelations, 'likedBy' | 'user'>)[]
   name: null
 }
 
 const userProfileSchema = z
   .object({
+    biography: z.string(),
     username: z.string().regex(/^[a-zA-Z0-9_\\-]+$/),
     usernameURL: z.string(),
-    biography: z.string(),
   })
   .partial() satisfies z.Schema<Prisma.UserUncheckedUpdateInput>
 
@@ -201,17 +201,17 @@ export const userExtension = Prisma.defineExtension({
   },
   result: {
     user: {
-      name: {
-        compute() {
-          return null
-        },
-      },
       email: {
         compute() {
           return null
         },
       },
       emailVerified: {
+        compute() {
+          return null
+        },
+      },
+      name: {
         compute() {
           return null
         },
@@ -224,13 +224,13 @@ export const userExtension = Prisma.defineExtension({
  * Image
  * -----------------------------------------------------------------------------------------------*/
 
-export type Image = Omit<
-  Prisma.ImageGetPayload<Prisma.ImageDefaultArgs>,
-  'createdAt' | 'updatedAt'
-> & {
+export type Image = {
   createdAt: number
   updatedAt: number
-}
+} & Omit<
+  Prisma.ImageGetPayload<Prisma.ImageDefaultArgs>,
+  'createdAt' | 'updatedAt'
+>
 export const imageExtension = Prisma.defineExtension({
   result: {
     image: {

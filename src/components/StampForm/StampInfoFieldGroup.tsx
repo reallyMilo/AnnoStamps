@@ -47,19 +47,19 @@ export const StampInfoFieldGroup = () => {
         <Field>
           <Label>Category</Label>
           <Select
+            defaultValue={stamp?.category ?? ''}
             id="category"
             name="category"
-            defaultValue={stamp?.category ?? ''}
             onChange={(e) => setCategory(e.target.value)}
             required
           >
-            <option value="" disabled>
+            <option disabled value="">
               Select a category&hellip;
             </option>
             {presetCategories.map((category, idx) => (
               <option
-                key={`${category}-${idx}`}
                 className="capitalize"
+                key={`${category}-${idx}`}
                 value={category}
               >
                 {' '}
@@ -71,18 +71,18 @@ export const StampInfoFieldGroup = () => {
         <Field>
           <Label>Region</Label>
           <Select
+            defaultValue={stamp?.region ?? ''}
             id="region"
             name="region"
-            defaultValue={stamp?.region ?? ''}
             required
           >
-            <option value="" disabled>
+            <option disabled value="">
               Select a region&hellip;
             </option>
             {presetRegions.map((region, idx) => (
               <option
-                key={`${region}-${idx}`}
                 className="capitalize"
+                key={`${region}-${idx}`}
                 value={region}
               >
                 {' '}
@@ -94,12 +94,12 @@ export const StampInfoFieldGroup = () => {
         <Field>
           <Label>Mods</Label>
           <Select
+            defaultValue={stamp?.modded.toString() ?? ''}
             id="modded"
             name="modded"
-            defaultValue={stamp?.modded.toString() ?? ''}
             required
           >
-            <option value="" disabled>
+            <option disabled value="">
               Has mods&hellip;
             </option>
             <option value="true">Yes</option>
@@ -112,12 +112,12 @@ export const StampInfoFieldGroup = () => {
         <Field>
           <Label>Enter Good</Label>
           <Input
+            defaultValue={stamp?.good ?? undefined}
             id="good"
             name="good"
-            type="text"
             placeholder="Enter final good in chain"
-            defaultValue={stamp?.good ?? undefined}
             required
+            type="text"
           />
         </Field>
       )}
@@ -126,15 +126,15 @@ export const StampInfoFieldGroup = () => {
         <Field>
           <Label>Capital</Label>
           <Select
+            defaultValue={stamp?.capital ?? undefined}
             id="capital"
             name="capital"
-            defaultValue={stamp?.capital ?? undefined}
           >
             <option value="">Not capital</option>
             {presetCapitals.map((capital, idx) => (
               <option
-                key={`${capital}-${idx}`}
                 className="capitalize"
+                key={`${capital}-${idx}`}
                 value={capital}
               >
                 {' '}
@@ -148,12 +148,12 @@ export const StampInfoFieldGroup = () => {
       <Field>
         <Label>Title</Label>
         <Input
+          defaultValue={stamp?.title}
           id="title"
           name="title"
-          type="text"
           placeholder="Enter stamp title"
-          defaultValue={stamp?.title}
           required
+          type="text"
         />
       </Field>
       <Field>
@@ -162,17 +162,17 @@ export const StampInfoFieldGroup = () => {
           <Strong>This field now has markdown support! </Strong>
 
           <TextLink
-            htmlLink
             href="https://support.discord.com/hc/en-us/articles/210298617-Markdown-Text-101-Chat-Formatting-Bold-Italic-Underline"
+            htmlLink
           >
             Uses Discord markdown style.
           </TextLink>
         </Description>
         <Textarea
+          defaultValue={stamp?.unsafeDescription}
           id="description"
           name="unsafeDescription"
           placeholder="Use markdown to create better links, [TheMod](https://mod.io/goodmod)"
-          defaultValue={stamp?.unsafeDescription}
           rows={5}
         />
       </Field>

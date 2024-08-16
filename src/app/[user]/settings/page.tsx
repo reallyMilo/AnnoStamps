@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation'
 import { SessionProvider } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 
 import { auth } from '@/auth'
 import { Container } from '@/components/ui'

@@ -1,17 +1,17 @@
 import z from 'zod'
 
 export const CATEGORIES = {
-  Production: 'production',
   Cosmetic: 'cosmetic',
+  General: 'general',
   Housing: 'housing',
   Island: 'island',
-  General: 'general',
+  Production: 'production',
 } as const
 
 export const SORT_OPTIONS = {
   Downloads: 'downloads',
-  Newest: 'newest',
   Likes: 'likes',
+  Newest: 'newest',
 } as const
 
 export const STAMPS_PER_PAGE =

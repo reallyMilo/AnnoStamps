@@ -1,13 +1,14 @@
+import type { UserWithStamps } from '@/lib/prisma/models'
+
 import { StampCard } from '@/components/StampCard'
 import { Container, Grid, Heading, Text } from '@/components/ui'
-import type { UserWithStamps } from '@/lib/prisma/models'
 
 export const UserPublicPage = ({
   biography,
-  listedStamps,
   image,
-  usernameURL,
+  listedStamps,
   username,
+  usernameURL,
 }: UserWithStamps) => {
   const stampCount = listedStamps.length
 
@@ -27,7 +28,7 @@ export const UserPublicPage = ({
           listedStamps.map((stamp) => (
             <StampCard
               key={stamp.id}
-              user={{ username, usernameURL, image }}
+              user={{ image, username, usernameURL }}
               {...stamp}
             />
           ))

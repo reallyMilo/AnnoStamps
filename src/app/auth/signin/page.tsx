@@ -1,7 +1,7 @@
+import { AuthError } from 'next-auth'
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { AuthError } from 'next-auth'
 
 import { auth, providerMap, signIn } from '@/auth'
 import { Container, Heading, Text } from '@/components/ui'
@@ -24,17 +24,17 @@ const SignInPage = async ({
 
   return (
     <Container className="flex max-w-md flex-col justify-center">
-      <Link href="/" className="mx-auto">
+      <Link className="mx-auto" href="/">
         <Image
-          src="/anno-stamps-logo.svg"
-          width="160"
-          height="60"
           alt="Anno Stamps"
+          height="60"
+          src="/anno-stamps-logo.svg"
           style={{
-            width: '160px',
-            maxWidth: '160px',
             height: '60px',
+            maxWidth: '160px',
+            width: '160px',
           }}
+          width="160"
         />
       </Link>
 
@@ -43,7 +43,6 @@ const SignInPage = async ({
       <div className="mt-10 flex flex-col space-y-4">
         {Object.values(providerMap).map((provider) => (
           <form
-            key={provider.name}
             action={async () => {
               'use server'
               try {
@@ -63,20 +62,21 @@ const SignInPage = async ({
                 throw error
               }
             }}
+            key={provider.name}
           >
             <button
-              type="submit"
               className="flex h-[46px] w-full items-center justify-center space-x-2 rounded-md border bg-white p-2 text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-50 hover:text-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-25 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-gray-200 disabled:hover:bg-transparent disabled:hover:text-gray-500"
+              type="submit"
             >
               <Image
-                src={`/${provider.id}.svg`}
                 alt="discord sign in"
-                width={32}
                 height={32}
+                src={`/${provider.id}.svg`}
                 style={{
-                  maxWidth: '100%',
                   height: 'auto',
+                  maxWidth: '100%',
                 }}
+                width={32}
               />
               <span>Sign in with {provider.name}</span>
             </button>

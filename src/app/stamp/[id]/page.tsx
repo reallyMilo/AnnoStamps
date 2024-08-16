@@ -1,11 +1,10 @@
-import 'swiper/css'
-import 'swiper/css/navigation'
-
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
+import { SessionProvider } from 'next-auth/react'
 import { unstable_cache } from 'next/cache'
 import { notFound } from 'next/navigation'
-import { SessionProvider } from 'next-auth/react'
 import { Suspense } from 'react'
+import 'swiper/css'
+import 'swiper/css/navigation'
 
 import { auth } from '@/auth'
 import { LikeButton } from '@/components/LikeButton'
@@ -36,6 +35,7 @@ const getStamp = unstable_cache(
 const getUserLikedStamp = unstable_cache(
   async (userId: UserWithStamps['id'], id: StampWithRelations['id']) =>
     prisma.user.findUnique({
+      include: userIncludeStatement,
       where: {
         id: userId,
         likedStamps: {
@@ -44,7 +44,6 @@ const getUserLikedStamp = unstable_cache(
           },
         },
       },
-      include: userIncludeStatement,
     }),
   ['getUserLikedStamp'],
 )
@@ -57,10 +56,10 @@ export const generateMetadata = async ({
   const stamp = await getStamp(params.id)
 
   return {
-    title: `${stamp?.title}`,
     openGraph: {
       images: [`${stamp?.images[0].smallUrl ?? stamp?.images[0].originalUrl}`],
     },
+    title: `${stamp?.title}`,
   }
 }
 
@@ -92,20 +91,20 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
     notFound()
   }
   const {
-    id,
-    title,
-    category,
-    region,
-    markdownDescription,
-    stampFileUrl,
-    modded,
-    good,
-    suffixDownloads,
-    images,
-    user,
     _count: likes,
-    createdAt,
+    category,
     changedAt,
+    createdAt,
+    good,
+    id,
+    images,
+    markdownDescription,
+    modded,
+    region,
+    stampFileUrl,
+    suffixDownloads,
+    title,
+    user,
   } = stamp
 
   return (
@@ -163,14 +162,14 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
           </Suspense>
 
           <a
-            href={stampFileUrl}
-            data-testid="stamp-download"
             className={cn(
               buttonStyles.base,
               buttonStyles.solid,
               buttonStyles.colors.primary,
             )}
+            data-testid="stamp-download"
             download={title}
+            href={stampFileUrl}
           >
             <ArrowDownTrayIcon />
             Download

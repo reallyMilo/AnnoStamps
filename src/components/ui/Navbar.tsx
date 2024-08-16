@@ -56,9 +56,9 @@ export const NavbarSpacer = ({
 export const NavbarItem = React.forwardRef(
   (
     {
-      current,
-      className,
       children,
+      className,
+      current,
       htmlLink = false,
       ...props
     }: {
@@ -98,8 +98,8 @@ export const NavbarItem = React.forwardRef(
             {...props}
             className={classes}
             data-current={current ? 'true' : undefined}
-            ref={ref as React.ForwardedRef<HTMLAnchorElement>}
             htmlLink={htmlLink}
+            ref={ref as React.ForwardedRef<HTMLAnchorElement>}
           >
             <TouchTarget>{children}</TouchTarget>
           </Link>

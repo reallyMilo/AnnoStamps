@@ -1,5 +1,6 @@
 'use server'
 import type { Prisma } from '@prisma/client'
+
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
@@ -7,32 +8,36 @@ import { auth } from '@/auth'
 import { parseAndSanitizedMarkdown } from '@/lib/markdown'
 import prisma from '@/lib/prisma/singleton'
 
-type FormDataEntries = Pick<
+type FormDataEntries = {
+  imageIdsToRemove: string
+  stampId: string
+  uploadedImageUrls: string
+} & Pick<
   Prisma.StampUncheckedCreateInput,
   | 'category'
-  | 'region'
-  | 'unsafeDescription'
-  | 'title'
   | 'modded'
+  | 'region'
   | 'stampFileUrl'
-> & { imageIdsToRemove: string; stampId: string; uploadedImageUrls: string }
+  | 'title'
+  | 'unsafeDescription'
+>
 
 export const updateStamp = async (formData: FormData) => {
   const session = await auth()
 
   if (!session?.user.id) {
-    return { ok: false, message: 'Unauthorized.' }
+    return { message: 'Unauthorized.', ok: false }
   }
 
   if (!session.user.usernameURL) {
-    return { ok: false, message: 'UsernameURL not set' }
+    return { message: 'UsernameURL not set', ok: false }
   }
 
   const {
-    stampId,
     imageIdsToRemove,
-    uploadedImageUrls,
+    stampId,
     unsafeDescription,
+    uploadedImageUrls,
     ...fields
   } = Object.fromEntries(formData) as unknown as FormDataEntries
 
@@ -68,9 +73,6 @@ export const updateStamp = async (formData: FormData) => {
       }
 
       return await tx.stamp.update({
-        where: {
-          id: stampId,
-        },
         data: {
           ...(addImages.length > 0 && {
             images: {
@@ -86,15 +88,18 @@ export const updateStamp = async (formData: FormData) => {
             },
           }),
           changedAt: new Date().toISOString(),
-          unsafeDescription,
           markdownDescription,
+          unsafeDescription,
           ...fields,
+        },
+        where: {
+          id: stampId,
         },
       })
     })
   } catch (e) {
     console.error(e)
-    return { ok: false, message: 'Server error.' }
+    return { message: 'Server error.', ok: false }
   }
   revalidatePath(`/stamp/${stampId}`)
   revalidatePath(`/${session.user.usernameURL}`)

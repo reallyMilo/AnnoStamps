@@ -10,15 +10,15 @@ describe('buildFilterWhereClause', () => {
   it('builds a where clause with all single string filter properties', () => {
     const filter = {
       capital: 'crown falls',
-      region: 'new world',
       category: 'production',
+      region: 'new world',
       search: 'Cool stamp',
     }
     const result = buildFilterWhereClause(filter)
     expect(result).toEqual({
       capital: 'crown falls',
-      region: 'new world',
       category: 'production',
+      region: 'new world',
       title: {
         search: 'Cool | stamp',
       },
@@ -27,8 +27,8 @@ describe('buildFilterWhereClause', () => {
 
   it('ignores undefined and empty string properties in the filter', () => {
     const filter = {
-      region: undefined,
       category: '',
+      region: undefined,
       search: 'Test',
     }
     const result = buildFilterWhereClause(filter)

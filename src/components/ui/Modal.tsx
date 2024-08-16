@@ -1,26 +1,27 @@
-import * as Headless from '@headlessui/react'
 import type React from 'react'
+
+import * as Headless from '@headlessui/react'
 
 import { cn } from '@/lib/utils'
 
 import { Text } from './Text'
 
 const sizes = {
-  xs: 'sm:max-w-xs',
-  sm: 'sm:max-w-sm',
-  md: 'sm:max-w-md',
-  lg: 'sm:max-w-lg',
-  xl: 'sm:max-w-xl',
   '2xl': 'sm:max-w-2xl',
   '3xl': 'sm:max-w-3xl',
   '4xl': 'sm:max-w-4xl',
   '5xl': 'sm:max-w-5xl',
+  lg: 'sm:max-w-lg',
+  md: 'sm:max-w-md',
+  sm: 'sm:max-w-sm',
+  xl: 'sm:max-w-xl',
+  xs: 'sm:max-w-xs',
 }
 
 export const Modal = ({
-  size = 'lg',
-  className,
   children,
+  className,
+  size = 'lg',
   ...props
 }: {
   children: React.ReactNode
@@ -30,8 +31,8 @@ export const Modal = ({
   return (
     <Headless.Dialog {...props}>
       <Headless.DialogBackdrop
-        transition
         className="fixed inset-0 flex w-screen justify-center overflow-y-auto bg-zinc-950/25 px-2 py-2 transition duration-100 focus:outline-0 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in sm:px-6 sm:py-8 lg:px-8 lg:py-16 dark:bg-zinc-950/50"
+        transition
       />
 
       <div className="fixed inset-0 w-screen overflow-y-auto pt-6 sm:pt-0">

@@ -1,7 +1,8 @@
 'use client'
 
-import * as Headless from '@headlessui/react'
 import type React from 'react'
+
+import * as Headless from '@headlessui/react'
 
 import { cn } from '@/lib/utils'
 
@@ -55,8 +56,8 @@ export const DropdownItem = ({
   className,
   ...props
 }: { className?: string } & (
-  | Omit<Headless.MenuItemProps<typeof Link>, 'className'>
   | Omit<Headless.MenuItemProps<'button'>, 'className'>
+  | Omit<Headless.MenuItemProps<typeof Link>, 'className'>
 )) => {
   const classes = cn(
     // Base styles
@@ -156,8 +157,8 @@ export const DropdownLabel = ({
   return (
     <Headless.Label
       {...props}
-      data-slot="label"
       className={cn('col-start-2 row-start-1', className)}
+      data-slot="label"
       {...props}
     />
   )
@@ -180,8 +181,8 @@ export const DropdownDescription = ({
 }
 
 export const DropdownShortcut = ({
-  keys,
   className,
+  keys,
   ...props
 }: { className?: string; keys: string | string[] } & Omit<
   Headless.DescriptionProps<'kbd'>,
@@ -195,12 +196,12 @@ export const DropdownShortcut = ({
     >
       {(Array.isArray(keys) ? keys : keys.split('')).map((char, index) => (
         <kbd
-          key={index}
           className={cn([
             'min-w-[2ch] text-center font-sans capitalize text-zinc-400 group-data-[focus]:text-white forced-colors:group-data-[focus]:text-[HighlightText]',
             // Make sure key names that are longer than one character (like "Tab") have extra space
             index > 0 && char.length > 1 && 'pl-1',
           ])}
+          key={index}
         >
           {char}
         </kbd>

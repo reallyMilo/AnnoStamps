@@ -4,6 +4,8 @@ import { FunnelIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/navigation'
 import { Suspense, useState } from 'react'
 
+import type { QueryParams } from '@/lib/constants'
+
 import {
   Button,
   Checkbox,
@@ -15,7 +17,6 @@ import {
   MobileSidebar,
   Select,
 } from '@/components/ui'
-import type { QueryParams } from '@/lib/constants'
 import { CATEGORIES, SORT_OPTIONS } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 import { cn } from '@/lib/utils'
@@ -53,20 +54,19 @@ const FilterForm = ({ className }: { className: string }) => {
       className={cn('space-y-6 divide-y divide-gray-200', className)}
     >
       {filters.map((section, sectionIdx) => (
-        <div key={`${section.id}-${sectionIdx}`} className="pt-6 first:pt-0">
+        <div className="pt-6 first:pt-0" key={`${section.id}-${sectionIdx}`}>
           <Fieldset>
             <Legend className="capitalize">{section.id}</Legend>
             <CheckboxGroup>
               {section.options.map((option, optionIdx) => (
                 <CheckboxField key={`${section.id}-${option}-${optionIdx}`}>
                   <Checkbox
-                    id={option}
-                    name={option}
-                    value={option}
+                    data-section={section.id}
                     defaultChecked={searchParamsString?.includes(
                       `${section.id}=${option}`,
                     )}
-                    data-section={section.id}
+                    id={option}
+                    name={option}
                     onChange={(isChecked) => {
                       const existingParams =
                         searchParams?.getAll(section.id) ?? []
@@ -93,6 +93,7 @@ const FilterForm = ({ className }: { className: string }) => {
                         }),
                       )
                     }}
+                    value={option}
                   />
                   <Label className="capitalize">{option}</Label>
                 </CheckboxField>
@@ -112,9 +113,9 @@ const SortOptionsSelect = () => {
     <Headless.Field className="flex items-baseline justify-center gap-4">
       <Label>Sort</Label>
       <Select
-        name="sort"
         className="max-w-48"
         defaultValue={(parsedQuery['sort'] as string) ?? undefined}
+        name="sort"
         onChange={(e) =>
           router.push(
             stringifyQuery({
@@ -126,8 +127,8 @@ const SortOptionsSelect = () => {
       >
         {sortOptions.map((option, idx) => (
           <option
-            key={`sort-${option}-${idx}`}
             className="capitalize"
+            key={`sort-${option}-${idx}`}
             value={option}
           >
             {option}
@@ -143,16 +144,16 @@ const MobileFilter = () => {
   return (
     <>
       <Button
-        type="button"
         className="self-end lg:hidden"
-        data-testid="mobile-filter-button"
         color="secondary"
+        data-testid="mobile-filter-button"
         onClick={() => setIsOpen(true)}
+        type="button"
       >
         <FunnelIcon />
       </Button>
 
-      <MobileSidebar open={isOpen} close={() => setIsOpen(false)}>
+      <MobileSidebar close={() => setIsOpen(false)} open={isOpen}>
         <FilterForm className="px-4 pt-6" />
       </MobileSidebar>
     </>

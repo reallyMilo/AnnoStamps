@@ -3,9 +3,10 @@
 import JSZip, { type JSZipObjectWithData } from 'jszip'
 import useSWR from 'swr'
 
+import type { UserWithStamps } from '@/lib/prisma/models'
+
 import { StampForm } from '@/components/StampForm/StampForm'
 import { Heading } from '@/components/ui'
-import type { UserWithStamps } from '@/lib/prisma/models'
 
 import { updateStamp } from './action'
 
@@ -16,8 +17,8 @@ export const UpdateStampForm = ({
 }) => {
   const {
     data: stampZip,
-    isLoading: isStampLoading,
     error,
+    isLoading: isStampLoading,
   } = useSWR(stamp.stampFileUrl, async (url: string) => {
     const res = await fetch(url)
     const blob = await res.blob()
@@ -49,8 +50,8 @@ export const UpdateStampForm = ({
     >
       <StampForm.Form action={updateStamp}>
         <StampForm.Header
-          title="Edit your stamp"
           subTitle="Fill out the form below to update your stamp."
+          title="Edit your stamp"
         />
         <StampForm.ImageUpload />
         <StampForm.FileUpload />

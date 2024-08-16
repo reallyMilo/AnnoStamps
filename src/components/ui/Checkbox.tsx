@@ -1,5 +1,6 @@
-import * as Headless from '@headlessui/react'
 import type React from 'react'
+
+import * as Headless from '@headlessui/react'
 
 import { cn } from '@/lib/utils'
 
@@ -76,19 +77,19 @@ const base = [
 ]
 
 const colors = {
+  accent:
+    '[--checkbox-check:theme(colors.accent)] [--checkbox-checked-bg:theme(colors.accent)] [--checkbox-checked-border:theme(colors.accent/80%)]',
   primary:
     '[--checkbox-check:theme(colors.white)] [--checkbox-checked-bg:theme(colors.primary)] [--checkbox-checked-border:theme(colors.primary/90%)]',
   secondary:
     '[--checkbox-check:theme(colors.secondary)] [--checkbox-checked-bg:theme(colors.secondary)] [--checkbox-checked-border:theme(colors.secondary/80%)]',
-  accent:
-    '[--checkbox-check:theme(colors.accent)] [--checkbox-checked-bg:theme(colors.accent)] [--checkbox-checked-border:theme(colors.accent/80%)]',
 }
 
 type Color = keyof typeof colors
 
 export const Checkbox = ({
-  color = 'primary',
   className,
+  color = 'primary',
   ...props
 }: {
   className?: string
@@ -103,24 +104,24 @@ export const Checkbox = ({
       <span className={cn([base, colors[color]])}>
         <svg
           className="size-4 stroke-[--checkbox-check] opacity-0 group-data-[checked]:opacity-100 sm:h-3.5 sm:w-3.5"
-          viewBox="0 0 14 14"
           fill="none"
+          viewBox="0 0 14 14"
         >
           {/* Checkmark icon */}
           <path
             className="opacity-100 group-data-[indeterminate]:opacity-0"
             d="M3 8L6 11L11 3.5"
-            strokeWidth={2}
             strokeLinecap="round"
             strokeLinejoin="round"
+            strokeWidth={2}
           />
           {/* Indeterminate icon */}
           <path
             className="opacity-0 group-data-[indeterminate]:opacity-100"
             d="M3 7H11"
-            strokeWidth={2}
             strokeLinecap="round"
             strokeLinejoin="round"
+            strokeWidth={2}
           />
         </svg>
       </span>

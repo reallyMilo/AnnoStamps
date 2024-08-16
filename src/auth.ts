@@ -1,9 +1,10 @@
-import { PrismaAdapter } from '@auth/prisma-adapter'
 import type { Prisma } from '@prisma/client'
 import type { NextAuthConfig } from 'next-auth'
-import NextAuth from 'next-auth'
 import type { AdapterSession, AdapterUser } from 'next-auth/adapters'
 import type { Provider } from 'next-auth/providers'
+
+import { PrismaAdapter } from '@auth/prisma-adapter'
+import NextAuth from 'next-auth'
 import Discord from 'next-auth/providers/discord'
 import Google from 'next-auth/providers/google'
 
@@ -13,14 +14,6 @@ import prisma from '@/lib/prisma/singleton'
 const providers = [Google, Discord] satisfies Provider[]
 
 const config = {
-  pages: {
-    signIn: '/auth/signin',
-    newUser: '/',
-    signOut: '/',
-    error: '/auth/error',
-    verifyRequest: '/',
-  },
-  providers,
   adapter: PrismaAdapter(prisma),
   // events: { createUser: sendWelcomeEmail },
   callbacks: {
@@ -29,17 +22,25 @@ const config = {
         ...session,
         user: {
           ...session.user,
-          id: user.id,
           biography: user.biography,
+          id: user.id,
           username: user.username,
           usernameURL: user.usernameURL,
         },
       }
     },
   },
+  debug: process.env.NODE_ENV !== 'production' ? true : false,
+  pages: {
+    error: '/auth/error',
+    newUser: '/',
+    signIn: '/auth/signin',
+    signOut: '/',
+    verifyRequest: '/',
+  },
+  providers,
   session: { strategy: 'database' },
   trustHost: true,
-  debug: process.env.NODE_ENV !== 'production' ? true : false,
 } satisfies NextAuthConfig
 
 export const providerMap = providers.map((provider) => {
@@ -52,7 +53,7 @@ export const providerMap = providers.map((provider) => {
     return { id: provider.id, name: provider.name }
   }
 })
-export const { handlers, auth, signIn, signOut } = NextAuth(config)
+export const { auth, handlers, signIn, signOut } = NextAuth(config)
 declare module 'next-auth' {
   /**
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
@@ -60,8 +61,8 @@ declare module 'next-auth' {
 
   //eslint-disable-next-line
   interface Session extends AdapterSession {
-    user: Pick<User, 'id' | 'biography' | 'username' | 'usernameURL'> &
-      AdapterUser
+    user: AdapterUser &
+      Pick<User, 'biography' | 'id' | 'username' | 'usernameURL'>
   }
   //eslint-disable-next-line
   interface User extends Prisma.UserGetPayload<true> {}

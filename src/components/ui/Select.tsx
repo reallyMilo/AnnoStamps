@@ -14,7 +14,6 @@ export const Select = forwardRef(
   ) => {
     return (
       <span
-        data-slot="control"
         className={cn([
           // Basic layout
           'group relative block w-full',
@@ -28,10 +27,11 @@ export const Select = forwardRef(
           'has-[[data-disabled]]:opacity-50 before:has-[[data-disabled]]:bg-zinc-950/5 before:has-[[data-disabled]]:shadow-none',
           className,
         ])}
+        data-slot="control"
       >
         <Headless.Select
-          ref={ref}
           multiple={multiple}
+          ref={ref}
           {...props}
           className={cn([
             // Basic layout

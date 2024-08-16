@@ -2,8 +2,9 @@
 
 import { revalidatePath } from 'next/cache'
 
-import { auth } from '@/auth'
 import type { StampWithRelations } from '@/lib/prisma/models'
+
+import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
 
 export const likeMutation = async (id: StampWithRelations['id']) => {
@@ -14,13 +15,13 @@ export const likeMutation = async (id: StampWithRelations['id']) => {
 
   try {
     await prisma.stamp.update({
-      where: { id },
-      include: { likedBy: true },
       data: {
         likedBy: {
           connect: { id: session.user.id },
         },
       },
+      include: { likedBy: true },
+      where: { id },
     })
   } catch (e) {
     console.error(e)

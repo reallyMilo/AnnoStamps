@@ -2,8 +2,9 @@
 import { ArrowUpIcon } from '@heroicons/react/24/outline'
 import { TrashIcon } from '@heroicons/react/24/solid'
 
-import { buttonStyles, Grid, Subheading, Text } from '@/components/ui'
 import type { Image } from '@/lib/prisma/models'
+
+import { buttonStyles, Grid, Subheading, Text } from '@/components/ui'
 import { cn } from '@/lib/utils'
 
 import { useStampFormContext } from './StampForm'
@@ -14,8 +15,8 @@ const isImage = (b: Asset | Image): b is Image => {
 }
 
 export const ImageUpload = () => {
-  const { status, images, setImages } = useStampFormContext()
-  const { isError, handleChange, handleRemove } = useUpload<Asset | Image>(
+  const { images, setImages, status } = useStampFormContext()
+  const { handleChange, handleRemove, isError } = useUpload<Asset | Image>(
     images,
     setImages,
   )
@@ -28,31 +29,31 @@ export const ImageUpload = () => {
         </div>
 
         <label
-          htmlFor="images"
           className={cn(
             buttonStyles.base,
             buttonStyles.solid,
             buttonStyles.colors.secondary,
             'h-fit font-normal hover:opacity-90',
           )}
+          htmlFor="images"
         >
           Add Images
         </label>
       </div>
       <input
-        type="file"
-        id="images"
-        name="images"
         accept=".png, .jpg, .jpeg, .webp"
-        onChange={handleChange}
-        multiple
-        hidden
         formNoValidate
+        hidden
+        id="images"
+        multiple
+        name="images"
+        onChange={handleChange}
+        type="file"
       />
       {images.length === 0 ? (
         <label
-          htmlFor="image"
           className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          htmlFor="image"
         >
           <ArrowUpIcon className="mx-auto h-6 w-6 text-gray-400" />
 
@@ -67,15 +68,15 @@ export const ImageUpload = () => {
               ? image.thumbnailUrl ?? image.originalUrl
               : image.url
             return (
-              <div key={url} className="relative">
+              <div className="relative" key={url}>
                 <TrashIcon
-                  onClick={() => handleRemove(image)}
                   className="absolute right-0 top-0 z-10 mr-2 mt-2 h-6 w-6 cursor-pointer rounded-md bg-white"
+                  onClick={() => handleRemove(image)}
                 />
                 <div className="aspect-h-3 aspect-w-4 overflow-hidden border-2 shadow-md">
                   <img
-                    className="object-contain"
                     alt="stamp image preview"
+                    className="object-contain"
                     src={url}
                   />
                 </div>

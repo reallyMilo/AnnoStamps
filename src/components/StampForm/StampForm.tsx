@@ -5,14 +5,16 @@ import JSZip, { type JSZipObjectWithData } from 'jszip'
 import * as React from 'react'
 import { useFormStatus } from 'react-dom'
 
-import { Button, Heading, Text } from '@/components/ui'
 import type { UserWithStamps } from '@/lib/prisma/models'
+
+import { Button, Heading, Text } from '@/components/ui'
+
+import type { Asset } from './useUpload'
 
 import { FileUpload } from './FileUpload'
 import { ImageUpload } from './ImageUpload'
 import { StampInfoFieldGroup } from './StampInfoFieldGroup'
 import { uploadAsset } from './uploadAsset'
-import type { Asset } from './useUpload'
 
 type Stamp = UserWithStamps['listedStamps'][0]
 type Image = Stamp['images'][0]
@@ -28,10 +30,10 @@ export type StampFormContextValue = {
     React.SetStateAction<StampFormContextValue['status']>
   >
   stamp?: Stamp
-  status: 'idle' | 'error' | 'success' | 'images' | 'zip'
+  status: 'error' | 'idle' | 'images' | 'success' | 'zip'
 }
 
-const StampFormContext = React.createContext<StampFormContextValue | null>(null)
+const StampFormContext = React.createContext<null | StampFormContextValue>(null)
 
 const useStampFormContext = () => {
   const context = React.useContext(StampFormContext)
@@ -46,10 +48,10 @@ const Submit = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Button
-      type="submit"
-      color="secondary"
       className="ml-auto font-normal"
+      color="secondary"
       disabled={pending}
+      type="submit"
     >
       {pending ? 'Loading...' : children}
     </Button>
@@ -60,7 +62,7 @@ type HeaderProps = {
   subTitle: string
   title: string
 }
-const Header = ({ title, subTitle }: HeaderProps) => {
+const Header = ({ subTitle, title }: HeaderProps) => {
   return (
     <div>
       <Heading>{title}</Heading>
@@ -69,17 +71,17 @@ const Header = ({ title, subTitle }: HeaderProps) => {
   )
 }
 
-const isAsset = (b: Asset | JSZipObjectWithData | Image): b is Asset => {
+const isAsset = (b: Asset | Image | JSZipObjectWithData): b is Asset => {
   return (b as Asset).rawFile !== undefined
 }
 
 const Form = ({
-  children,
   action,
+  children,
 }: React.PropsWithChildren<{
   action: (formData: FormData) => Promise<{ message: string; ok: boolean }>
 }>) => {
-  const { stamp, images, files, setStatus } = useStampFormContext()
+  const { files, images, setStatus, stamp } = useStampFormContext()
 
   const handleOnSubmit = async (formData: FormData) => {
     if (images.length === 0) {
@@ -148,9 +150,9 @@ const Form = ({
 
   return (
     <form
+      action={handleOnSubmit}
       className="mt-8 flex flex-col space-y-8"
       data-testid="stamp-form"
-      action={handleOnSubmit}
     >
       {children}
     </form>
@@ -177,13 +179,13 @@ const Root = ({ children, stamp, zipFiles }: RootProps) => {
 
   const context = React.useMemo(
     () => ({
-      status,
+      files,
+      images,
+      setFiles,
+      setImages,
       setStatus,
       stamp,
-      files,
-      setFiles,
-      images,
-      setImages,
+      status,
     }),
     [status, setStatus, files, setFiles, images, setImages, stamp],
   )
@@ -196,13 +198,13 @@ const Root = ({ children, stamp, zipFiles }: RootProps) => {
 }
 
 const StampForm = {
-  Root,
+  FileUpload,
   Form,
   Header,
   ImageUpload,
-  FileUpload,
-  Submit,
+  Root,
   StampInfoFieldGroup,
+  Submit,
 }
 
 export { StampForm, useStampFormContext }

@@ -23,8 +23,8 @@ const getUserWithStamps = unstable_cache(
   },
   ['getUserWithStamps'],
   {
-    tags: ['getUserWithStamps'],
     revalidate: 86400,
+    tags: ['getUserWithStamps'],
   },
 )
 

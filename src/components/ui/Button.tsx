@@ -18,6 +18,36 @@ export const styles = {
     // Icon
     '[&>[data-slot=icon]]:-mx-0.5 [&>[data-slot=icon]]:my-0.5 [&>[data-slot=icon]]:size-5 [&>[data-slot=icon]]:shrink-0 [&>[data-slot=icon]]:text-[--btn-icon] [&>[data-slot=icon]]:sm:my-1 [&>[data-slot=icon]]:sm:size-4 forced-colors:[--btn-icon:ButtonText] forced-colors:data-[hover]:[--btn-icon:ButtonText]',
   ],
+  colors: {
+    accent: [
+      'text-white [--btn-hover-overlay:theme(colors.white/10%)] [--btn-bg:theme(colors.accent)] [--btn-border:theme(colors.accent/90%)]',
+      '[--btn-icon:theme(colors.white)] data-[active]:[--btn-icon:theme(colors.midnight)] data-[hover]:[--btn-icon:theme(colors.midnight)]',
+    ],
+    primary: [
+      'text-midnight [--btn-hover-overlay:theme(colors.white/15%)] [--btn-bg:theme(colors.primary)] [--btn-border:theme(colors.primary/90%)]',
+      '[--btn-icon:theme(colors.midnight)] data-[active]:[--btn-icon:theme(colors.midnight)] data-[hover]:[--btn-icon:theme(colors.midnight/90%)]',
+    ],
+    secondary: [
+      'text-midnight [--btn-hover-overlay:theme(colors.white/10%)] [--btn-bg:theme(colors.secondary)] [--btn-border:theme(colors.secondary/90%)]',
+      '[--btn-icon:theme(colors.midnight)] data-[active]:[--btn-icon:theme(colors.midnight)] data-[hover]:[--btn-icon:theme(colors.midnight/90%)]',
+    ],
+  },
+  outline: [
+    // Base
+    'border-midnight/10 text-midnight data-[active]:bg-midnight/[2.5%] data-[hover]:bg-midnight/[2.5%]',
+    // Dark mode
+    'dark:border-white/15 dark:text-white dark:[--btn-bg:transparent] dark:data-[active]:bg-white/5 dark:data-[hover]:bg-white/5',
+    // Icon
+    '[--btn-icon:theme(colors.zinc.500)] data-[active]:[--btn-icon:theme(colors.zinc.700)] data-[hover]:[--btn-icon:theme(colors.zinc.700)] dark:data-[active]:[--btn-icon:theme(colors.zinc.400)] dark:data-[hover]:[--btn-icon:theme(colors.zinc.400)]',
+  ],
+  plain: [
+    // Base
+    'border-transparent text-midnight data-[active]:bg-midnight/5 data-[hover]:bg-midnight/5',
+    // Dark mode
+    'dark:text-white dark:data-[active]:bg-white/10 dark:data-[hover]:bg-white/10',
+    // Icon
+    '[--btn-icon:theme(colors.zinc.500)] data-[active]:[--btn-icon:theme(colors.zinc.700)] data-[hover]:[--btn-icon:theme(colors.zinc.700)] dark:[--btn-icon:theme(colors.zinc.500)] dark:data-[active]:[--btn-icon:theme(colors.zinc.400)] dark:data-[hover]:[--btn-icon:theme(colors.zinc.400)]',
+  ],
   solid: [
     // Optical border, implemented as the button background to avoid corner artifacts
     'border-transparent bg-[--btn-border]',
@@ -42,50 +72,21 @@ export const styles = {
     // Disabled
     'before:data-[disabled]:shadow-none after:data-[disabled]:shadow-none',
   ],
-  outline: [
-    // Base
-    'border-midnight/10 text-midnight data-[active]:bg-midnight/[2.5%] data-[hover]:bg-midnight/[2.5%]',
-    // Dark mode
-    'dark:border-white/15 dark:text-white dark:[--btn-bg:transparent] dark:data-[active]:bg-white/5 dark:data-[hover]:bg-white/5',
-    // Icon
-    '[--btn-icon:theme(colors.zinc.500)] data-[active]:[--btn-icon:theme(colors.zinc.700)] data-[hover]:[--btn-icon:theme(colors.zinc.700)] dark:data-[active]:[--btn-icon:theme(colors.zinc.400)] dark:data-[hover]:[--btn-icon:theme(colors.zinc.400)]',
-  ],
-  plain: [
-    // Base
-    'border-transparent text-midnight data-[active]:bg-midnight/5 data-[hover]:bg-midnight/5',
-    // Dark mode
-    'dark:text-white dark:data-[active]:bg-white/10 dark:data-[hover]:bg-white/10',
-    // Icon
-    '[--btn-icon:theme(colors.zinc.500)] data-[active]:[--btn-icon:theme(colors.zinc.700)] data-[hover]:[--btn-icon:theme(colors.zinc.700)] dark:[--btn-icon:theme(colors.zinc.500)] dark:data-[active]:[--btn-icon:theme(colors.zinc.400)] dark:data-[hover]:[--btn-icon:theme(colors.zinc.400)]',
-  ],
-  colors: {
-    primary: [
-      'text-midnight [--btn-hover-overlay:theme(colors.white/15%)] [--btn-bg:theme(colors.primary)] [--btn-border:theme(colors.primary/90%)]',
-      '[--btn-icon:theme(colors.midnight)] data-[active]:[--btn-icon:theme(colors.midnight)] data-[hover]:[--btn-icon:theme(colors.midnight/90%)]',
-    ],
-    secondary: [
-      'text-midnight [--btn-hover-overlay:theme(colors.white/10%)] [--btn-bg:theme(colors.secondary)] [--btn-border:theme(colors.secondary/90%)]',
-      '[--btn-icon:theme(colors.midnight)] data-[active]:[--btn-icon:theme(colors.midnight)] data-[hover]:[--btn-icon:theme(colors.midnight/90%)]',
-    ],
-    accent: [
-      'text-white [--btn-hover-overlay:theme(colors.white/10%)] [--btn-bg:theme(colors.accent)] [--btn-border:theme(colors.accent/90%)]',
-      '[--btn-icon:theme(colors.white)] data-[active]:[--btn-icon:theme(colors.midnight)] data-[hover]:[--btn-icon:theme(colors.midnight)]',
-    ],
-  },
 }
 
-type ButtonProps = (
+type ButtonProps = { children: React.ReactNode; className?: string } & (
   | { color?: keyof typeof styles.colors; outline?: never; plain?: never }
   | { color?: never; outline: true; plain?: never }
   | { color?: never; outline?: never; plain: true }
-) & { children: React.ReactNode; className?: string } & (
+) &
+  (
     | Omit<Headless.ButtonProps, 'className'>
     | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
   )
 
 export const Button = React.forwardRef(
   (
-    { color, outline, plain, className, children, ...props }: ButtonProps,
+    { children, className, color, outline, plain, ...props }: ButtonProps,
     ref: React.ForwardedRef<HTMLElement>,
   ) => {
     const classes = cn(
@@ -123,8 +124,8 @@ export const TouchTarget = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <span
-        className="absolute left-1/2 top-1/2 size-[max(100%,2.75rem)] -translate-x-1/2 -translate-y-1/2 [@media(pointer:fine)]:hidden"
         aria-hidden="true"
+        className="absolute left-1/2 top-1/2 size-[max(100%,2.75rem)] -translate-x-1/2 -translate-y-1/2 [@media(pointer:fine)]:hidden"
       />
       {children}
     </>

@@ -27,35 +27,35 @@ export const UserMenu = () => {
     return <Button href="/auth/signin">Add Stamp</Button>
   }
 
-  const { id, username, usernameURL, image } = session.user
+  const { id, image, username, usernameURL } = session.user
   const userPath = usernameURL ? `/${usernameURL}` : `/${id}`
 
   const menuItems = [
     {
-      label: 'My Account',
-      icon: UserIcon,
       href: `${userPath}/settings`,
+      icon: UserIcon,
+      label: 'My Account',
     },
     {
-      label: 'My stamps',
-      icon: HomeIcon,
       href: userPath,
+      icon: HomeIcon,
+      label: 'My stamps',
     },
     {
-      label: 'Add new stamp',
-      icon: PlusIcon,
       href: '/stamp/create',
+      icon: PlusIcon,
+      label: 'Add new stamp',
     },
   ]
   return (
     <Dropdown>
       <DropdownButton
-        className="size-9"
-        as={AvatarButton}
-        src={image}
         aria-label="Account options"
+        as={AvatarButton}
+        className="size-9"
+        src={image}
       />
-      <DropdownMenu className="z-40" anchor="bottom end">
+      <DropdownMenu anchor="bottom end" className="z-40">
         {!username && (
           <>
             <DropdownItem href={`${userPath}/settings`}>
@@ -65,8 +65,8 @@ export const UserMenu = () => {
             <DropdownDivider />
           </>
         )}
-        {menuItems.map(({ label, icon: Icon, href }) => (
-          <DropdownItem key={label} href={href}>
+        {menuItems.map(({ href, icon: Icon, label }) => (
+          <DropdownItem href={href} key={label}>
             <Icon />
             <DropdownLabel>{label}</DropdownLabel>
           </DropdownItem>

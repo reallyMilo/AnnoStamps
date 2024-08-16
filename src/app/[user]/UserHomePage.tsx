@@ -1,5 +1,7 @@
 import { PencilSquareIcon, PlusIcon } from '@heroicons/react/20/solid'
 
+import type { UserWithStamps } from '@/lib/prisma/models'
+
 import { StampCard } from '@/components/StampCard'
 import {
   Button,
@@ -9,7 +11,6 @@ import {
   Subheading,
   Text,
 } from '@/components/ui'
-import type { UserWithStamps } from '@/lib/prisma/models'
 
 import { StampDeleteModal } from './StampDeleteModal'
 
@@ -26,11 +27,11 @@ type UserBannerProps = {
 } & Pick<UserWithStamps, 'biography' | 'username'>
 
 export const UserHomeBanner = ({
-  username,
   biography,
-  stampCount,
   downloads,
   likes,
+  stampCount,
+  username,
 }: UserBannerProps) => {
   return (
     <div className="mb-4 flex flex-col gap-y-2 border-b-2 pb-10">
@@ -47,10 +48,10 @@ export const UserHomeBanner = ({
 
 export const UserHomePage = ({
   biography,
-  listedStamps,
   image,
-  usernameURL,
+  listedStamps,
   username,
+  usernameURL,
 }: UserWithStamps) => {
   const stats = listedStamps.reduce(
     (acc, curr) => {
@@ -67,9 +68,9 @@ export const UserHomePage = ({
 
   const userBannerProps = {
     ...stats,
-    username,
     biography,
     stampCount: listedStamps.length,
+    username,
   }
 
   if (listedStamps.length === 0) {
@@ -78,18 +79,18 @@ export const UserHomePage = ({
         <UserHomeBanner {...userBannerProps} />
         <div className="text-center">
           <svg
+            aria-hidden="true"
             className="mx-auto h-12 w-12 text-gray-400"
             fill="none"
-            viewBox="0 0 24 24"
             stroke="currentColor"
-            aria-hidden="true"
+            viewBox="0 0 24 24"
           >
             <path
-              vectorEffect="non-scaling-stroke"
+              d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+              vectorEffect="non-scaling-stroke"
             />
           </svg>
           <Subheading level={3}>No Stamps</Subheading>
@@ -110,7 +111,7 @@ export const UserHomePage = ({
       <UserHomeBanner {...userBannerProps} />
       <Grid>
         {listedStamps.map((stamp) => (
-          <div key={stamp.id} className="flex flex-col">
+          <div className="flex flex-col" key={stamp.id}>
             <div className="mb-1 flex justify-between">
               <StampDeleteModal {...stamp} />
 

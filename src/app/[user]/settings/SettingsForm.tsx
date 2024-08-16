@@ -1,7 +1,7 @@
 'use client'
 import { CheckBadgeIcon } from '@heroicons/react/20/solid'
-import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 
@@ -25,10 +25,10 @@ const SubmitButton = () => {
   const { pending } = useFormStatus()
   return (
     <Button
-      type="submit"
-      disabled={pending}
-      color="secondary"
       className="justify-self-end font-normal"
+      color="secondary"
+      disabled={pending}
+      type="submit"
     >
       Save
     </Button>
@@ -41,28 +41,28 @@ export const SettingsForm = () => {
   const [formState, setFormState] = useState<
     Awaited<ReturnType<typeof updateUserSettings>>
   >({
-    status: 'idle',
     message: null,
+    status: 'idle',
   })
 
   if (status === 'loading') return null
 
-  const { username, biography } = session.user
+  const { biography, username } = session.user
 
   return (
     <form
-      id="user-settings"
       action={async (formData) => {
-        const { status, message } = await updateUserSettings(formData)
+        const { message, status } = await updateUserSettings(formData)
         if (status === 'success') {
           //FIXME: update from useSession not documented
           // no longer works as expected with only database
           // https://authjs.dev/reference/nextjs/react#updatesession
           router.refresh()
         }
-        setFormState({ status, message })
+        setFormState({ message, status })
       }}
       className="grid max-w-3xl space-y-8"
+      id="user-settings"
     >
       <Fieldset>
         <Legend>Profile</Legend>
@@ -77,19 +77,19 @@ export const SettingsForm = () => {
             <InputGroup className="[&>[data-slot=icon]]:text-green-500 dark:[&>[data-slot=icon]]:text-green-500">
               <span data-slot="custom-text">annostamps.com/</span>
               <Input
-                type="text"
-                name="username"
-                defaultValue={username ?? ''}
-                readOnly={!!username}
                 autoComplete="false"
+                defaultValue={username ?? ''}
+                name="username"
                 onInvalid={(e) =>
                   e.currentTarget.setCustomValidity(
                     'Select a username containing only alphanumeric characters, dashes (-), and underscores (_).',
                   )
                 }
                 pattern={`^[a-zA-Z0-9_\\-]+$`}
-                title="Select a username containing only alphanumeric characters, dashes (-), and underscores (_)."
+                readOnly={!!username}
                 required
+                title="Select a username containing only alphanumeric characters, dashes (-), and underscores (_)."
+                type="text"
               />
               {formState.status === 'success' && (
                 <CheckBadgeIcon data-testid="check-badge-icon" />
@@ -104,9 +104,9 @@ export const SettingsForm = () => {
           <Field>
             <Label>About</Label>
             <Textarea
+              defaultValue={biography ?? ''}
               name="biography"
               placeholder="To be displayed on your page banner."
-              defaultValue={biography ?? ''}
               rows={3}
             />
           </Field>

@@ -7,12 +7,12 @@ import { auth } from '@/auth'
 export const GET = auth(async (req) => {
   if (!req.auth) {
     return Response.json(
-      { ok: false, message: 'Unauthorized.' },
+      { message: 'Unauthorized.', ok: false },
       { status: 401 },
     )
   }
 
-  const { AWS_S3_REGION, AWS_S3_BUCKET } = process.env
+  const { AWS_S3_BUCKET, AWS_S3_REGION } = process.env
 
   const searchParams = req.nextUrl.searchParams
   const stampId = searchParams.get('stampId')
@@ -35,17 +35,17 @@ export const GET = auth(async (req) => {
   const client = new S3Client({ region: AWS_S3_REGION })
   const command = new PutObjectCommand({
     Bucket: AWS_S3_BUCKET,
-    Key: path,
     ContentType: fileType,
+    Key: path,
     Metadata: { filename: decodeURIComponent(filename) },
   })
 
   const url = await getSignedUrl(client, command, { expiresIn: 3600 })
 
   return Response.json({
-    url,
-    path,
-    ok: true,
     message: 'Returning presigned url.',
+    ok: true,
+    path,
+    url,
   })
 })
