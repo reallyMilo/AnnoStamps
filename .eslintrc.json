@@ -64,6 +64,5 @@
     "react": {
       "version": "detect"
     }
-  },
-  "ignorePatterns": []
+  }
 }
