@@ -13,12 +13,15 @@ Use the guide above to install postgres then run the following commands
 sudo -u postgres psql
 CREATE DATABASE annostamps;
 GRANT ALL PRIVILEGES ON DATABASE annostamps TO postgres;
+ALTER USER postgres PASSWORD 'postgres';
 ```
 
 create .env in root
 
 ```sh
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/annostamps"
+DIRECT_URL="postgresql://postgres:postgres@localhost:5432/annostamps"
+AUTH_SECRET="openssl rand -base64 33"
 ```
 
 Finally run the following commands..
@@ -26,6 +29,7 @@ Finally run the following commands..
 ```sh
 pnpm i
 pnpm migrate
+pnpm db-seed
 ```
 
 ### AWS
