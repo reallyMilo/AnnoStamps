@@ -34,7 +34,7 @@
     "@next/bundle-analyzer": "^14.2.4",
     "@next/third-parties": "^14.2.4",
     "@paralleldrive/cuid2": "^2.2.2",
-    "@prisma/client": "^5.16.1",
+    "@prisma/client": "^5.19.1",
     "@sentry/nextjs": "^8.5.0",
     "@tailwindcss/forms": "^0.5.7",
     "clsx": "^2.1.1",
