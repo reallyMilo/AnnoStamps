@@ -8,8 +8,8 @@ importers:
   .:
     dependencies:
       '@auth/prisma-adapter':
-        specifier: ^2.2.0
-        version: 2.2.0(@prisma/client@5.19.1(prisma@5.19.1))(nodemailer@6.9.14)
+        specifier: ^2.4.2
+        version: 2.4.2(@prisma/client@5.19.1(prisma@5.19.1))(nodemailer@6.9.14)
       '@aws-sdk/client-s3':
         specifier: ^3.620.1
         version: 3.620.1
@@ -250,23 +250,6 @@ packages:
       }
     engines: { node: '>=6.0.0' }
 
-  '@auth/core@0.32.0':
-    resolution:
-      {
-        integrity: sha512-3+ssTScBd+1fd0/fscAyQN1tSygXzuhysuVVzB942ggU4mdfiTbv36P0ccVnExKWYJKvu3E2r3/zxXCCAmTOrg==,
-      }
-    peerDependencies:
-      '@simplewebauthn/browser': ^9.0.1
-      '@simplewebauthn/server': ^9.0.2
-      nodemailer: ^6.8.0
-    peerDependenciesMeta:
-      '@simplewebauthn/browser':
-        optional: true
-      '@simplewebauthn/server':
-        optional: true
-      nodemailer:
-        optional: true
-
   '@auth/core@0.34.2':
     resolution:
       {
@@ -284,10 +267,10 @@ packages:
       nodemailer:
         optional: true
 
-  '@auth/prisma-adapter@2.2.0':
+  '@auth/prisma-adapter@2.4.2':
     resolution:
       {
-        integrity: sha512-DiXgyJfqBb/6TPhNJ5IcRw3klxcFD+qaa7qvOYopV6rYinSUvsQkJ30m+so2SRlEsuDA6PqMu+Mf5Sd+zr3g+Q==,
+        integrity: sha512-QQwnGYfDiyTcAxMVhTrim+lLFFA3TKq3nIrbPtGZXlkiuNQ5t0rUg//Km7Wv21pD5bxhy4aRPlfq7TdFKk3XIw==,
       }
     peerDependencies:
       '@prisma/client': '>=2.26.0 || >=3 || >=4 || >=5'
@@ -1867,12 +1850,6 @@ packages:
     engines: { node: '>=14' }
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
-
-  '@panva/hkdf@1.1.1':
-    resolution:
-      {
-        integrity: sha512-dhPeilub1NuIG0X5Kvhh9lH4iW3ZsHlnzwgwbOlgwQ2wG1IqFzsgHqmKPk3WzsdWAeaxKJxgM0+W433RmN45GA==,
-      }
 
   '@panva/hkdf@1.2.1':
     resolution:
@@ -6327,12 +6304,6 @@ packages:
       }
     hasBin: true
 
-  jose@5.4.0:
-    resolution:
-      {
-        integrity: sha512-6rpxTHPAQyWMb9A35BroFl1Sp0ST3DpPcm5EVIxZxdH+e0Hv9fwhyB3XLKFUcHNpdSDnETmBfuPPTTlYz5+USw==,
-      }
-
   jose@5.8.0:
     resolution:
       {
@@ -7044,12 +7015,6 @@ packages:
     resolution:
       {
         integrity: sha512-QK0sRs7MKv0tKe1+5uZIQk/C8XGza4DAnztJG8iD+TpJIORARrCxczA738awHrZoHeTjSSoHqao2teO0dC/gFQ==,
-      }
-
-  oauth4webapi@2.10.4:
-    resolution:
-      {
-        integrity: sha512-DSoj8QoChzOCQlJkRmYxAJCIpnXFW32R0Uq7avyghIeB6iJq0XAblOD7pcq3mx4WEBDwMuKr0Y1qveCBleG2Xw==,
       }
 
   oauth4webapi@2.12.1:
@@ -9395,18 +9360,6 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@auth/core@0.32.0(nodemailer@6.9.14)':
-    dependencies:
-      '@panva/hkdf': 1.1.1
-      '@types/cookie': 0.6.0
-      cookie: 0.6.0
-      jose: 5.4.0
-      oauth4webapi: 2.10.4
-      preact: 10.11.3
-      preact-render-to-string: 5.2.3(preact@10.11.3)
-    optionalDependencies:
-      nodemailer: 6.9.14
-
   '@auth/core@0.34.2(nodemailer@6.9.14)':
     dependencies:
       '@panva/hkdf': 1.2.1
@@ -9419,9 +9372,9 @@ snapshots:
     optionalDependencies:
       nodemailer: 6.9.14
 
-  '@auth/prisma-adapter@2.2.0(@prisma/client@5.19.1(prisma@5.19.1))(nodemailer@6.9.14)':
+  '@auth/prisma-adapter@2.4.2(@prisma/client@5.19.1(prisma@5.19.1))(nodemailer@6.9.14)':
     dependencies:
-      '@auth/core': 0.32.0(nodemailer@6.9.14)
+      '@auth/core': 0.34.2(nodemailer@6.9.14)
       '@prisma/client': 5.19.1(prisma@5.19.1)
     transitivePeerDependencies:
       - '@simplewebauthn/browser'
@@ -10702,8 +10655,6 @@ snapshots:
     dependencies:
       '@opentelemetry/api': 1.8.0
       '@opentelemetry/core': 1.24.1(@opentelemetry/api@1.8.0)
-
-  '@panva/hkdf@1.1.1': {}
 
   '@panva/hkdf@1.2.1': {}
 
@@ -13875,8 +13826,6 @@ snapshots:
 
   jiti@1.21.0: {}
 
-  jose@5.4.0: {}
-
   jose@5.8.0: {}
 
   js-tokens@4.0.0: {}
@@ -14271,8 +14220,6 @@ snapshots:
       path-key: 4.0.0
 
   nwsapi@2.2.10: {}
-
-  oauth4webapi@2.10.4: {}
 
   oauth4webapi@2.12.1: {}
 
