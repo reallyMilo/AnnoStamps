@@ -24,9 +24,9 @@ describe('Delete stamp', () => {
           .should('have.length', 24)
           .then((id) => {
             cy.request({
-              url: `/${link.text()}/delete/${id}`,
-              method: 'DELETE',
               failOnStatusCode: false,
+              method: 'DELETE',
+              url: `/${link.text()}/delete/${id}`,
             }).then((response) => {
               expect(response.status).to.eq(404)
             })
@@ -38,7 +38,13 @@ describe('Delete stamp', () => {
     cy.intercept('/testseeduser').as('deleteStamp')
     cy.visit('/testseeduser')
     //FIXME: Need to revalidate the path for [username]
-    cy.getBySel('delete-stamp').first().click()
+    cy.getBySel('delete-stamp')
+      .first()
+      .trigger('mouseover')
+      .then(($link) => {
+        expect($link.css('cursor')).to.equal('pointer')
+      })
+      .click()
     cy.findByRole('button', { name: 'Yes, delete' })
       .should('be.visible')
       .click()

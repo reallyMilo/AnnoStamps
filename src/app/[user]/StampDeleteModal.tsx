@@ -23,6 +23,7 @@ export const StampDeleteModal = ({
   return (
     <>
       <Button
+        className="cursor-pointer"
         color="accent"
         data-testid="delete-stamp"
         onClick={() => setIsOpen(true)}
