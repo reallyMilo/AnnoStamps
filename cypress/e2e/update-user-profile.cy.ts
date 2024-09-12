@@ -39,7 +39,7 @@ describe('Update user profile', () => {
       cy.wait('@setUsername')
       cy.findByText('Username already taken.').should('be.visible')
     })
-    it('user can set username', () => {
+    it('user can set user profile fields', () => {
       cy.intercept('/testSeedUserId/settings').as('setUsername')
       cy.setSessionCookie()
 
@@ -61,14 +61,18 @@ describe('Update user profile', () => {
       cy.findByText(
         'If you wish to change your username please contact us via the discord server.',
       ).should('exist')
-
+      cy.findByLabelText('Email Notifications').should('not.be.checked')
       cy.getBySel('check-badge-icon').should('exist')
       cy.database(
-        `SELECT * FROM "User" WHERE username = 'cypressTester';`,
+        `SELECT * FROM "User" LEFT JOIN "Preference" ON "User".id = "Preference"."userId" WHERE username = 'cypressTester';`,
       ).then((users) => {
         const user = users[0]
+        cy.log(user)
         cy.wrap(user).its('username').should('eq', 'cypressTester')
         cy.wrap(user).its('usernameURL').should('eq', 'cypresstester')
+        cy.wrap(user).its('biography').should('eq', 'cypress tester biography')
+        cy.wrap(user).its('channel').should('eq', 'email')
+        cy.wrap(user).its('enabled').should('eq', false)
       })
     })
   })
@@ -94,6 +98,7 @@ describe('Update user profile', () => {
         .should('equal', 'amazing test user bio')
 
       cy.findByLabelText('About').clear().type('cypress tester biography')
+      cy.findByLabelText('Email Notifications').click()
       cy.findByRole('button', { name: 'Save' }).click()
 
       cy.wait('@setBio')
@@ -102,14 +107,18 @@ describe('Update user profile', () => {
         .invoke('val')
         .should('equal', 'cypress tester biography')
 
-      cy.database(`SELECT * FROM "User" WHERE username = 'testSeedUser';`).then(
-        (users) => {
-          const user = users[0]
-          cy.wrap(user)
-            .its('biography')
-            .should('eq', 'cypress tester biography')
-        },
+      cy.findByLabelText('Email Notifications').should(
+        'have.attr',
+        'data-checked',
       )
+
+      cy.database(
+        `SELECT * FROM "User" LEFT JOIN "Preference" ON "User".id = "Preference"."userId" WHERE username = 'testSeedUser';`,
+      ).then((users) => {
+        const user = users[0]
+        cy.wrap(user).its('biography').should('eq', 'cypress tester biography')
+        cy.wrap(user).its('enabled').should('eq', true)
+      })
     })
   })
 })

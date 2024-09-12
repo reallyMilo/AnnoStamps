@@ -194,7 +194,7 @@ export const userExtension = Prisma.defineExtension({
   query: {
     user: {
       update({ args, query }) {
-        args.data = userProfileSchema.parse(args.data)
+        args.data = userProfileSchema.passthrough().parse(args.data)
         return query(args)
       },
     },
