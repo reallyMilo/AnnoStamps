@@ -6,6 +6,10 @@ const prisma = new PrismaClient()
 export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:3000',
+    chromeWebSecurity: false,
+    env: {
+      sessionToken: 'cdc4b0fb-77b5-44b5-947a-dde785af2676',
+    },
     setupNodeEvents(on) {
       on('task', {
         async 'db:query'(rawQuery: string) {
@@ -15,6 +19,7 @@ export default defineConfig({
         },
         async 'db:removeTestUser'() {
           return await prisma.$transaction([
+            prisma.preference.deleteMany({}),
             prisma.image.deleteMany({
               where: {
                 OR: [
@@ -51,17 +56,17 @@ export default defineConfig({
         },
         async 'db:testUser'(setUsername?: boolean) {
           const username = {
+            biography: 'amazing test user bio',
             username: 'testSeedUser',
             usernameURL: 'testseeduser',
-            biography: 'amazing test user bio',
           }
           const testSeedUser = {
+            biography: null,
+            email: `testSeedUser@example.com`,
             id: 'testSeedUserId',
             name: `testSeedUser`,
-            email: `testSeedUser@example.com`,
             username: null,
             usernameURL: null,
-            biography: null,
             ...(setUsername ? username : null),
           }
           return await prisma.$transaction([
@@ -70,45 +75,45 @@ export default defineConfig({
             }),
             prisma.account.create({
               data: {
+                access_token: 'abcdefghijklmnopqrst',
                 id: 'testSeedAccountId',
-                userId: 'testSeedUserId',
-                type: 'oauth',
                 provider: 'discord',
                 providerAccountId: '123213123123',
-                access_token: 'abcdefghijklmnopqrst',
+                type: 'oauth',
+                userId: 'testSeedUserId',
               },
             }),
             prisma.session.create({
               data: {
+                expires: '3000-01-01T00:00:00.000Z',
                 id: 'testSeedUserSessionId',
                 sessionToken: 'cdc4b0fb-77b5-44b5-947a-dde785af2676',
                 userId: 'testSeedUserId',
-                expires: '3000-01-01T00:00:00.000Z',
               },
             }),
             prisma.stamp.create({
               data: {
-                id: 'testSeedUserStampId',
-                userId: 'testSeedUserId',
-                game: '1800',
-                title: `Test-Seed-User-Stamp`,
-                unsafeDescription: `Test seed user stamp`,
-                markdownDescription: `<h1>Test seed user stamp</h1>`,
                 category: 'cosmetic',
-                region: 'old world',
-                stampFileUrl: '/stamp.zip',
                 downloads: 123,
+                game: '1800',
+                id: 'testSeedUserStampId',
                 images: {
                   create: [
                     {
                       id: 'testSeedStampImageId',
+                      largeUrl: `https://placehold.co/1024x576.png?text=Large`,
                       originalUrl:
                         'https://placehold.co/2000x2000.png?text=Original',
-                      largeUrl: `https://placehold.co/1024x576.png?text=Large`,
                       smallUrl: `https://placehold.co/500x281.png?text=Small`,
                     },
                   ],
                 },
+                markdownDescription: `<h1>Test seed user stamp</h1>`,
+                region: 'old world',
+                stampFileUrl: '/stamp.zip',
+                title: `Test-Seed-User-Stamp`,
+                unsafeDescription: `Test seed user stamp`,
+                userId: 'testSeedUserId',
               },
             }),
           ])
@@ -116,9 +121,5 @@ export default defineConfig({
       })
     },
     video: false,
-    chromeWebSecurity: false,
-    env: {
-      sessionToken: 'cdc4b0fb-77b5-44b5-947a-dde785af2676',
-    },
   },
 })
