@@ -23,6 +23,18 @@ model Image {
   stampId      String
 }
 
+model Comment {
+  id            String    @id
+  content       String
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  parentId      String?
+  parentComment Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies       Comment[] @relation("CommentReplies")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
 model Stamp {
   id                  String   @id
   userId              String
@@ -77,23 +89,25 @@ model Preference {
   enabled Boolean @default(false)
   userId  String
   user    User    @relation(fields: [userId], references: [id], onDelete: NoAction)
-  @@unique([userId,channel])
+
+  @@unique([userId, channel])
 }
 
 model User {
-  id            String        @id @default(cuid())
+  id            String       @id @default(cuid())
   name          String?
-  email         String?       @unique
+  email         String?      @unique
   emailVerified DateTime?
   image         String?
-  username      String?       @unique
-  usernameURL   String?       @unique
+  username      String?      @unique
+  usernameURL   String?      @unique
   biography     String?
   preferences   Preference[]
   accounts      Account[]
   sessions      Session[]
-  listedStamps  Stamp[]       @relation("StampCreator")
-  likedStamps   Stamp[]       @relation("StampLiker")
+  listedStamps  Stamp[]      @relation("StampCreator")
+  likedStamps   Stamp[]      @relation("StampLiker")
+  comments      Comment[]
 }
 
 model VerificationToken {
