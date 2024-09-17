@@ -1,5 +1,6 @@
 'use server'
 
+import { createId } from '@paralleldrive/cuid2'
 import { revalidatePath } from 'next/cache'
 
 import type { StampWithRelations } from '@/lib/prisma/models'
@@ -10,7 +11,7 @@ import prisma from '@/lib/prisma/singleton'
 export const likeMutation = async (id: StampWithRelations['id']) => {
   const session = await auth()
   if (!session) {
-    return { ok: false }
+    return { message: 'Unauthorized', ok: false }
   }
 
   try {
@@ -25,9 +26,39 @@ export const likeMutation = async (id: StampWithRelations['id']) => {
     })
   } catch (e) {
     console.error(e)
-    return { ok: false }
+    return { message: 'Server error.', ok: false }
   }
 
   revalidatePath(`/stamp/${id}`)
-  return { ok: true }
+  return { message: 'Successfully liked stamp.', ok: true }
+}
+
+export const addCommentToStamp = async (
+  formData: FormData,
+  id: StampWithRelations['id'],
+) => {
+  const session = await auth()
+  if (!session) {
+    return { message: 'Unauthorized', ok: false }
+  }
+
+  const { comment } = Object.fromEntries(formData) as {
+    comment: string
+  }
+  try {
+    await prisma.comment.create({
+      data: {
+        content: comment,
+        id: createId(),
+        stampId: id,
+        userId: session.userId,
+      },
+    })
+  } catch (e) {
+    console.error(e)
+    return { message: 'Server error.', ok: false }
+  }
+
+  revalidatePath(`/stamp/${id}`)
+  return { message: 'Added comment to stamp.', ok: true }
 }

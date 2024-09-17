@@ -15,6 +15,7 @@ export const stampIncludeStatement = {
       likedBy: true,
     },
   },
+  comments: true,
   images: true,
   user: {
     select: {
@@ -30,9 +31,10 @@ export interface StampWithRelations
     Prisma.StampGetPayload<{
       include: typeof stampIncludeStatement
     }>,
-    'changedAt' | 'createdAt' | 'images' | 'updatedAt'
+    'changedAt' | 'comments' | 'createdAt' | 'images' | 'updatedAt'
   > {
   changedAt: string
+  comments: Comment[]
   createdAt: string
   images: Image[]
   suffixDownloads: string
@@ -214,6 +216,35 @@ export const userExtension = Prisma.defineExtension({
       name: {
         compute() {
           return null
+        },
+      },
+    },
+  },
+})
+
+/* -------------------------------------------------------------------------------------------------
+ * Comments
+ * -----------------------------------------------------------------------------------------------*/
+
+export type Comment = {
+  createdAt: number
+  updatedAt: number
+} & Omit<
+  Prisma.CommentGetPayload<Prisma.CommentDefaultArgs>,
+  'createdAt' | 'updatedAt'
+>
+
+export const commentExtension = Prisma.defineExtension({
+  result: {
+    comment: {
+      createdAt: {
+        compute({ createdAt }) {
+          return getUnixTime(new Date(createdAt))
+        },
+      },
+      updatedAt: {
+        compute({ updatedAt }) {
+          return getUnixTime(new Date(updatedAt))
         },
       },
     },
