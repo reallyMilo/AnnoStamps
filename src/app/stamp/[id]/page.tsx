@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils'
 
 import { likeMutation } from './actions'
 import { CarouselImage } from './CarouselImage'
+import { CommentThread } from './CommentThread'
 
 const getStamp = unstable_cache(
   async (id: string) =>
@@ -63,6 +64,23 @@ export const generateMetadata = async ({
   }
 }
 
+const Comments = async ({ id }: Pick<StampWithRelations, 'id'>) => {
+  const stamp = await getStamp(id)
+
+  const { comments } = stamp!
+
+  return (
+    <>
+      <Heading level={2}>Comments</Heading>
+
+      <CommentThread comments={comments} id={id} />
+
+      {/* <Link href={`/auth/signin?callbackUrl=/stamp/${id}`}>
+          <Text className="underline">Login to comment</Text>
+        </Link> */}
+    </>
+  )
+}
 const StampLikeButton = async ({ id }: Pick<StampWithRelations, 'id'>) => {
   const session = await auth()
   const stamp = await getStamp(id)
@@ -90,6 +108,7 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
   if (!stamp) {
     notFound()
   }
+
   const {
     _count: likes,
     category,
@@ -108,7 +127,7 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
   } = stamp
 
   return (
-    <Container className="max-w-5xl space-y-6 px-0">
+    <Container className="max-w-5xl space-y-6 px-0 pb-24">
       <CarouselImage images={images} />
       <div className="space-y-6 px-2 text-midnight sm:px-0 dark:text-white">
         <Heading className="truncate">{title} </Heading>
@@ -186,6 +205,7 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
           dangerouslySetInnerHTML={{ __html: markdownDescription ?? '' }}
         ></div>
       </div>
+      <Comments id={id} />
     </Container>
   )
 }

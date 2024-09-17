@@ -28,6 +28,8 @@ model Comment {
   content       String
   userId        String
   user          User      @relation(fields: [userId], references: [id])
+  stampId       String
+  stamp         Stamp     @relation(fields: [stampId], references: [id])
   parentId      String?
   parentComment Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   replies       Comment[] @relation("CommentReplies")
@@ -36,7 +38,7 @@ model Comment {
 }
 
 model Stamp {
-  id                  String   @id
+  id                  String    @id
   userId              String
   game                String
   title               String
@@ -47,14 +49,15 @@ model Stamp {
   stampFileUrl        String
   good                String?
   capital             String?
-  createdAt           DateTime @default(now())
-  changedAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  modded              Boolean  @default(false)
-  downloads           Int      @default(0)
-  user                User     @relation("StampCreator", fields: [userId], references: [id], onDelete: NoAction)
-  likedBy             User[]   @relation("StampLiker")
-  images              Image[]  @relation("StampImage")
+  createdAt           DateTime  @default(now())
+  changedAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  modded              Boolean   @default(false)
+  downloads           Int       @default(0)
+  user                User      @relation("StampCreator", fields: [userId], references: [id], onDelete: NoAction)
+  likedBy             User[]    @relation("StampLiker")
+  images              Image[]   @relation("StampImage")
+  comments            Comment[]
 }
 
 model Account {
