@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { getUnixTime } from 'date-fns'
+import { formatDistanceToNowStrict, getUnixTime } from 'date-fns'
 import z from 'zod'
 
 import { REGIONS_1800 } from '@/lib/constants/1800/data'
@@ -226,9 +226,20 @@ export const userExtension = Prisma.defineExtension({
  * Comments
  * -----------------------------------------------------------------------------------------------*/
 
+export const commentIncludeStatement = {
+  user: {
+    select: {
+      id: true,
+      image: true,
+      username: true,
+      usernameURL: true,
+    },
+  },
+} satisfies Prisma.CommentInclude
+
 export type Comment = {
-  createdAt: number
-  updatedAt: number
+  createdAt: string
+  updatedAt: string
 } & Omit<
   Prisma.CommentGetPayload<Prisma.CommentDefaultArgs>,
   'createdAt' | 'updatedAt'
@@ -239,12 +250,12 @@ export const commentExtension = Prisma.defineExtension({
     comment: {
       createdAt: {
         compute({ createdAt }) {
-          return getUnixTime(new Date(createdAt))
+          return formatDistanceToNowStrict(createdAt)
         },
       },
       updatedAt: {
         compute({ updatedAt }) {
-          return getUnixTime(new Date(updatedAt))
+          return formatDistanceToNowStrict(updatedAt)
         },
       },
     },

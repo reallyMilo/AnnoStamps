@@ -23,11 +23,11 @@ export const AddCommentForm = ({ id }: { id: string }) => {
   >([], (state, newComment) => [
     {
       content: newComment,
-      createdAt: 0,
+      createdAt: 'now',
       id: 'localFirst',
       parentId: null,
       stampId: 'local',
-      updatedAt: 0,
+      updatedAt: 'now',
       userId: 'local',
     },
     ...state,
