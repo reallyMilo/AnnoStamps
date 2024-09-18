@@ -16,9 +16,9 @@ vi.mock('react', async () => {
   }
 })
 vi.mocked(useOptimistic).mockReturnValue([[], () => {}])
-
+const user = { biography: null, id: '1', username: null, usernameURL: null }
 const render = () => ({
-  ...renderRTL(<AddCommentForm id={'test'} />),
+  ...renderRTL(<AddCommentForm id={'test'} />, { user }),
   user: userEvent.setup(),
 })
 
