@@ -5,7 +5,7 @@ import {
   screen,
   userEvent,
 } from '../../../../__tests__/test-utils'
-import { CommentThread } from '../CommentThread'
+import { AddCommentForm } from '../AddCommentForm'
 
 vi.mock('react', async () => {
   const actual = await vi.importActual('react')
@@ -18,7 +18,7 @@ vi.mock('react', async () => {
 vi.mocked(useOptimistic).mockReturnValue([[], () => {}])
 
 const render = () => ({
-  ...renderRTL(<CommentThread id={'test'} />),
+  ...renderRTL(<AddCommentForm id={'test'} />),
   user: userEvent.setup(),
 })
 
