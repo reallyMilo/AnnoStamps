@@ -1,6 +1,8 @@
 'use client'
 
 import autosize from 'autosize'
+import { useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useOptimistic } from 'react'
 
@@ -14,7 +16,7 @@ export const AddCommentForm = ({ id }: { id: string }) => {
   const [content, setContent] = useState('')
   const [isTextareaFocused, setIsTextareaFocused] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-
+  const { status } = useSession()
   const [optimisticComments, addOptimisticComment] = useOptimistic<
     Comment[],
     string
@@ -56,7 +58,12 @@ export const AddCommentForm = ({ id }: { id: string }) => {
           aria-label="Comment"
           name="comment"
           onChange={(e) => setContent(e.target.value)}
-          onFocus={() => setIsTextareaFocused(true)}
+          onFocus={() => {
+            if (status === 'unauthenticated') {
+              redirect(`/auth/signin?callbackUrl=/stamp/${id}`)
+            }
+            setIsTextareaFocused(true)
+          }}
           placeholder="Add a comment..."
           ref={textareaRef}
           resizable={false}
