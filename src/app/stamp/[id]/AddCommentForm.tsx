@@ -10,7 +10,7 @@ import { Button, Textarea } from '@/components/ui'
 
 import { addCommentToStamp } from './actions'
 
-export const CommentThread = ({ id }: { id: string }) => {
+export const AddCommentForm = ({ id }: { id: string }) => {
   const [content, setContent] = useState('')
   const [isTextareaFocused, setIsTextareaFocused] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
