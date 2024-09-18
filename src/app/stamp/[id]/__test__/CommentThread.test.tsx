@@ -1,3 +1,5 @@
+import { useOptimistic } from 'react'
+
 import {
   render as renderRTL,
   screen,
@@ -5,8 +7,18 @@ import {
 } from '../../../../__tests__/test-utils'
 import { CommentThread } from '../CommentThread'
 
+vi.mock('react', async () => {
+  const actual = await vi.importActual('react')
+  return {
+    ...actual,
+    // Add the mock implementation for useOptimistic
+    useOptimistic: vi.fn(() => [null, () => {}]),
+  }
+})
+vi.mocked(useOptimistic).mockReturnValue([[], () => {}])
+
 const render = () => ({
-  ...renderRTL(<CommentThread comments={[]} id={'test'} />),
+  ...renderRTL(<CommentThread id={'test'} />),
   user: userEvent.setup(),
 })
 
@@ -25,7 +37,8 @@ describe('CommentsForm', () => {
     expect(screen.getByRole('button', { name: 'Comment' })).toBeDisabled()
 
     await userEvent.click(document.body)
-    expect(screen.queryByRole('button', { name: 'Comment' })).toBeNull()
+    expect(screen.getByRole('button', { name: 'Comment' })).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Comment' })).toBeDisabled()
   })
 
   it('enables submit button when textarea contains text and does not reset on offscreen click', async () => {
