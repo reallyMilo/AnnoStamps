@@ -9,8 +9,16 @@ import 'swiper/css/navigation'
 import { auth } from '@/auth'
 import { LikeButton } from '@/components/LikeButton'
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
-import { buttonStyles, Container, Heading, Link, Text } from '@/components/ui'
 import {
+  AvatarButton,
+  buttonStyles,
+  Container,
+  Heading,
+  Link,
+  Text,
+} from '@/components/ui'
+import {
+  commentIncludeStatement,
   stampIncludeStatement,
   type StampWithRelations,
   userIncludeStatement,
@@ -20,11 +28,11 @@ import prisma from '@/lib/prisma/singleton'
 import { cn } from '@/lib/utils'
 
 import { likeMutation } from './actions'
+import { AddCommentForm } from './AddCommentForm'
 import { CarouselImage } from './CarouselImage'
-import { CommentThread } from './CommentThread'
 
 const getStamp = unstable_cache(
-  async (id: string) =>
+  async (id: StampWithRelations['id']) =>
     prisma.stamp.findUnique({
       include: stampIncludeStatement,
       where: { id },
@@ -48,6 +56,20 @@ const getUserLikedStamp = unstable_cache(
     }),
   ['getUserLikedStamp'],
 )
+const getCommentThread = unstable_cache(
+  async (id: StampWithRelations['id']) =>
+    prisma.comment.findMany({
+      include: commentIncludeStatement,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      where: {
+        stampId: id,
+      },
+    }),
+  ['getCommentThread'],
+  { revalidate: 3600 },
+)
 
 export const generateMetadata = async ({
   params,
@@ -65,19 +87,33 @@ export const generateMetadata = async ({
 }
 
 const Comments = async ({ id }: Pick<StampWithRelations, 'id'>) => {
-  const stamp = await getStamp(id)
-
-  const { comments } = stamp!
-
+  const session = await auth()
+  const comments = await getCommentThread(id)
   return (
     <>
-      <Heading level={2}>Comments</Heading>
-
-      <CommentThread comments={comments} id={id} />
-
-      {/* <Link href={`/auth/signin?callbackUrl=/stamp/${id}`}>
-          <Text className="underline">Login to comment</Text>
-        </Link> */}
+      <Heading level={2}>{comments.length} Comments</Heading>
+      <SessionProvider session={session}>
+        <AddCommentForm id={id} />
+      </SessionProvider>
+      <ul className="space-y-3">
+        {comments.map(({ content, createdAt, id, user }) => (
+          <li className="flex space-x-5" key={id}>
+            <AvatarButton src={user.image} />
+            <div className="flex flex-col">
+              <div className="flex space-x-5">
+                <Link
+                  className="text-midnight hover:text-primary dark:text-white"
+                  href={`/${user.usernameURL}`}
+                >
+                  {user.username}
+                </Link>
+                <Text suppressHydrationWarning>{createdAt}</Text>
+              </div>
+              <Text>{content}</Text>
+            </div>
+          </li>
+        ))}
+      </ul>
     </>
   )
 }

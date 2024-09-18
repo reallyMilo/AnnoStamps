@@ -1,7 +1,9 @@
 'use client'
 
 import autosize from 'autosize'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 import { useOptimistic } from 'react'
 
 import type { Comment } from '@/lib/prisma/models'
@@ -10,61 +12,44 @@ import { Button, Textarea } from '@/components/ui'
 
 import { addCommentToStamp } from './actions'
 
-type CommentThreadProps = { comments: Comment[]; id: string }
-
-export const CommentThread = ({ comments, id }: CommentThreadProps) => {
+export const AddCommentForm = ({ id }: { id: string }) => {
   const [content, setContent] = useState('')
   const [isTextareaFocused, setIsTextareaFocused] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      if (
-        textareaRef.current &&
-        !textareaRef.current.contains(event.target as Node) &&
-        content.length === 0
-      ) {
-        setIsTextareaFocused(false)
-      }
+  const { status } = useSession()
+  const [optimisticComments, addOptimisticComment] = useOptimistic<
+    Comment[],
+    string
+  >([], (state, newComment) => [
+    {
+      content: newComment,
+      createdAt: 'now',
+      id: 'localFirst',
+      parentId: null,
+      stampId: 'local',
+      updatedAt: 'now',
+      userId: 'local',
     },
-    [content.length],
-  )
-
-  const [optimisticComments, addOptimisticComment] = useOptimistic(
-    comments,
-    (state, newComment) => [
-      {
-        content: newComment as string,
-        createdAt: 0,
-        id: 'localFirst',
-        parentId: null,
-        stampId: 'local',
-        updatedAt: 0,
-        userId: 'local',
-      },
-      ...state,
-    ],
-  )
+    ...state,
+  ])
 
   useEffect(() => {
     const textareaCurrent = textareaRef.current
     if (textareaCurrent) {
       autosize(textareaCurrent)
     }
-    document.addEventListener('mousedown', handleClickOutside)
     return () => {
       if (textareaCurrent) {
         autosize.destroy(textareaCurrent)
       }
-      document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [handleClickOutside])
+  }, [])
 
   return (
     <>
       <form
         action={async (formData) => {
-          addOptimisticComment(formData.get('comment'))
+          addOptimisticComment(formData.get('comment') as string)
           await addCommentToStamp(formData, id)
         }}
         className="flex flex-col space-y-2"
@@ -73,7 +58,12 @@ export const CommentThread = ({ comments, id }: CommentThreadProps) => {
           aria-label="Comment"
           name="comment"
           onChange={(e) => setContent(e.target.value)}
-          onFocus={() => setIsTextareaFocused(true)}
+          onFocus={() => {
+            if (status === 'unauthenticated') {
+              redirect(`/auth/signin?callbackUrl=/stamp/${id}`)
+            }
+            setIsTextareaFocused(true)
+          }}
           placeholder="Add a comment..."
           ref={textareaRef}
           resizable={false}
