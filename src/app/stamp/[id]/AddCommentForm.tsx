@@ -2,7 +2,7 @@
 import autosize from 'autosize'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
-import React, { type ComponentPropsWithRef, forwardRef, useEffect } from 'react'
+import React from 'react'
 import { useOptimistic } from 'react'
 import { useFormStatus } from 'react-dom'
 
@@ -27,7 +27,7 @@ const ShowFormButton = ({ children }: React.PropsWithChildren) => {
   const { isFormVisible, setIsFormVisible, setIsTextareaFocused, textareaRef } =
     useAddCommentContext()
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.focus()
     }
