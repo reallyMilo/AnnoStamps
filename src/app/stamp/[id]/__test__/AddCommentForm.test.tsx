@@ -89,14 +89,14 @@ describe('AddCommentForm', () => {
       ),
       user: userEvent.setup(),
     })
-    it('entire form is hidden except reply button', () => {
+    it('displays only the Reply button when the form is initially hidden', () => {
       render()
 
       expect(screen.getByRole('button', { name: 'Reply' })).toBeVisible()
       expect(screen.getByRole('button', { name: 'Reply' })).toBeEnabled()
       expect(screen.queryByLabelText('Comment')).not.toBeInTheDocument()
     })
-    it('clicking reply button enables entire form with action buttons and focuses on textarea, repeat click focus on textarea', async () => {
+    it('expands the form and focuses on textarea when Reply button is clicked', async () => {
       render()
       await userEvent.click(screen.getByRole('button', { name: 'Reply' }))
 
@@ -110,7 +110,7 @@ describe('AddCommentForm', () => {
       await userEvent.click(screen.getByTestId('comment-reply-button'))
       expect(screen.getByLabelText('Comment')).toHaveFocus()
     })
-    it('click focus hides everything except Reply button', async () => {
+    it('hides the expanded form when Cancel button is clicked', async () => {
       render()
 
       await userEvent.click(screen.getByRole('button', { name: 'Reply' }))
