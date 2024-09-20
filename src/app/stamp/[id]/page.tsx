@@ -28,7 +28,8 @@ import prisma from '@/lib/prisma/singleton'
 import { cn } from '@/lib/utils'
 
 import { likeMutation } from './actions'
-import { AddCommentForm } from './AddCommentForm'
+import { AddCommentToStamp } from './AddCommentToStamp'
+import { AddReplyToComment } from './AddReplyToComment'
 import { CarouselImage } from './CarouselImage'
 
 const getStamp = unstable_cache(
@@ -86,34 +87,48 @@ export const generateMetadata = async ({
   }
 }
 
-const Comments = async ({ id }: Pick<StampWithRelations, 'id'>) => {
+const Comments = async ({ id: stampId }: Pick<StampWithRelations, 'id'>) => {
   const session = await auth()
-  const comments = await getCommentThread(id)
+  const comments = await getCommentThread(stampId)
   return (
     <>
       <Heading level={2}>{comments.length} Comments</Heading>
       <SessionProvider session={session}>
-        <AddCommentForm id={id} />
+        <AddCommentToStamp id={stampId} />
+        <ul className="space-y-3">
+          {comments.map(
+            ({
+              _count: repliesCount,
+              content,
+              createdAt,
+              id: commentId,
+              user,
+            }) => (
+              <>
+                <li className="flex space-x-5" key={commentId}>
+                  <AvatarButton className="self-start" src={user.image} />
+                  <div className="flex flex-col">
+                    <div className="flex space-x-5">
+                      <Link
+                        className="text-midnight hover:text-primary dark:text-white"
+                        href={`/${user.usernameURL}`}
+                      >
+                        {user.username}
+                      </Link>
+                      <Text suppressHydrationWarning>{createdAt}</Text>
+                    </div>
+                    <Text>{content}</Text>
+                    <AddReplyToComment id={commentId} />
+                  </div>
+                </li>
+                {repliesCount?.replies > 0 && (
+                  <div className="ml-12">{repliesCount.replies} replies</div>
+                )}
+              </>
+            ),
+          )}
+        </ul>
       </SessionProvider>
-      <ul className="space-y-3">
-        {comments.map(({ content, createdAt, id, user }) => (
-          <li className="flex space-x-5" key={id}>
-            <AvatarButton src={user.image} />
-            <div className="flex flex-col">
-              <div className="flex space-x-5">
-                <Link
-                  className="text-midnight hover:text-primary dark:text-white"
-                  href={`/${user.usernameURL}`}
-                >
-                  {user.username}
-                </Link>
-                <Text suppressHydrationWarning>{createdAt}</Text>
-              </div>
-              <Text>{content}</Text>
-            </div>
-          </li>
-        ))}
-      </ul>
     </>
   )
 }
