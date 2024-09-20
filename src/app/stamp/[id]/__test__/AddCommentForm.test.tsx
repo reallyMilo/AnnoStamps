@@ -7,53 +7,116 @@ import {
 } from '../../../../__tests__/test-utils'
 import { AddCommentForm } from '../AddCommentForm'
 
+// mocking both due to nextjs using its own react version
 vi.mock('react', async () => {
   const actual = await vi.importActual('react')
   return {
     ...actual,
-    // Add the mock implementation for useOptimistic
     useOptimistic: vi.fn(() => [null, () => {}]),
   }
 })
-vi.mocked(useOptimistic).mockReturnValue([[], () => {}])
-const user = { biography: null, id: '1', username: null, usernameURL: null }
-const render = () => ({
-  ...renderRTL(<AddCommentForm id={'test'} />, { user }),
-  user: userEvent.setup(),
+vi.mock('react-dom', async () => {
+  const actual = await vi.importActual('react-dom')
+  return {
+    ...actual,
+    useFormStatus: vi.fn(() => [null, () => {}]),
+  }
 })
+vi.mocked(useOptimistic).mockReturnValue([[], () => {}])
 
-describe('CommentsForm', () => {
-  it('initially renders with a single-row textarea and hidden buttons', () => {
-    render()
+const user = { biography: null, id: '1', username: null, usernameURL: null }
 
-    expect(screen.getByLabelText('Comment')).toHaveAttribute('rows', '1')
-    expect(screen.getByPlaceholderText('Add a comment...')).toBeInTheDocument()
+describe('AddCommentForm', () => {
+  describe('Add a comment to stamp', () => {
+    const render = () => ({
+      ...renderRTL(
+        <AddCommentForm.Root>
+          <AddCommentForm.Form id={'test'}>
+            <AddCommentForm.FormActionButtons>
+              Comment
+            </AddCommentForm.FormActionButtons>
+          </AddCommentForm.Form>
+        </AddCommentForm.Root>,
+        { user },
+      ),
+      user: userEvent.setup(),
+    })
+
+    it('renders textarea with hidden buttons initially, and shows buttons on focus', async () => {
+      render()
+      const textarea = screen.getByLabelText('Comment')
+
+      expect(
+        screen.getByPlaceholderText('Add a comment...'),
+      ).toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', { name: 'Comment' }),
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', { name: 'Cancel' }),
+      ).not.toBeInTheDocument()
+
+      await userEvent.click(textarea)
+      expect(screen.getByRole('button', { name: 'Comment' })).toBeVisible()
+      expect(screen.getByRole('button', { name: 'Comment' })).toBeDisabled()
+      expect(screen.getByRole('button', { name: 'Cancel' })).toBeVisible()
+      expect(screen.getByRole('button', { name: 'Cancel' })).toBeEnabled()
+    })
+
+    it('enables submit button when text is entered and clears form on cancel', async () => {
+      render()
+      const textarea = screen.getByLabelText('Comment')
+      await userEvent.type(textarea, 'testing')
+      expect(textarea).toHaveValue('testing')
+      expect(screen.getByRole('button', { name: 'Comment' })).toBeVisible()
+      expect(screen.getByRole('button', { name: 'Comment' })).toBeEnabled()
+      await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+    })
   })
-  it('shows disabled submit button on textarea focus and hides it when not focused', async () => {
-    render()
+  describe('Add a reply to a comment', () => {
+    const render = () => ({
+      ...renderRTL(
+        <AddCommentForm.Root isVisible={false}>
+          <AddCommentForm.ShowFormButton>
+            <AddCommentForm.Form id={'test'}>
+              <AddCommentForm.FormActionButtons>
+                Reply
+              </AddCommentForm.FormActionButtons>
+            </AddCommentForm.Form>
+          </AddCommentForm.ShowFormButton>
+        </AddCommentForm.Root>,
+        { user },
+      ),
+      user: userEvent.setup(),
+    })
+    it('entire form is hidden except reply button', () => {
+      render()
 
-    await userEvent.click(screen.getByLabelText('Comment'))
-    expect(screen.getByRole('button', { name: 'Comment' })).toBeVisible()
-    expect(screen.getByRole('button', { name: 'Comment' })).toBeDisabled()
+      expect(screen.getByRole('button', { name: 'Reply' })).toBeVisible()
+      expect(screen.getByRole('button', { name: 'Reply' })).toBeEnabled()
+      expect(screen.queryByLabelText('Comment')).not.toBeInTheDocument()
+    })
+    it('clicking reply button enables entire form with action buttons and focuses on textarea, repeat click focus on textarea', async () => {
+      render()
+      await userEvent.click(screen.getByRole('button', { name: 'Reply' }))
 
-    await userEvent.click(document.body)
-    expect(screen.getByRole('button', { name: 'Comment' })).toBeVisible()
-    expect(screen.getByRole('button', { name: 'Comment' })).toBeDisabled()
-  })
+      expect(
+        screen.getByPlaceholderText('Add a comment...'),
+      ).toBeInTheDocument()
+      expect(screen.getByLabelText('Comment')).toHaveFocus()
+      expect(screen.getByTestId('comment-submit-button')).toBeVisible()
+      expect(screen.getByRole('button', { name: 'Cancel' })).toBeVisible()
 
-  it('enables submit button when textarea contains text and does not reset on offscreen click', async () => {
-    render()
+      await userEvent.click(screen.getByTestId('comment-reply-button'))
+      expect(screen.getByLabelText('Comment')).toHaveFocus()
+    })
+    it('click focus hides everything except Reply button', async () => {
+      render()
 
-    const textarea = screen.getByLabelText('Comment')
-
-    await userEvent.type(textarea, 'testing')
-    expect(textarea).toHaveValue('testing')
-    expect(screen.getByRole('button', { name: 'Comment' })).toBeVisible()
-    expect(screen.getByRole('button', { name: 'Comment' })).toBeEnabled()
-
-    await userEvent.click(document.body)
-    expect(textarea).toHaveValue('testing')
-    expect(screen.getByRole('button', { name: 'Comment' })).toBeVisible()
-    expect(screen.getByRole('button', { name: 'Comment' })).toBeEnabled()
+      await userEvent.click(screen.getByRole('button', { name: 'Reply' }))
+      await userEvent.type(screen.getByLabelText('Comment'), 'testing')
+      await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+      expect(screen.queryByLabelText('Comment')).not.toBeInTheDocument()
+    })
   })
 })

@@ -227,6 +227,11 @@ export const userExtension = Prisma.defineExtension({
  * -----------------------------------------------------------------------------------------------*/
 
 export const commentIncludeStatement = {
+  _count: {
+    select: {
+      replies: true,
+    },
+  },
   user: {
     select: {
       id: true,
