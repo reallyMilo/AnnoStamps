@@ -18,6 +18,7 @@ import {
   Text,
 } from '@/components/ui'
 import {
+  type Comment,
   commentIncludeStatement,
   stampIncludeStatement,
   type StampWithRelations,
@@ -57,6 +58,7 @@ const getUserLikedStamp = unstable_cache(
     }),
   ['getUserLikedStamp'],
 )
+
 const getCommentThread = unstable_cache(
   async (id: StampWithRelations['id']) =>
     prisma.comment.findMany({
@@ -258,7 +260,9 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
           dangerouslySetInnerHTML={{ __html: markdownDescription ?? '' }}
         ></div>
       </div>
-      <Comments id={id} />
+      <Suspense fallback={<Heading level={2}> Comments</Heading>}>
+        <Comments id={id} />
+      </Suspense>
     </Container>
   )
 }
