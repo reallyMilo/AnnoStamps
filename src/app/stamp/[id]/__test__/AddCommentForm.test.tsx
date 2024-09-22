@@ -31,7 +31,7 @@ describe('AddCommentForm', () => {
     const render = () => ({
       ...renderRTL(
         <AddCommentForm.Root>
-          <AddCommentForm.Form id={'test'}>
+          <AddCommentForm.Form action={() => null} stampId={'test'}>
             <AddCommentForm.FormActionButtons>
               Comment
             </AddCommentForm.FormActionButtons>
@@ -78,7 +78,7 @@ describe('AddCommentForm', () => {
       ...renderRTL(
         <AddCommentForm.Root isVisible={false}>
           <AddCommentForm.ShowFormButton>
-            <AddCommentForm.Form id={'test'}>
+            <AddCommentForm.Form action={() => null} stampId={'test'}>
               <AddCommentForm.FormActionButtons>
                 Reply
               </AddCommentForm.FormActionButtons>
