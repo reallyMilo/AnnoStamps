@@ -9,7 +9,7 @@ export const AddCommentToStamp = ({ id }: Pick<StampWithRelations, 'id'>) => {
   const addCommentToStampAction = addCommentToStamp.bind(null, id, null)
   return (
     <AddCommentForm.Root>
-      <AddCommentForm.Form action={addCommentToStampAction} stampId={id}>
+      <AddCommentForm.Form action={addCommentToStampAction}>
         <AddCommentForm.FormActionButtons>
           Comment
         </AddCommentForm.FormActionButtons>

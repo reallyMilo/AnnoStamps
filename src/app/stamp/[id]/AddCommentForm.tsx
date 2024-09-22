@@ -1,12 +1,12 @@
 'use client'
 import autosize from 'autosize'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
 import React from 'react'
 import { useOptimistic } from 'react'
 import { useFormStatus } from 'react-dom'
 
-import type { Comment, StampWithRelations } from '@/lib/prisma/models'
+import type { Comment } from '@/lib/prisma/models'
 import type { ServerAction } from '@/lib/utils'
 
 import { Button, Textarea } from '@/components/ui'
@@ -89,19 +89,15 @@ const FormActionButtons = ({ children }: React.PropsWithChildren) => {
   )
 }
 
-type FormProps = {
-  action: any
-  stampId: StampWithRelations['id']
-}
-
 const Form = ({
   action,
   children,
-  stampId,
-}: React.PropsWithChildren<FormProps>) => {
+}: React.PropsWithChildren<{
+  action: any
+}>) => {
   const { content, setContent, setIsTextareaFocused, textareaRef } =
     useAddCommentContext()
-
+  const pathname = usePathname()
   const { status } = useSession()
   const [optimisticComments, addOptimisticComment] = useOptimistic<
     Comment[],
@@ -146,7 +142,7 @@ const Form = ({
           onChange={(e) => setContent(e.target.value)}
           onFocus={() => {
             if (status === 'unauthenticated') {
-              redirect(`/auth/signin?callbackUrl=/stamp/${stampId}`)
+              redirect(`/auth/signin?callbackUrl=${pathname}`)
             }
             setIsTextareaFocused(true)
           }}

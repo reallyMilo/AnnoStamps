@@ -21,7 +21,7 @@ export const AddReplyToComment = ({
   return (
     <AddCommentForm.Root isVisible={false}>
       <AddCommentForm.ShowFormButton>
-        <AddCommentForm.Form action={addReplyToCommentAction} stampId={stampId}>
+        <AddCommentForm.Form action={addReplyToCommentAction}>
           <AddCommentForm.FormActionButtons>
             Reply
           </AddCommentForm.FormActionButtons>
