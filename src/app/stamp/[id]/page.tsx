@@ -65,6 +65,7 @@ const getCommentThread = unstable_cache(
         createdAt: 'desc',
       },
       where: {
+        parentId: null,
         stampId: id,
       },
     }),
@@ -90,6 +91,7 @@ export const generateMetadata = async ({
 const Comments = async ({ id: stampId }: Pick<StampWithRelations, 'id'>) => {
   const session = await auth()
   const comments = await getCommentThread(stampId)
+
   return (
     <>
       <Heading level={2}>{comments.length} Comments</Heading>
@@ -118,7 +120,7 @@ const Comments = async ({ id: stampId }: Pick<StampWithRelations, 'id'>) => {
                       <Text suppressHydrationWarning>{createdAt}</Text>
                     </div>
                     <Text>{content}</Text>
-                    <AddReplyToComment id={commentId} />
+                    <AddReplyToComment parentId={commentId} stampId={stampId} />
                   </div>
                 </li>
                 {repliesCount?.replies > 0 && (
