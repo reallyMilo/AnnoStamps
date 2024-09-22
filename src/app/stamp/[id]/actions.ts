@@ -3,7 +3,7 @@
 import { createId } from '@paralleldrive/cuid2'
 import { revalidatePath } from 'next/cache'
 
-import type { StampWithRelations } from '@/lib/prisma/models'
+import type { Comment, StampWithRelations } from '@/lib/prisma/models'
 
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
@@ -34,8 +34,9 @@ export const likeMutation = async (id: StampWithRelations['id']) => {
 }
 
 export const addCommentToStamp = async (
+  id: Comment['id'] | StampWithRelations['id'],
+  parentId: Comment['parentId'],
   formData: FormData,
-  id: StampWithRelations['id'],
 ) => {
   const session = await auth()
   if (!session) {
@@ -50,6 +51,7 @@ export const addCommentToStamp = async (
       data: {
         content: comment,
         id: createId(),
+        parentId: parentId ? parentId : null,
         stampId: id,
         userId: session.userId,
       },
