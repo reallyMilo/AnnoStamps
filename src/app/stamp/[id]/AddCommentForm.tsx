@@ -11,8 +11,6 @@ import type { ServerAction } from '@/lib/utils'
 
 import { Button, Textarea } from '@/components/ui'
 
-import { addCommentToStamp } from './actions'
-
 const AddCommentContext = React.createContext<any | null>(null)
 
 const useAddCommentContext = () => {
@@ -33,7 +31,7 @@ const ShowFormButton = ({ children }: React.PropsWithChildren) => {
     }
   })
   return (
-    <>
+    <div className="space-y-2">
       <Button
         className="max-w-fit text-xs sm:text-xs"
         data-testid="comment-reply-button"
@@ -49,7 +47,7 @@ const ShowFormButton = ({ children }: React.PropsWithChildren) => {
         Reply
       </Button>
       {isFormVisible && <>{children}</>}
-    </>
+    </div>
   )
 }
 const FormActionButtons = ({ children }: React.PropsWithChildren) => {
@@ -92,14 +90,15 @@ const FormActionButtons = ({ children }: React.PropsWithChildren) => {
 }
 
 type FormProps = {
-  action?: ServerAction<
-    Comment['id'] | StampWithRelations['id'],
-    { message: string; ok: boolean }
-  >
-  id: Comment['id'] | StampWithRelations['id']
+  action: any
+  stampId: StampWithRelations['id']
 }
 
-const Form = ({ action, children, id }: React.PropsWithChildren<FormProps>) => {
+const Form = ({
+  action,
+  children,
+  stampId,
+}: React.PropsWithChildren<FormProps>) => {
   const { content, setContent, setIsTextareaFocused, textareaRef } =
     useAddCommentContext()
 
@@ -137,7 +136,7 @@ const Form = ({ action, children, id }: React.PropsWithChildren<FormProps>) => {
       <form
         action={async (formData) => {
           addOptimisticComment(formData.get('comment') as string)
-          await addCommentToStamp(formData, id)
+          await action(formData)
         }}
         className="flex flex-col space-y-2"
       >
@@ -147,7 +146,7 @@ const Form = ({ action, children, id }: React.PropsWithChildren<FormProps>) => {
           onChange={(e) => setContent(e.target.value)}
           onFocus={() => {
             if (status === 'unauthenticated') {
-              redirect(`/auth/signin?callbackUrl=/stamp/${id}`)
+              redirect(`/auth/signin?callbackUrl=/stamp/${stampId}`)
             }
             setIsTextareaFocused(true)
           }}
