@@ -34,7 +34,7 @@ export const likeMutation = async (id: StampWithRelations['id']) => {
 }
 
 export const addCommentToStamp = async (
-  id: Comment['id'] | StampWithRelations['id'],
+  id: StampWithRelations['id'],
   parentId: Comment['parentId'],
   formData: FormData,
 ) => {
@@ -46,6 +46,7 @@ export const addCommentToStamp = async (
   const { comment } = Object.fromEntries(formData) as {
     comment: string
   }
+
   try {
     await prisma.comment.create({
       data: {
