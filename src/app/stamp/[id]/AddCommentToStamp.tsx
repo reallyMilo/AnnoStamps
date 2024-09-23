@@ -1,12 +1,17 @@
 'use client'
 
-import type { StampWithRelations } from '@/lib/prisma/models'
+import { usePathname } from 'next/navigation'
 
 import { addCommentToStamp } from './actions'
 import { AddCommentForm } from './AddCommentForm'
 
-export const AddCommentToStamp = ({ id }: Pick<StampWithRelations, 'id'>) => {
-  const addCommentToStampAction = addCommentToStamp.bind(null, id, null)
+export const AddCommentToStamp = () => {
+  const pathname = usePathname()
+  const addCommentToStampAction = addCommentToStamp.bind(
+    null,
+    pathname.split('/').at(-1) as string,
+    null,
+  )
   return (
     <AddCommentForm.Root>
       <AddCommentForm.Form action={addCommentToStampAction}>
