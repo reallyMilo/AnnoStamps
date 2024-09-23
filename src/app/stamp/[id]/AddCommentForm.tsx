@@ -1,17 +1,17 @@
 'use client'
 import autosize from 'autosize'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
 import React from 'react'
 import { useOptimistic } from 'react'
 import { useFormStatus } from 'react-dom'
 
-import type { Comment, StampWithRelations } from '@/lib/prisma/models'
+import type { Comment } from '@/lib/prisma/models'
 import type { ServerAction } from '@/lib/utils'
 
 import { Button, Textarea } from '@/components/ui'
 
-import { addCommentToStamp } from './actions'
+import { CommentItem } from './CommentItem'
 
 const AddCommentContext = React.createContext<any | null>(null)
 
@@ -33,7 +33,7 @@ const ShowFormButton = ({ children }: React.PropsWithChildren) => {
     }
   })
   return (
-    <>
+    <div className="space-y-2">
       <Button
         className="max-w-fit text-xs sm:text-xs"
         data-testid="comment-reply-button"
@@ -49,7 +49,7 @@ const ShowFormButton = ({ children }: React.PropsWithChildren) => {
         Reply
       </Button>
       {isFormVisible && <>{children}</>}
-    </>
+    </div>
   )
 }
 const FormActionButtons = ({ children }: React.PropsWithChildren) => {
@@ -91,21 +91,19 @@ const FormActionButtons = ({ children }: React.PropsWithChildren) => {
   )
 }
 
-type FormProps = {
-  action?: ServerAction<
-    Comment['id'] | StampWithRelations['id'],
-    { message: string; ok: boolean }
-  >
-  id: Comment['id'] | StampWithRelations['id']
-}
-
-const Form = ({ action, children, id }: React.PropsWithChildren<FormProps>) => {
+const Form = ({
+  action,
+  children,
+}: React.PropsWithChildren<{
+  action: any
+}>) => {
   const { content, setContent, setIsTextareaFocused, textareaRef } =
     useAddCommentContext()
+  const pathname = usePathname()
+  const { data: session, status } = useSession()
 
-  const { status } = useSession()
   const [optimisticComments, addOptimisticComment] = useOptimistic<
-    Comment[],
+    Omit<Comment, '_count'>[],
     string
   >([], (state, newComment) => [
     {
@@ -115,6 +113,12 @@ const Form = ({ action, children, id }: React.PropsWithChildren<FormProps>) => {
       parentId: null,
       stampId: 'optimistic',
       updatedAt: 'now',
+      user: {
+        id: session?.userId ?? '1',
+        image: session?.user.image ?? null,
+        username: session?.user.username ?? null,
+        usernameURL: session?.user.usernameURL ?? null,
+      },
       userId: 'optimistic',
     },
     ...state,
@@ -137,7 +141,7 @@ const Form = ({ action, children, id }: React.PropsWithChildren<FormProps>) => {
       <form
         action={async (formData) => {
           addOptimisticComment(formData.get('comment') as string)
-          await addCommentToStamp(formData, id)
+          await action(formData)
         }}
         className="flex flex-col space-y-2"
       >
@@ -147,7 +151,10 @@ const Form = ({ action, children, id }: React.PropsWithChildren<FormProps>) => {
           onChange={(e) => setContent(e.target.value)}
           onFocus={() => {
             if (status === 'unauthenticated') {
-              redirect(`/auth/signin?callbackUrl=/stamp/${id}`)
+              redirect(`/auth/signin?callbackUrl=${pathname}`)
+            }
+            if (!session?.user.username) {
+              redirect(`/${session?.userId}/settings`)
             }
             setIsTextareaFocused(true)
           }}
@@ -159,9 +166,11 @@ const Form = ({ action, children, id }: React.PropsWithChildren<FormProps>) => {
         />
         {children}
       </form>
-      {optimisticComments.map((message) => (
-        <div key={message.id}>{message.content}</div>
-      ))}
+      <ul>
+        {optimisticComments.map((message) => (
+          <CommentItem key={message.id} {...message} />
+        ))}
+      </ul>
     </>
   )
 }

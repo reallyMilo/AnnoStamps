@@ -34,7 +34,6 @@ export interface StampWithRelations
     'changedAt' | 'comments' | 'createdAt' | 'images' | 'updatedAt'
   > {
   changedAt: string
-  comments: Comment[]
   createdAt: string
   images: Image[]
   suffixDownloads: string
@@ -246,7 +245,7 @@ export type Comment = {
   createdAt: string
   updatedAt: string
 } & Omit<
-  Prisma.CommentGetPayload<Prisma.CommentDefaultArgs>,
+  Prisma.CommentGetPayload<{ include: typeof commentIncludeStatement }>,
   'createdAt' | 'updatedAt'
 >
 

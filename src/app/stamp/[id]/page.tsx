@@ -9,15 +9,9 @@ import 'swiper/css/navigation'
 import { auth } from '@/auth'
 import { LikeButton } from '@/components/LikeButton'
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
+import { buttonStyles, Container, Heading, Link, Text } from '@/components/ui'
 import {
-  AvatarButton,
-  buttonStyles,
-  Container,
-  Heading,
-  Link,
-  Text,
-} from '@/components/ui'
-import {
+  type Comment,
   commentIncludeStatement,
   stampIncludeStatement,
   type StampWithRelations,
@@ -29,8 +23,9 @@ import { cn } from '@/lib/utils'
 
 import { likeMutation } from './actions'
 import { AddCommentToStamp } from './AddCommentToStamp'
-import { AddReplyToComment } from './AddReplyToComment'
 import { CarouselImage } from './CarouselImage'
+import { CommentItem } from './CommentItem'
+import { ViewReplyButton } from './ViewReplyButton'
 
 const getStamp = unstable_cache(
   async (id: StampWithRelations['id']) =>
@@ -57,6 +52,27 @@ const getUserLikedStamp = unstable_cache(
     }),
   ['getUserLikedStamp'],
 )
+const getReplyThread = unstable_cache(
+  async (parentId: Comment['parentId']) =>
+    prisma.comment.findMany({
+      include: {
+        replies: {
+          include: {
+            replies: true,
+          },
+        },
+        user: true,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+      where: {
+        parentId,
+      },
+    }),
+  ['getReplyThread'],
+  { revalidate: 3600 },
+)
 const getCommentThread = unstable_cache(
   async (id: StampWithRelations['id']) =>
     prisma.comment.findMany({
@@ -65,6 +81,7 @@ const getCommentThread = unstable_cache(
         createdAt: 'desc',
       },
       where: {
+        parentId: null,
         stampId: id,
       },
     }),
@@ -87,47 +104,36 @@ export const generateMetadata = async ({
   }
 }
 
+const CommentList = ({ comments }: { comments: Comment[] }) => {
+  return (
+    <ul className="space-y-3">
+      {comments.map((comment) => {
+        const replyThreadPromise = getReplyThread(comment.id)
+
+        return (
+          <CommentItem key={comment.id} {...comment}>
+            <div className="ml-12">
+              <ViewReplyButton
+                numReplies={comment._count.replies ?? 0}
+                replyThreadPromise={replyThreadPromise}
+              />
+            </div>
+          </CommentItem>
+        )
+      })}
+    </ul>
+  )
+}
 const Comments = async ({ id: stampId }: Pick<StampWithRelations, 'id'>) => {
   const session = await auth()
   const comments = await getCommentThread(stampId)
+
   return (
     <>
       <Heading level={2}>{comments.length} Comments</Heading>
       <SessionProvider session={session}>
-        <AddCommentToStamp id={stampId} />
-        <ul className="space-y-3">
-          {comments.map(
-            ({
-              _count: repliesCount,
-              content,
-              createdAt,
-              id: commentId,
-              user,
-            }) => (
-              <>
-                <li className="flex space-x-5" key={commentId}>
-                  <AvatarButton className="self-start" src={user.image} />
-                  <div className="flex flex-col">
-                    <div className="flex space-x-5">
-                      <Link
-                        className="text-midnight hover:text-primary dark:text-white"
-                        href={`/${user.usernameURL}`}
-                      >
-                        {user.username}
-                      </Link>
-                      <Text suppressHydrationWarning>{createdAt}</Text>
-                    </div>
-                    <Text>{content}</Text>
-                    <AddReplyToComment id={commentId} />
-                  </div>
-                </li>
-                {repliesCount?.replies > 0 && (
-                  <div className="ml-12">{repliesCount.replies} replies</div>
-                )}
-              </>
-            ),
-          )}
-        </ul>
+        <AddCommentToStamp />
+        <CommentList comments={comments} />
       </SessionProvider>
     </>
   )
@@ -256,7 +262,9 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
           dangerouslySetInnerHTML={{ __html: markdownDescription ?? '' }}
         ></div>
       </div>
-      <Comments id={id} />
+      <Suspense fallback={<Heading level={2}> Comments</Heading>}>
+        <Comments id={id} />
+      </Suspense>
     </Container>
   )
 }
