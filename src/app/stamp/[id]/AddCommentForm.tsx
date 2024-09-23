@@ -11,6 +11,8 @@ import type { ServerAction } from '@/lib/utils'
 
 import { Button, Textarea } from '@/components/ui'
 
+import { CommentItem } from './CommentItem'
+
 const AddCommentContext = React.createContext<any | null>(null)
 
 const useAddCommentContext = () => {
@@ -98,9 +100,10 @@ const Form = ({
   const { content, setContent, setIsTextareaFocused, textareaRef } =
     useAddCommentContext()
   const pathname = usePathname()
-  const { status } = useSession()
+  const { data: session, status } = useSession()
+
   const [optimisticComments, addOptimisticComment] = useOptimistic<
-    Comment[],
+    Omit<Comment, '_count'>[],
     string
   >([], (state, newComment) => [
     {
@@ -110,6 +113,12 @@ const Form = ({
       parentId: null,
       stampId: 'optimistic',
       updatedAt: 'now',
+      user: {
+        id: session?.userId ?? '1',
+        image: session?.user.image ?? null,
+        username: session?.user.username ?? null,
+        usernameURL: session?.user.usernameURL ?? null,
+      },
       userId: 'optimistic',
     },
     ...state,
@@ -144,6 +153,9 @@ const Form = ({
             if (status === 'unauthenticated') {
               redirect(`/auth/signin?callbackUrl=${pathname}`)
             }
+            if (!session?.user.username) {
+              redirect(`/${session?.userId}/settings`)
+            }
             setIsTextareaFocused(true)
           }}
           placeholder="Add a comment..."
@@ -154,9 +166,11 @@ const Form = ({
         />
         {children}
       </form>
-      {optimisticComments.map((message) => (
-        <div key={message.id}>{message.content}</div>
-      ))}
+      <ul>
+        {optimisticComments.map((message) => (
+          <CommentItem key={message.id} {...message} />
+        ))}
+      </ul>
     </>
   )
 }
