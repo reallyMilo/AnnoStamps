@@ -246,7 +246,7 @@ export type Comment = {
   createdAt: string
   updatedAt: string
 } & Omit<
-  Prisma.CommentGetPayload<Prisma.CommentDefaultArgs>,
+  Prisma.CommentGetPayload<{ include: typeof commentIncludeStatement }>,
   'createdAt' | 'updatedAt'
 >
 
