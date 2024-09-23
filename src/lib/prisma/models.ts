@@ -34,7 +34,6 @@ export interface StampWithRelations
     'changedAt' | 'comments' | 'createdAt' | 'images' | 'updatedAt'
   > {
   changedAt: string
-  comments: Comment[]
   createdAt: string
   images: Image[]
   suffixDownloads: string
