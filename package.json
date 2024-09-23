@@ -87,7 +87,7 @@
     "eslint-plugin-testing-library": "^6.3.0",
     "eslint-plugin-yml": "^1.14.0",
     "husky": "^9.1.6",
-    "jsdom": "^24.1.0",
+    "jsdom": "^25.0.1",
     "lint-staged": "^15.2.10",
     "next-router-mock": "^0.9.13",
     "postcss": "^8.4.39",
