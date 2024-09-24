@@ -1,4 +1,5 @@
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
+import { Prisma } from '@prisma/client'
 import { SessionProvider } from 'next-auth/react'
 import { unstable_cache } from 'next/cache'
 import { notFound } from 'next/navigation'
@@ -22,9 +23,9 @@ import prisma from '@/lib/prisma/singleton'
 import { cn } from '@/lib/utils'
 
 import { likeMutation } from './actions'
-import { AddCommentToStamp } from './AddCommentToStamp'
 import { CarouselImage } from './CarouselImage'
 import { CommentItem } from './CommentItem'
+import { CommentView } from './CommentView'
 import { ViewReplyButton } from './ViewReplyButton'
 
 const getStamp = unstable_cache(
@@ -54,22 +55,50 @@ const getUserLikedStamp = unstable_cache(
 )
 const getReplyThread = unstable_cache(
   async (parentId: Comment['parentId']) =>
-    prisma.comment.findMany({
-      include: {
-        replies: {
-          include: {
-            replies: true,
-          },
-        },
-        user: true,
-      },
-      orderBy: {
-        createdAt: 'asc',
-      },
-      where: {
-        parentId,
-      },
-    }),
+    prisma.$queryRaw(Prisma.sql`WITH RECURSIVE comment_tree AS (
+    SELECT 
+        c.id,
+        c.content,
+        c."userId",
+        c."stampId",
+        c."parentId",
+        TO_CHAR(c."createdAt", 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "createdAt",
+        TO_CHAR(c."updatedAt", 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "updatedAt",
+        0 AS level,
+		json_build_object(
+        'username', u.username,
+        'usernameURL', u."usernameURL",
+        'image', u.image
+    	) AS user
+    FROM 
+        "Comment" c
+	  JOIN "User" u ON c."userId" = u.id
+    WHERE 
+        c.id = ${parentId}
+
+    UNION ALL
+
+    SELECT 
+        c.id,
+        c.content,
+        c."userId",
+        c."stampId",
+        c."parentId",
+        TO_CHAR(c."createdAt", 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "createdAt",
+        TO_CHAR(c."updatedAt", 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "updatedAt",
+        ct.level + 1,
+		json_build_object(
+        'username', u.username,
+        'usernameURL', u."usernameURL",
+        'image', u.image
+    	) AS user
+    FROM 
+        "Comment" c
+	  JOIN "User" u ON c."userId" = u.id
+    JOIN comment_tree ct ON c."parentId" = ct.id
+)
+SELECT * FROM comment_tree
+ORDER BY "createdAt"`),
   ['getReplyThread'],
   { revalidate: 3600 },
 )
@@ -115,6 +144,7 @@ const CommentList = ({ comments }: { comments: Comment[] }) => {
             <div className="ml-12">
               <ViewReplyButton
                 numReplies={comment._count.replies ?? 0}
+                //@ts-expect-error type
                 replyThreadPromise={replyThreadPromise}
               />
             </div>
@@ -132,7 +162,7 @@ const Comments = async ({ id: stampId }: Pick<StampWithRelations, 'id'>) => {
     <>
       <Heading level={2}>{comments.length} Comments</Heading>
       <SessionProvider session={session}>
-        <AddCommentToStamp />
+        <CommentView />
         <CommentList comments={comments} />
       </SessionProvider>
     </>

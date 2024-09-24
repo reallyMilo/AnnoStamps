@@ -4,7 +4,7 @@ import type { Comment } from '@/lib/prisma/models'
 
 import { AvatarButton, Link, Text } from '@/components/ui'
 
-import { AddReplyToComment } from './AddReplyToComment'
+import { CommentView } from './CommentView'
 
 export const CommentItem = ({
   children,
@@ -30,7 +30,7 @@ export const CommentItem = ({
             <Text suppressHydrationWarning>{createdAt}</Text>
           </div>
           <Text>{content}</Text>
-          <AddReplyToComment parentId={commentId} />
+          <CommentView parentId={commentId} />
         </div>
       </div>
       {children}
