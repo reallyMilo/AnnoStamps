@@ -53,6 +53,7 @@ const getUserLikedStamp = unstable_cache(
     }),
   ['getUserLikedStamp'],
 )
+//FIXME: use prisma typed query after deploying all migrations
 const getReplyThread = unstable_cache(
   async (parentId: Comment['parentId']) =>
     prisma.$queryRaw(Prisma.sql`WITH RECURSIVE comment_tree AS (
@@ -62,17 +63,23 @@ const getReplyThread = unstable_cache(
         c."userId",
         c."stampId",
         c."parentId",
-        TO_CHAR(c."createdAt", 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "createdAt",
-        TO_CHAR(c."updatedAt", 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "updatedAt",
+        EXTRACT(EPOCH FROM c."createdAt") AS "createdAt",
+        EXTRACT(EPOCH FROM c."updatedAt") AS "updatedAt",
         0 AS level,
-		json_build_object(
-        'username', u.username,
-        'usernameURL', u."usernameURL",
-        'image', u.image
-    	) AS user
+        json_build_object(
+            'username', u.username,
+            'usernameURL', u."usernameURL",
+            'image', u.image
+        ) AS user,
+        json_build_object(
+            'username', parent_u.username,
+            'usernameURL', parent_u."usernameURL"
+        ) AS "replyToUser"
     FROM 
         "Comment" c
 	  JOIN "User" u ON c."userId" = u.id
+    LEFT JOIN "Comment" parent_c ON c."parentId" = parent_c.id  
+    LEFT JOIN "User" parent_u ON parent_c."userId" = parent_u.id
     WHERE 
         c.id = ${parentId}
 
@@ -84,17 +91,22 @@ const getReplyThread = unstable_cache(
         c."userId",
         c."stampId",
         c."parentId",
-        TO_CHAR(c."createdAt", 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "createdAt",
-        TO_CHAR(c."updatedAt", 'YYYY-MM-DD"T"HH24:MI:SS"Z"') AS "updatedAt",
+        EXTRACT(EPOCH FROM c."createdAt") AS "createdAt",
+        EXTRACT(EPOCH FROM c."updatedAt") AS "updatedAt",
         ct.level + 1,
-		json_build_object(
-        'username', u.username,
-        'usernameURL', u."usernameURL",
-        'image', u.image
-    	) AS user
-    FROM 
-        "Comment" c
+        json_build_object(
+            'username', u.username,
+            'usernameURL', u."usernameURL",
+            'image', u.image
+        ) AS user,
+        json_build_object(
+            'username', parent_u.username,
+            'usernameURL', parent_u."usernameURL"
+        ) AS "replyToUser"
+    FROM "Comment" c
 	  JOIN "User" u ON c."userId" = u.id
+    LEFT JOIN "Comment" parent_c ON c."parentId" = parent_c.id  
+    LEFT JOIN "User" parent_u ON parent_c."userId" = parent_u.id
     JOIN comment_tree ct ON c."parentId" = ct.id
 )
 SELECT * FROM comment_tree

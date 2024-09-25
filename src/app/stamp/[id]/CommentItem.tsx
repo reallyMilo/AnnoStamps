@@ -3,20 +3,30 @@ import type { PropsWithChildren } from 'react'
 import type { Comment } from '@/lib/prisma/models'
 
 import { AvatarButton, Link, Text } from '@/components/ui'
+import { distanceUnixTimeToNow } from '@/lib/prisma/utils'
 
 import { CommentView } from './CommentView'
+
+type CommentItemProps = {
+  level?: number
+  replyToUser?: {
+    username: string
+    usernameURL: string
+  }
+} & Pick<Comment, 'content' | 'createdAt' | 'id' | 'parentId' | 'user'>
 
 export const CommentItem = ({
   children,
   content,
   createdAt,
   id: commentId,
+  level,
+  parentId,
+  replyToUser,
   user,
-}: PropsWithChildren<
-  Pick<Comment, 'content' | 'createdAt' | 'id' | 'user'>
->) => {
+}: PropsWithChildren<CommentItemProps>) => {
   return (
-    <li>
+    <li id={commentId}>
       <div className="flex space-x-5 pb-2">
         <AvatarButton className="self-start" src={user.image} />
         <div className="flex flex-grow flex-col">
@@ -27,9 +37,16 @@ export const CommentItem = ({
             >
               {user.username}
             </Link>
-            <Text suppressHydrationWarning>{createdAt}</Text>
+            <Text suppressHydrationWarning>
+              {distanceUnixTimeToNow(createdAt)}
+            </Text>
           </div>
-          <Text>{content}</Text>
+          <div className="flex space-x-4">
+            {parentId && level && level > 1 && replyToUser && (
+              <a href={`#${parentId}`}>@{replyToUser.username}</a>
+            )}
+            <Text>{content}</Text>
+          </div>
           <CommentView parentId={commentId} />
         </div>
       </div>

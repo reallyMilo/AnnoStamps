@@ -8,14 +8,14 @@ import type { Comment } from '@/lib/prisma/models'
 import { Button } from '@/components/ui'
 
 import { CommentItem } from './CommentItem'
-type ViewRepliesProps = {
+type ViewReplyButtonProps = {
   numReplies: number
   replyThreadPromise: Promise<Omit<Comment, '_count'>[]>
 }
 
 const ReplyThread = ({
   replyThreadPromise,
-}: Pick<ViewRepliesProps, 'replyThreadPromise'>) => {
+}: Pick<ViewReplyButtonProps, 'replyThreadPromise'>) => {
   const replyThreadContent = use(replyThreadPromise)
 
   return (
@@ -29,7 +29,7 @@ const ReplyThread = ({
 export const ViewReplyButton = ({
   numReplies,
   replyThreadPromise,
-}: ViewRepliesProps) => {
+}: ViewReplyButtonProps) => {
   const [isOpenReplies, setIsOpenReplies] = useState(false)
 
   if (numReplies === 0) return null
