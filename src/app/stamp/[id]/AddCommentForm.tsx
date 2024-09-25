@@ -108,11 +108,11 @@ const Form = ({
   >([], (state, newComment) => [
     {
       content: newComment,
-      createdAt: 'now',
+      createdAt: Math.floor(Date.now() / 1000),
       id: 'optimistic',
       parentId: null,
       stampId: 'optimistic',
-      updatedAt: 'now',
+      updatedAt: Math.floor(Date.now() / 1000),
       user: {
         id: session?.userId ?? '1',
         image: session?.user.image ?? null,
