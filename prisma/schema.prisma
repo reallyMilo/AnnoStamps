@@ -89,7 +89,7 @@ model Session {
 model Preference {
   id      String  @id
   channel String
-  enabled Boolean @default(false)
+  enabled Boolean @default(true)
   userId  String
   user    User    @relation(fields: [userId], references: [id], onDelete: NoAction)
 
