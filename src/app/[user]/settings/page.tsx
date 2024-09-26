@@ -35,7 +35,7 @@ const UserSettingsPage = async () => {
     <Container>
       <SettingsForm
         biography={biography}
-        enabled={preferences?.enabled ?? false}
+        enabled={preferences?.enabled ?? true}
         username={username}
       />
     </Container>
