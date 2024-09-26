@@ -72,6 +72,7 @@ const getReplyThread = unstable_cache(
             'image', u.image
         ) AS user,
         json_build_object(
+            'id', parent_u.id,
             'username', parent_u.username,
             'usernameURL', parent_u."usernameURL"
         ) AS "replyToUser"
@@ -100,6 +101,7 @@ const getReplyThread = unstable_cache(
             'image', u.image
         ) AS user,
         json_build_object(
+            'id', parent_u.id,
             'username', parent_u.username,
             'usernameURL', parent_u."usernameURL"
         ) AS "replyToUser"
@@ -145,37 +147,43 @@ export const generateMetadata = async ({
   }
 }
 
-const CommentList = ({ comments }: { comments: Comment[] }) => {
-  return (
-    <ul className="space-y-3">
-      {comments.map((comment) => {
-        const replyThreadPromise = getReplyThread(comment.id)
-
-        return (
-          <CommentItem key={comment.id} {...comment}>
-            <div className="ml-12">
-              <ViewReplyButton
-                numReplies={comment._count.replies ?? 0}
-                //@ts-expect-error type
-                replyThreadPromise={replyThreadPromise}
-              />
-            </div>
-          </CommentItem>
-        )
-      })}
-    </ul>
-  )
-}
 const Comments = async ({ id: stampId }: Pick<StampWithRelations, 'id'>) => {
   const session = await auth()
-  const comments = await getCommentThread(stampId)
+  const stampPromise = getStamp(stampId)
+  const commentsPromise = getCommentThread(stampId)
+
+  const [stamp, comments] = await Promise.all([stampPromise, commentsPromise])
 
   return (
     <>
       <Heading level={2}>{comments.length} Comments</Heading>
       <SessionProvider session={session}>
-        <CommentView />
-        <CommentList comments={comments} />
+        <CommentView userIdToNotify={stamp!.user.id} />
+        <ul className="space-y-3">
+          {comments.map((comment) => {
+            const replyThreadPromise = getReplyThread(comment.id)
+
+            return (
+              <CommentItem
+                key={comment.id}
+                {...comment}
+                replyToUser={{
+                  id: comment.user.id,
+                  username: comment.user.username as string,
+                  usernameURL: comment.user.usernameURL as string,
+                }}
+              >
+                <div className="ml-12">
+                  <ViewReplyButton
+                    numReplies={comment._count.replies ?? 0}
+                    //@ts-expect-error type
+                    replyThreadPromise={replyThreadPromise}
+                  />
+                </div>
+              </CommentItem>
+            )
+          })}
+        </ul>
       </SessionProvider>
     </>
   )

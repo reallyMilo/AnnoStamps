@@ -1,7 +1,7 @@
 'use client'
 import autosize from 'autosize'
 import { useSession } from 'next-auth/react'
-import { redirect, usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 import { useOptimistic } from 'react'
 import { useFormStatus } from 'react-dom'
@@ -100,6 +100,7 @@ const Form = ({
   const { content, setContent, setIsTextareaFocused, textareaRef } =
     useAddCommentContext()
   const pathname = usePathname()
+  const router = useRouter()
   const { data: session, status } = useSession()
 
   const [optimisticComments, addOptimisticComment] = useOptimistic<
@@ -141,7 +142,15 @@ const Form = ({
       <form
         action={async (formData) => {
           addOptimisticComment(formData.get('comment') as string)
-          await action(formData)
+          const res = await action(formData)
+          if (!res.ok) {
+            //TODO: comment action error handling
+            return
+          }
+
+          setContent('')
+
+          setIsTextareaFocused(false)
         }}
         className="flex flex-col space-y-2"
       >
@@ -151,10 +160,10 @@ const Form = ({
           onChange={(e) => setContent(e.target.value)}
           onFocus={() => {
             if (status === 'unauthenticated') {
-              redirect(`/auth/signin?callbackUrl=${pathname}`)
+              router.push(`/auth/signin?callbackUrl=${pathname}`)
             }
             if (!session?.user.username) {
-              redirect(`/${session?.userId}/settings`)
+              router.push(`/${session?.userId}/settings`)
             }
             setIsTextareaFocused(true)
           }}

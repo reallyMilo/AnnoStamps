@@ -23,6 +23,16 @@ model Image {
   stampId      String
 }
 
+model Notification {
+  id        String   @id
+  userId    String
+  channel   String
+  user      User     @relation(fields: [userId], references: [id])
+  body      Json
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 model Comment {
   id            String    @id
   content       String
@@ -97,20 +107,21 @@ model Preference {
 }
 
 model User {
-  id            String       @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?      @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
-  username      String?      @unique
-  usernameURL   String?      @unique
+  username      String?        @unique
+  usernameURL   String?        @unique
   biography     String?
   preferences   Preference[]
   accounts      Account[]
   sessions      Session[]
-  listedStamps  Stamp[]      @relation("StampCreator")
-  likedStamps   Stamp[]      @relation("StampLiker")
+  listedStamps  Stamp[]        @relation("StampCreator")
+  likedStamps   Stamp[]        @relation("StampLiker")
   comments      Comment[]
+  notifications Notification[]
 }
 
 model VerificationToken {

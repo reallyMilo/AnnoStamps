@@ -10,6 +10,7 @@ import { CommentView } from './CommentView'
 type CommentItemProps = {
   level?: number
   replyToUser?: {
+    id: string
     username: string
     usernameURL: string
   }
@@ -47,7 +48,10 @@ export const CommentItem = ({
             )}
             <Text>{content}</Text>
           </div>
-          <CommentView parentId={commentId} />
+          <CommentView
+            parentId={commentId}
+            userIdToNotify={replyToUser?.id as string}
+          />
         </div>
       </div>
       {children}

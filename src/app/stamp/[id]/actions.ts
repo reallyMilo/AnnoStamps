@@ -36,31 +36,51 @@ export const likeMutation = async (id: StampWithRelations['id']) => {
 export const addCommentToStamp = async (
   id: StampWithRelations['id'],
   parentId: Comment['parentId'],
+  userIdToNotify: Comment['user']['id'],
   formData: FormData,
 ) => {
   const session = await auth()
   if (!session) {
-    return { message: 'Unauthorized', ok: false }
+    return { message: 'Unauthorized.', ok: false }
   }
 
+  if (!session.user.username) {
+    return { message: 'Please set username.', ok: false }
+  }
   const { comment } = Object.fromEntries(formData) as {
     comment: string
   }
 
   try {
-    await prisma.comment.create({
-      data: {
-        content: comment,
-        id: createId(),
-        parentId: parentId ? parentId : null,
-        stampId: id,
-        userId: session.userId,
-      },
-    })
+    await prisma.$transaction([
+      prisma.comment.create({
+        data: {
+          content: comment,
+          id: createId(),
+          parentId: parentId ? parentId : null,
+          stampId: id,
+          userId: session.userId,
+        },
+      }),
+      prisma.notification.create({
+        data: {
+          body: {
+            authorOfContent: session.user.username,
+            authorOfContentURL: session.user.usernameURL,
+            content: comment,
+          },
+          channel: 'web',
+          id: createId(),
+          userId: userIdToNotify,
+        },
+      }),
+    ])
   } catch (e) {
     console.error(e)
     return { message: 'Server error.', ok: false }
   }
+
+  //TODO: AWS SES here to send email.
 
   revalidatePath(`/stamp/${id}`)
   return { message: 'Added comment to stamp.', ok: true }

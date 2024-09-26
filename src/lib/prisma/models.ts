@@ -19,6 +19,7 @@ export const stampIncludeStatement = {
   images: true,
   user: {
     select: {
+      id: true,
       image: true,
       username: true,
       usernameURL: true,
