@@ -2,12 +2,16 @@ import type { Metadata } from 'next'
 
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { SessionProvider } from 'next-auth/react'
+import { unstable_cache } from 'next/cache'
 import { Poppins } from 'next/font/google'
 import Image from 'next/image'
 import { Suspense } from 'react'
 
+import type { Notification, UserWithStamps } from '@/lib/prisma/models'
+
 import { auth } from '@/auth'
 import { UserMenu } from '@/components/Auth/UserMenu'
+import { NotificationDropdownButton } from '@/components/Notifications/NotificationDropdownButton'
 import {
   Button,
   Container,
@@ -19,6 +23,7 @@ import {
   NavbarSpacer,
   SidebarItem,
 } from '@/components/ui'
+import prisma from '@/lib/prisma/singleton'
 
 import logo from '../../public/cropped-anno-stamps-logo.png'
 import discordWhite from '../../public/discord-white-icon.svg'
@@ -113,6 +118,36 @@ const SocialIcons = () => {
     </>
   )
 }
+
+const getUserNotifications = unstable_cache(
+  async (userId: UserWithStamps['id']) =>
+    prisma.notification.findMany({
+      orderBy: { createdAt: 'desc' },
+      where: {
+        channel: 'web',
+        userId,
+      },
+    }),
+  ['getUserNotifications'],
+  {
+    revalidate: 600,
+  },
+)
+
+const Notifications = async () => {
+  const session = await auth()
+  if (!session) {
+    return null
+  }
+  /* TODO: get the unread notification count on the auth db round trip.
+  with react use function to accept notification promise so we only trigger this if the dropdown is opened
+  */
+  const notifications = (await getUserNotifications(
+    session?.userId,
+  )) as Notification[]
+  return <NotificationDropdownButton notifications={notifications} />
+}
+
 const Navbar = () => {
   return (
     <header>
@@ -146,7 +181,9 @@ const Navbar = () => {
             ))}
           </NavbarSection>
           <NavbarSpacer />
-
+          <Suspense fallback={null}>
+            <Notifications />
+          </Suspense>
           <Suspense fallback={<Button href="/auth/signin">Add Stamp</Button>}>
             <UserButton />
           </Suspense>

@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { getUnixTime } from 'date-fns'
+import { formatDistanceToNowStrict, getUnixTime } from 'date-fns'
 import z from 'zod'
 
 import { REGIONS_1800 } from '@/lib/constants/1800/data'
@@ -261,6 +261,39 @@ export const commentExtension = Prisma.defineExtension({
       updatedAt: {
         compute({ updatedAt }) {
           return getUnixTime(updatedAt)
+        },
+      },
+    },
+  },
+})
+
+/* -------------------------------------------------------------------------------------------------
+ * Notifications
+ * -----------------------------------------------------------------------------------------------*/
+export type Notification = {
+  body: {
+    authorOfContent: string
+    authorOfContentURL: string
+    content: string
+  }
+  createdAt: string
+  updatedAt: string
+} & Omit<
+  Prisma.NotificationGetPayload<Prisma.NotificationDefaultArgs>,
+  'body' | 'createdAt' | 'updatedAt'
+>
+
+export const notificationExtension = Prisma.defineExtension({
+  result: {
+    notification: {
+      createdAt: {
+        compute({ createdAt }) {
+          return formatDistanceToNowStrict(createdAt)
+        },
+      },
+      updatedAt: {
+        compute({ updatedAt }) {
+          return formatDistanceToNowStrict(updatedAt)
         },
       },
     },

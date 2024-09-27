@@ -151,7 +151,6 @@ const Comments = async ({ id: stampId }: Pick<StampWithRelations, 'id'>) => {
   const session = await auth()
   const stampPromise = getStamp(stampId)
   const commentsPromise = getCommentThread(stampId)
-
   const [stamp, comments] = await Promise.all([stampPromise, commentsPromise])
 
   return (
@@ -311,10 +310,10 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
           className="stamp-markdown-html-wrapper"
           dangerouslySetInnerHTML={{ __html: markdownDescription ?? '' }}
         ></div>
+        <Suspense fallback={<Heading level={2}> Comments</Heading>}>
+          <Comments id={id} />
+        </Suspense>
       </div>
-      <Suspense fallback={<Heading level={2}> Comments</Heading>}>
-        <Comments id={id} />
-      </Suspense>
     </Container>
   )
 }
