@@ -34,7 +34,7 @@ export const likeMutation = async (id: StampWithRelations['id']) => {
 }
 
 export const addCommentToStamp = async (
-  id: StampWithRelations['id'],
+  stampId: StampWithRelations['id'],
   parentId: Comment['parentId'],
   userIdToNotify: Comment['user']['id'],
   formData: FormData,
@@ -58,7 +58,7 @@ export const addCommentToStamp = async (
           content: comment,
           id: createId(),
           parentId: parentId ? parentId : null,
-          stampId: id,
+          stampId,
           userId: session.userId,
         },
       }),
@@ -71,6 +71,7 @@ export const addCommentToStamp = async (
           },
           channel: 'web',
           id: createId(),
+          targetUrl: `/stamp/${stampId}`,
           userId: userIdToNotify,
         },
       }),
@@ -82,6 +83,6 @@ export const addCommentToStamp = async (
 
   //TODO: AWS SES here to send email.
 
-  revalidatePath(`/stamp/${id}`)
+  revalidatePath(`/stamp/${stampId}`)
   return { message: 'Added comment to stamp.', ok: true }
 }

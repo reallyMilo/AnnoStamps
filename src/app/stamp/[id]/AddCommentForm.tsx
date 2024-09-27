@@ -163,6 +163,7 @@ const Form = ({
               router.push(`/auth/signin?callbackUrl=${pathname}`)
             }
             if (!session?.user.username) {
+              //TODO: set username modal that notifies
               router.push(`/${session?.userId}/settings`)
             }
             setIsTextareaFocused(true)
