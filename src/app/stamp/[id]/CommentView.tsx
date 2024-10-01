@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import type { Comment } from '@/lib/prisma/models'
 
 import { addCommentToStamp } from './actions'
-import { AddCommentForm } from './AddCommentForm'
+import { CommentForm } from './CommentForm'
 
 type CommentViewProps = { userIdToNotify: Comment['user']['id'] } & Partial<
   Pick<Comment, 'parentId'>
@@ -23,24 +23,20 @@ export const CommentView = ({ parentId, userIdToNotify }: CommentViewProps) => {
 
   if (parentId) {
     return (
-      <AddCommentForm.Root isVisible={false}>
-        <AddCommentForm.ShowFormButton>
-          <AddCommentForm.Form action={addCommentAction}>
-            <AddCommentForm.FormActionButtons>
-              Reply
-            </AddCommentForm.FormActionButtons>
-          </AddCommentForm.Form>
-        </AddCommentForm.ShowFormButton>
-      </AddCommentForm.Root>
+      <CommentForm.Root isVisible={false}>
+        <CommentForm.ShowFormButton>
+          <CommentForm.Form action={addCommentAction}>
+            <CommentForm.FormActionButtons>Reply</CommentForm.FormActionButtons>
+          </CommentForm.Form>
+        </CommentForm.ShowFormButton>
+      </CommentForm.Root>
     )
   }
   return (
-    <AddCommentForm.Root>
-      <AddCommentForm.Form action={addCommentAction}>
-        <AddCommentForm.FormActionButtons>
-          Comment
-        </AddCommentForm.FormActionButtons>
-      </AddCommentForm.Form>
-    </AddCommentForm.Root>
+    <CommentForm.Root>
+      <CommentForm.Form action={addCommentAction}>
+        <CommentForm.FormActionButtons>Comment</CommentForm.FormActionButtons>
+      </CommentForm.Form>
+    </CommentForm.Root>
   )
 }
