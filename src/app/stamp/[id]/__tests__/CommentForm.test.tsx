@@ -24,7 +24,12 @@ vi.mock('react-dom', async () => {
 })
 vi.mocked(useOptimistic).mockReturnValue([[], () => {}])
 
-const user = { biography: null, id: '1', username: null, usernameURL: null }
+const user = {
+  biography: null,
+  id: '1',
+  username: 'test123',
+  usernameURL: 'test123',
+}
 const mockAction = async (): Promise<{ message: string; ok: boolean }> => {
   return { message: 'Test message', ok: true }
 }
