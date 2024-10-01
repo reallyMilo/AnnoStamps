@@ -5,7 +5,7 @@ import {
   screen,
   userEvent,
 } from '../../../../__tests__/test-utils'
-import { AddCommentForm } from '../AddCommentForm'
+import { CommentForm } from '../CommentForm'
 
 // mocking both due to nextjs using its own react version
 vi.mock('react', async () => {
@@ -25,18 +25,20 @@ vi.mock('react-dom', async () => {
 vi.mocked(useOptimistic).mockReturnValue([[], () => {}])
 
 const user = { biography: null, id: '1', username: null, usernameURL: null }
-
-describe('AddCommentForm', () => {
+const mockAction = async (): Promise<{ message: string; ok: boolean }> => {
+  return { message: 'Test message', ok: true }
+}
+describe('CommentForm', () => {
   describe('Add a comment to stamp', () => {
     const render = () => ({
       ...renderRTL(
-        <AddCommentForm.Root>
-          <AddCommentForm.Form action={() => null}>
-            <AddCommentForm.FormActionButtons>
+        <CommentForm.Root>
+          <CommentForm.Form action={mockAction}>
+            <CommentForm.FormActionButtons>
               Comment
-            </AddCommentForm.FormActionButtons>
-          </AddCommentForm.Form>
-        </AddCommentForm.Root>,
+            </CommentForm.FormActionButtons>
+          </CommentForm.Form>
+        </CommentForm.Root>,
         { user },
       ),
       user: userEvent.setup(),
@@ -76,15 +78,15 @@ describe('AddCommentForm', () => {
   describe('Add a reply to a comment', () => {
     const render = () => ({
       ...renderRTL(
-        <AddCommentForm.Root isVisible={false}>
-          <AddCommentForm.ShowFormButton>
-            <AddCommentForm.Form action={() => null}>
-              <AddCommentForm.FormActionButtons>
+        <CommentForm.Root isVisible={false}>
+          <CommentForm.ShowFormButton>
+            <CommentForm.Form action={mockAction}>
+              <CommentForm.FormActionButtons>
                 Reply
-              </AddCommentForm.FormActionButtons>
-            </AddCommentForm.Form>
-          </AddCommentForm.ShowFormButton>
-        </AddCommentForm.Root>,
+              </CommentForm.FormActionButtons>
+            </CommentForm.Form>
+          </CommentForm.ShowFormButton>
+        </CommentForm.Root>,
         { user },
       ),
       user: userEvent.setup(),
