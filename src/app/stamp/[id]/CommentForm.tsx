@@ -13,10 +13,20 @@ import { Button, Textarea } from '@/components/ui'
 
 import { CommentItem } from './CommentItem'
 
-const AddCommentContext = React.createContext<any | null>(null)
+type CommentContext = {
+  content: string
+  isFormVisible: boolean
+  isTextareaFocused: boolean
+  setContent: React.Dispatch<React.SetStateAction<string>>
+  setIsFormVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setIsTextareaFocused: React.Dispatch<React.SetStateAction<boolean>>
+  textareaRef: React.RefObject<HTMLTextAreaElement>
+}
 
-const useAddCommentContext = () => {
-  const context = React.useContext(AddCommentContext)
+const CommentContext = React.createContext<CommentContext | null>(null)
+
+const useCommentContext = () => {
+  const context = React.useContext(CommentContext)
   if (!context) {
     throw new Error('needs to be used within AddComment Provider')
   }
@@ -25,7 +35,7 @@ const useAddCommentContext = () => {
 
 const ShowFormButton = ({ children }: React.PropsWithChildren) => {
   const { isFormVisible, setIsFormVisible, setIsTextareaFocused, textareaRef } =
-    useAddCommentContext()
+    useCommentContext()
 
   React.useEffect(() => {
     if (textareaRef.current) {
@@ -59,7 +69,7 @@ const FormActionButtons = ({ children }: React.PropsWithChildren) => {
     setContent,
     setIsFormVisible,
     setIsTextareaFocused,
-  } = useAddCommentContext()
+  } = useCommentContext()
   const { pending } = useFormStatus()
 
   if (!isTextareaFocused) {
@@ -95,10 +105,10 @@ const Form = ({
   action,
   children,
 }: React.PropsWithChildren<{
-  action: any
+  action: ServerAction<FormData, { message: string; ok: boolean }>
 }>) => {
   const { content, setContent, setIsTextareaFocused, textareaRef } =
-    useAddCommentContext()
+    useCommentContext()
   const pathname = usePathname()
   const router = useRouter()
   const { data: session, status } = useSession()
@@ -214,17 +224,17 @@ const Root = ({
     ],
   )
   return (
-    <AddCommentContext.Provider value={context}>
+    <CommentContext.Provider value={context}>
       {children}
-    </AddCommentContext.Provider>
+    </CommentContext.Provider>
   )
 }
 
-const AddCommentForm = {
+const CommentForm = {
   Form,
   FormActionButtons,
   Root,
   ShowFormButton,
 }
 
-export { AddCommentForm, useAddCommentContext }
+export { CommentForm, useCommentContext }
