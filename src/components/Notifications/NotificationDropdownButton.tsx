@@ -1,6 +1,7 @@
 'use client'
 import { BellAlertIcon, EnvelopeOpenIcon } from '@heroicons/react/24/solid'
-import { startTransition, useOptimistic } from 'react'
+import { useSession } from 'next-auth/react'
+import { Suspense, use } from 'react'
 
 import type { Notification } from '@/lib/prisma/models'
 
@@ -18,23 +19,41 @@ import {
 } from '../ui'
 import { readAllAction } from './actions'
 
-export const NotificationDropdownButtonSkeleton = () => {
+const NotificationThread = ({
+  notificationsPromise,
+}: {
+  notificationsPromise: Promise<Notification[]>
+}) => {
+  const notificationContent = use(notificationsPromise)
+
   return (
-    <DropdownButton aria-label="Open notifications" outline>
-      <BellAlertIcon />
-    </DropdownButton>
+    <>
+      {notificationContent.length > 0 ? (
+        notificationContent.map(({ body, id, targetUrl }) => (
+          <DropdownItem href={targetUrl} key={id}>
+            <DropdownLabel>
+              {body.authorOfContent} commented on your
+            </DropdownLabel>
+            <DropdownDescription>{body.content}</DropdownDescription>
+          </DropdownItem>
+        ))
+      ) : (
+        <DropdownItem>
+          <DropdownLabel>No new notifications</DropdownLabel>
+        </DropdownItem>
+      )}
+    </>
   )
 }
 
 export const NotificationDropdownButton = ({
-  notifications,
+  notificationsPromise,
 }: {
-  notifications: Notification[]
+  notificationsPromise: Promise<Notification[]>
 }) => {
-  const [isReadNotification, readAllNotifications] = useOptimistic<
-    boolean,
-    boolean
-  >(notifications[0].isRead, (_, isUnread) => isUnread)
+  const { data: session, update } = useSession()
+
+  const isReadNotification = session?.user.notifications[0].isRead as boolean
 
   return (
     <Dropdown>
@@ -48,22 +67,18 @@ export const NotificationDropdownButton = ({
           <span className="absolute right-0 top-0 flex size-2 items-center justify-center rounded-full bg-accent" />
         )}
       </DropdownButton>
-      <DropdownMenu anchor="bottom end">
+      <DropdownMenu anchor="bottom end" className="z-40">
         <DropdownHeader className="flex justify-between space-x-4">
           <Heading level={2}>Notifications</Heading>
           {!isReadNotification && (
             <Button
               disabled={isReadNotification}
               onClick={async () => {
-                startTransition(() => {
-                  readAllNotifications(true)
-                })
-
                 const res = await readAllAction()
                 if (!res.ok) {
-                  readAllNotifications(false)
                   return
                 }
+                await update()
               }}
               outline
             >
@@ -72,24 +87,18 @@ export const NotificationDropdownButton = ({
           )}
         </DropdownHeader>
         <DropdownDivider />
-        {notifications.length > 0 ? (
-          notifications.map((notification) => (
-            <DropdownItem href={notification.targetUrl} key={notification.id}>
-              <DropdownLabel>
-                {notification.body.authorOfContent} commented on your stamp or
-                comment
-              </DropdownLabel>
-              <DropdownDescription>
-                {notification.body.content}
-              </DropdownDescription>
-            </DropdownItem>
-          ))
-        ) : (
-          <DropdownItem>
-            <DropdownLabel>No new notifications</DropdownLabel>
-          </DropdownItem>
-        )}
+        <Suspense fallback={'Loading...'}>
+          <NotificationThread notificationsPromise={notificationsPromise} />
+        </Suspense>
       </DropdownMenu>
     </Dropdown>
+  )
+}
+
+export const NotificationDropdownButtonSkeleton = () => {
+  return (
+    <DropdownButton aria-label="Open notifications" outline>
+      <BellAlertIcon />
+    </DropdownButton>
   )
 }

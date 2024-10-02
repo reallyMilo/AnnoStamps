@@ -139,13 +139,16 @@ const Notifications = async () => {
   if (!session) {
     return null
   }
-  /* TODO: get the unread notification count on the auth db round trip.
-  with react use function to accept notification promise so we only trigger this if the dropdown is opened
-  */
-  const notifications = (await getUserNotifications(
-    session?.userId,
-  )) as Notification[]
-  return <NotificationDropdownButton notifications={notifications} />
+
+  const notificationsPromise = getUserNotifications(session?.userId) as Promise<
+    Notification[]
+  >
+
+  return (
+    <SessionProvider session={session}>
+      <NotificationDropdownButton notificationsPromise={notificationsPromise} />
+    </SessionProvider>
+  )
 }
 
 const Navbar = () => {
