@@ -1,5 +1,5 @@
 'use server'
-import { revalidatePath } from 'next/cache'
+
 import 'server-only'
 
 import { auth } from '@/auth'
@@ -26,6 +26,5 @@ export const readAllAction = async () => {
     return { message: 'Server error in reading all mail.', ok: false }
   }
 
-  revalidatePath('/', 'layout')
   return { message: 'Read all notifications.', ok: true }
 }
