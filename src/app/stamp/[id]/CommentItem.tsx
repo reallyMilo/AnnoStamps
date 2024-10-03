@@ -43,9 +43,9 @@ export const CommentItem = ({
             </Text>
           </div>
           <div className="flex space-x-4">
-            {parentId && level && level > 1 && replyToUser && (
+            {parentId && level && level > 0 && replyToUser ? (
               <a href={`#${parentId}`}>@{replyToUser.username}</a>
-            )}
+            ) : null}
             <Text>{content}</Text>
           </div>
           <CommentView

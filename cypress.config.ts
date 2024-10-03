@@ -30,6 +30,28 @@ export default defineConfig({
                 ],
               },
             }),
+            prisma.notification.deleteMany({
+              where: {
+                OR: [
+                  {
+                    userId: 'testSeedUserId',
+                  },
+                  {
+                    userId: 'replySeedUserId',
+                  },
+                ],
+              },
+            }),
+            prisma.comment.deleteMany({
+              where: {
+                OR: [
+                  {
+                    userId: 'testSeedUserId',
+                  },
+                  { userId: 'replySeedUserId' },
+                ],
+              },
+            }),
             prisma.stamp.deleteMany({
               where: {
                 userId: {
@@ -47,9 +69,16 @@ export default defineConfig({
                 id: 'testSeedAccountId',
               },
             }),
-            prisma.user.delete({
+            prisma.user.deleteMany({
               where: {
-                id: 'testSeedUserId',
+                OR: [
+                  {
+                    id: 'testSeedUserId',
+                  },
+                  {
+                    id: 'replySeedUserId',
+                  },
+                ],
               },
             }),
           ])
@@ -70,8 +99,16 @@ export default defineConfig({
             ...(setUsername ? username : null),
           }
           return await prisma.$transaction([
-            prisma.user.create({
-              data: testSeedUser,
+            prisma.user.createMany({
+              data: [
+                testSeedUser,
+                {
+                  email: 'replySeedUser@example.com',
+                  id: 'replySeedUserId',
+                  username: 'replySeedUser',
+                  usernameURL: 'replyseeduser',
+                },
+              ],
             }),
             prisma.account.create({
               data: {
@@ -94,6 +131,16 @@ export default defineConfig({
             prisma.stamp.create({
               data: {
                 category: 'cosmetic',
+                comments: {
+                  create: [
+                    {
+                      content: 'cypress seed comment',
+                      id: 'cypressComment',
+                      parentId: null,
+                      userId: 'replySeedUserId',
+                    },
+                  ],
+                },
                 downloads: 123,
                 game: '1800',
                 id: 'testSeedUserStampId',

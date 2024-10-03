@@ -17,9 +17,8 @@ const ReplyThread = ({
   replyThreadPromise,
 }: Pick<ViewReplyButtonProps, 'replyThreadPromise'>) => {
   const replyThreadContent = use(replyThreadPromise)
-
   return (
-    <ul className="pt-2">
+    <ul className="pt-2" data-testid="reply-list">
       {replyThreadContent.map((comment) => (
         <CommentItem key={comment.id} {...comment} />
       ))}

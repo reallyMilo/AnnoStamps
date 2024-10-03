@@ -171,10 +171,12 @@ const Form = ({
           onFocus={() => {
             if (status === 'unauthenticated') {
               router.push(`/auth/signin?callbackUrl=${pathname}`)
+              return
             }
             if (!session?.user.username) {
               //TODO: set username modal that notifies
               router.push(`/${session?.userId}/settings`)
+              return
             }
             setIsTextareaFocused(true)
           }}
