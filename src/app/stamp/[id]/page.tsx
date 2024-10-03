@@ -82,7 +82,7 @@ const getReplyThread = unstable_cache(
     LEFT JOIN "Comment" parent_c ON c."parentId" = parent_c.id  
     LEFT JOIN "User" parent_u ON parent_c."userId" = parent_u.id
     WHERE 
-        c.id = ${parentId}
+        c."parentId" = ${parentId}
 
     UNION ALL
 
