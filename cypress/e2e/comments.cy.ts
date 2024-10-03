@@ -125,6 +125,7 @@ describe('Comment on stamp', () => {
             content: 'Thanks for your comment!',
           })
       })
+      //TODO: nested replies and the At-username tag
     })
   })
 })

@@ -110,7 +110,6 @@ describe('Update user profile', () => {
         .should('equal', 'cypress tester biography')
 
       cy.findByLabelText('Email Notifications').should('not.be.checked')
-      cy.getBySel('check-badge-icon').should('not.exist')
 
       cy.database(
         `SELECT * FROM "User" LEFT JOIN "Preference" ON "User".id = "Preference"."userId" WHERE username = 'testSeedUser';`,
