@@ -47,7 +47,8 @@ describe('Update user profile', () => {
       cy.findByLabelText('Username').type('cypressTester')
       cy.findByLabelText('About').type('cypress tester biography')
 
-      cy.getBySel('check-badge-icon').should('not.exist')
+      cy.findByLabelText('Email Notifications').should('be.checked')
+      cy.getBySel('check-badge-icon').should('exist')
       cy.findByRole('button', { name: 'Save' }).click()
 
       cy.wait('@setUsername')
@@ -61,8 +62,7 @@ describe('Update user profile', () => {
       cy.findByText(
         'If you wish to change your username please contact us via the discord server.',
       ).should('exist')
-      cy.findByLabelText('Email Notifications').should('not.be.checked')
-      cy.getBySel('check-badge-icon').should('exist')
+
       cy.database(
         `SELECT * FROM "User" LEFT JOIN "Preference" ON "User".id = "Preference"."userId" WHERE username = 'cypressTester';`,
       ).then((users) => {
@@ -107,17 +107,15 @@ describe('Update user profile', () => {
         .invoke('val')
         .should('equal', 'cypress tester biography')
 
-      cy.findByLabelText('Email Notifications').should(
-        'have.attr',
-        'data-checked',
-      )
+      cy.findByLabelText('Email Notifications').should('not.be.checked')
+      cy.getBySel('check-badge-icon').should('not.exist')
 
       cy.database(
         `SELECT * FROM "User" LEFT JOIN "Preference" ON "User".id = "Preference"."userId" WHERE username = 'testSeedUser';`,
       ).then((users) => {
         const user = users[0]
         cy.wrap(user).its('biography').should('eq', 'cypress tester biography')
-        cy.wrap(user).its('enabled').should('eq', true)
+        cy.wrap(user).its('enabled').should('eq', false)
       })
     })
   })
