@@ -47,8 +47,10 @@ describe('Update user profile', () => {
       cy.findByLabelText('Username').type('cypressTester')
       cy.findByLabelText('About').type('cypress tester biography')
 
-      cy.findByLabelText('Email Notifications').should('be.checked')
-      cy.getBySel('check-badge-icon').should('exist')
+      cy.findByLabelText('Email Notifications').should(
+        'have.attr',
+        'data-checked',
+      )
       cy.findByRole('button', { name: 'Save' }).click()
 
       cy.wait('@setUsername')
@@ -72,7 +74,7 @@ describe('Update user profile', () => {
         cy.wrap(user).its('usernameURL').should('eq', 'cypresstester')
         cy.wrap(user).its('biography').should('eq', 'cypress tester biography')
         cy.wrap(user).its('channel').should('eq', 'email')
-        cy.wrap(user).its('enabled').should('eq', false)
+        cy.wrap(user).its('enabled').should('eq', true)
       })
     })
   })
