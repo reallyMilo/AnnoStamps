@@ -26,22 +26,23 @@ const NotificationThread = ({
 }) => {
   const notificationContent = use(notificationsPromise)
 
+  if (notificationContent.length === 0) {
+    return (
+      <DropdownItem>
+        <DropdownLabel>No new notifications</DropdownLabel>
+      </DropdownItem>
+    )
+  }
   return (
     <>
-      {notificationContent.length > 0 ? (
-        notificationContent.map(({ body, id, targetUrl }) => (
-          <DropdownItem href={targetUrl} key={id}>
-            <DropdownLabel>
-              {body.authorOfContent} commented on your
-            </DropdownLabel>
-            <DropdownDescription>{body.content}</DropdownDescription>
-          </DropdownItem>
-        ))
-      ) : (
-        <DropdownItem>
-          <DropdownLabel>No new notifications</DropdownLabel>
+      {notificationContent.map(({ body, id, targetUrl }) => (
+        <DropdownItem href={targetUrl} key={id}>
+          <DropdownLabel>
+            {body.authorOfContent} commented on your
+          </DropdownLabel>
+          <DropdownDescription>{body.content}</DropdownDescription>
         </DropdownItem>
-      )}
+      ))}
     </>
   )
 }
@@ -64,7 +65,10 @@ export const NotificationDropdownButton = ({
       >
         <BellAlertIcon />
         {!isReadNotification && (
-          <span className="absolute right-0 top-0 flex size-2 items-center justify-center rounded-full bg-accent" />
+          <span
+            className="absolute right-0 top-0 flex size-2 items-center justify-center rounded-full bg-accent"
+            data-testid="notification-dropdown-alert-indicator"
+          />
         )}
       </DropdownButton>
       <DropdownMenu anchor="bottom end" className="z-40">
@@ -72,6 +76,7 @@ export const NotificationDropdownButton = ({
           <Heading level={2}>Notifications</Heading>
           {!isReadNotification && (
             <Button
+              data-testid="read-all-notifications-button"
               disabled={isReadNotification}
               onClick={async () => {
                 const res = await readAllAction()

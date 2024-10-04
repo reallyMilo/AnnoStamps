@@ -66,13 +66,13 @@ describe('Comment on stamp', () => {
       cy.database(
         `SELECT * FROM "Notification" WHERE "userId"='testSeedUserId';`,
       ).then((notifications) => {
-        cy.wrap(notifications[0])
+        cy.wrap(notifications[1])
           .should('be.an', 'object')
           .and('contain', {
             channel: 'web',
             targetUrl: '/stamp/testSeedUserStampId',
           })
-          .wrap(notifications[0].body)
+          .wrap(notifications[1].body)
           .should('contain', {
             authorOfContent: 'testSeedUser',
             authorOfContentURL: 'testseeduser',
@@ -125,7 +125,19 @@ describe('Comment on stamp', () => {
             content: 'Thanks for your comment!',
           })
       })
-      //TODO: nested replies and the At-username tag
+
+      cy.findAllByRole('button', { name: 'Reply' })
+        .last()
+        .click()
+        .then(() => {
+          cy.findAllByLabelText('Comment')
+            .last()
+            .type('Nested reply to reply comment')
+          cy.getBySel('comment-submit-button').click()
+        })
+
+      cy.findByRole('link', { name: '@testSeedUser' }).should('exist')
+      cy.findByText('Nested reply to reply comment').should('exist')
     })
   })
 })

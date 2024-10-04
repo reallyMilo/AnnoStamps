@@ -163,6 +163,19 @@ export default defineConfig({
                 userId: 'testSeedUserId',
               },
             }),
+            prisma.notification.create({
+              data: {
+                body: {
+                  authorOfContent: 'replySeedUser',
+                  authorOfContentUrl: 'replyseeduser',
+                  content: 'great stamp!',
+                },
+                channel: 'web',
+                id: 'testUserNotificationId',
+                targetUrl: '/stamp/testSeedUserStampId',
+                userId: 'testSeedUserId',
+              },
+            }),
           ])
         },
       })
