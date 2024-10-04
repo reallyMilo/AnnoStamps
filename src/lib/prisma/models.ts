@@ -301,6 +301,35 @@ export const notificationExtension = Prisma.defineExtension({
 })
 
 /* -------------------------------------------------------------------------------------------------
+ * Preference
+ * -----------------------------------------------------------------------------------------------*/
+
+export type Preference = {
+  createdAt: string
+  updatedAt: string
+} & Omit<
+  Prisma.PreferenceGetPayload<Prisma.PreferenceDefaultArgs>,
+  'createdAt' | 'updatedAt'
+>
+
+export const preferenceExtension = Prisma.defineExtension({
+  result: {
+    preference: {
+      createdAt: {
+        compute({ createdAt }) {
+          return formatDistanceToNowStrict(createdAt)
+        },
+      },
+      updatedAt: {
+        compute({ updatedAt }) {
+          return formatDistanceToNowStrict(updatedAt)
+        },
+      },
+    },
+  },
+})
+
+/* -------------------------------------------------------------------------------------------------
  * Image
  * -----------------------------------------------------------------------------------------------*/
 

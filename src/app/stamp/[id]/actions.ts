@@ -52,7 +52,7 @@ export const addCommentToStamp = async (
   }
 
   try {
-    await prisma.$transaction([
+    const [, , preference] = await prisma.$transaction([
       prisma.comment.create({
         data: {
           content: comment,
@@ -75,13 +75,27 @@ export const addCommentToStamp = async (
           userId: userIdToNotify,
         },
       }),
+      prisma.preference.findFirst({
+        where: {
+          channel: 'email',
+          userId: userIdToNotify,
+        },
+      }),
     ])
+
+    if (!preference) {
+      await prisma.preference.create({
+        data: {
+          channel: 'email',
+          id: createId(),
+          userId: userIdToNotify,
+        },
+      })
+    }
   } catch (e) {
     console.error(e)
-    return { message: 'Server error.', ok: false }
+    return { message: 'Prisma error.', ok: false }
   }
-
-  //TODO: AWS SES here to send email.
 
   revalidatePath(`/stamp/${stampId}`)
   return { message: 'Added comment to stamp.', ok: true }

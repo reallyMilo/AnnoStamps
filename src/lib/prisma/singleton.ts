@@ -5,6 +5,7 @@ import {
   commentExtension,
   imageExtension,
   notificationExtension,
+  preferenceExtension,
   stampExtensions,
   stampIncludeStatement,
   type StampWithRelations,
@@ -18,6 +19,7 @@ const prismaClientSingleton = () => {
     .$extends(imageExtension)
     .$extends(commentExtension)
     .$extends(notificationExtension)
+    .$extends(preferenceExtension)
     .$extends({
       model: {
         stamp: {
