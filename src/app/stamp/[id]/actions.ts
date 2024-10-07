@@ -1,5 +1,6 @@
 'use server'
 
+import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
 import { createId } from '@paralleldrive/cuid2'
 import { revalidatePath } from 'next/cache'
 
@@ -62,18 +63,30 @@ export const addCommentToStamp = async (
           userId: session.userId,
         },
       }),
-      prisma.notification.create({
-        data: {
-          body: {
-            authorOfContent: session.user.username,
-            authorOfContentURL: session.user.usernameURL,
-            content: comment,
+      prisma.notification.createMany({
+        data: [
+          {
+            body: {
+              authorOfContent: session.user.username,
+              authorOfContentURL: session.user.usernameURL,
+              content: comment,
+            },
+            channel: 'web',
+            id: createId(),
+            targetUrl: `/stamp/${stampId}`,
+            userId: userIdToNotify,
           },
-          channel: 'web',
-          id: createId(),
-          targetUrl: `/stamp/${stampId}`,
-          userId: userIdToNotify,
-        },
+          {
+            body: {
+              html_body: '',
+              plaintext_body: '',
+            },
+            channel: 'email',
+            id: createId(),
+            targetUrl: `/stamp/${stampId}`,
+            userId: userIdToNotify,
+          },
+        ],
       }),
       prisma.preference.findFirst({
         where: {
@@ -83,14 +96,19 @@ export const addCommentToStamp = async (
       }),
     ])
 
-    if (!preference) {
-      await prisma.preference.create({
-        data: {
-          channel: 'email',
-          id: createId(),
-          userId: userIdToNotify,
-        },
+    if (!preference || preference.enabled === true) {
+      const client = new LambdaClient({ region: 'eu-central-1' })
+      const command = new InvokeCommand({
+        FunctionName: 'sendEmailSes',
+        InvocationType: 'Event',
+        Payload: JSON.stringify({
+          userIdToNotify,
+        }),
       })
+      const response = await client.send(command)
+      if (response.StatusCode !== 202) {
+        console.error(response)
+      }
     }
   } catch (e) {
     console.error(e)
