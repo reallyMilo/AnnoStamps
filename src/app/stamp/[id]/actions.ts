@@ -51,7 +51,8 @@ export const addCommentToStamp = async (
   const { comment } = Object.fromEntries(formData) as {
     comment: string
   }
-
+  const targetUrl = `/stamp/${stampId}`
+  let userPreference = null
   try {
     const [, , preference] = await prisma.$transaction([
       prisma.comment.create({
@@ -63,30 +64,18 @@ export const addCommentToStamp = async (
           userId: session.userId,
         },
       }),
-      prisma.notification.createMany({
-        data: [
-          {
-            body: {
-              authorOfContent: session.user.username,
-              authorOfContentURL: session.user.usernameURL,
-              content: comment,
-            },
-            channel: 'web',
-            id: createId(),
-            targetUrl: `/stamp/${stampId}`,
-            userId: userIdToNotify,
+      prisma.notification.create({
+        data: {
+          body: {
+            authorOfContent: session.user.username,
+            authorOfContentURL: session.user.usernameURL,
+            content: comment,
           },
-          {
-            body: {
-              html_body: '',
-              plaintext_body: '',
-            },
-            channel: 'email',
-            id: createId(),
-            targetUrl: `/stamp/${stampId}`,
-            userId: userIdToNotify,
-          },
-        ],
+          channel: 'web',
+          id: createId(),
+          targetUrl,
+          userId: userIdToNotify,
+        },
       }),
       prisma.preference.findFirst({
         where: {
@@ -96,12 +85,26 @@ export const addCommentToStamp = async (
       }),
     ])
 
-    if (!preference || preference.enabled === true) {
+    userPreference = preference
+  } catch (e) {
+    console.error(e)
+    return { message: 'Prisma error.', ok: false }
+  }
+
+  if (!userPreference || userPreference.enabled === true) {
+    try {
       const client = new LambdaClient({ region: 'eu-central-1' })
       const command = new InvokeCommand({
-        FunctionName: 'sendEmailSes',
+        FunctionName: 'sendEmailSES',
         InvocationType: 'Event',
         Payload: JSON.stringify({
+          body: {
+            authorOfContent: session.user.username,
+            authorOfContentURL: session.user.usernameURL,
+            content: comment,
+          },
+          stampId,
+          targetUrl,
           userIdToNotify,
         }),
       })
@@ -109,10 +112,9 @@ export const addCommentToStamp = async (
       if (response.StatusCode !== 202) {
         console.error(response)
       }
+    } catch (e) {
+      console.error(e)
     }
-  } catch (e) {
-    console.error(e)
-    return { message: 'Prisma error.', ok: false }
   }
 
   revalidatePath(`/stamp/${stampId}`)
