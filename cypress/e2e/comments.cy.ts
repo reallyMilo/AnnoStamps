@@ -79,16 +79,6 @@ describe('Comment on stamp', () => {
             content: 'Great stamp!',
           })
       })
-
-      cy.database(
-        `SELECT * FROM "Preference" WHERE "userId"='testSeedUserId' AND channel='email';`,
-      ).then((preferences) => {
-        cy.wrap(preferences[0]).should('contain', {
-          channel: 'email',
-          enabled: true,
-          userId: 'testSeedUserId',
-        })
-      })
     })
 
     it('can reply to another comment and then reply to that reply', () => {

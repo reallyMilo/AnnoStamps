@@ -91,29 +91,31 @@ export const addCommentToStamp = async (
     return { message: 'Prisma error.', ok: false }
   }
 
-  if (!userPreference || userPreference.enabled === true) {
-    try {
-      const client = new LambdaClient({ region: 'eu-central-1' })
-      const command = new InvokeCommand({
-        FunctionName: 'sendEmailSES',
-        InvocationType: 'Event',
-        Payload: JSON.stringify({
-          body: {
-            authorOfContent: session.user.username,
-            authorOfContentURL: session.user.usernameURL,
-            content: comment,
-          },
-          stampId,
-          targetUrl,
-          userIdToNotify,
-        }),
-      })
-      const response = await client.send(command)
-      if (response.StatusCode !== 202) {
-        console.error(response)
+  if (process.env.AWS_ACCESS_KEY_ID) {
+    if (!userPreference || userPreference.enabled === true) {
+      try {
+        const client = new LambdaClient({ region: 'eu-central-1' })
+        const command = new InvokeCommand({
+          FunctionName: 'sendEmailSES',
+          InvocationType: 'Event',
+          Payload: JSON.stringify({
+            body: {
+              authorOfContent: session.user.username,
+              authorOfContentURL: session.user.usernameURL,
+              content: comment,
+            },
+            stampId,
+            targetUrl,
+            userIdToNotify,
+          }),
+        })
+        const response = await client.send(command)
+        if (response.StatusCode !== 202) {
+          console.error(response)
+        }
+      } catch (e) {
+        console.error(e)
       }
-    } catch (e) {
-      console.error(e)
     }
   }
 
