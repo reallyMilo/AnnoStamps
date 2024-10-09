@@ -19,7 +19,7 @@ const goods = [OLD_WORLD_GOODS, NEW_WORLD_GOODS, ENBESA_GOODS, ARCTIC_GOODS]
 
 export const generateUserData = (
   length: number,
-): Omit<User, 'image' | 'emailVerified'>[] =>
+): Omit<User, 'emailVerified' | 'image'>[] =>
   Array.from({ length }, () => {
     const firstName = faker.person.firstName()
     const lastName = faker.person.lastName()
@@ -28,22 +28,22 @@ export const generateUserData = (
       .replace(/\./g, '_')
 
     return {
-      id: createId(),
-      name: faker.person.fullName({ firstName, lastName }),
+      biography: faker.person.bio(),
       email: faker.internet.email({
         firstName,
         lastName,
         provider: 'example.fakerjs.dev',
       }),
+      id: createId(),
+      name: faker.person.fullName({ firstName, lastName }),
       username,
       usernameURL: username.toLowerCase(),
-      biography: faker.person.bio(),
     }
   })
 
 export const generateStampData = (
   length: number,
-  users: Omit<User, 'image' | 'emailVerified'>[],
+  users: Omit<User, 'emailVerified' | 'image'>[],
 ) =>
   Array.from({ length: length }, (_, index) => {
     const categoryIdx = Math.floor(Math.random() * categories.length)
@@ -67,22 +67,22 @@ export const generateStampData = (
 
     const timestamp = faker.date.past()
     return {
-      id: createId(),
-      userId: users[index % users.length].id,
-      game: '1800',
-      title: `Stamp-${index}-${faker.lorem.words({ min: 0, max: 12 })}`,
-      unsafeDescription: `## Stamp-${index}`,
-      markdownDescription: `<h2> Stamp-${index} </h2>`,
-      category: rndCategory,
-      region: rndRegion,
-      modded: index % 20 === 0 ? true : false,
-      stampFileUrl: 'http://localhost:3000/test-stamp.zip',
-      good: rndCategory === 'production' ? getGood() : null,
-      createdAt: timestamp,
-      changedAt: timestamp,
-      updatedAt: timestamp,
       capital: getCapital(),
-      downloads: faker.number.int({ min: 0, max: 1000000 }),
+      category: rndCategory,
+      changedAt: timestamp,
+      createdAt: timestamp,
+      downloads: faker.number.int({ max: 1000000, min: 0 }),
+      game: '1800',
+      good: rndCategory === 'production' ? getGood() : null,
+      id: createId(),
+      markdownDescription: `<h2> Stamp-${index} </h2>`,
+      modded: index % 20 === 0 ? true : false,
+      region: rndRegion,
+      stampFileUrl: 'http://localhost:3000/test-stamp.zip',
+      title: `Stamp-${index}-${faker.lorem.words({ max: 12, min: 0 })}`,
+      unsafeDescription: `## Stamp-${index}`,
+      updatedAt: timestamp,
+      userId: users[index % users.length].id,
     }
   })
 
@@ -91,11 +91,11 @@ export const generatePlaceHoldImages = () => {
     const id = createId()
     return {
       id,
-      originalUrl: `https://placehold.co/2000x2000.png?text=Original${image}\\n${id}`,
-      thumbnailUrl: `https://placehold.co/250x250.png?text=Thumbnail${image}\\n${id}`,
-      smallUrl: `https://placehold.co/500x281.png?text=Small${image}\\n${id}`,
-      mediumUrl: `https://placehold.co/750x421.png?text=Medium${image}\\n${id}`,
       largeUrl: `https://placehold.co/1024x576.png?text=Large${image}\\n${id}`,
+      mediumUrl: `https://placehold.co/750x421.png?text=Medium${image}\\n${id}`,
+      originalUrl: `https://placehold.co/2000x2000.png?text=Original${image}\\n${id}`,
+      smallUrl: `https://placehold.co/500x281.png?text=Small${image}\\n${id}`,
+      thumbnailUrl: `https://placehold.co/250x250.png?text=Thumbnail${image}\\n${id}`,
     }
   })
 }
@@ -112,18 +112,18 @@ async function seed() {
   for (const stamp of stampData) {
     const selectUser = userData[Math.floor(Math.random() * userData.length)]
     await prisma.stamp.update({
-      where: {
-        id: stamp.id,
-      },
       data: {
-        likedBy: {
-          connect: { id: selectUser.id },
-        },
         images: {
           createMany: {
             data: generatePlaceHoldImages(),
           },
         },
+        likedBy: {
+          connect: { id: selectUser.id },
+        },
+      },
+      where: {
+        id: stamp.id,
       },
     })
   }
