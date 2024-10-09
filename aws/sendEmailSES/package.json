@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.666.0",
+    "@supabase/supabase-js": "^2.43.5"
+  },
+  "packageManager": "npm@10.8.1"
+}

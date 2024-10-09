@@ -48,6 +48,7 @@ export const UserHomeBanner = ({
 
 export const UserHomePage = ({
   biography,
+  id,
   image,
   listedStamps,
   username,
@@ -120,7 +121,7 @@ export const UserHomePage = ({
                 Edit Stamp
               </Button>
             </div>
-            <StampCard user={{ image, username, usernameURL }} {...stamp} />
+            <StampCard user={{ id, image, username, usernameURL }} {...stamp} />
           </div>
         ))}
       </Grid>

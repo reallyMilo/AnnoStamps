@@ -1,12 +1,16 @@
 'use client'
+import type { Prisma } from '@prisma/client'
+import type { Session } from 'next-auth'
+
 import { CheckBadgeIcon } from '@heroicons/react/20/solid'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 
 import {
   Button,
+  Checkbox,
+  CheckboxField,
+  CheckboxGroup,
   Description,
   ErrorMessage,
   Field,
@@ -34,32 +38,32 @@ const SubmitButton = () => {
     </Button>
   )
 }
-export const SettingsForm = () => {
-  const router = useRouter()
-  const { data: session, status } = useSession<true>()
+type SettingsFormProps = Pick<Prisma.PreferenceGetPayload<true>, 'enabled'> &
+  Pick<Session['user'], 'biography' | 'username'>
 
+export const SettingsForm = ({
+  biography,
+  enabled,
+  username,
+}: SettingsFormProps) => {
   const [formState, setFormState] = useState<
     Awaited<ReturnType<typeof updateUserSettings>>
   >({
     message: null,
+    ok: false,
     status: 'idle',
   })
-
-  if (status === 'loading') return null
-
-  const { biography, username } = session.user
 
   return (
     <form
       action={async (formData) => {
-        const { message, status } = await updateUserSettings(formData)
+        const { message, ok, status } = await updateUserSettings(formData)
         if (status === 'success') {
           //FIXME: update from useSession not documented
           // no longer works as expected with only database
           // https://authjs.dev/reference/nextjs/react#updatesession
-          router.refresh()
         }
-        setFormState({ message, status })
+        setFormState({ message, ok, status })
       }}
       className="grid max-w-3xl space-y-8"
       id="user-settings"
@@ -111,6 +115,19 @@ export const SettingsForm = () => {
             />
           </Field>
         </FieldGroup>
+      </Fieldset>
+      <Fieldset>
+        <Legend>Preferences</Legend>
+        <CheckboxGroup>
+          <CheckboxField>
+            <Checkbox defaultChecked={enabled} name="emailNotifications" />
+            <Label>Email Notifications</Label>
+            <Description>
+              Receive email notifications for new comments on your stamps or
+              replies to your existing comments.
+            </Description>
+          </CheckboxField>
+        </CheckboxGroup>
       </Fieldset>
       <SubmitButton />
     </form>
