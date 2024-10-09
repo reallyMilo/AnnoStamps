@@ -15,8 +15,10 @@ export const handler = async (event) => {
     .select()
     .eq('id', userIdToNotify)
 
-  console.log(error)
-  if (error) return
+  if (error) {
+    console.log(error)
+    return
+  }
   const command = new SendTemplatedEmailCommand({
     Destination: {
       ToAddresses: [data[0].email],
