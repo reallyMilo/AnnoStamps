@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 const ses = new SESClient({ region: 'eu-central-1' })
 
 export const handler = async (event) => {
-  const { body, stampId, targetUrl, userIdToNotify } = JSON.parse(event)
+  const { body, targetUrl, userIdToNotify } = JSON.parse(event)
 
   const supabase = createClient(
     process.env.SUPA_DB,
@@ -19,13 +19,20 @@ export const handler = async (event) => {
     console.log(error)
     return
   }
+
+  const templateData = {
+    authOfContent: body.authorOfContent,
+    content: body.content,
+    targetUrl: `https://annostamps.com/${targetUrl}`,
+    updateSettingsUrl: `https://annostamps.com/user/${data[0].id}/settings`,
+  }
   const command = new SendTemplatedEmailCommand({
     Destination: {
       ToAddresses: [data[0].email],
     },
     Source: 'noreply@annostamps.com',
     Template: 'CommentNotificationTemplate',
-    TemplateData: event,
+    TemplateData: JSON.stringify(JSON.stringify(templateData)),
   })
 
   try {
