@@ -5,6 +5,7 @@ import { Container, Grid, Heading, Text } from '@/components/ui'
 
 export const UserPublicPage = ({
   biography,
+  id,
   image,
   listedStamps,
   username,
@@ -28,7 +29,7 @@ export const UserPublicPage = ({
           listedStamps.map((stamp) => (
             <StampCard
               key={stamp.id}
-              user={{ image, username, usernameURL }}
+              user={{ id, image, username, usernameURL }}
               {...stamp}
             />
           ))

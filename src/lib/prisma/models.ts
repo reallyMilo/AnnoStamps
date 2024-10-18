@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { getUnixTime } from 'date-fns'
+import { formatDistanceToNowStrict, getUnixTime } from 'date-fns'
 import z from 'zod'
 
 import { REGIONS_1800 } from '@/lib/constants/1800/data'
@@ -15,9 +15,11 @@ export const stampIncludeStatement = {
       likedBy: true,
     },
   },
+  comments: true,
   images: true,
   user: {
     select: {
+      id: true,
       image: true,
       username: true,
       usernameURL: true,
@@ -30,7 +32,7 @@ export interface StampWithRelations
     Prisma.StampGetPayload<{
       include: typeof stampIncludeStatement
     }>,
-    'changedAt' | 'createdAt' | 'images' | 'updatedAt'
+    'changedAt' | 'comments' | 'createdAt' | 'images' | 'updatedAt'
   > {
   changedAt: string
   createdAt: string
@@ -194,7 +196,7 @@ export const userExtension = Prisma.defineExtension({
   query: {
     user: {
       update({ args, query }) {
-        args.data = userProfileSchema.parse(args.data)
+        args.data = userProfileSchema.passthrough().parse(args.data)
         return query(args)
       },
     },
@@ -214,6 +216,113 @@ export const userExtension = Prisma.defineExtension({
       name: {
         compute() {
           return null
+        },
+      },
+    },
+  },
+})
+
+/* -------------------------------------------------------------------------------------------------
+ * Comments
+ * -----------------------------------------------------------------------------------------------*/
+
+export const commentIncludeStatement = {
+  _count: {
+    select: {
+      replies: true,
+    },
+  },
+  user: {
+    select: {
+      id: true,
+      image: true,
+      username: true,
+      usernameURL: true,
+    },
+  },
+} satisfies Prisma.CommentInclude
+
+export type Comment = {
+  createdAt: number
+  updatedAt: number
+} & Omit<
+  Prisma.CommentGetPayload<{ include: typeof commentIncludeStatement }>,
+  'createdAt' | 'updatedAt'
+>
+
+export const commentExtension = Prisma.defineExtension({
+  result: {
+    comment: {
+      createdAt: {
+        compute({ createdAt }) {
+          return getUnixTime(createdAt)
+        },
+      },
+      updatedAt: {
+        compute({ updatedAt }) {
+          return getUnixTime(updatedAt)
+        },
+      },
+    },
+  },
+})
+
+/* -------------------------------------------------------------------------------------------------
+ * Notifications
+ * -----------------------------------------------------------------------------------------------*/
+export type Notification = {
+  body: {
+    authorOfContent: string
+    authorOfContentURL: string
+    content: string
+  }
+  createdAt: string
+  updatedAt: string
+} & Omit<
+  Prisma.NotificationGetPayload<Prisma.NotificationDefaultArgs>,
+  'body' | 'createdAt' | 'updatedAt'
+>
+
+export const notificationExtension = Prisma.defineExtension({
+  result: {
+    notification: {
+      createdAt: {
+        compute({ createdAt }) {
+          return formatDistanceToNowStrict(createdAt)
+        },
+      },
+      updatedAt: {
+        compute({ updatedAt }) {
+          return formatDistanceToNowStrict(updatedAt)
+        },
+      },
+    },
+  },
+})
+
+/* -------------------------------------------------------------------------------------------------
+ * Preference
+ * -----------------------------------------------------------------------------------------------*/
+
+export type Preference = {
+  createdAt: string
+  updatedAt: string
+} & Omit<
+  Prisma.PreferenceGetPayload<Prisma.PreferenceDefaultArgs>,
+  'createdAt' | 'updatedAt'
+>
+
+export const preferenceExtension = Prisma.defineExtension({
+  result: {
+    preference: {
+      createdAt: {
+        compute({ createdAt }) {
+          return formatDistanceToNowStrict(createdAt)
+        },
+      },
+      updatedAt: {
+        compute({ updatedAt }) {
+          return formatDistanceToNowStrict(updatedAt)
         },
       },
     },
