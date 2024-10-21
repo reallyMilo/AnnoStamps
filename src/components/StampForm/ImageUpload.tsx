@@ -13,7 +13,7 @@ import { type Asset, useUpload } from './useUpload'
 const isImage = (b: Asset | Image): b is Image => {
   return (b as Image).id !== undefined
 }
-
+//TODO: ordering of images, drag
 export const ImageUpload = () => {
   const { images, setImages, status } = useStampFormContext()
   const { handleChange, handleRemove, isError } = useUpload<Asset | Image>(

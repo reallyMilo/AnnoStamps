@@ -99,16 +99,17 @@ const Form = ({
     formData.set('stampId', stampId)
 
     const imagesToUpload: Asset[] = []
-    const imageIdsToRemove: Image['id'][] = []
+    const imageIdsToRemove: Set<Image['id']> = stamp?.images
+      ? new Set(stamp.images.map((image) => image.id))
+      : new Set([])
 
     for (const image of images) {
       if (isAsset(image)) {
         imagesToUpload.push(image)
         continue
       }
-      const index = stamp?.images.findIndex((oldImg) => oldImg.id === image.id)
-      if (index === -1) {
-        imageIdsToRemove.push(image.id)
+      if (imageIdsToRemove.has(image.id)) {
+        imageIdsToRemove.delete(image.id)
       }
     }
 
@@ -139,7 +140,7 @@ const Form = ({
 
     formData.set('stampFileUrl', uploadedStampZipUrl)
     formData.set('uploadedImageUrls', JSON.stringify(uploadedImageUrls))
-    formData.set('imageIdsToRemove', JSON.stringify(imageIdsToRemove))
+    formData.set('imageIdsToRemove', JSON.stringify([...imageIdsToRemove]))
 
     const result = await action(formData)
 
