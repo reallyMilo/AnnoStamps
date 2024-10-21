@@ -34,7 +34,7 @@ export const UserHomeBanner = ({
   username,
 }: UserBannerProps) => {
   return (
-    <div className="mb-4 flex flex-col gap-y-2 border-b-2 pb-10">
+    <div className="mb-4 flex flex-col gap-y-2 border-b-2 pb-4">
       <div className="flex space-x-4">
         <Heading>{username}</Heading>
         <Text className="self-end">{downloads} Downloads</Text>
@@ -42,6 +42,10 @@ export const UserHomeBanner = ({
         <Text className="self-end">{stampCount} Stamps</Text>
       </div>
       <Text className="text-sm">{biography}</Text>
+      <Button className="w-fit self-end" href={'/stamp/create'}>
+        <PlusIcon />
+        New Stamp
+      </Button>
     </div>
   )
 }
