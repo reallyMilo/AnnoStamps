@@ -3,18 +3,14 @@
 import JSZip, { type JSZipObjectWithData } from 'jszip'
 import useSWR from 'swr'
 
-import type { UserWithStamps } from '@/lib/prisma/models'
+import type { StampWithRelations } from '@/lib/prisma/models'
 
 import { StampForm } from '@/components/StampForm/StampForm'
 import { Heading } from '@/components/ui'
 
 import { updateStamp } from './action'
 
-export const UpdateStampForm = ({
-  stamp,
-}: {
-  stamp: UserWithStamps['listedStamps'][0]
-}) => {
+export const UpdateStampForm = ({ stamp }: { stamp: StampWithRelations }) => {
   const {
     data: stampZip,
     error,
