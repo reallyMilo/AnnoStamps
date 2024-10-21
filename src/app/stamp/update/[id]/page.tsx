@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 
 import { auth } from '@/auth'
 import { Container, Text } from '@/components/ui'
-import { userIncludeStatement } from '@/lib/prisma/models'
+import { stampIncludeStatement } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 
 import { UpdateStampForm } from './UpdateStampForm'
@@ -42,26 +42,21 @@ const EditStampPage = async ({ params }: { params: { id: string } }) => {
     )
   }
 
-  const userStamp = await prisma.user.findUnique({
-    include: userIncludeStatement,
+  const userStamp = await prisma.stamp.findUnique({
+    include: stampIncludeStatement,
     where: {
-      id: session.user.id,
-      listedStamps: {
-        some: {
-          id: {
-            equals: params.id,
-          },
-        },
-      },
+      id: params.id,
+      userId: session.user.id,
     },
   })
+
   if (!userStamp) {
     throw new Error('Not your stamp')
   }
 
   return (
     <Container className="md:max-w-5xl">
-      <UpdateStampForm stamp={userStamp.listedStamps[0]} />
+      <UpdateStampForm stamp={userStamp} />
     </Container>
   )
 }
