@@ -54,8 +54,7 @@ export const NotificationDropdownButton = ({
 }) => {
   const { data: session, update } = useSession()
 
-  const isReadNotification = session?.user.notifications[0]?.isRead ?? false
-
+  const isReadNotification = session?.user.notifications[0]?.isRead ?? true
   return (
     <Dropdown>
       <DropdownButton
