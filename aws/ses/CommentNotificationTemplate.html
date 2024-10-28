@@ -1,6 +1,5 @@
-<!-- https://codebeautify.org/htmlviewer/cbf2092a#  design + minify-->
+<!-- https://codebeautify.org/htmlviewer design + minify-->
 <!-- https://www.freeformatter.com/json-escape.html#before-output -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,8 +9,6 @@
     <meta name="supported-color-schemes" content="light dark" />
     <title></title>
     <style type="text/css" rel="stylesheet" media="all">
-      @import url('https://fonts.googleapis.com/css?family=Inter:400,700&display=swap');
-
       body {
         width: 100% !important;
         height: 100%;
@@ -90,7 +87,6 @@
         font-size: 13px;
       }
 
-      /* Utilities ------------------------------ */
       .align-right {
         text-align: right;
       }
@@ -103,31 +99,6 @@
         text-align: center;
       }
 
-      /* Buttons ------------------------------ */
-      .button {
-        background-color: #6dd3c0;
-        border-top: 10px solid #6dd3c0;
-        border-right: 18px solid #6dd3c0;
-        border-bottom: 10px solid #6dd3c0;
-        border-left: 18px solid #6dd3c0;
-        display: inline-block;
-        font-weight: bold;
-        color: #222939 !important;
-        text-decoration: none;
-        border-radius: 0.375rem;
-        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16);
-        -webkit-text-size-adjust: none;
-        box-sizing: border-box;
-      }
-
-      @media only screen and (max-width: 500px) {
-        .button {
-          width: 100% !important;
-          text-align: center !important;
-        }
-      }
-
-      /* Attribute list ------------------------------ */
       .attributes {
         margin: 0 0 21px;
       }
@@ -141,7 +112,6 @@
         padding: 0;
       }
 
-      /* Related Items ------------------------------ */
       .related {
         width: 100%;
         margin: 0;
@@ -174,7 +144,6 @@
         padding: 25px 0 10px;
       }
 
-      /* Data table ------------------------------ */
       body {
         background-color: #f2f4f6;
         color: #51545e;
@@ -203,7 +172,6 @@
         -premailer-cellspacing: 0;
       }
 
-      /* Masthead ----------------------- */
       .email-masthead {
         padding: 25px 0;
         text-align: center;
@@ -221,7 +189,6 @@
         text-shadow: 0 1px 0 white;
       }
 
-      /* Body ------------------------------ */
       .email-body {
         width: 100%;
         margin: 0;
@@ -275,7 +242,6 @@
         padding: 45px;
       }
 
-      /*Media Queries ------------------------------ */
       @media only screen and (max-width: 600px) {
         .email-body_inner,
         .email-footer {
@@ -318,16 +284,9 @@
 
       :root {
         color-scheme: light dark;
-        /* supported-color-schemes: light dark; */
       }
     </style>
-    <!--[if mso]>
-      <style type="text/css">
-        .f-fallback {
-          font-family: Arial, sans-serif;
-        }
-      </style>
-    <![endif]-->
+ 
   </head>
   <body>
     <table
@@ -347,20 +306,6 @@
             role="presentation"
           >
             <tr>
-              <td class="email-masthead">
-                <a
-                  href="https://annostamps.com"
-                  class="f-fallback email-masthead_name"
-                >
-                  <img
-                    src="https://annostamps.com/anno-stamps-logo.png"
-                    width="200px"
-                  />
-                </a>
-              </td>
-            </tr>
-            <!-- Email Body -->
-            <tr>
               <td
                 class="email-body"
                 width="570"
@@ -375,34 +320,26 @@
                   cellspacing="0"
                   role="presentation"
                 >
-                  <!-- Body content -->
                   <tr>
                     <td class="content-cell">
-                      <div class="f-fallback">
+                      <div >
                         <p>{{authorOfContent}} commented</p>
                         <p>{{content}}</p>
-                        <!-- Action -->
                         <a
                           href="{{targetUrl}}"
-                          class="f-fallback button"
                           target="_blank"
-                          >Click this link to go to comment</a
-                        >
-                        <!-- Sub copy -->
+                          >{{targetUrl}}</a>
                         <table class="body-sub" role="presentation">
                           <tr>
                             <td>
-                              <p class="f-fallback sub">
+                              <p class="sub">
                                 If you wish to stop receiving email
-                                notifications please adjust your
+                                notifications please adjust your 
                                 <a href="{{updateSettingsUrl}}" target="_blank">
                                   account setting preferences.
                                 </a>
                               </p>
-                              <a></a>
-                              <p class="f-fallback sub">
-                                {{updateSettingsUrl}}
-                              </p>
+                              
                             </td>
                           </tr>
                         </table>

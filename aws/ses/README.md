@@ -13,3 +13,7 @@ then run
 `aws ses create-template --cli-input-json file://comment-notification-template.json`
 
 Delete the created access key from admin account.
+
+cli delete template command
+
+`aws ses delete-template --template-name CommentNotificationTemplate`
