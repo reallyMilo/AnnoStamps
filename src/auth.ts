@@ -42,7 +42,6 @@ const config = {
       return { session, user }
     },
   },
-  // events: { createUser: sendWelcomeEmail },
   callbacks: {
     session: async ({ session, user }) => {
       return {
