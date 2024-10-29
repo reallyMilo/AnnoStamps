@@ -14,7 +14,34 @@ import prisma from '@/lib/prisma/singleton'
 const providers = [Google, Discord] satisfies Provider[]
 
 const config = {
-  adapter: PrismaAdapter(prisma),
+  adapter: {
+    ...PrismaAdapter(prisma),
+    //@ts-expect-error email being null
+    async getSessionAndUser(sessionToken) {
+      const userAndSession = await prisma.session.findUnique({
+        include: {
+          user: {
+            include: {
+              notifications: {
+                orderBy: {
+                  createdAt: 'desc',
+                },
+                select: {
+                  isRead: true,
+                },
+                take: 1,
+              },
+            },
+          },
+        },
+        where: { sessionToken },
+      })
+
+      if (!userAndSession) return null
+      const { user, ...session } = userAndSession
+      return { session, user }
+    },
+  },
   // events: { createUser: sendWelcomeEmail },
   callbacks: {
     session: async ({ session, user }) => {
@@ -30,7 +57,6 @@ const config = {
       }
     },
   },
-  debug: process.env.NODE_ENV !== 'production' ? true : false,
   pages: {
     error: '/auth/error',
     newUser: '/',
@@ -53,6 +79,7 @@ export const providerMap = providers.map((provider) => {
     return { id: provider.id, name: provider.name }
   }
 })
+//@ts-expect-error email being null
 export const { auth, handlers, signIn, signOut } = NextAuth(config)
 declare module 'next-auth' {
   /**
@@ -62,8 +89,24 @@ declare module 'next-auth' {
   //eslint-disable-next-line
   interface Session extends AdapterSession {
     user: AdapterUser &
-      Pick<User, 'biography' | 'id' | 'username' | 'usernameURL'>
+      Pick<
+        User,
+        'biography' | 'id' | 'notifications' | 'username' | 'usernameURL'
+      >
   }
   //eslint-disable-next-line
-  interface User extends Prisma.UserGetPayload<true> {}
+  interface User
+    extends Prisma.UserGetPayload<{
+      include: {
+        notifications: {
+          orderBy: {
+            createdAt: 'desc'
+          }
+          select: {
+            isRead: true
+          }
+          take: 1
+        }
+      }
+    }> {}
 }

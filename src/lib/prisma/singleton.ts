@@ -2,7 +2,10 @@ import { Prisma, PrismaClient } from '@prisma/client'
 
 import { type QueryParams, STAMPS_PER_PAGE } from '../constants'
 import {
+  commentExtension,
   imageExtension,
+  notificationExtension,
+  preferenceExtension,
   stampExtensions,
   stampIncludeStatement,
   type StampWithRelations,
@@ -14,6 +17,9 @@ const prismaClientSingleton = () => {
     .$extends(userExtension)
     .$extends(stampExtensions)
     .$extends(imageExtension)
+    .$extends(commentExtension)
+    .$extends(notificationExtension)
+    .$extends(preferenceExtension)
     .$extends({
       model: {
         stamp: {

@@ -1,7 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
-  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  binaryTargets   = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -23,8 +23,34 @@ model Image {
   stampId      String
 }
 
+model Notification {
+  id        String   @id
+  userId    String
+  channel   String
+  user      User     @relation(fields: [userId], references: [id])
+  body      Json
+  targetUrl String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Comment {
+  id            String    @id
+  content       String
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  stampId       String
+  stamp         Stamp     @relation(fields: [stampId], references: [id])
+  parentId      String?
+  parentComment Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies       Comment[] @relation("CommentReplies")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
 model Stamp {
-  id                  String   @id
+  id                  String    @id
   userId              String
   game                String
   title               String
@@ -35,30 +61,31 @@ model Stamp {
   stampFileUrl        String
   good                String?
   capital             String?
-  createdAt           DateTime @default(now())
-  changedAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  modded              Boolean  @default(false)
-  downloads           Int      @default(0)
-  user                User     @relation("StampCreator", fields: [userId], references: [id], onDelete: NoAction)
-  likedBy             User[]   @relation("StampLiker")
-  images              Image[]  @relation("StampImage")
+  createdAt           DateTime  @default(now())
+  changedAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  modded              Boolean   @default(false)
+  downloads           Int       @default(0)
+  user                User      @relation("StampCreator", fields: [userId], references: [id], onDelete: NoAction)
+  likedBy             User[]    @relation("StampLiker")
+  images              Image[]   @relation("StampImage")
+  comments            Comment[]
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-  user               User    @relation(fields: [userId], references: [id], onDelete: NoAction)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: NoAction)
 
   @@unique([provider, providerAccountId])
 }
@@ -71,19 +98,33 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: NoAction)
 }
 
+model Preference {
+  id      String  @id
+  channel String
+  enabled Boolean @default(true)
+  userId  String
+  user    User    @relation(fields: [userId], references: [id], onDelete: NoAction)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([userId, channel])
+}
+
 model User {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
-  username      String?   @unique
-  usernameURL   String?   @unique
+  username      String?        @unique
+  usernameURL   String?        @unique
   biography     String?
+  preferences   Preference[]
   accounts      Account[]
   sessions      Session[]
-  listedStamps  Stamp[]   @relation("StampCreator")
-  likedStamps   Stamp[]   @relation("StampLiker")
+  listedStamps  Stamp[]        @relation("StampCreator")
+  likedStamps   Stamp[]        @relation("StampLiker")
+  comments      Comment[]
+  notifications Notification[]
 }
 
 model VerificationToken {

@@ -1,4 +1,4 @@
-import { Container } from '@/components/ui'
+import { Container, Heading } from '@/components/ui'
 
 const StampPageLoading = () => {
   return (
@@ -9,6 +9,9 @@ const StampPageLoading = () => {
         <div className="min-h-8 w-1/3 bg-gray-500"></div>
         <div className="min-h-8 bg-gray-500"></div>
         <div className="min-h-40 bg-gray-500"></div>
+        <div>
+          <Heading level={2}>Comments</Heading>
+        </div>
       </div>
     </Container>
   )
