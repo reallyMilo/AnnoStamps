@@ -20,8 +20,8 @@ importers:
         specifier: ^3.620.1
         version: 3.620.1
       '@headlessui/react':
-        specifier: ^2.1.5
-        version: 2.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^2.2.0
+        version: 2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@heroicons/react':
         specifier: ^2.1.5
         version: 2.1.5(react@18.3.1)
@@ -99,8 +99,8 @@ importers:
         version: 3.23.8
     devDependencies:
       '@faker-js/faker':
-        specifier: ^8.4.1
-        version: 8.4.1
+        specifier: ^9.1.0
+        version: 9.1.0
       '@tailwindcss/aspect-ratio':
         specifier: ^0.4.2
         version: 0.4.2(tailwindcss@3.4.3(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
@@ -138,8 +138,8 @@ importers:
         specifier: ^18.3.0
         version: 18.3.0
       '@types/sanitize-html':
-        specifier: ^2.11.0
-        version: 2.11.0
+        specifier: ^2.13.0
+        version: 2.13.0
       '@typescript-eslint/eslint-plugin':
         specifier: ^7.18.0
         version: 7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.0)(typescript@5.5.3))(eslint@8.57.0)(typescript@5.5.3)
@@ -186,8 +186,8 @@ importers:
         specifier: ^9.1.6
         version: 9.1.6
       jsdom:
-        specifier: ^24.1.0
-        version: 24.1.0
+        specifier: ^25.0.1
+        version: 25.0.1
       lint-staged:
         specifier: ^15.2.10
         version: 15.2.10
@@ -217,7 +217,7 @@ importers:
         version: 4.3.2(typescript@5.5.3)(vite@5.4.4(@types/node@20.12.12)(terser@5.36.0))
       vitest:
         specifier: 1.1.1
-        version: 1.1.1(@types/node@20.12.12)(@vitest/ui@1.2.2)(jsdom@24.1.0)(terser@5.36.0)
+        version: 1.1.1(@types/node@20.12.12)(@vitest/ui@1.2.2)(jsdom@25.0.1)(terser@5.36.0)
 
 packages:
   '@aashutoshrathi/word-wrap@1.2.6':
@@ -1490,12 +1490,12 @@ packages:
       }
     engines: { node: ^12.22.0 || ^14.17.0 || >=16.0.0 }
 
-  '@faker-js/faker@8.4.1':
+  '@faker-js/faker@9.1.0':
     resolution:
       {
-        integrity: sha512-XQ3cU+Q8Uqmrbf2e0cIC/QN43sTBSC8KF12u29Mb47tWrt2hAgBXSgpZMj4Ao8Uk0iJcU99QsOCaIL8934obCg==,
+        integrity: sha512-GJvX9iM9PBtKScJVlXQ0tWpihK3i0pha/XAhzQa1hPK/ILLa1Wq3I63Ij7lRtqTwmdTxRCyrUhLC5Sly9SLbug==,
       }
-    engines: { node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13' }
+    engines: { node: '>=18.0.0', npm: '>=9.0.0' }
 
   '@floating-ui/core@1.6.4':
     resolution:
@@ -1533,15 +1533,15 @@ packages:
         integrity: sha512-dWO2pw8hhi+WrXq1YJy2yCuWoL20PddgGaqTgVe4cOS9Q6qklXCiA1tJEqX6BEwRNSCP84/afac9hd4MS+zEUA==,
       }
 
-  '@headlessui/react@2.1.5':
+  '@headlessui/react@2.2.0':
     resolution:
       {
-        integrity: sha512-m3vzqwMTyDbgaNiSXQdrw8R4tRdnxVHHm4G/ZGS0TP6T8blEj3Ib1/zIJBzlvTXpBjTpd1DsUnRTonHyONMjSQ==,
+        integrity: sha512-RzCEg+LXsuI7mHiSomsu/gBJSjpupm6A1qIZ5sWjd7JhARNlMiSA4kKfJpCKwU9tE+zMRterhhrP74PvfJrpXQ==,
       }
     engines: { node: '>=10' }
     peerDependencies:
-      react: ^18
-      react-dom: ^18
+      react: ^18 || ^19 || ^19.0.0-rc
+      react-dom: ^18 || ^19 || ^19.0.0-rc
 
   '@heroicons/react@2.1.5':
     resolution:
@@ -3624,10 +3624,10 @@ packages:
         integrity: sha512-V0kuGBX3+prX+DQ/7r2qsv1NsdfnCLnTgnRJ1pYnxykBhGMz+qj+box5lq7XsO5mtZsBqpjwwTu/7wszPfMBcw==,
       }
 
-  '@types/sanitize-html@2.11.0':
+  '@types/sanitize-html@2.13.0':
     resolution:
       {
-        integrity: sha512-7oxPGNQHXLHE48r/r/qjn7q0hlrs3kL7oZnGj0Wf/h9tj/6ibFyRkNbsDxaBBZ4XUZ0Dx5LGCyDJ04ytSofacQ==,
+        integrity: sha512-X31WxbvW9TjIhZZNyNBZ/p5ax4ti7qsNDBDEnH4zAgmEh35YnFD1UiS6z9Cd34kKm0LslFW0KPmTQzu/oGtsqQ==,
       }
 
   '@types/semver@7.5.8':
@@ -4957,10 +4957,10 @@ packages:
     engines: { node: '>=4' }
     hasBin: true
 
-  cssstyle@4.0.1:
+  cssstyle@4.1.0:
     resolution:
       {
-        integrity: sha512-8ZYiJ3A/3OkDd093CBT/0UKDWry7ak4BdPTFP2+QEP7cmhouyq/Up709ASSj2cK02BbZiMgk7kYjZNS4QP5qrQ==,
+        integrity: sha512-h66W1URKpBS5YMI/V8PyXvTMFT8SupJ1IzoIV8IeBC/ji8WVmrO8dGlTi+2dh6whmdk6BiKJLD/ZBkhWbcg6nA==,
       }
     engines: { node: '>=18' }
 
@@ -5923,10 +5923,10 @@ packages:
       }
     engines: { node: '>= 0.12' }
 
-  form-data@4.0.0:
+  form-data@4.0.1:
     resolution:
       {
-        integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==,
+        integrity: sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==,
       }
     engines: { node: '>= 6' }
 
@@ -6303,10 +6303,10 @@ packages:
       }
     engines: { node: '>= 6' }
 
-  https-proxy-agent@7.0.4:
+  https-proxy-agent@7.0.5:
     resolution:
       {
-        integrity: sha512-wlwpilI7YdjSkWaQ/7omYBMTliDcmCN8OLihO6I9B86g06lMyAoqgoDpV0XqoaPOKj+0DIdAvnsWfyAAhmimcg==,
+        integrity: sha512-1e4Wqeblerz+tMKPIq2EMGiiWW1dIjZOksyHWSUm1rmuvw/how9hBHZ38lAGj5ID4Ik6EdkOw7NmWPy6LAwalw==,
       }
     engines: { node: '>= 14' }
 
@@ -6799,10 +6799,10 @@ packages:
         integrity: sha512-UVU9dibq2JcFWxQPA6KCqj5O42VOmAY3zQUfEKxU0KpTGXwNoCjkX1e13eHNvw/xPynt6pU0rZ1htjWTNTSXsg==,
       }
 
-  jsdom@24.1.0:
+  jsdom@25.0.1:
     resolution:
       {
-        integrity: sha512-6gpM7pRXCwIOKxX47cgOyvyQDN/Eh0f1MeKySBV2xGdKtqJBLj8P25eY3EVCWo2mglDDzozR2r2MW4T+JiNUZA==,
+        integrity: sha512-8i7LzZj7BF8uplX+ZyOlIz86V6TAsSs+np6m1kpW9u0JWi4z/1t+FzcK1aek+ybTnAC4KhBL4uXCNT0wcUIeCw==,
       }
     engines: { node: '>=18' }
     peerDependencies:
@@ -7472,10 +7472,10 @@ packages:
       }
     engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
 
-  nwsapi@2.2.10:
+  nwsapi@2.2.13:
     resolution:
       {
-        integrity: sha512-QK0sRs7MKv0tKe1+5uZIQk/C8XGza4DAnztJG8iD+TpJIORARrCxczA738awHrZoHeTjSSoHqao2teO0dC/gFQ==,
+        integrity: sha512-cTGB9ptp9dY9A5VbMSe7fQBcl/tt22Vcqdq8+eN93rblOuE0aCFu4aZ2vMwct/2t+lFnosm8RkQW1I0Omb1UtQ==,
       }
 
   oauth4webapi@2.12.1:
@@ -7661,10 +7661,10 @@ packages:
         integrity: sha512-/2qh0lav6CmI15FzA3i/2Bzk2zCgQhGMkvhOhKNcBVQ1ldgpbfiNTVslmooUmWJcADi1f1kIeynbDRVzNlfR6Q==,
       }
 
-  parse5@7.1.2:
+  parse5@7.2.1:
     resolution:
       {
-        integrity: sha512-Czj1WaSVpaoj0wbhMzLmWD69anp2WH7FXMB9n1Sy8/ZFF9jolSQVMu1Ij5WIyGmcBmhk7EOndpO4mIpihVqAXw==,
+        integrity: sha512-BuBYQYlv1ckiPdQi/ohiivi9Sagc9JG+Ozs0r7b/0iK3sKmrb0b9FdWdBbOdx6hBCM/F9Ir82ofnBhtZOjCRPQ==,
       }
 
   path-exists@4.0.0:
@@ -8379,12 +8379,6 @@ packages:
     engines: { node: '>=18.0.0', npm: '>=8.0.0' }
     hasBin: true
 
-  rrweb-cssom@0.6.0:
-    resolution:
-      {
-        integrity: sha512-APM0Gt1KoXBz0iIkkdB/kfvGOwC4UuJFeG/c+yV7wSc7q96cG/kJ0HiYCnzivD9SB53cLV1MlHFNfOuPaadYSw==,
-      }
-
   rrweb-cssom@0.7.1:
     resolution:
       {
@@ -9072,6 +9066,19 @@ packages:
       }
     engines: { node: '>=14.0.0' }
 
+  tldts-core@6.1.57:
+    resolution:
+      {
+        integrity: sha512-lXnRhuQpx3zU9EONF9F7HfcRLvN1uRYUBIiKL+C/gehC/77XTU+Jye6ui86GA3rU6FjlJ0triD1Tkjt2F/2lEg==,
+      }
+
+  tldts@6.1.57:
+    resolution:
+      {
+        integrity: sha512-Oy7yDXK8meJl8vPMOldzA+MtueAJ5BrH4l4HXwZuj2AtfoQbLjmTJmjNWPUcAo+E/ibHn7QlqMS0BOcXJFJyHQ==,
+      }
+    hasBin: true
+
   tmp@0.2.3:
     resolution:
       {
@@ -9106,6 +9113,13 @@ packages:
         integrity: sha512-Loo5UUvLD9ScZ6jh8beX1T6sO1w2/MpCRpEP7V280GKMVUQ0Jzar2U3UJPsrdbziLEMMhu3Ujnq//rhiFuIeag==,
       }
     engines: { node: '>=6' }
+
+  tough-cookie@5.0.0:
+    resolution:
+      {
+        integrity: sha512-FRKsF7cz96xIIeMZ82ehjC3xW2E+O2+v11udrDYewUbszngYhsGa8z6YUMMzO9QJZzzyd0nGGXnML/TReX6W8Q==,
+      }
+    engines: { node: '>=16' }
 
   tr46@0.0.3:
     resolution:
@@ -9718,10 +9732,10 @@ packages:
       utf-8-validate:
         optional: true
 
-  ws@8.17.0:
+  ws@8.18.0:
     resolution:
       {
-        integrity: sha512-uJq6108EgZMAl20KagGkzCKfMEjxmKvZHG7Tlq0Z6nOky7YF7aq4mOx6xK8TJ/i1LeK4Qus7INktacctDgY8Ow==,
+        integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==,
       }
     engines: { node: '>=10.0.0' }
     peerDependencies:
@@ -11130,7 +11144,7 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@faker-js/faker@8.4.1': {}
+  '@faker-js/faker@9.1.0': {}
 
   '@floating-ui/core@1.6.4':
     dependencies:
@@ -11157,7 +11171,7 @@ snapshots:
 
   '@floating-ui/utils@0.2.4': {}
 
-  '@headlessui/react@2.1.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@headlessui/react@2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@floating-ui/react': 0.26.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-aria/focus': 3.17.1(react@18.3.1)
@@ -12727,7 +12741,7 @@ snapshots:
       '@types/prop-types': 15.7.12
       csstype: 3.1.3
 
-  '@types/sanitize-html@2.11.0':
+  '@types/sanitize-html@2.13.0':
     dependencies:
       htmlparser2: 8.0.2
 
@@ -13045,7 +13059,7 @@ snapshots:
       pathe: 1.1.1
       picocolors: 1.0.1
       sirv: 2.0.4
-      vitest: 1.1.1(@types/node@20.12.12)(@vitest/ui@1.2.2)(jsdom@24.1.0)(terser@5.36.0)
+      vitest: 1.1.1(@types/node@20.12.12)(@vitest/ui@1.2.2)(jsdom@25.0.1)(terser@5.36.0)
 
   '@vitest/utils@1.1.1':
     dependencies:
@@ -13627,9 +13641,9 @@ snapshots:
 
   cssesc@3.0.0: {}
 
-  cssstyle@4.0.1:
+  cssstyle@4.1.0:
     dependencies:
-      rrweb-cssom: 0.6.0
+      rrweb-cssom: 0.7.1
 
   csstype@3.1.3: {}
 
@@ -14458,7 +14472,7 @@ snapshots:
       combined-stream: 1.0.8
       mime-types: 2.1.35
 
-  form-data@4.0.0:
+  form-data@4.0.1:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
@@ -14694,7 +14708,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  https-proxy-agent@7.0.4:
+  https-proxy-agent@7.0.5:
     dependencies:
       agent-base: 7.1.1
       debug: 4.3.7(supports-color@8.1.1)
@@ -14944,28 +14958,28 @@ snapshots:
 
   jsbn@0.1.1: {}
 
-  jsdom@24.1.0:
+  jsdom@25.0.1:
     dependencies:
-      cssstyle: 4.0.1
+      cssstyle: 4.1.0
       data-urls: 5.0.0
       decimal.js: 10.4.3
-      form-data: 4.0.0
+      form-data: 4.0.1
       html-encoding-sniffer: 4.0.0
       http-proxy-agent: 7.0.2
-      https-proxy-agent: 7.0.4
+      https-proxy-agent: 7.0.5
       is-potential-custom-element-name: 1.0.1
-      nwsapi: 2.2.10
-      parse5: 7.1.2
+      nwsapi: 2.2.13
+      parse5: 7.2.1
       rrweb-cssom: 0.7.1
       saxes: 6.0.0
       symbol-tree: 3.2.4
-      tough-cookie: 4.1.4
+      tough-cookie: 5.0.0
       w3c-xmlserializer: 5.0.0
       webidl-conversions: 7.0.0
       whatwg-encoding: 3.1.1
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.0.0
-      ws: 8.17.0
+      ws: 8.18.0
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -15322,7 +15336,7 @@ snapshots:
     dependencies:
       path-key: 4.0.0
 
-  nwsapi@2.2.10: {}
+  nwsapi@2.2.13: {}
 
   oauth4webapi@2.12.1: {}
 
@@ -15435,7 +15449,7 @@ snapshots:
 
   parse-srcset@1.0.2: {}
 
-  parse5@7.1.2:
+  parse5@7.2.1:
     dependencies:
       entities: 4.5.0
 
@@ -15837,8 +15851,6 @@ snapshots:
       '@rollup/rollup-win32-ia32-msvc': 4.24.3
       '@rollup/rollup-win32-x64-msvc': 4.24.3
       fsevents: 2.3.3
-
-  rrweb-cssom@0.6.0: {}
 
   rrweb-cssom@0.7.1: {}
 
@@ -16290,6 +16302,12 @@ snapshots:
 
   tinyspy@2.2.0: {}
 
+  tldts-core@6.1.57: {}
+
+  tldts@6.1.57:
+    dependencies:
+      tldts-core: 6.1.57
+
   tmp@0.2.3: {}
 
   to-fast-properties@2.0.0: {}
@@ -16306,6 +16324,10 @@ snapshots:
       punycode: 2.3.1
       universalify: 0.2.0
       url-parse: 1.5.10
+
+  tough-cookie@5.0.0:
+    dependencies:
+      tldts: 6.1.57
 
   tr46@0.0.3: {}
 
@@ -16541,7 +16563,7 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.36.0
 
-  vitest@1.1.1(@types/node@20.12.12)(@vitest/ui@1.2.2)(jsdom@24.1.0)(terser@5.36.0):
+  vitest@1.1.1(@types/node@20.12.12)(@vitest/ui@1.2.2)(jsdom@25.0.1)(terser@5.36.0):
     dependencies:
       '@vitest/expect': 1.1.1
       '@vitest/runner': 1.1.1
@@ -16567,7 +16589,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 20.12.12
       '@vitest/ui': 1.2.2(vitest@1.1.1)
-      jsdom: 24.1.0
+      jsdom: 25.0.1
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -16734,7 +16756,7 @@ snapshots:
 
   ws@7.5.10: {}
 
-  ws@8.17.0: {}
+  ws@8.18.0: {}
 
   xml-name-validator@5.0.0: {}
 
