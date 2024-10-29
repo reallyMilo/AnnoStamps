@@ -5,7 +5,7 @@ import z from 'zod'
 import { REGIONS_1800 } from '@/lib/constants/1800/data'
 
 import { CATEGORIES } from '../constants'
-import { distanceUnixTimeToNow, formatIntegerWithSuffix } from './utils'
+import { formatIntegerWithSuffix } from './utils'
 //Exception: you cannot mutate include or select because that would change the
 //expected output type and break type safety. Will have to keep exporting this
 //unfortunately or every statement call would have to be cast
@@ -122,12 +122,12 @@ export const stampExtensions = Prisma.defineExtension({
     stamp: {
       changedAt: {
         compute({ changedAt }) {
-          return distanceUnixTimeToNow(getUnixTime(new Date(changedAt)))
+          return formatDistanceToNowStrict(changedAt)
         },
       },
       createdAt: {
         compute({ createdAt }) {
-          return distanceUnixTimeToNow(getUnixTime(new Date(createdAt)))
+          return formatDistanceToNowStrict(createdAt)
         },
       },
       suffixDownloads: {
@@ -138,7 +138,7 @@ export const stampExtensions = Prisma.defineExtension({
       },
       updatedAt: {
         compute({ updatedAt }) {
-          return distanceUnixTimeToNow(getUnixTime(new Date(updatedAt)))
+          return formatDistanceToNowStrict(updatedAt)
         },
       },
     },
