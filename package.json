@@ -102,5 +102,5 @@
   "engines": {
     "node": "20"
   },
-  "packageManager": "pnpm@9.8.0"
+  "packageManager": "pnpm@9.12.3"
 }
