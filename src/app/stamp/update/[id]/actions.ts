@@ -103,5 +103,6 @@ export const updateStamp = async (formData: FormData) => {
   }
   revalidatePath(`/stamp/${stampId}`)
   revalidatePath(`/${session.user.usernameURL}`)
+  revalidatePath(`/${session.userId}`)
   redirect(`/${session.user.usernameURL}`)
 }

@@ -55,5 +55,6 @@ export const deleteStamp = async (stampId: string) => {
   }
 
   revalidatePath(`/${session.user.usernameURL}`)
+  revalidatePath(`/${session.userId}`)
   return { message: `${stampId} - successfully deleted`, ok: true }
 }

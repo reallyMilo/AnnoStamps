@@ -78,5 +78,6 @@ export const createStamp = async (
   }
 
   revalidatePath(`/${session.user.usernameURL}`)
+  revalidatePath(`/${session.userId}`)
   redirect(`/${session.user.usernameURL}`)
 }
