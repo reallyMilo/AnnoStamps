@@ -8,7 +8,7 @@ import type { StampWithRelations } from '@/lib/prisma/models'
 import { StampForm } from '@/components/StampForm/StampForm'
 import { Heading } from '@/components/ui'
 
-import { updateStamp } from './action'
+import { updateStamp } from './actions'
 
 export const UpdateStampForm = ({ stamp }: { stamp: StampWithRelations }) => {
   const {
