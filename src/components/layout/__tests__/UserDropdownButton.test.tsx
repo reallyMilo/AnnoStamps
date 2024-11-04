@@ -1,14 +1,14 @@
 import { act, render, screen, userEvent } from '../../../__tests__/test-utils'
-import { UserMenu } from '../UserMenu'
+import { UserDropdownButton } from '../UserDropdownButton'
 
-describe('UserMenu', () => {
+describe('UserDropdownButton', () => {
   it('renders login button for unauthenticated users', () => {
-    render(<UserMenu />)
+    render(<UserDropdownButton />)
     expect(screen.getByRole('link', { name: 'Add Stamp' })).toBeInTheDocument()
   })
   it('user-menu prompts to set username for authenticated users without username set', async () => {
     const user = { biography: null, id: '1', username: null, usernameURL: null }
-    render(<UserMenu />, { user })
+    render(<UserDropdownButton />, { user })
 
     const button = screen.getByRole('button')
     expect(button).toBeInTheDocument()
@@ -36,7 +36,7 @@ describe('UserMenu', () => {
       username: 'stampCreator',
       usernameURL: 'stampcreator',
     }
-    render(<UserMenu />, { user })
+    render(<UserDropdownButton />, { user })
 
     await act(async () => await userEvent.click(screen.getByRole('button')))
     expect(screen.getByRole('menuitem', { name: 'My stamps' })).toHaveAttribute(
