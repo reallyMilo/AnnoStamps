@@ -15,7 +15,7 @@ import {
   SidebarSection,
 } from '@/components/ui'
 
-import logo from '../../public/cropped-anno-stamps-logo.png'
+import logo from '../../../public/anno-stamps-logo.png'
 
 export const MobileNavbar = ({
   children,

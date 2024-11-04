@@ -20,7 +20,7 @@ import {
   DropdownMenu,
 } from '@/components/ui'
 
-export const UserMenu = () => {
+export const UserDropdownButton = () => {
   const { data: session } = useSession()
 
   if (!session) {

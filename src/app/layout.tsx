@@ -10,8 +10,9 @@ import { Suspense } from 'react'
 import type { Notification, UserWithStamps } from '@/lib/prisma/models'
 
 import { auth } from '@/auth'
-import { UserMenu } from '@/components/Auth/UserMenu'
-import { NotificationDropdownButton } from '@/components/Notifications/NotificationDropdownButton'
+import { MobileNavbar } from '@/components/layout/MobileNavbar'
+import { NotificationDropdownButton } from '@/components/layout/NotificationDropdownButton'
+import { UserDropdownButton } from '@/components/layout/UserDropdownButton'
 import {
   Button,
   Container,
@@ -29,7 +30,6 @@ import logo from '../../public/cropped-anno-stamps-logo.png'
 import discordWhite from '../../public/discord-white-icon.svg'
 import github from '../../public/github-mark.svg'
 import './globals.css'
-import { MobileNavbar } from './MobileNavbar'
 
 export const metadata: Metadata = {
   description:
@@ -88,7 +88,7 @@ const UserButton = async () => {
   const session = await auth()
   return (
     <SessionProvider session={session}>
-      <UserMenu />
+      <UserDropdownButton />
     </SessionProvider>
   )
 }
