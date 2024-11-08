@@ -1,5 +1,6 @@
 import type { Prisma } from '@prisma/client'
 
+import { SessionProvider } from 'next-auth/react'
 import { unstable_cache } from 'next/cache'
 import { redirect } from 'next/navigation'
 
@@ -33,11 +34,13 @@ const UserSettingsPage = async () => {
 
   return (
     <Container>
-      <SettingsForm
-        biography={biography}
-        enabled={preferences?.enabled ?? true}
-        username={username}
-      />
+      <SessionProvider session={session}>
+        <SettingsForm
+          biography={biography}
+          enabled={preferences?.enabled ?? true}
+          username={username}
+        />
+      </SessionProvider>
     </Container>
   )
 }

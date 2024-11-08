@@ -3,6 +3,7 @@ import type { Prisma } from '@prisma/client'
 import type { Session } from 'next-auth'
 
 import { CheckBadgeIcon } from '@heroicons/react/20/solid'
+import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 
@@ -46,6 +47,7 @@ export const SettingsForm = ({
   enabled,
   username,
 }: SettingsFormProps) => {
+  const { update } = useSession()
   const [formState, setFormState] = useState<
     Awaited<ReturnType<typeof updateUserSettings>>
   >({
@@ -53,17 +55,14 @@ export const SettingsForm = ({
     ok: false,
     status: 'idle',
   })
-
   return (
     <form
       action={async (formData) => {
-        const { message, ok, status } = await updateUserSettings(formData)
-        if (status === 'success') {
-          //FIXME: update from useSession not documented
-          // no longer works as expected with only database
-          // https://authjs.dev/reference/nextjs/react#updatesession
+        const res = await updateUserSettings(formData)
+        if (res.ok) {
+          await update({ username: formData.get('username') })
         }
-        setFormState({ message, ok, status })
+        setFormState(res)
       }}
       className="grid max-w-3xl space-y-8"
       id="user-settings"
