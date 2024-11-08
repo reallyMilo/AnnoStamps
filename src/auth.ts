@@ -43,7 +43,17 @@ const config = {
     },
   },
   callbacks: {
-    session: async ({ session, user }) => {
+    session: async ({ newSession, session, trigger, user }) => {
+      if (trigger === 'update' && newSession?.username) {
+        return {
+          ...session,
+          user: {
+            ...session.user,
+            username: newSession.username,
+            usernameURL: newSession.username.toLowerCase(),
+          },
+        }
+      }
       return {
         ...session,
         user: {
