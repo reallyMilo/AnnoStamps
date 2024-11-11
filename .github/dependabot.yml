@@ -4,7 +4,8 @@ updates:
     directory: '/' # Location of package manifests
     schedule:
       interval: 'weekly'
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 20
     ignore:
       - dependency-name: '@aws-sdk/*'
       - dependency-name: 'sharp'
+      - dependency-name: 'autosize'
