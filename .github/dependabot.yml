@@ -8,3 +8,4 @@ updates:
     ignore:
       - dependency-name: '@aws-sdk/*'
       - dependency-name: 'sharp'
+      - dependency-name: 'autosize'
