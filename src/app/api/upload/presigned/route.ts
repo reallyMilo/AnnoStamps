@@ -30,7 +30,7 @@ export const GET = auth(async (req) => {
   const ext =
     fileType === 'zip' ? 'zip' : decodeURIComponent(fileType).split('/')[1]
 
-  const path = `${type}/${req.auth.user.id}/${stampId}/${createId()}.${ext}`
+  const path = `${type}/${req.auth.userId}/${stampId}/${createId()}.${ext}`
 
   const client = new S3Client({ region: AWS_S3_REGION })
   const command = new PutObjectCommand({

@@ -140,7 +140,7 @@ const Notifications = async () => {
     return null
   }
 
-  const notificationsPromise = getUserNotifications(session?.userId) as Promise<
+  const notificationsPromise = getUserNotifications(session.userId) as Promise<
     Notification[]
   >
 

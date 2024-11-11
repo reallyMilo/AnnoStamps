@@ -27,8 +27,8 @@ export const UserDropdownButton = () => {
     return <Button href="/auth/signin">Add Stamp</Button>
   }
 
-  const { id, image, username, usernameURL } = session.user
-  const userPath = usernameURL ? `/${usernameURL}` : `/${id}`
+  const { image, username, usernameURL } = session.user
+  const userPath = usernameURL ? `/${usernameURL}` : `/${session.userId}`
 
   const menuItems = [
     {

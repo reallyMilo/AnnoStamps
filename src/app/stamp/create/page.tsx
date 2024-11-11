@@ -14,7 +14,7 @@ const CreateStampPage = async () => {
     redirect('/auth/signin')
   }
 
-  if (!session?.user.username) {
+  if (!session.user.username) {
     return (
       <Container>
         <div className="flex">
@@ -29,7 +29,7 @@ const CreateStampPage = async () => {
               This account currently does not have a username set.{' '}
               <Link
                 className="font-medium text-yellow-700 underline hover:text-yellow-600"
-                href={`/${session.user.id}/settings`}
+                href={`/${session.userId}/settings`}
               >
                 Please set your username.
               </Link>

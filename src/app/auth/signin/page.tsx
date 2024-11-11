@@ -13,7 +13,7 @@ const SignInPage = async ({
 }) => {
   const session = await auth()
   if (session) {
-    redirect(`/${session.user.id}`)
+    redirect(`/${session.userId}`)
   }
 
   const callbackUrl =

@@ -25,7 +25,7 @@ type FormDataEntries = {
 export const updateStamp = async (formData: FormData) => {
   const session = await auth()
 
-  if (!session?.user.id) {
+  if (!session) {
     return { message: 'Unauthorized.', ok: false }
   }
 
@@ -55,7 +55,7 @@ export const updateStamp = async (formData: FormData) => {
           },
         },
         where: {
-          id: session.user.id,
+          id: session.userId,
         },
       })
       if (userStamp?.listedStamps.length === 0) {
