@@ -140,6 +140,7 @@ export const generateMetadata = async ({
   const stamp = await getStamp(params.id)
 
   return {
+    description: `${stamp?.unsafeDescription}`,
     openGraph: {
       images: [`${stamp?.images[0].smallUrl ?? stamp?.images[0].originalUrl}`],
     },
