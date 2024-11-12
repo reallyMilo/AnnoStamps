@@ -8,7 +8,7 @@ import prisma from '@/lib/prisma/singleton'
 export const deleteStamp = async (stampId: string) => {
   const session = await auth()
 
-  if (!session?.user?.id) {
+  if (!session) {
     return { message: 'Unauthorized.', ok: false }
   }
   if (!session.user.usernameURL) {
@@ -26,7 +26,7 @@ export const deleteStamp = async (stampId: string) => {
           },
         },
         where: {
-          id: session.user.id,
+          id: session.userId,
         },
       })
 
