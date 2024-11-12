@@ -29,7 +29,7 @@ export const createStamp = async (
 }> => {
   const session = await auth()
 
-  if (!session?.user?.id) {
+  if (!session) {
     return { message: 'Unauthorized.', ok: false }
   }
   if (!session.user.usernameURL) {
@@ -68,7 +68,7 @@ export const createStamp = async (
         markdownDescription: sanitizedMarkdown,
         stampFileUrl,
         unsafeDescription,
-        userId: session.user.id,
+        userId: session.userId,
         ...fields,
       },
     })

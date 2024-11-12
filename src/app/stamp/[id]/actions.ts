@@ -19,7 +19,7 @@ export const likeMutation = async (id: StampWithRelations['id']) => {
     await prisma.stamp.update({
       data: {
         likedBy: {
-          connect: { id: session.user.id },
+          connect: { id: session.userId },
         },
       },
       include: { likedBy: true },

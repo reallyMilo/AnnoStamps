@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client'
 import type { NextAuthConfig } from 'next-auth'
-import type { AdapterSession, AdapterUser } from 'next-auth/adapters'
+import type { Adapter, AdapterSession, AdapterUser } from 'next-auth/adapters'
 import type { Provider } from 'next-auth/providers'
 
 import { PrismaAdapter } from '@auth/prisma-adapter'
@@ -13,35 +13,36 @@ import prisma from '@/lib/prisma/singleton'
 
 const providers = [Google, Discord] satisfies Provider[]
 
-const config = {
-  adapter: {
-    ...PrismaAdapter(prisma),
-    //@ts-expect-error email being null
-    async getSessionAndUser(sessionToken) {
-      const userAndSession = await prisma.session.findUnique({
-        include: {
-          user: {
-            include: {
-              notifications: {
-                orderBy: {
-                  createdAt: 'desc',
-                },
-                select: {
-                  isRead: true,
-                },
-                take: 1,
+const adapter = {
+  ...PrismaAdapter(prisma),
+  async getSessionAndUser(sessionToken) {
+    const userAndSession = await prisma.session.findUnique({
+      include: {
+        user: {
+          include: {
+            notifications: {
+              orderBy: {
+                createdAt: 'desc',
               },
+              select: {
+                isRead: true,
+              },
+              take: 1,
             },
           },
         },
-        where: { sessionToken },
-      })
+      },
+      where: { sessionToken },
+    })
 
-      if (!userAndSession) return null
-      const { user, ...session } = userAndSession
-      return { session, user }
-    },
+    if (!userAndSession) return null
+    const { user, ...session } = userAndSession
+    return { session, user }
   },
+} as Adapter
+
+const config = {
+  adapter,
   callbacks: {
     session: async ({ newSession, session, trigger, user }) => {
       if (trigger === 'update' && newSession?.username) {
@@ -59,7 +60,6 @@ const config = {
         user: {
           ...session.user,
           biography: user.biography,
-          id: user.id,
           username: user.username,
           usernameURL: user.usernameURL,
         },
@@ -88,22 +88,14 @@ export const providerMap = providers.map((provider) => {
     return { id: provider.id, name: provider.name }
   }
 })
-//@ts-expect-error email being null
+
 export const { auth, handlers, signIn, signOut } = NextAuth(config)
 declare module 'next-auth' {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
-
-  //eslint-disable-next-line
   interface Session extends AdapterSession {
     user: AdapterUser &
-      Pick<
-        User,
-        'biography' | 'id' | 'notifications' | 'username' | 'usernameURL'
-      >
+      Pick<User, 'biography' | 'notifications' | 'username' | 'usernameURL'>
   }
-  //eslint-disable-next-line
+
   interface User
     extends Prisma.UserGetPayload<{
       include: {

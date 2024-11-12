@@ -37,7 +37,7 @@ const UserPage = async ({ params }: { params: { user: string } }) => {
     notFound()
   }
 
-  return user.id === session?.user.id ? (
+  return user.id === session?.userId ? (
     <UserHomePage {...user} />
   ) : (
     <UserPublicPage {...user} />
