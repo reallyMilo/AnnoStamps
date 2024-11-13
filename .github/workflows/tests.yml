@@ -49,7 +49,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build
       - name: 'Create Database and Seed'
-        run: pnpm migrate && prisma generate --sql
+        run: pnpm migrate && pnpm prisma generate --sql
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/annostamps
           DIRECT_URL: postgresql://postgres:postgres@localhost:5432/annostamps
