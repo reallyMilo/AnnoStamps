@@ -1,4 +1,3 @@
--- @param {String} $1: parentId of the comment
 WITH RECURSIVE comment_tree AS (
     SELECT 
         c.id,
