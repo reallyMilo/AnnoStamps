@@ -1,5 +1,5 @@
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
-import { Prisma } from '@prisma/client'
+import { getCommentReplyThread } from '@prisma/client/sql'
 import { SessionProvider } from 'next-auth/react'
 import { unstable_cache } from 'next/cache'
 import { notFound } from 'next/navigation'
@@ -53,66 +53,10 @@ const getUserLikedStamp = unstable_cache(
     }),
   ['getUserLikedStamp'],
 )
-//FIXME: use prisma typed query after deploying all migrations
+
 const getReplyThread = unstable_cache(
-  async (parentId: Comment['parentId']) =>
-    prisma.$queryRaw(Prisma.sql`WITH RECURSIVE comment_tree AS (
-    SELECT 
-        c.id,
-        c.content,
-        c."userId",
-        c."stampId",
-        c."parentId",
-        EXTRACT(EPOCH FROM c."createdAt") AS "createdAt",
-        EXTRACT(EPOCH FROM c."updatedAt") AS "updatedAt",
-        0 AS level,
-        json_build_object(
-            'username', u.username,
-            'usernameURL', u."usernameURL",
-            'image', u.image
-        ) AS user,
-        json_build_object(
-            'id', parent_u.id,
-            'username', parent_u.username,
-            'usernameURL', parent_u."usernameURL"
-        ) AS "replyToUser"
-    FROM 
-        "Comment" c
-	  JOIN "User" u ON c."userId" = u.id
-    LEFT JOIN "Comment" parent_c ON c."parentId" = parent_c.id  
-    LEFT JOIN "User" parent_u ON parent_c."userId" = parent_u.id
-    WHERE 
-        c."parentId" = ${parentId}
-
-    UNION ALL
-
-    SELECT 
-        c.id,
-        c.content,
-        c."userId",
-        c."stampId",
-        c."parentId",
-        EXTRACT(EPOCH FROM c."createdAt") AS "createdAt",
-        EXTRACT(EPOCH FROM c."updatedAt") AS "updatedAt",
-        ct.level + 1,
-        json_build_object(
-            'username', u.username,
-            'usernameURL', u."usernameURL",
-            'image', u.image
-        ) AS user,
-        json_build_object(
-            'id', parent_u.id,
-            'username', parent_u.username,
-            'usernameURL', parent_u."usernameURL"
-        ) AS "replyToUser"
-    FROM "Comment" c
-	  JOIN "User" u ON c."userId" = u.id
-    LEFT JOIN "Comment" parent_c ON c."parentId" = parent_c.id  
-    LEFT JOIN "User" parent_u ON parent_c."userId" = parent_u.id
-    JOIN comment_tree ct ON c."parentId" = ct.id
-)
-SELECT * FROM comment_tree
-ORDER BY "createdAt"`),
+  async (parentId: NonNullable<Comment['parentId']>) =>
+    prisma.$queryRawTyped(getCommentReplyThread(parentId)),
   ['getReplyThread'],
   { revalidate: 3600 },
 )
@@ -176,7 +120,6 @@ const Comments = async ({ id: stampId }: Pick<StampWithRelations, 'id'>) => {
                 <div className="ml-12">
                   <ViewReplyButton
                     numReplies={comment._count.replies ?? 0}
-                    //@ts-expect-error type
                     replyThreadPromise={replyThreadPromise}
                   />
                 </div>
