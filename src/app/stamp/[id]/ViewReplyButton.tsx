@@ -1,16 +1,16 @@
 'use client'
 
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid'
+import { getCommentReplyThread } from '@prisma/client/sql'
 import { Suspense, use, useState } from 'react'
-
-import type { Comment } from '@/lib/prisma/models'
 
 import { Button } from '@/components/ui'
 
 import { CommentItem } from './CommentItem'
+
 type ViewReplyButtonProps = {
   numReplies: number
-  replyThreadPromise: Promise<Omit<Comment, '_count'>[]>
+  replyThreadPromise: Promise<getCommentReplyThread.Result[]>
 }
 
 const ReplyThread = ({
@@ -20,6 +20,7 @@ const ReplyThread = ({
   return (
     <ul className="pt-2" data-testid="reply-list">
       {replyThreadContent.map((comment) => (
+        //@ts-expect-error JsonValue
         <CommentItem key={comment.id} {...comment} />
       ))}
     </ul>
