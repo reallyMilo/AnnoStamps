@@ -11,6 +11,3 @@ updates:
       - dependency-name: '@aws-sdk/s3-request-presigner'
       - dependency-name: 'sharp'
       - dependency-name: 'autosize'
-      - dependency-name: 'jackmoore/autosize'
-      - dependency-name: 'github:jackmoore/autosize'
-      - dependency-name: '@types/autosize'
