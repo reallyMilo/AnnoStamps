@@ -13,3 +13,4 @@ updates:
       - dependency-name: 'autosize'
       - dependency-name: 'jackmoore/autosize'
       - dependency-name: 'github:jackmoore/autosize'
+      - dependency-name: '@types/autosize'
