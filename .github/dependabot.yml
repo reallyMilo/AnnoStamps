@@ -6,7 +6,9 @@ updates:
       interval: 'weekly'
     open-pull-requests-limit: 20
     ignore:
-      - dependency-name: '@aws-sdk/*'
+      - dependency-name: '@aws-sdk/client-lambda'
+      - dependency-name: '@aws-sdk/client-s3'
+      - dependency-name: '@aws-sdk/s3-request-presigner'
       - dependency-name: 'sharp'
       - dependency-name: 'autosize'
       - dependency-name: 'jackmoore/autosize'
