@@ -9,3 +9,5 @@ updates:
       - dependency-name: '@aws-sdk/*'
       - dependency-name: 'sharp'
       - dependency-name: 'autosize'
+      - dependency-name: 'jackmoore/autosize'
+      - dependency-name: 'github:jackmoore/autosize'
