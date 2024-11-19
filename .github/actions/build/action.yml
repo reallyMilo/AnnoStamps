@@ -8,9 +8,6 @@ runs:
       with:
         version: 9.13.0
         run_install: false
-    - name: Configure pnpm
-      run: pnpm config set git-protocol https
-      shell: bash
     - name: Install Node.js
       uses: actions/setup-node@v4
       with:
