@@ -8,6 +8,9 @@ runs:
       with:
         version: 9.13.0
         run_install: false
+    - name: Configure pnpm
+      run: $ git config --global url."https://".insteadOf git+ssh://git@
+      shell: bash
     - name: Install Node.js
       uses: actions/setup-node@v4
       with:
