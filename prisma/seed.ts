@@ -24,7 +24,7 @@ export const generateUserData = (
     const firstName = faker.person.firstName()
     const lastName = faker.person.lastName()
     const username = faker.internet
-      .userName({ firstName, lastName })
+      .username({ firstName, lastName })
       .replace(/\./g, '_')
 
     return {
