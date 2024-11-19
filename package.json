@@ -36,7 +36,7 @@
     "@next/third-parties": "^14.2.16",
     "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "^5.22.0",
-    "@sentry/nextjs": "^8.5.0",
+    "@sentry/nextjs": "^8.38.0",
     "@tailwindcss/forms": "^0.5.7",
     "autosize": "github:mkcy3/autosize",
     "clsx": "^2.1.1",
