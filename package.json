@@ -52,7 +52,7 @@
     "sanitize-html": "^2.13.0",
     "server-only": "^0.0.1",
     "sharp": "0.32.6",
-    "swiper": "11.1.9",
+    "swiper": "11.1.15",
     "swr": "^2.2.5",
     "tailwind-merge": "^2.5.2",
     "zod": "^3.23.8"
