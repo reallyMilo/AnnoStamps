@@ -44,7 +44,7 @@ importers:
         specifier: ^0.5.9
         version: 0.5.9(tailwindcss@3.4.3(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
       autosize:
-        specifier: github:mkcy3/autosize
+        specifier: github:mkcy3/autosize#master
         version: https://codeload.github.com/mkcy3/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b
       clsx:
         specifier: ^2.1.1
