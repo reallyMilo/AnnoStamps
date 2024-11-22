@@ -4,8 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-pnpmfileChecksum: g26rscbq2cm7e5q56xswg6fuem
-
 importers:
   .:
     dependencies:
@@ -46,8 +44,8 @@ importers:
         specifier: ^0.5.9
         version: 0.5.9(tailwindcss@3.4.3(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
       autosize:
-        specifier: github:mkcy3/autosize
-        version: https://codeload.github.com/mkcy3/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b
+        specifier: github:jackmoore/autosize#6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b
+        version: https://codeload.github.com/jackmoore/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -4082,10 +4080,10 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
 
-  autosize@https://codeload.github.com/mkcy3/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b:
+  autosize@https://codeload.github.com/jackmoore/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b:
     resolution:
       {
-        tarball: https://codeload.github.com/mkcy3/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b,
+        tarball: https://codeload.github.com/jackmoore/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b,
       }
     version: 6.0.1
 
@@ -12830,7 +12828,7 @@ snapshots:
       postcss: 8.4.39
       postcss-value-parser: 4.2.0
 
-  autosize@https://codeload.github.com/mkcy3/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b:
+  autosize@https://codeload.github.com/jackmoore/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b:
     {}
 
   available-typed-arrays@1.0.7:
@@ -13532,7 +13530,7 @@ snapshots:
       debug: 4.3.7(supports-color@8.1.1)
       enhanced-resolve: 5.17.1
       eslint: 8.57.0
-      eslint-module-utils: 2.11.0(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.0)
+      eslint-module-utils: 2.11.0(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.30.0)(eslint@8.57.0))(eslint@8.57.0)
       fast-glob: 3.3.2
       get-tsconfig: 4.8.1
       is-bun-module: 1.2.1
@@ -13555,7 +13553,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.11.0(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3)(eslint@8.57.0):
+  eslint-module-utils@2.11.0(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.30.0)(eslint@8.57.0))(eslint@8.57.0):
     dependencies:
       debug: 3.2.7(supports-color@8.1.1)
     optionalDependencies:
