@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -9,6 +11,15 @@ import prisma from '@/lib/prisma/singleton'
 
 import { UpdateStampForm } from './UpdateStampForm'
 
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { id: string }
+}): Promise<Metadata> => {
+  return {
+    title: `Update:${params.id} | AnnoStamps`,
+  }
+}
 const EditStampPage = async ({ params }: { params: { id: string } }) => {
   const session = await auth()
 

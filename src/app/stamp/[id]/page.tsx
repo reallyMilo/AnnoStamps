@@ -88,7 +88,7 @@ export const generateMetadata = async ({
     openGraph: {
       images: [`${stamp?.images[0].smallUrl ?? stamp?.images[0].originalUrl}`],
     },
-    title: `${stamp?.title}`,
+    title: `${stamp?.title} | AnnoStamps`,
   }
 }
 

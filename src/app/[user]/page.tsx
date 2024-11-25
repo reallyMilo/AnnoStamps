@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { unstable_cache } from 'next/cache'
 import { notFound } from 'next/navigation'
 
@@ -27,6 +29,27 @@ const getUserWithStamps = unstable_cache(
     tags: ['getUserWithStamps'],
   },
 )
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { user: string }
+}): Promise<Metadata> => {
+  const user = await getUserWithStamps(params.user)
+  if (!user) {
+    return {}
+  }
+  return {
+    description: user?.biography ?? `${params.user} AnnoStamps page`,
+    openGraph: {
+      images: [
+        user.listedStamps[0].images[0].smallUrl ??
+          user.listedStamps[0].images[0].originalUrl,
+      ],
+    },
+    title: `${params.user} | AnnoStamps`,
+  }
+}
 
 const UserPage = async ({ params }: { params: { user: string } }) => {
   const session = await auth()
