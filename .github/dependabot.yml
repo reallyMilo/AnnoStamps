@@ -4,6 +4,25 @@ updates:
     directory: '/' # Location of package manifests
     schedule:
       interval: 'weekly'
+    groups:
+      nextjs:
+        applies-to: version-updates
+        patterns:
+          - '@next/*'
+          - 'eslint-config-next'
+          - '@types/react'
+          - '@types/react-dom'
+          - 'next'
+      auth:
+        applies-to: version-updates
+        patterns:
+          - 'next-auth'
+          - '@auth/*'
+      prisma:
+        applies-to: version-updates
+        patterns:
+          - 'prisma'
+          - '@prisma/client'
     open-pull-requests-limit: 20
     ignore:
       - dependency-name: '@aws-sdk/client-lambda'
