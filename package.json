@@ -33,7 +33,7 @@
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@next/bundle-analyzer": "^14.2.16",
-    "@next/third-parties": "^14.2.16",
+    "@next/third-parties": "^15.0.3",
     "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "^5.22.0",
     "@sentry/nextjs": "^8.40.0",
