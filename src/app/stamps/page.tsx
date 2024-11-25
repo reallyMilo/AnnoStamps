@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { unstable_cache } from 'next/cache'
 import { Suspense } from 'react'
@@ -13,7 +15,6 @@ import {
   STAMPS_PER_PAGE,
 } from '@/lib/constants'
 import prisma from '@/lib/prisma/singleton'
-
 const getFilteredStamps = unstable_cache(
   async (query: QueryParams) => {
     return prisma.stamp.filterFindManyWithCount(query)
@@ -24,6 +25,10 @@ const getFilteredStamps = unstable_cache(
     tags: ['filterStamps'],
   },
 )
+
+export const metadata: Metadata = {
+  title: `All Stamps | AnnoStamps`,
+}
 
 const Stamps = async ({
   searchParams,

@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -7,6 +9,9 @@ import { Container, Text } from '@/components/ui'
 
 import { CreateStampForm } from './CreateStampForm'
 
+export const metadata: Metadata = {
+  title: 'Create Stamp | AnnoStamps',
+}
 const CreateStampPage = async () => {
   const session = await auth()
 

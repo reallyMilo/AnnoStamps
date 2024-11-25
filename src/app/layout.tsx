@@ -48,11 +48,11 @@ export const metadata: Metadata = {
     ],
     locale: 'en_US',
     siteName: 'AnnoStamps',
-    title: 'Anno 1800 Stamps | Stamp Sharing',
+    title: 'AnnoStamps | Stamp Sharing',
     type: 'website',
     url: 'https://annostamps.com',
   },
-  title: 'Anno 1800 Stamps | Stamp Sharing',
+  title: 'AnnoStamps | Stamp Sharing',
 }
 
 const poppins = Poppins({

@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import Image from 'next/image'
 
 import { Container, Heading, Subheading, Text, TextLink } from '@/components/ui'
@@ -8,6 +10,12 @@ import stampPath from '../../../public/stamp-folder-path.jpg'
 import stampHighlight from '../../../public/stamp-highlight.jpg'
 import stampFolder from '../../../public/stamp-name.jpg'
 
+export const metadata: Metadata = {
+  description: `Stamps allow for creating blueprints of a layout that can be reused.
+        Stamps are created in game and generate a file that can then be shared
+        with others.`,
+  title: 'How to use stamps | AnnoStamps',
+}
 const HowTo = () => {
   return (
     <Container className="prose">

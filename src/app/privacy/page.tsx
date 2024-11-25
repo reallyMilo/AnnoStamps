@@ -1,5 +1,10 @@
+import type { Metadata } from 'next'
+
 import { Container, Heading, Strong, Subheading, Text } from '@/components/ui'
 
+export const metadata: Metadata = {
+  title: 'Privacy | AnnoStamps',
+}
 const Privacy = () => {
   return (
     <Container className="prose space-y-2">
