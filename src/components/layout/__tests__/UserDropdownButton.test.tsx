@@ -1,19 +1,32 @@
-import { act, render, screen, userEvent } from '../../../__tests__/test-utils'
+import { render, screen, userEvent } from '../../../__tests__/test-utils'
 import { UserDropdownButton } from '../UserDropdownButton'
 
+const session = {
+  userId: '1',
+  user: {
+    biography: null,
+    username: null,
+    usernameURL: null,
+    email: 'none',
+    id: '1',
+    emailVerified: null,
+    notifications: [],
+  },
+  expires: '',
+  sessionToken: 'asd',
+}
 describe('UserDropdownButton', () => {
   it('renders login button for unauthenticated users', () => {
     render(<UserDropdownButton />)
     expect(screen.getByRole('link', { name: 'Add Stamp' })).toBeInTheDocument()
   })
   it('user-menu prompts to set username for authenticated users without username set', async () => {
-    const user = { biography: null, id: '1', username: null, usernameURL: null }
-    render(<UserDropdownButton />, { user })
+    render(<UserDropdownButton />, session)
 
     const button = screen.getByRole('button')
     expect(button).toBeInTheDocument()
 
-    await act(async () => await userEvent.click(button))
+    await userEvent.click(button)
     expect(
       screen.getByRole('menuitem', { name: 'Please set username!' }),
     ).toHaveAttribute('href', '/1/settings')
@@ -35,10 +48,13 @@ describe('UserDropdownButton', () => {
       id: '1',
       username: 'stampCreator',
       usernameURL: 'stampcreator',
+      email: '',
+      emailVerified: null,
+      notifications: [],
     }
-    render(<UserDropdownButton />, { user })
+    render(<UserDropdownButton />, { ...session, user })
 
-    await act(async () => await userEvent.click(screen.getByRole('button')))
+    await userEvent.click(screen.getByRole('button'))
     expect(screen.getByRole('menuitem', { name: 'My stamps' })).toHaveAttribute(
       'href',
       '/stampcreator',
