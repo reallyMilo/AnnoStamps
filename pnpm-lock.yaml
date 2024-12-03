@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@auth/prisma-adapter':
-        specifier: ^2.4.2
-        version: 2.4.2(@prisma/client@5.22.0(prisma@5.22.0))(nodemailer@6.9.14)
+        specifier: ^2.7.4
+        version: 2.7.4(@prisma/client@5.22.0(prisma@5.22.0))(nodemailer@6.9.14)
       '@aws-sdk/client-lambda':
         specifier: ^3.666.0
         version: 3.666.0
@@ -69,8 +69,8 @@ importers:
         specifier: 15.0.3
         version: 15.0.3(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
       next-auth:
-        specifier: 5.0.0-beta.20
-        version: 5.0.0-beta.20(next@15.0.3(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(nodemailer@6.9.14)(react@19.0.0-rc-66855b96-20241106)
+        specifier: 5.0.0-beta.25
+        version: 5.0.0-beta.25(next@15.0.3(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(nodemailer@6.9.14)(react@19.0.0-rc-66855b96-20241106)
       qs:
         specifier: ^6.13.1
         version: 6.13.1
@@ -251,10 +251,10 @@ packages:
       }
     engines: { node: '>=6.0.0' }
 
-  '@auth/core@0.34.2':
+  '@auth/core@0.37.2':
     resolution:
       {
-        integrity: sha512-KywHKRgLiF3l7PLyL73fjLSIBe1YNcA6sMeew4yMP6cfCWGXZrkkXd32AjRi1hlJ9nvovUBGZHvbn+LijO6ZeQ==,
+        integrity: sha512-kUvzyvkcd6h1vpeMAojK2y7+PAV5H+0Cc9+ZlKYDFhDY31AlvsB+GW5vNO4qE3Y07KeQgvNO9U0QUx/fN62kBw==,
       }
     peerDependencies:
       '@simplewebauthn/browser': ^9.0.1
@@ -268,10 +268,27 @@ packages:
       nodemailer:
         optional: true
 
-  '@auth/prisma-adapter@2.4.2':
+  '@auth/core@0.37.4':
     resolution:
       {
-        integrity: sha512-QQwnGYfDiyTcAxMVhTrim+lLFFA3TKq3nIrbPtGZXlkiuNQ5t0rUg//Km7Wv21pD5bxhy4aRPlfq7TdFKk3XIw==,
+        integrity: sha512-HOXJwXWXQRhbBDHlMU0K/6FT1v+wjtzdKhsNg0ZN7/gne6XPsIrjZ4daMcFnbq0Z/vsAbYBinQhhua0d77v7qw==,
+      }
+    peerDependencies:
+      '@simplewebauthn/browser': ^9.0.1
+      '@simplewebauthn/server': ^9.0.2
+      nodemailer: ^6.8.0
+    peerDependenciesMeta:
+      '@simplewebauthn/browser':
+        optional: true
+      '@simplewebauthn/server':
+        optional: true
+      nodemailer:
+        optional: true
+
+  '@auth/prisma-adapter@2.7.4':
+    resolution:
+      {
+        integrity: sha512-3T/X94R9J1sxOLQtsD3ijIZ0JGHPXlZQxRr/8NpnZBJ3KGxun/mNsZ1MwMRhTxy0mmn9JWXk7u9+xCcVn0pu3A==,
       }
     peerDependencies:
       '@prisma/client': '>=2.26.0 || >=3 || >=4 || >=5'
@@ -3631,6 +3648,12 @@ packages:
         integrity: sha512-VEI7OdvK2wP7XHnsuXbAJnEpEkF6NjSN45QJlL4VGqZSXsnicpesdTWsg9RISeSdYd3yeRj/y3k5KGjUXYnFwQ==,
       }
 
+  '@types/node@20.17.9':
+    resolution:
+      {
+        integrity: sha512-0JOXkRyLanfGPE2QRCwgxhzlBAvaRdCNMcvbd7jFfpmD4eEXll7LRwy5ymJmyeZqk7Nh7eD2LeUyQ68BbndmXw==,
+      }
+
   '@types/pg-pool@2.0.6':
     resolution:
       {
@@ -4812,10 +4835,10 @@ packages:
         integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==,
       }
 
-  cookie@0.6.0:
+  cookie@0.7.1:
     resolution:
       {
-        integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==,
+        integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==,
       }
     engines: { node: '>= 0.6' }
 
@@ -6652,10 +6675,10 @@ packages:
       }
     hasBin: true
 
-  jose@5.8.0:
+  jose@5.9.6:
     resolution:
       {
-        integrity: sha512-E7CqYpL/t7MMnfGnK/eg416OsFCVUrU/Y3Vwe7QjKhu/BkS1Ms455+2xsqZQVN57/U2MHMBvEb5SrmAZWAIntA==,
+        integrity: sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==,
       }
 
   js-tokens@4.0.0:
@@ -7176,10 +7199,10 @@ packages:
         integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==,
       }
 
-  next-auth@5.0.0-beta.20:
+  next-auth@5.0.0-beta.25:
     resolution:
       {
-        integrity: sha512-+48SjV9k9AtUU3JbEIa4PXNjKIewfFjVGL7Xs2RKkuQ5QqegDNIQiIG8sLk6/qo7RTScQYIGKgeQ5IuQRtrTQg==,
+        integrity: sha512-2dJJw1sHQl2qxCrRk+KTQbeH+izFbGFPuJj5eGgBZFYyiYYtvlrBeUw1E/OJJxTRjuxbSYGnCTkUIRsIIW0bog==,
       }
     peerDependencies:
       '@simplewebauthn/browser': ^9.0.1
@@ -7291,10 +7314,10 @@ packages:
         integrity: sha512-cTGB9ptp9dY9A5VbMSe7fQBcl/tt22Vcqdq8+eN93rblOuE0aCFu4aZ2vMwct/2t+lFnosm8RkQW1I0Omb1UtQ==,
       }
 
-  oauth4webapi@2.12.1:
+  oauth4webapi@3.1.4:
     resolution:
       {
-        integrity: sha512-7lgyz74z5NJ1dRbZSnL/YCJt7UMhNOqQ8I6Jokh/Et66GVK6KfFikzU98i5PTbgbrsSmxzsQprJdI3Z+5Uwj2Q==,
+        integrity: sha512-eVfN3nZNbok2s/ROifO0UAc5G8nRoLSbrcKJ09OqmucgnhXEfdIQOR4gq1eJH1rN3gV7rNw62bDEgftsgFtBEg==,
       }
 
   object-assign@4.1.1:
@@ -7720,10 +7743,24 @@ packages:
     peerDependencies:
       preact: '>=10'
 
+  preact-render-to-string@6.5.11:
+    resolution:
+      {
+        integrity: sha512-ubnauqoGczeGISiOh6RjX0/cdaF8v/oDXIjO85XALCQjwQP+SB4RDXXtvZ6yTYSjG+PC1QRP2AhPgCEsM2EvUw==,
+      }
+    peerDependencies:
+      preact: '>=10'
+
   preact@10.11.3:
     resolution:
       {
         integrity: sha512-eY93IVpod/zG3uMF22Unl8h9KkrcKIRs2EGar8hwLZZDU1lkjph303V9HZBwufh2s736U6VXuhD109LYqPoffg==,
+      }
+
+  preact@10.24.3:
+    resolution:
+      {
+        integrity: sha512-Z2dPnBnMUfyQfSQ+GBdsGa16hz35YmLmtTLhM169uW944hYL6xzTYkJjC07j+Wosz733pMWx0fgON3JNw1jJQA==,
       }
 
   prebuild-install@7.1.2:
@@ -9511,21 +9548,31 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@auth/core@0.34.2(nodemailer@6.9.14)':
+  '@auth/core@0.37.2(nodemailer@6.9.14)':
     dependencies:
       '@panva/hkdf': 1.2.1
       '@types/cookie': 0.6.0
-      cookie: 0.6.0
-      jose: 5.8.0
-      oauth4webapi: 2.12.1
+      cookie: 0.7.1
+      jose: 5.9.6
+      oauth4webapi: 3.1.4
       preact: 10.11.3
       preact-render-to-string: 5.2.3(preact@10.11.3)
     optionalDependencies:
       nodemailer: 6.9.14
 
-  '@auth/prisma-adapter@2.4.2(@prisma/client@5.22.0(prisma@5.22.0))(nodemailer@6.9.14)':
+  '@auth/core@0.37.4(nodemailer@6.9.14)':
     dependencies:
-      '@auth/core': 0.34.2(nodemailer@6.9.14)
+      '@panva/hkdf': 1.2.1
+      jose: 5.9.6
+      oauth4webapi: 3.1.4
+      preact: 10.24.3
+      preact-render-to-string: 6.5.11(preact@10.24.3)
+    optionalDependencies:
+      nodemailer: 6.9.14
+
+  '@auth/prisma-adapter@2.7.4(@prisma/client@5.22.0(prisma@5.22.0))(nodemailer@6.9.14)':
+    dependencies:
+      '@auth/core': 0.37.4(nodemailer@6.9.14)
       '@prisma/client': 5.22.0(prisma@5.22.0)
     transitivePeerDependencies:
       - '@simplewebauthn/browser'
@@ -12430,6 +12477,10 @@ snapshots:
     dependencies:
       undici-types: 6.19.8
 
+  '@types/node@20.17.9':
+    dependencies:
+      undici-types: 6.19.8
+
   '@types/pg-pool@2.0.6':
     dependencies:
       '@types/pg': 8.6.1
@@ -13197,7 +13248,7 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  cookie@0.6.0: {}
+  cookie@0.7.1: {}
 
   core-util-is@1.0.2: {}
 
@@ -14492,13 +14543,13 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.17.6
+      '@types/node': 20.17.9
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
   jiti@1.21.6: {}
 
-  jose@5.8.0: {}
+  jose@5.9.6: {}
 
   js-tokens@4.0.0: {}
 
@@ -14788,9 +14839,9 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next-auth@5.0.0-beta.20(next@15.0.3(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(nodemailer@6.9.14)(react@19.0.0-rc-66855b96-20241106):
+  next-auth@5.0.0-beta.25(next@15.0.3(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(nodemailer@6.9.14)(react@19.0.0-rc-66855b96-20241106):
     dependencies:
-      '@auth/core': 0.34.2(nodemailer@6.9.14)
+      '@auth/core': 0.37.2(nodemailer@6.9.14)
       next: 15.0.3(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
       react: 19.0.0-rc-66855b96-20241106
     optionalDependencies:
@@ -14851,7 +14902,7 @@ snapshots:
 
   nwsapi@2.2.13: {}
 
-  oauth4webapi@2.12.1: {}
+  oauth4webapi@3.1.4: {}
 
   object-assign@4.1.1: {}
 
@@ -15068,7 +15119,13 @@ snapshots:
       preact: 10.11.3
       pretty-format: 3.8.0
 
+  preact-render-to-string@6.5.11(preact@10.24.3):
+    dependencies:
+      preact: 10.24.3
+
   preact@10.11.3: {}
+
+  preact@10.24.3: {}
 
   prebuild-install@7.1.2:
     dependencies:
