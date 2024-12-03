@@ -1,4 +1,4 @@
-import { StampWithRelations } from '@/lib/prisma/models'
+import type { StampWithRelations } from '@/lib/prisma/models'
 
 import {
   render as renderRTL,
@@ -10,10 +10,8 @@ import { StampCard } from '../StampCard'
 const render = (props?: Partial<StampWithRelations>) => ({
   ...renderRTL(
     <StampCard
-      _count={12}
       category="production"
       createdAt="12 days ago"
-      downloads={123}
       id="urlID"
       images={[
         {
