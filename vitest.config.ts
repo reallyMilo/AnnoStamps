@@ -2,10 +2,10 @@
 
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import { defineConfig, type UserConfig } from 'vitest/config'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
-  plugins: [tsconfigPaths(), react()] as UserConfig['plugins'],
+  plugins: [tsconfigPaths(), react()],
   test: {
     environment: 'jsdom',
     globals: true,
