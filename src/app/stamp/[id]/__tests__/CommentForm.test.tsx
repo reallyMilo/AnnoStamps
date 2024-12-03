@@ -6,18 +6,18 @@ import {
 import { CommentForm } from '../CommentForm'
 
 const session = {
-  userId: '1',
-  user: {
-    biography: null,
-    username: 'test123',
-    usernameURL: 'test123',
-    email: 'none',
-    id: '1',
-    emailVerified: null,
-    notifications: [],
-  },
   expires: '',
   sessionToken: 'asd',
+  user: {
+    biography: null,
+    email: 'none',
+    emailVerified: null,
+    id: '1',
+    notifications: [],
+    username: 'test123',
+    usernameURL: 'test123',
+  },
+  userId: '1',
 }
 const mockAction = async (): Promise<{ message: string; ok: boolean }> => {
   return { message: 'Test message', ok: true }

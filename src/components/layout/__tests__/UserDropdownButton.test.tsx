@@ -2,18 +2,18 @@ import { render, screen, userEvent } from '../../../__tests__/test-utils'
 import { UserDropdownButton } from '../UserDropdownButton'
 
 const session = {
-  userId: '1',
-  user: {
-    biography: null,
-    username: null,
-    usernameURL: null,
-    email: 'none',
-    id: '1',
-    emailVerified: null,
-    notifications: [],
-  },
   expires: '',
   sessionToken: 'asd',
+  user: {
+    biography: null,
+    email: 'none',
+    emailVerified: null,
+    id: '1',
+    notifications: [],
+    username: null,
+    usernameURL: null,
+  },
+  userId: '1',
 }
 describe('UserDropdownButton', () => {
   it('renders login button for unauthenticated users', () => {
@@ -45,12 +45,12 @@ describe('UserDropdownButton', () => {
   it('user-menu provides right href for authenticated user with username set', async () => {
     const user = {
       biography: null,
-      id: '1',
-      username: 'stampCreator',
-      usernameURL: 'stampcreator',
       email: '',
       emailVerified: null,
+      id: '1',
       notifications: [],
+      username: 'stampCreator',
+      usernameURL: 'stampcreator',
     }
     render(<UserDropdownButton />, { ...session, user })
 
