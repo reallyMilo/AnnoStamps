@@ -76,11 +76,10 @@ const getCommentThread = unstable_cache(
   { revalidate: 3600 },
 )
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: { id: string }
+export const generateMetadata = async (props: {
+  params: Promise<{ id: string }>
 }) => {
+  const params = await props.params
   const stamp = await getStamp(params.id)
 
   return {
@@ -153,7 +152,8 @@ const StampLikeButton = async ({ id }: Pick<StampWithRelations, 'id'>) => {
   )
 }
 
-const StampPage = async ({ params }: { params: { id: string } }) => {
+const StampPage = async (props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params
   const stamp = await getStamp(params.id)
   if (!stamp) {
     notFound()

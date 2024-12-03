@@ -63,11 +63,10 @@ const Stamps = async ({
     </div>
   )
 }
-const StampsPage = async ({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
+const StampsPage = async (props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) => {
+  const searchParams = await props.searchParams
   return (
     <Container className="space-y-6">
       <Heading className="sm:text-4xl/8">1800 Stamps</Heading>

@@ -11,16 +11,16 @@ import prisma from '@/lib/prisma/singleton'
 
 import { UpdateStampForm } from './UpdateStampForm'
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: { id: string }
+export const generateMetadata = async (props: {
+  params: Promise<{ id: string }>
 }): Promise<Metadata> => {
+  const params = await props.params
   return {
     title: `Update:${params.id} | AnnoStamps`,
   }
 }
-const EditStampPage = async ({ params }: { params: { id: string } }) => {
+const EditStampPage = async (props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params
   const session = await auth()
 
   if (!session) {
