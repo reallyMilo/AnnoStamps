@@ -1,5 +1,3 @@
-import { useOptimistic } from 'react'
-
 import {
   render as renderRTL,
   screen,
@@ -7,28 +5,19 @@ import {
 } from '../../../../__tests__/test-utils'
 import { CommentForm } from '../CommentForm'
 
-// mocking both due to nextjs using its own react version
-vi.mock('react', async () => {
-  const actual = await vi.importActual('react')
-  return {
-    ...actual,
-    useOptimistic: vi.fn(() => [null, () => {}]),
-  }
-})
-vi.mock('react-dom', async () => {
-  const actual = await vi.importActual('react-dom')
-  return {
-    ...actual,
-    useFormStatus: vi.fn(() => [null, () => {}]),
-  }
-})
-vi.mocked(useOptimistic).mockReturnValue([[], () => {}])
-
-const user = {
-  biography: null,
-  id: '1',
-  username: 'test123',
-  usernameURL: 'test123',
+const session = {
+  userId: '1',
+  user: {
+    biography: null,
+    username: 'test123',
+    usernameURL: 'test123',
+    email: 'none',
+    id: '1',
+    emailVerified: null,
+    notifications: [],
+  },
+  expires: '',
+  sessionToken: 'asd',
 }
 const mockAction = async (): Promise<{ message: string; ok: boolean }> => {
   return { message: 'Test message', ok: true }
@@ -44,7 +33,7 @@ describe('CommentForm', () => {
             </CommentForm.FormActionButtons>
           </CommentForm.Form>
         </CommentForm.Root>,
-        { user },
+        session,
       ),
       user: userEvent.setup(),
     })
@@ -92,7 +81,7 @@ describe('CommentForm', () => {
             </CommentForm.Form>
           </CommentForm.ShowFormButton>
         </CommentForm.Root>,
-        { user },
+        session,
       ),
       user: userEvent.setup(),
     })
