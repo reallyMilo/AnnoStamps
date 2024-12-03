@@ -5,22 +5,16 @@ import { render, type RenderOptions } from '@testing-library/react'
 import { SessionProvider } from 'next-auth/react'
 import { Suspense } from 'react'
 
-type RecursivePartial<T> = {
-  [P in keyof T]?: RecursivePartial<T[P]>
-}
-
 const customRender = (
   // eslint-disable-next-line
   ui: ReactElement<any>,
-  session: null | RecursivePartial<Session> = null,
+  session: null | Session = null,
   options: RenderOptions = {},
 ) =>
   render(ui, {
     wrapper: ({ children }) => (
       <Suspense>
-        <SessionProvider session={session as Session}>
-          {children}
-        </SessionProvider>
+        <SessionProvider session={session}>{children}</SessionProvider>
       </Suspense>
     ),
     ...options,
