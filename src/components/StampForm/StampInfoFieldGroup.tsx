@@ -35,7 +35,7 @@ export const StampInfoFieldGroup = () => {
     stamp?.markdownDescription ??
       `
     <p>Use markdown to create better links,   
-      <a target="_blank" href="https://mod.io/goodmod">
+      <a target="_blank" href="https://mod.io/g/anno-1800">
         TheMod
       </a>
     </p>
