@@ -70,4 +70,6 @@ export const POST = auth(async (req) => {
     ok: true,
     path: `/tmp/${stampId}/${name}`,
   })
-})
+  // FIXME: https://github.com/nextauthjs/next-auth/issues/12224
+  // eslint-disable-next-line
+}) as any

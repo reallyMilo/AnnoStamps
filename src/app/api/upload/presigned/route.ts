@@ -48,4 +48,6 @@ export const GET = auth(async (req) => {
     path,
     url,
   })
-})
+  // FIXME: https://github.com/nextauthjs/next-auth/issues/12224
+  // eslint-disable-next-line
+}) as any
