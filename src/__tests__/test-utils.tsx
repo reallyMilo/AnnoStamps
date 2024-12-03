@@ -1,7 +1,8 @@
-import { render, RenderOptions } from '@testing-library/react'
-import { Session } from 'next-auth'
+import type { Session } from 'next-auth'
+import type { ReactElement } from 'react'
+
+import { render, type RenderOptions } from '@testing-library/react'
 import { SessionProvider } from 'next-auth/react'
-import { ReactElement } from 'react'
 import { Suspense } from 'react'
 
 type RecursivePartial<T> = {
@@ -9,6 +10,7 @@ type RecursivePartial<T> = {
 }
 
 const customRender = (
+  // eslint-disable-next-line
   ui: ReactElement<any>,
   session: null | RecursivePartial<Session> = null,
   options: RenderOptions = {},
