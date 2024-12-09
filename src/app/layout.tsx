@@ -13,6 +13,7 @@ import { auth } from '@/auth'
 import { MobileNavbar } from '@/components/layout/MobileNavbar'
 import { NotificationDropdownButton } from '@/components/layout/NotificationDropdownButton'
 import { UserDropdownButton } from '@/components/layout/UserDropdownButton'
+import { VersionButtons } from '@/components/layout/VersionButtons'
 import {
   Button,
   Container,
@@ -155,6 +156,9 @@ const Navbar = () => {
   return (
     <header>
       <Container className="py-0">
+        <div className="max-md:hidden">
+          <VersionButtons />
+        </div>
         <NavbarRoot>
           <MobileNavbar socials={<SocialIcons />}>
             {navigation.map((item) => (

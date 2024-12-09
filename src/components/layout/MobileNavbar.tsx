@@ -1,10 +1,8 @@
 'use client'
 
-import Image from 'next/image'
 import { useState } from 'react'
 
 import {
-  Link,
   MobileSidebar,
   NavbarItem,
   OpenMenuIcon,
@@ -15,7 +13,7 @@ import {
   SidebarSection,
 } from '@/components/ui'
 
-import logo from '../../../public/anno-stamps-logo.png'
+import { VersionButtons } from './VersionButtons'
 
 export const MobileNavbar = ({
   children,
@@ -34,17 +32,7 @@ export const MobileNavbar = ({
       <MobileSidebar close={() => setIsOpen(false)} open={isOpen}>
         <Sidebar>
           <SidebarHeader>
-            <Link href="/" id="header-logo">
-              <Image
-                alt="Anno Stamps"
-                src={logo}
-                style={{
-                  height: 'auto',
-                  maxWidth: '160px',
-                  width: '100%',
-                }}
-              />
-            </Link>
+            <VersionButtons />
           </SidebarHeader>
           <SidebarBody>
             <SidebarSection>{children}</SidebarSection>
