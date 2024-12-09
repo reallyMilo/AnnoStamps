@@ -43,7 +43,7 @@ importers:
         version: 8.40.0(@opentelemetry/core@1.28.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.28.0(@opentelemetry/api@1.9.0))(next@14.2.16(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.94.0)
       '@tailwindcss/forms':
         specifier: ^0.5.9
-        version: 0.5.9(tailwindcss@3.4.15(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
+        version: 0.5.9(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
       autosize:
         specifier: https://codeload.github.com/mkcy3/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b
         version: https://codeload.github.com/mkcy3/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b
@@ -100,17 +100,17 @@ importers:
         version: 3.23.8
     devDependencies:
       '@faker-js/faker':
-        specifier: ^9.2.0
-        version: 9.2.0
+        specifier: ^9.3.0
+        version: 9.3.0
       '@tailwindcss/aspect-ratio':
         specifier: ^0.4.2
-        version: 0.4.2(tailwindcss@3.4.15(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
+        version: 0.4.2(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
       '@tailwindcss/typography':
         specifier: ^0.5.15
-        version: 0.5.15(tailwindcss@3.4.15(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
+        version: 0.5.15(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
       '@testing-library/cypress':
         specifier: ^10.0.2
-        version: 10.0.2(cypress@13.16.0)
+        version: 10.0.2(cypress@13.16.1)
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -160,8 +160,8 @@ importers:
         specifier: link:@types/parralleldrive/cuid2
         version: link:@types/parralleldrive/cuid2
       cypress:
-        specifier: ^13.16.0
-        version: 13.16.0
+        specifier: ^13.16.1
+        version: 13.16.1
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -181,8 +181,8 @@ importers:
         specifier: ^6.5.0
         version: 6.5.0(eslint@8.57.0)(typescript@5.5.3)
       eslint-plugin-yml:
-        specifier: ^1.15.0
-        version: 1.15.0(eslint@8.57.0)
+        specifier: ^1.16.0
+        version: 1.16.0(eslint@8.57.0)
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -196,17 +196,17 @@ importers:
         specifier: ^8.4.49
         version: 8.4.49
       prettier:
-        specifier: ^3.3.3
-        version: 3.3.3
+        specifier: ^3.4.2
+        version: 3.4.2
       prettier-plugin-tailwindcss:
         specifier: ^0.6.9
-        version: 0.6.9(prettier@3.3.3)
+        version: 0.6.9(prettier@3.4.2)
       prisma:
         specifier: ^5.22.0
         version: 5.22.0
       tailwindcss:
-        specifier: ^3.4.15
-        version: 3.4.15(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
+        specifier: ^3.4.16
+        version: 3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
       tsx:
         specifier: ^4.19.2
         version: 4.19.2
@@ -1012,8 +1012,8 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@faker-js/faker@9.2.0':
-    resolution: {integrity: sha512-ulqQu4KMr1/sTFIYvqSdegHT8NIkt66tFAkugGnHA+1WAfEn6hMzNR+svjXGFRVLnapxvej67Z/LwchFrnLBUg==}
+  '@faker-js/faker@9.3.0':
+    resolution: {integrity: sha512-r0tJ3ZOkMd9xsu3VRfqlFR6cz0V/jFYRswAIpC+m/DIfAUXq7g8N7wTAlhSANySXYGKzGryfDXwtwsY8TxEIDw==}
     engines: {node: '>=18.0.0', npm: '>=9.0.0'}
 
   '@floating-ui/core@1.6.4':
@@ -2965,8 +2965,8 @@ packages:
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
-  cypress@13.16.0:
-    resolution: {integrity: sha512-g6XcwqnvzXrqiBQR/5gN+QsyRmKRhls1y5E42fyOvsmU7JuY+wM6uHJWj4ZPttjabzbnRvxcik2WemR8+xT6FA==}
+  cypress@13.16.1:
+    resolution: {integrity: sha512-17FtCaz0cx7ssWYKXzGB0Vub8xHwpVPr+iPt2fHhLMDhVAPVrplD+rTQsZUsfb19LVBn5iwkEUFjQ1yVVJXsLA==}
     engines: {node: ^16.0.0 || ^18.0.0 || >=20.0.0}
     hasBin: true
 
@@ -3227,12 +3227,6 @@ packages:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
 
-  eslint-compat-utils@0.5.0:
-    resolution: {integrity: sha512-dc6Y8tzEcSYZMHa+CMPLi/hyo1FzNeonbhJL7Ol0ccuKQkwopJcJBA9YL/xmMTLU1eKigXo9vj9nALElWYSowg==}
-    engines: {node: '>=12'}
-    peerDependencies:
-      eslint: '>=6.0.0'
-
   eslint-compat-utils@0.6.3:
     resolution: {integrity: sha512-9IDdksh5pUYP2ZLi7mOdROxVjLY8gY2qKxprmrJ/5Dyqud7M/IFKxF3o0VLlRhITm1pK6Fk7NiBxE39M/VlUcw==}
     engines: {node: '>=12'}
@@ -3361,8 +3355,8 @@ packages:
     peerDependencies:
       eslint: ^7.5.0 || ^8.0.0 || ^9.0.0
 
-  eslint-plugin-yml@1.15.0:
-    resolution: {integrity: sha512-leC8APYVOsKyWUlvRwVhewytK5wS70BfMqIaUplFstRfzCoVp0YoEroV4cUEvQrBj93tQ3M9LcjO/ewr6D4kjA==}
+  eslint-plugin-yml@1.16.0:
+    resolution: {integrity: sha512-t4MNCetPjTn18/fUDlQ/wKkcYjnuLYKChBrZ0qUaNqRigVqChHWzTP8SrfFi5s4keX3vdlkWRSu8zHJMdKwxWQ==}
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: '>=6.0.0'
@@ -4082,12 +4076,12 @@ packages:
   lie@3.3.0:
     resolution: {integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==}
 
-  lilconfig@2.1.0:
-    resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
-    engines: {node: '>=10'}
-
   lilconfig@3.1.2:
     resolution: {integrity: sha512-eop+wDAvpItUys0FWkHIKeC9ybYrTGbU41U5K7+bttZZeohvnY7M9dZ5kB21GNWiFT2q1OoPTvncPCgSOVO5ow==}
+    engines: {node: '>=14'}
+
+  lilconfig@3.1.3:
+    resolution: {integrity: sha512-/vlFKAoH5Cgt3Ie+JLhRbwOsCQePABiU3tJ1egGvyQ+33R/vcwM2Zl2QR/LzjsBeItPt3oSVXapn+m4nQDvpzw==}
     engines: {node: '>=14'}
 
   lines-and-columns@1.2.4:
@@ -4672,8 +4666,8 @@ packages:
       prettier-plugin-svelte:
         optional: true
 
-  prettier@3.3.3:
-    resolution: {integrity: sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==}
+  prettier@3.4.2:
+    resolution: {integrity: sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5149,8 +5143,8 @@ packages:
   tailwind-merge@2.5.5:
     resolution: {integrity: sha512-0LXunzzAZzo0tEPxV3I297ffKZPlKDrjj7NXphC8V5ak9yHC5zRmxnOe2m/Rd/7ivsOMJe3JZ2JVocoDdQTRBA==}
 
-  tailwindcss@3.4.15:
-    resolution: {integrity: sha512-r4MeXnfBmSOuKUWmXe6h2CcyfzJCEk4F0pptO5jlnYSIViUkVmsawj80N5h2lO3gwcmSb4n3PuN+e+GC1Guylw==}
+  tailwindcss@3.4.16:
+    resolution: {integrity: sha512-TI4Cyx7gDiZ6r44ewaJmt0o6BrMCT5aK5e0rmJ/G9Xq3w7CX/5VXl/zIPEJZFUK5VEqwByyhqNPycPlvcK4ZNw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -6967,7 +6961,7 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@faker-js/faker@9.2.0': {}
+  '@faker-js/faker@9.3.0': {}
 
   '@floating-ui/core@1.6.4':
     dependencies:
@@ -8361,22 +8355,22 @@ snapshots:
       '@swc/counter': 0.1.3
       tslib: 2.7.0
 
-  '@tailwindcss/aspect-ratio@0.4.2(tailwindcss@3.4.15(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))':
+  '@tailwindcss/aspect-ratio@0.4.2(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))':
     dependencies:
-      tailwindcss: 3.4.15(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
+      tailwindcss: 3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
 
-  '@tailwindcss/forms@0.5.9(tailwindcss@3.4.15(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))':
+  '@tailwindcss/forms@0.5.9(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))':
     dependencies:
       mini-svg-data-uri: 1.4.4
-      tailwindcss: 3.4.15(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
+      tailwindcss: 3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
 
-  '@tailwindcss/typography@0.5.15(tailwindcss@3.4.15(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))':
+  '@tailwindcss/typography@0.5.15(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.15(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
+      tailwindcss: 3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
 
   '@tanstack/react-virtual@3.8.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -8386,11 +8380,11 @@ snapshots:
 
   '@tanstack/virtual-core@3.8.3': {}
 
-  '@testing-library/cypress@10.0.2(cypress@13.16.0)':
+  '@testing-library/cypress@10.0.2(cypress@13.16.1)':
     dependencies:
       '@babel/runtime': 7.24.5
       '@testing-library/dom': 10.1.0
-      cypress: 13.16.0
+      cypress: 13.16.1
 
   '@testing-library/dom@10.1.0':
     dependencies:
@@ -9407,7 +9401,7 @@ snapshots:
 
   csstype@3.1.3: {}
 
-  cypress@13.16.0:
+  cypress@13.16.1:
     dependencies:
       '@cypress/request': 3.0.6
       '@cypress/xvfb': 1.2.4(supports-color@8.1.1)
@@ -9804,11 +9798,6 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  eslint-compat-utils@0.5.0(eslint@8.57.0):
-    dependencies:
-      eslint: 8.57.0
-      semver: 7.6.3
-
   eslint-compat-utils@0.6.3(eslint@8.57.0):
     dependencies:
       eslint: 8.57.0
@@ -10007,11 +9996,11 @@ snapshots:
       - supports-color
       - typescript
 
-  eslint-plugin-yml@1.15.0(eslint@8.57.0):
+  eslint-plugin-yml@1.16.0(eslint@8.57.0):
     dependencies:
       debug: 4.3.7(supports-color@8.1.1)
       eslint: 8.57.0
-      eslint-compat-utils: 0.5.0(eslint@8.57.0)
+      eslint-compat-utils: 0.6.3(eslint@8.57.0)
       lodash: 4.17.21
       natural-compare: 1.4.0
       yaml-eslint-parser: 1.2.3
@@ -10802,9 +10791,9 @@ snapshots:
     dependencies:
       immediate: 3.0.6
 
-  lilconfig@2.1.0: {}
-
   lilconfig@3.1.2: {}
+
+  lilconfig@3.1.3: {}
 
   lines-and-columns@1.2.4: {}
 
@@ -11213,7 +11202,7 @@ snapshots:
 
   postcss-load-config@4.0.2(postcss@8.4.49)(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)):
     dependencies:
-      lilconfig: 3.1.2
+      lilconfig: 3.1.3
       yaml: 2.5.1
     optionalDependencies:
       postcss: 8.4.49
@@ -11282,11 +11271,11 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-tailwindcss@0.6.9(prettier@3.3.3):
+  prettier-plugin-tailwindcss@0.6.9(prettier@3.4.2):
     dependencies:
-      prettier: 3.3.3
+      prettier: 3.4.2
 
-  prettier@3.3.3: {}
+  prettier@3.4.2: {}
 
   pretty-bytes@5.6.0: {}
 
@@ -11838,7 +11827,7 @@ snapshots:
 
   tailwind-merge@2.5.5: {}
 
-  tailwindcss@3.4.15(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)):
+  tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -11849,7 +11838,7 @@ snapshots:
       glob-parent: 6.0.2
       is-glob: 4.0.3
       jiti: 1.21.6
-      lilconfig: 2.1.0
+      lilconfig: 3.1.3
       micromatch: 4.0.8
       normalize-path: 3.0.0
       object-hash: 3.0.0
