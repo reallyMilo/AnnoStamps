@@ -175,8 +175,8 @@ importers:
         specifier: ^3.6.0
         version: 3.6.0(eslint@8.57.0)(typescript@5.5.3)
       eslint-plugin-react-compiler:
-        specifier: 0.0.0-experimental-9ed098e-20240725
-        version: 0.0.0-experimental-9ed098e-20240725(eslint@8.57.0)
+        specifier: 0.0.0-experimental-7670337-20240918
+        version: 0.0.0-experimental-7670337-20240918(eslint@8.57.0)
       eslint-plugin-testing-library:
         specifier: ^6.5.0
         version: 6.5.0(eslint@8.57.0)(typescript@5.5.3)
@@ -593,10 +593,6 @@ packages:
 
   '@babel/helper-optimise-call-expression@7.22.5':
     resolution: {integrity: sha512-HBwaojN0xFRx4yIvpwGqxiV2tUfl7401jlok564NgB9EHS1y6QT17FmKWm4ztqjeVdXLuC4fSvHc5ePpQjoTbw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-plugin-utils@7.22.5':
-    resolution: {integrity: sha512-uLls06UVKgFG9QD4OeFYLEGteMIAa5kpTPcFL28yuCIIzsf6ZyKZMllKVOCZFhiZ5ptnwX4mtKdWCBE/uT4amg==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-plugin-utils@7.24.8':
@@ -3331,8 +3327,8 @@ packages:
       vue-eslint-parser:
         optional: true
 
-  eslint-plugin-react-compiler@0.0.0-experimental-9ed098e-20240725:
-    resolution: {integrity: sha512-Xv2iD8kU6R4Wdjdh1WhdP8UnSqSV+/XcadxwBCmMr836fQUoXGuw/uVGc01v9opZs9SwKzo+8My6ayVCgAinPA==}
+  eslint-plugin-react-compiler@0.0.0-experimental-7670337-20240918:
+    resolution: {integrity: sha512-FZXoYqGK3BiJw2BFQIUL0C9GgEF2QS+y6oiVPm4GooX6SXrg/UVtCi1nMAaBhqTpsF/KF2RjobgePY8KgbqXow==}
     engines: {node: ^14.17.0 || ^16.0.0 || >= 18.0.0}
     peerDependencies:
       eslint: '>=7'
@@ -6575,7 +6571,7 @@ snapshots:
   '@babel/core@7.24.5':
     dependencies:
       '@ampproject/remapping': 2.2.1
-      '@babel/code-frame': 7.24.2
+      '@babel/code-frame': 7.26.2
       '@babel/generator': 7.24.5
       '@babel/helper-compilation-targets': 7.23.6
       '@babel/helper-module-transforms': 7.24.5(@babel/core@7.24.5)
@@ -6650,13 +6646,11 @@ snapshots:
       '@babel/helper-module-imports': 7.24.3
       '@babel/helper-simple-access': 7.24.5
       '@babel/helper-split-export-declaration': 7.24.5
-      '@babel/helper-validator-identifier': 7.24.5
+      '@babel/helper-validator-identifier': 7.25.9
 
   '@babel/helper-optimise-call-expression@7.22.5':
     dependencies:
       '@babel/types': 7.24.5
-
-  '@babel/helper-plugin-utils@7.22.5': {}
 
   '@babel/helper-plugin-utils@7.24.8': {}
 
@@ -6710,7 +6704,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.24.5
       '@babel/helper-create-class-features-plugin': 7.24.5(@babel/core@7.24.5)
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-plugin-utils': 7.24.8
 
   '@babel/plugin-transform-react-jsx-self@7.24.7(@babel/core@7.24.5)':
     dependencies:
@@ -6732,13 +6726,13 @@ snapshots:
 
   '@babel/template@7.24.0':
     dependencies:
-      '@babel/code-frame': 7.24.2
+      '@babel/code-frame': 7.26.2
       '@babel/parser': 7.24.5
       '@babel/types': 7.24.5
 
   '@babel/traverse@7.24.5':
     dependencies:
-      '@babel/code-frame': 7.24.2
+      '@babel/code-frame': 7.26.2
       '@babel/generator': 7.24.5
       '@babel/helper-environment-visitor': 7.22.20
       '@babel/helper-function-name': 7.23.0
@@ -6754,7 +6748,7 @@ snapshots:
   '@babel/types@7.24.5':
     dependencies:
       '@babel/helper-string-parser': 7.24.1
-      '@babel/helper-validator-identifier': 7.24.5
+      '@babel/helper-validator-identifier': 7.25.9
       to-fast-properties: 2.0.0
 
   '@colors/colors@1.5.0':
@@ -9950,7 +9944,7 @@ snapshots:
       - supports-color
       - typescript
 
-  eslint-plugin-react-compiler@0.0.0-experimental-9ed098e-20240725(eslint@8.57.0):
+  eslint-plugin-react-compiler@0.0.0-experimental-7670337-20240918(eslint@8.57.0):
     dependencies:
       '@babel/core': 7.24.5
       '@babel/parser': 7.24.5
