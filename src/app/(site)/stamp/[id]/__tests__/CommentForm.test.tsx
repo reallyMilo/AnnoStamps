@@ -1,10 +1,7 @@
 import { useOptimistic } from 'react'
 
-import {
-  render as renderRTL,
-  screen,
-  userEvent,
-} from '../../../../__tests__/test-utils'
+import { render as renderRTL, screen, userEvent } from '@/__tests__/test-utils'
+
 import { CommentForm } from '../CommentForm'
 
 // mocking both due to nextjs using its own react version

@@ -233,7 +233,7 @@ const Footer = () => {
   )
 }
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
+const SiteLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html className={poppins.className} lang="en">
       <body>
@@ -252,4 +252,4 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export default RootLayout
+export default SiteLayout
