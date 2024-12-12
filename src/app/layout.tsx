@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 
+import logo from '@/../public/cropped-anno-stamps-logo.png'
+import discordWhite from '@/../public/discord-white-icon.svg'
+import github from '@/../public/github-mark.svg'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { SessionProvider } from 'next-auth/react'
 import { unstable_cache } from 'next/cache'
@@ -9,6 +12,7 @@ import { Suspense } from 'react'
 
 import type { Notification, UserWithStamps } from '@/lib/prisma/models'
 
+import '@/app/globals.css'
 import { auth } from '@/auth'
 import { MobileNavbar } from '@/components/layout/MobileNavbar'
 import { NotificationDropdownButton } from '@/components/layout/NotificationDropdownButton'
@@ -26,11 +30,6 @@ import {
   SidebarItem,
 } from '@/components/ui'
 import prisma from '@/lib/prisma/singleton'
-
-import logo from '../../public/cropped-anno-stamps-logo.png'
-import discordWhite from '../../public/discord-white-icon.svg'
-import github from '../../public/github-mark.svg'
-import './globals.css'
 
 export const metadata: Metadata = {
   description:

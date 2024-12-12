@@ -1,10 +1,10 @@
 'use client'
 
+import anno117 from '@/../public/anno117-icon.jpg'
+import anno1800 from '@/../public/anno1800-icon.webp'
 import Image from 'next/image'
 
-import anno117 from '../../../public/anno117-icon.jpg'
-import anno1800 from '../../../public/anno1800-icon.webp'
-import { Button } from '../ui'
+import { Button } from '@/components/ui'
 
 export const VersionButtons = () => {
   return (

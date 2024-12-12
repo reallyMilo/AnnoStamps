@@ -1,10 +1,10 @@
+import defaultAvatar from '@/../public/anno-stamps-stamp.png'
 import * as Headless from '@headlessui/react'
 import Image from 'next/image'
 import React from 'react'
 
 import { cn } from '@/lib/utils'
 
-import defaultAvatar from '../../../public/anno-stamps-stamp.png'
 import { TouchTarget } from './Button'
 import { Link } from './Link'
 
