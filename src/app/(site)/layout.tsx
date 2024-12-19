@@ -158,7 +158,7 @@ const Navbar = () => {
         <div className="max-md:hidden">
           <VersionButtons />
         </div>
-        <NavbarRoot>
+        <NavbarRoot className="pt-0">
           <MobileNavbar socials={<SocialIcons />}>
             {navigation.map((item) => (
               <SidebarItem href={item.href} key={item.text}>
