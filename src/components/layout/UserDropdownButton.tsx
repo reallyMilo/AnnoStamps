@@ -27,11 +27,13 @@ export const UserDropdownButton = () => {
     return <Button href="/auth/signin">Add Stamp</Button>
   }
 
-  const { id, image, username, usernameURL } = session.user
-  const userPath = usernameURL ? `/${usernameURL}` : `/${id}`
+  const { id, image, usernameURL } = session.user
+  const isUsernameSet = Boolean(usernameURL)
+  const userPath = isUsernameSet ? `/${usernameURL}` : `/${id}`
 
   const menuItems = [
     {
+      alert: isUsernameSet,
       href: `${userPath}/settings`,
       icon: UserIcon,
       label: 'My Account',
@@ -52,23 +54,22 @@ export const UserDropdownButton = () => {
       <DropdownButton
         aria-label="Account options"
         as={AvatarButton}
-        className="size-9"
         src={image}
       />
+
       <DropdownMenu anchor="bottom end" className="z-40">
-        {!username && (
-          <>
-            <DropdownItem href={`${userPath}/settings`}>
-              <ExclamationTriangleIcon />
-              <DropdownLabel>Please set username!</DropdownLabel>
-            </DropdownItem>
-            <DropdownDivider />
-          </>
-        )}
-        {menuItems.map(({ href, icon: Icon, label }) => (
+        {menuItems.map(({ alert, href, icon: Icon, label }) => (
           <DropdownItem href={href} key={label}>
             <Icon />
             <DropdownLabel>{label}</DropdownLabel>
+            <div className="flex justify-end">
+              {alert === false && (
+                <ExclamationTriangleIcon
+                  className="size-4"
+                  data-testid="triangle-icon"
+                />
+              )}
+            </div>
           </DropdownItem>
         ))}
         <DropdownDivider />
