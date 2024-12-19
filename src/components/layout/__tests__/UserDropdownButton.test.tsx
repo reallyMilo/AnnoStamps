@@ -6,7 +6,7 @@ describe('UserDropdownButton', () => {
     render(<UserDropdownButton />)
     expect(screen.getByRole('link', { name: 'Add Stamp' })).toBeInTheDocument()
   })
-  it('user-menu prompts to set username for authenticated users without username set', async () => {
+  it('user-menu has triangle alert to set username for authenticated users without username set', async () => {
     const user = { biography: null, id: '1', username: null, usernameURL: null }
     render(<UserDropdownButton />, { user })
 
@@ -14,9 +14,7 @@ describe('UserDropdownButton', () => {
     expect(button).toBeInTheDocument()
 
     await act(async () => await userEvent.click(button))
-    expect(
-      screen.getByRole('menuitem', { name: 'Please set username!' }),
-    ).toHaveAttribute('href', '/1/settings')
+    expect(screen.getByTestId('triangle-icon')).toBeInTheDocument()
     expect(
       screen.getByRole('menuitem', { name: 'My Account' }),
     ).toHaveAttribute('href', '/1/settings')
