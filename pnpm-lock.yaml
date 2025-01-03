@@ -43,7 +43,7 @@ importers:
         version: 8.40.0(@opentelemetry/core@1.28.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.54.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.28.0(@opentelemetry/api@1.9.0))(next@14.2.16(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.94.0)
       '@tailwindcss/forms':
         specifier: ^0.5.9
-        version: 0.5.9(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
+        version: 0.5.9(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
       autosize:
         specifier: https://codeload.github.com/mkcy3/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b
         version: https://codeload.github.com/mkcy3/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b
@@ -104,10 +104,10 @@ importers:
         version: 9.3.0
       '@tailwindcss/aspect-ratio':
         specifier: ^0.4.2
-        version: 0.4.2(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
+        version: 0.4.2(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
       '@tailwindcss/typography':
         specifier: ^0.5.15
-        version: 0.5.15(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
+        version: 0.5.15(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))
       '@testing-library/cypress':
         specifier: ^10.0.2
         version: 10.0.2(cypress@13.17.0)
@@ -205,8 +205,8 @@ importers:
         specifier: ^5.22.0
         version: 5.22.0
       tailwindcss:
-        specifier: ^3.4.16
-        version: 3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
+        specifier: ^3.4.17
+        version: 3.4.17(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
       tsx:
         specifier: ^4.19.2
         version: 4.19.2
@@ -5143,8 +5143,8 @@ packages:
   tailwind-merge@2.6.0:
     resolution: {integrity: sha512-P+Vu1qXfzediirmHOC3xKGAYeZtPcV9g76X+xg2FD4tYgR71ewMA35Y3sCz3zhiN/dwefRpJX0yBcgwi1fXNQA==}
 
-  tailwindcss@3.4.16:
-    resolution: {integrity: sha512-TI4Cyx7gDiZ6r44ewaJmt0o6BrMCT5aK5e0rmJ/G9Xq3w7CX/5VXl/zIPEJZFUK5VEqwByyhqNPycPlvcK4ZNw==}
+  tailwindcss@3.4.17:
+    resolution: {integrity: sha512-w33E2aCvSDP0tW9RZuNXadXlkHXqFzSkQew/aIa2i/Sj8fThxwovwlXHSPXTbAHwEIhBFXAedUhP2tueAKP8Og==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -8355,22 +8355,22 @@ snapshots:
       '@swc/counter': 0.1.3
       tslib: 2.7.0
 
-  '@tailwindcss/aspect-ratio@0.4.2(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))':
+  '@tailwindcss/aspect-ratio@0.4.2(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))':
     dependencies:
-      tailwindcss: 3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
 
-  '@tailwindcss/forms@0.5.9(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))':
+  '@tailwindcss/forms@0.5.9(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))':
     dependencies:
       mini-svg-data-uri: 1.4.4
-      tailwindcss: 3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
 
-  '@tailwindcss/typography@0.5.15(tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))':
+  '@tailwindcss/typography@0.5.15(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)))':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3))
 
   '@tanstack/react-virtual@3.8.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -11827,7 +11827,7 @@ snapshots:
 
   tailwind-merge@2.6.0: {}
 
-  tailwindcss@3.4.16(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)):
+  tailwindcss@3.4.17(ts-node@10.9.2(@types/node@20.12.12)(typescript@5.5.3)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
