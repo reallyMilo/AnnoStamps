@@ -61,7 +61,7 @@ export const POST = auth(async (req) => {
 
   const name = fileType === 'zip' ? createId() + '.zip' : filename
   const filepath = `public/tmp/${stampId}/${name}`
-  outputFileSync(filepath, Buffer.from(arrayBuffer))
+  outputFileSync(filepath, new Uint8Array(arrayBuffer))
   if (fileType !== 'zip') {
     await generateResponsiveImages(filepath, name ?? 'nofilename')
   }
