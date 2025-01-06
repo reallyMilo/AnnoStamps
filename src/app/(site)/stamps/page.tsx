@@ -14,7 +14,10 @@ import {
   queryParamsSchema,
   STAMPS_PER_PAGE,
 } from '@/lib/constants'
+import { CATEGORIES } from '@/lib/constants'
+import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 import prisma from '@/lib/prisma/singleton'
+
 const getFilteredStamps = unstable_cache(
   async (query: QueryParams) => {
     return prisma.stamp.filterFindManyWithCount(query)
@@ -63,6 +66,22 @@ const Stamps = async ({
     </div>
   )
 }
+
+const checkboxFilterOptions = [
+  {
+    id: 'category',
+    options: Object.values(CATEGORIES),
+  },
+  {
+    id: 'region',
+    options: Object.values(REGIONS_1800),
+  },
+  {
+    id: 'capital',
+    options: Object.values(CAPITALS_1800),
+  },
+]
+
 const StampsPage = async ({
   searchParams,
 }: {
@@ -71,7 +90,7 @@ const StampsPage = async ({
   return (
     <Container className="space-y-6">
       <Heading className="sm:text-4xl/8">1800 Stamps</Heading>
-      <Filter>
+      <Filter checkboxFilterOptions={checkboxFilterOptions}>
         <Suspense
           fallback={
             <div className="space-y-6">

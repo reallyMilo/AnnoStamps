@@ -2,9 +2,7 @@
 import * as Headless from '@headlessui/react'
 import { FunnelIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/navigation'
-import { Suspense, useState } from 'react'
-
-import type { QueryParams } from '@/lib/constants'
+import { type PropsWithChildren, Suspense, useState } from 'react'
 
 import {
   Button,
@@ -17,33 +15,21 @@ import {
   MobileSidebar,
   Select,
 } from '@/components/ui'
-import { CATEGORIES, SORT_OPTIONS } from '@/lib/constants'
-import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
+import { SORT_OPTIONS } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
 import { Search } from './Search'
 import { useQueryParams } from './useQueryParams'
 
+type FilterFormProps = {
+  checkboxFilterOptions: {
+    id: string
+    options: string[]
+  }[]
+  className?: string
+}
 const sortOptions = Object.values(SORT_OPTIONS)
-const filters = [
-  {
-    id: 'category',
-    options: Object.values(CATEGORIES),
-  },
-  {
-    id: 'region',
-    options: Object.values(REGIONS_1800),
-  },
-  {
-    id: 'capital',
-    options: Object.values(CAPITALS_1800),
-  },
-] satisfies {
-  id: keyof QueryParams
-  options: string[]
-}[]
-
-const FilterForm = ({ className }: { className: string }) => {
+const FilterForm = ({ checkboxFilterOptions, className }: FilterFormProps) => {
   const router = useRouter()
   const [searchParams, parsedQuery, stringifyQuery] = useQueryParams()
   const searchParamsString = searchParams?.toString()
@@ -53,7 +39,7 @@ const FilterForm = ({ className }: { className: string }) => {
       aria-label="Filters"
       className={cn('space-y-6 divide-y divide-gray-200', className)}
     >
-      {filters.map((section, sectionIdx) => (
+      {checkboxFilterOptions.map((section, sectionIdx) => (
         <div className="pt-6 first:pt-0" key={`${section.id}-${sectionIdx}`}>
           <Fieldset>
             <Legend className="capitalize">{section.id}</Legend>
@@ -138,7 +124,7 @@ const SortOptionsSelect = () => {
     </Headless.Field>
   )
 }
-const MobileFilter = () => {
+const MobileFilter = ({ children }: PropsWithChildren) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -154,16 +140,25 @@ const MobileFilter = () => {
       </Button>
 
       <MobileSidebar close={() => setIsOpen(false)} open={isOpen}>
-        <FilterForm className="px-4 pt-6" />
+        {children}
       </MobileSidebar>
     </>
   )
 }
-export const Filter = ({ children }: React.PropsWithChildren) => {
+
+export const Filter = ({
+  checkboxFilterOptions,
+  children,
+}: PropsWithChildren<{
+  checkboxFilterOptions: FilterFormProps['checkboxFilterOptions']
+}>) => {
   return (
     <div className="grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-6">
       <Suspense>
-        <FilterForm className="hidden lg:block" />
+        <FilterForm
+          checkboxFilterOptions={checkboxFilterOptions}
+          className="hidden lg:block"
+        />
       </Suspense>
 
       <div className="space-y-6 lg:col-span-5">
@@ -171,7 +166,9 @@ export const Filter = ({ children }: React.PropsWithChildren) => {
           <Suspense>
             <Search />
             <SortOptionsSelect />
-            <MobileFilter />
+            <MobileFilter>
+              <FilterForm checkboxFilterOptions={checkboxFilterOptions} />
+            </MobileFilter>
           </Suspense>
         </div>
 
