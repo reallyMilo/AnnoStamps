@@ -53,7 +53,7 @@ describe('Updating Stamp', () => {
         .then((id) => {
           cy.visit(`/stamp/update/${id}`, { failOnStatusCode: false })
 
-          cy.findByText('Something went wrong').should('be.visible')
+          cy.findByText('Something went wrong!').should('be.visible')
           cy.findByRole('button', { name: 'Update Stamp' }).should('not.exist')
         })
     })
