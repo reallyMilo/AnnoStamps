@@ -39,6 +39,13 @@ export const generateMetadata = async ({
   if (!user) {
     return {}
   }
+
+  if (user.listedStamps.length === 0) {
+    return {
+      description: user?.biography ?? `${params.user} AnnoStamps page`,
+      title: `${params.user} | AnnoStamps`,
+    }
+  }
   return {
     description: user?.biography ?? `${params.user} AnnoStamps page`,
     openGraph: {
