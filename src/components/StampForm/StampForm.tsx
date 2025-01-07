@@ -7,7 +7,14 @@ import { useFormStatus } from 'react-dom'
 
 import type { UserWithStamps } from '@/lib/prisma/models'
 
-import { Button, Heading, Text } from '@/components/ui'
+import {
+  Button,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalTitle,
+  Text,
+} from '@/components/ui'
 
 import type { Asset } from './useUpload'
 
@@ -30,7 +37,13 @@ export type StampFormContextValue = {
     React.SetStateAction<StampFormContextValue['status']>
   >
   stamp?: Stamp
-  status: 'error' | 'idle' | 'images' | 'success' | 'zip'
+  status:
+    | 'error'
+    | 'idle'
+    | 'invalidImages'
+    | 'invalidZip'
+    | 'success'
+    | 'upload'
 }
 
 const StampFormContext = React.createContext<null | StampFormContextValue>(null)
@@ -75,6 +88,23 @@ const isAsset = (b: Asset | Image | JSZipObjectWithData): b is Asset => {
   return (b as Asset).rawFile !== undefined
 }
 
+const UploadModal = () => {
+  const { status } = useStampFormContext()
+
+  return (
+    <Modal
+      data-testid="upload-modal"
+      onClose={() => {}}
+      open={status === 'upload'}
+    >
+      <ModalTitle>Creating Stamp...</ModalTitle>
+      <ModalBody className="space-y-2">
+        <Text>You will be redirected if stamp creation is successful.</Text>
+      </ModalBody>
+    </Modal>
+  )
+}
+
 const Form = ({
   action,
   children,
@@ -85,11 +115,11 @@ const Form = ({
 
   const handleOnSubmit = async (formData: FormData) => {
     if (images.length === 0) {
-      setStatus('images')
+      setStatus('invalidImages')
       return
     }
     if (files.length === 0) {
-      setStatus('zip')
+      setStatus('invalidZip')
       return
     }
 
@@ -112,7 +142,6 @@ const Form = ({
         imageIdsToRemove.delete(image.id)
       }
     }
-
     const zip = new JSZip()
     for (const file of files) {
       if (isAsset(file)) {
@@ -142,16 +171,19 @@ const Form = ({
     formData.set('uploadedImageUrls', JSON.stringify(uploadedImageUrls))
     formData.set('imageIdsToRemove', JSON.stringify([...imageIdsToRemove]))
 
-    const result = await action(formData)
+    const error = await action(formData)
 
-    if (!result.ok) {
-      throw new Error(result.message)
+    if (error) {
+      throw new Error(error.message)
     }
   }
 
   return (
     <form
-      action={handleOnSubmit}
+      action={(formData) => {
+        setStatus('upload')
+        handleOnSubmit(formData)
+      }}
       className="mt-8 flex flex-col space-y-8"
       data-testid="stamp-form"
     >
@@ -194,6 +226,7 @@ const Root = ({ children, stamp, zipFiles }: RootProps) => {
   return (
     <StampFormContext.Provider value={context}>
       {children}
+      <UploadModal />
     </StampFormContext.Provider>
   )
 }
