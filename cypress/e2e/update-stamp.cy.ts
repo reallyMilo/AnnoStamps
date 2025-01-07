@@ -53,7 +53,7 @@ describe('Updating Stamp', () => {
         .then((id) => {
           cy.visit(`/stamp/update/${id}`, { failOnStatusCode: false })
 
-          cy.findByText('Something went wrong!').should('be.visible')
+          cy.findByText('Something went wrong').should('be.visible')
           cy.findByRole('button', { name: 'Update Stamp' }).should('not.exist')
         })
     })
@@ -94,17 +94,18 @@ describe('Updating Stamp', () => {
         .should('have.value', 'Test-Seed-User-Stamp-Updated')
 
       cy.findByRole('button', { name: 'Update Stamp' }).click()
+      cy.findByText('Creating Stamp...').should('be.visible')
       cy.wait(['@uploadAsset', '@S3Put'])
       cy.wait('@updateStamp').its('response.statusCode').should('eq', 200)
 
+      cy.url().should('include', '/testseeduser')
+      cy.findByRole('heading', { name: 'Test-Seed-User-Stamp-Updated' })
       cy.database(
         `SELECT * FROM "Stamp" WHERE title = 'Test-Seed-User-Stamp-Updated';`,
       ).then((stamps) => {
         const stamp = stamps[0]
         cy.wrap(stamp).its('userId').should('eq', 'testSeedUserId')
       })
-      cy.url().should('include', '/testseeduser')
-      cy.findByRole('heading', { name: 'Test-Seed-User-Stamp-Updated' })
     })
   })
 })
