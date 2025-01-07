@@ -92,7 +92,7 @@ export const FileUpload = () => {
           </TableBody>
         </Table>
       </div>
-      {status === 'zip' && (
+      {status === 'invalidZip' && (
         <span className="text-sm text-red-600">Please add stamps</span>
       )}
       {isError && (

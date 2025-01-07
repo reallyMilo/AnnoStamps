@@ -75,14 +75,14 @@ describe('Stamp creation', () => {
           if (fileType === 'zip') {
             res.send(200, {
               ok: true,
-              url: 'presigned?fileType=zip',
               path: '/stamp.zip',
+              url: 'presigned?fileType=zip',
             })
           } else {
             res.send(200, {
               ok: true,
-              url: 'presigned?fileType=img',
               path: 'anno-stamps-logo.png',
+              url: 'presigned?fileType=img',
             })
           }
         })
@@ -126,6 +126,7 @@ describe('Stamp creation', () => {
         .should('have.value', '# H1 Heading')
 
       cy.findByText('Submit Stamp').click()
+      cy.findByText('Creating Stamp...').should('be.visible')
 
       // should have two api calls, because 1 image and 1 stamp file
       cy.wait('@uploadAsset').then((interception) => {
@@ -168,12 +169,12 @@ describe('Stamp creation', () => {
             'changedAt',
           ])
           .and('contain', {
-            userId: 'testSeedUserId',
-            unsafeDescription: '# H1 Heading',
+            category: 'general',
             markdownDescription: '<h1>H1 Heading</h1>\n',
             modded: false,
-            category: 'general',
             region: 'arctic',
+            unsafeDescription: '# H1 Heading',
+            userId: 'testSeedUserId',
           })
       })
       // redirect after successful stamp creation

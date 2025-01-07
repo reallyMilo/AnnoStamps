@@ -23,7 +23,7 @@ export const UpdateStampForm = ({ stamp }: { stamp: StampWithRelations }) => {
   })
 
   if (error) {
-    return <Heading>Something went wrong</Heading>
+    return <Heading>Failed to get zip file.</Heading>
   }
   if (isStampLoading) {
     return (

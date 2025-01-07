@@ -65,7 +65,7 @@ export const ImageUpload = () => {
         <Grid>
           {images.map((image) => {
             const url = isImage(image)
-              ? image.thumbnailUrl ?? image.originalUrl
+              ? (image.thumbnailUrl ?? image.originalUrl)
               : image.url
             return (
               <div className="relative" key={url}>
@@ -85,7 +85,7 @@ export const ImageUpload = () => {
           })}
         </Grid>
       )}
-      {status === 'images' && (
+      {status === 'invalidImages' && (
         <span className="text-sm text-red-600">Please add images</span>
       )}
       {isError && (
