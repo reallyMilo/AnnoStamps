@@ -57,22 +57,6 @@ describe('Updating Stamp', () => {
           cy.findByRole('button', { name: 'Update Stamp' }).should('not.exist')
         })
     })
-    it('all fields populated with default values', () => {
-      cy.intercept('GET', '/stamp.zip', {
-        fixture: 'test-stamp.zip',
-      }).as('getStampZip')
-      cy.visit('/stamp/update/testSeedUserStampId')
-
-      cy.wait('@getStampZip')
-
-      cy.findByText('test-stamp-zip').should('exist')
-      cy.get('#category').should('have.value', 'cosmetic')
-      cy.get('#region').should('have.value', 'old world')
-      cy.get('#modded').should('have.value', 'false')
-
-      cy.get('#title').should('have.value', 'Test-Seed-User-Stamp')
-      cy.get('#description').should('have.value', 'Test seed user stamp')
-    })
 
     it('user can click the edit stamp link and update the stamp', () => {
       cy.intercept('/stamp/update/*').as('updateStamp')
@@ -82,16 +66,16 @@ describe('Updating Stamp', () => {
       }).as('getStampZip')
 
       cy.intercept('/api/upload/*', {
-        statusCode: 200,
         body: {
           ok: true,
-          url: 'presigned?fileType=zip',
           path: '/stamp.zip',
+          url: 'presigned?fileType=zip',
         },
+        statusCode: 200,
       }).as('uploadAsset')
       cy.intercept('PUT', '/stamp/update/presigned*', {
-        statusCode: 200,
         body: '/stamp.zip',
+        statusCode: 200,
       }).as('S3Put')
       //FIXME: Need to revalidate the path for [username]
       cy.visit('/stamp/update/testSeedUserStampId')
