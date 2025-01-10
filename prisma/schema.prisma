@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "typedSql"]
+  previewFeatures = ["fullTextSearchPostgres", "typedSql"]
   binaryTargets   = ["native", "rhel-openssl-3.0.x"]
 }
 
@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Image {
-  id           String   @id
+  id           String   @id @default(cuid(2))
   originalUrl  String   @unique
   thumbnailUrl String?  @unique
   smallUrl     String?  @unique
@@ -24,7 +24,7 @@ model Image {
 }
 
 model Notification {
-  id        String   @id
+  id        String   @id @default(cuid(2))
   userId    String
   channel   String
   user      User     @relation(fields: [userId], references: [id])
@@ -36,7 +36,7 @@ model Notification {
 }
 
 model Comment {
-  id            String    @id
+  id            String    @id @default(cuid(2))
   content       String
   userId        String
   user          User      @relation(fields: [userId], references: [id])
@@ -50,7 +50,7 @@ model Comment {
 }
 
 model Stamp {
-  id                  String    @id
+  id                  String    @id @default(cuid(2))
   userId              String
   game                String
   title               String
@@ -73,7 +73,7 @@ model Stamp {
 }
 
 model Account {
-  id                String  @id @default(cuid())
+  id                String  @id @default(cuid(2))
   userId            String
   type              String
   provider          String
@@ -91,7 +91,7 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(cuid(2))
   sessionToken String   @unique
   userId       String
   expires      DateTime
@@ -99,7 +99,7 @@ model Session {
 }
 
 model Preference {
-  id      String  @id
+  id      String  @id @default(cuid(2))
   channel String
   enabled Boolean @default(true)
   userId  String
@@ -110,7 +110,7 @@ model Preference {
 }
 
 model User {
-  id            String         @id @default(cuid())
+  id            String         @id @default(cuid(2))
   name          String?
   email         String?        @unique
   emailVerified DateTime?

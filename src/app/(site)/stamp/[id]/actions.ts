@@ -1,7 +1,6 @@
 'use server'
 
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
-import { createId } from '@paralleldrive/cuid2'
 import { revalidatePath } from 'next/cache'
 
 import type { Comment, StampWithRelations } from '@/lib/prisma/models'
@@ -58,7 +57,6 @@ export const addCommentToStamp = async (
       prisma.comment.create({
         data: {
           content: comment,
-          id: createId(),
           parentId: parentId ? parentId : null,
           stampId,
           userId: session.userId,
@@ -72,7 +70,6 @@ export const addCommentToStamp = async (
             content: comment,
           },
           channel: 'web',
-          id: createId(),
           targetUrl,
           userId: userIdToNotify,
         },
