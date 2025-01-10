@@ -173,15 +173,17 @@ export interface UserWithStamps
   extends Omit<
     Prisma.UserGetPayload<{
       include: typeof userIncludeStatement
+      omit: {
+        email: true
+        emailVerified: true
+        name: true
+      }
     }>,
-    'email' | 'emailVerified' | 'listedStamps' | 'name'
+    'listedStamps'
   > {
-  email: null
-  emailVerified: null
   listedStamps: ({
     _count: { likedBy: number }
   } & Omit<StampWithRelations, 'likedBy' | 'user'>)[]
-  name: null
 }
 
 const userProfileSchema = z
