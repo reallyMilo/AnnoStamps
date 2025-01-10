@@ -13,7 +13,15 @@ import {
 } from './models'
 
 const prismaClientSingleton = () => {
-  return new PrismaClient()
+  return new PrismaClient({
+    omit: {
+      user: {
+        email: true,
+        emailVerified: true,
+        name: true,
+      },
+    },
+  })
     .$extends(userExtension)
     .$extends(stampExtensions)
     .$extends(imageExtension)

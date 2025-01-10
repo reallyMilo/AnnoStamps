@@ -201,25 +201,6 @@ export const userExtension = Prisma.defineExtension({
       },
     },
   },
-  result: {
-    user: {
-      email: {
-        compute() {
-          return null
-        },
-      },
-      emailVerified: {
-        compute() {
-          return null
-        },
-      },
-      name: {
-        compute() {
-          return null
-        },
-      },
-    },
-  },
 })
 
 /* -------------------------------------------------------------------------------------------------
