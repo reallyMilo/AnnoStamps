@@ -1,6 +1,5 @@
 'use server'
 
-import { createId } from '@paralleldrive/cuid2'
 import { Prisma } from '@prisma/client'
 
 import { auth } from '@/auth'
@@ -46,7 +45,6 @@ export const updateUserSettings = async (
             create: {
               channel: 'email',
               enabled: isEmailNotificationEnabled,
-              id: createId(),
             },
             update: {
               channel: 'email',
