@@ -30,17 +30,23 @@ export const GET = auth(async (req) => {
   const ext =
     fileType === 'zip' ? 'zip' : decodeURIComponent(fileType).split('/')[1]
 
-  const path = `${type}/${req.auth.user.id}/${stampId}/${createId()}.${ext}`
+  const imageId = createId()
+  const path = `${type}/${req.auth.user.id}/${stampId}/${imageId}.${ext}`
 
   const client = new S3Client({ region: AWS_S3_REGION })
   const command = new PutObjectCommand({
     Bucket: AWS_S3_BUCKET,
     ContentType: fileType,
     Key: path,
-    Metadata: { filename: decodeURIComponent(filename) },
+    Metadata: {
+      filename: decodeURIComponent(filename),
+      imageId,
+      stampId,
+      userId: req.auth.user.id,
+    },
   })
 
-  const url = await getSignedUrl(client, command, { expiresIn: 3600 })
+  const url = await getSignedUrl(client, command, { expiresIn: 300 })
 
   return Response.json({
     message: 'Returning presigned url.',
