@@ -5,6 +5,14 @@ import { Prisma } from '@prisma/client'
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
 
+const blockedUsernames = new Set<string>([
+  '117',
+  '1800',
+  'privacy',
+  'stamp',
+  'stamps',
+])
+
 export const updateUserSettings = async (
   formData: FormData,
 ): Promise<{
@@ -16,27 +24,34 @@ export const updateUserSettings = async (
   if (!session) {
     return { message: 'Unauthorized.', ok: false, status: 'error' }
   }
-  try {
-    const { biography, emailNotifications, username } = Object.fromEntries(
-      formData,
-    ) as {
-      biography: string
-      emailNotifications?: 'on'
-      username: string
+  const { biography, emailNotifications, username } = Object.fromEntries(
+    formData,
+  ) as {
+    biography: string
+    emailNotifications?: 'on'
+    username: string
+  }
+  if (blockedUsernames.has(username)) {
+    return {
+      message: 'Not allowed to use as username.',
+      ok: false,
+      status: 'error',
     }
+  }
 
-    const updateData: Prisma.UserUncheckedUpdateInput = session.user.username
-      ? { biography }
-      : {
-          biography,
-          username,
-          usernameURL: username.toLowerCase(),
-        }
+  const updateData: Prisma.UserUncheckedUpdateInput = session.user.username
+    ? { biography }
+    : {
+        biography,
+        username,
+        usernameURL: username.toLowerCase(),
+      }
 
-    const isEmailNotificationEnabled = emailNotifications
-      ? emailNotifications === 'on'
-      : false
+  const isEmailNotificationEnabled = emailNotifications
+    ? emailNotifications === 'on'
+    : false
 
+  try {
     await prisma.user.update({
       data: {
         ...updateData,

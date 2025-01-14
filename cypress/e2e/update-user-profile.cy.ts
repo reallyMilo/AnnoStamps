@@ -39,6 +39,20 @@ describe('Update user profile', () => {
       cy.wait('@setUsername')
       cy.findByText('Username already taken.').should('be.visible')
     })
+
+    it('blocked username rejected', () => {
+      cy.intercept('/testSeedUserId/settings').as('setUsername')
+      cy.setSessionCookie()
+
+      cy.visit('/testSeedUserId/settings')
+
+      cy.findByLabelText('Username').type('1800')
+      cy.findByRole('button', { name: 'Save' }).click()
+      cy.wait('@setUsername')
+
+      cy.findByText('Not allowed to use as username.').should('be.visible')
+    })
+
     it('user can set user profile fields', () => {
       cy.intercept('/testSeedUserId/settings').as('setUsername')
       cy.setSessionCookie()
