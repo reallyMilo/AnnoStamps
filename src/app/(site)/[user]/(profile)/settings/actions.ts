@@ -31,7 +31,10 @@ export const updateUserSettings = async (
     emailNotifications?: 'on'
     username: string
   }
-  if (blockedUsernames.has(username)) {
+
+  const usernameURL = username.toLowerCase()
+
+  if (blockedUsernames.has(usernameURL)) {
     return {
       message: 'Not allowed to use as username.',
       ok: false,
@@ -44,7 +47,7 @@ export const updateUserSettings = async (
     : {
         biography,
         username,
-        usernameURL: username.toLowerCase(),
+        usernameURL,
       }
 
   const isEmailNotificationEnabled = emailNotifications
