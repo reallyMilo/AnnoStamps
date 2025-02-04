@@ -1,15 +1,18 @@
-export const handler = async (event) => {
-  console.log(event)
+import type { Handler } from 'aws-lambda'
+
+export const handler: Handler = async (event) => {
+  const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL
+  if (!discordWebhookUrl) {
+    throw new Error('DISCORD_WEBHOOK_URL')
+  }
 
   const { body } = event
   const { record: stampData } = JSON.parse(body)
 
-  console.log(stampData)
-
   const content = `[${stampData.title}](https://annostamps.com/stamp/${stampData.id})`
 
   try {
-    const response = await fetch(process.env.DISCORD_WEBHOOK_URL, {
+    const response = await fetch(discordWebhookUrl, {
       body: JSON.stringify({
         content,
       }),
@@ -19,10 +22,9 @@ export const handler = async (event) => {
       method: 'POST',
     })
 
-    console.log(response)
     return response
   } catch (e) {
-    console.log(e)
+    console.error(e)
     return
   }
 }
