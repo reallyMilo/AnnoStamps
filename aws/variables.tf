@@ -11,3 +11,9 @@ variable "supabase_service_key" {
   type        = string
   sensitive   = true
 }
+
+variable "discord_webhook_url" {
+  sensitive = true
+  type = string
+  description = "Discord webhook url for the new stamp notifying."
+}
