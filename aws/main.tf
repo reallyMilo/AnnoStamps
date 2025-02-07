@@ -12,7 +12,18 @@ terraform {
 provider "aws" {
   region = "eu-central-1"
 }
-
+import {
+  to = module.discordWebhookLambda.aws_lambda_function.this
+  id = "discordWebhook"
+}
+import {
+  to = aws_lambda_function_url.discordWebhookLambda_function_url
+  id = "discordWebhook"
+}
+import {
+  to = module.discordWebhookLambda.aws_cloudwatch_log_group.this
+  id = "/aws/lambda/discordWebhook"
+}
 module "discordWebhookLambda" {
   source = "./module/lambda"
   filename = "./lambdas/discordWebhook/dist/discordWebhook.zip"
@@ -28,7 +39,7 @@ resource "aws_lambda_function_url" "discordWebhookLambda_function_url" {
   authorization_type = "NONE"
 
   cors {
-    allow_credentials = true
+    allow_credentials = false
     allow_origins     = ["${var.supabase_db_url}"]
     allow_methods     = ["POST"]
     allow_headers     = ["date", "keep-alive", "auth"]
