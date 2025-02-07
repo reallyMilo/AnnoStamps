@@ -8,30 +8,7 @@ Average: 1-2K daily downloads
 
 Spike (due to content creators linking stamps): 7-8K daily downloads
 
-## AWS
-
-_Lambda -> Functions -> googleAnalyticsToDb -> Configuration_
-
-### Trigger
-
-Source: EventBridge
-
-Schedule expression: rate(1 day) // UTC+0
-
-### Environment Variables
-
-_Supabase UI -> Project Settings -> API_
-
-```
-SUPA_DB
-SUPA_SERVICE_KEY
-```
-
-_Google Cloud Dashboard -> APIs & Services -> Enabled APIs -> Google Analytics Data API -> Credentials_
-
-`GOOGLE_APPLICATION_CREDENTIALS = credentials.json`
-
-## Supabase
+## Supabase setup
 
 _service_role does not have usage permission, must set with query_
 
@@ -64,6 +41,8 @@ END;
 
 ```
 
-## Google Analytics
+## Google Analytics setup
 
 Add service account found in GCP Api to user in Property Access with viewer permission
+
+Then download the credentials.json file and add to the directory.
