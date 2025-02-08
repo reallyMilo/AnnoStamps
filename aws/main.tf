@@ -35,3 +35,17 @@ resource "aws_lambda_function_url" "discordWebhookLambda_function_url" {
   }
 
 }
+
+module "updateStampDownloads" {
+  source = "./module/lambda"
+  filename = "./lambdas/updateStampDownloads/dist/updateStampDownloads.zip"
+  description = "Daily cron scheduled task that pulls google analytics data and updates stamp download counts."
+  function_name = "updateStampDownloads"
+  runtime = "nodejs20.x"
+  role = aws_iam_role.lambda_role
+  environment_vars = {
+    "SUPABASE_DB_URL": var.supabase_db_url
+    "SUPABASE_SERVICE_KEY": var.supabase_service_key
+    "GOOGLE_APPLICATION_CREDENTIALS": "credentials.json"
+  }
+}
