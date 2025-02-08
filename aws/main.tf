@@ -16,7 +16,7 @@ provider "aws" {
 module "discordWebhookLambda" {
   source = "./module/lambda"
   filename = "./lambdas/discordWebhook/dist/discordWebhook.zip"
-  description = "Discord webhook lambda that notifies discord members of a newly created stamp."
+  description = "A Supabase webhook triggers this Lambda on new stamp creation, which then notifies a Discord webhook to alert members."
   function_name = "discordWebhook"
   runtime = "nodejs20.x"
   role = aws_iam_role.lambda_role
@@ -39,7 +39,7 @@ resource "aws_lambda_function_url" "discordWebhookLambda_function_url" {
 module "updateStampDownloads" {
   source = "./module/lambda"
   filename = "./lambdas/updateStampDownloads/dist/updateStampDownloads.zip"
-  description = "Daily cron scheduled task that pulls google analytics data and updates stamp download counts."
+  description = "Daily cron scheduled task that pulls google analytics data and triggers Supabase RPC that increments stamp downloads."
   function_name = "updateStampDownloads"
   runtime = "nodejs20.x"
   role = aws_iam_role.lambda_role
