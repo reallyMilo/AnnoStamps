@@ -61,22 +61,12 @@ module "updateStampDownloads" {
   }
 }
 
-import {
-  to = aws_cloudwatch_event_rule.daily_trigger
-  id = "arn:aws:events:eu-central-1:216548231692:rule/DailyRateJob"
-}
 resource "aws_cloudwatch_event_rule" "daily_trigger" {
   name = "DailyRateJob"
   description = "Event that runs daily."
-  schedule_expression = "rate (1 day)"
+  schedule_expression = "rate(1 day)"
 }
-
-import {
-  to = aws_cloudwatch_event_target.target_updateStampDownloads
-  id = "arn:aws:events:eu-central-1:216548231692:rule/DailyRateJob"
-}
-resource "aws_cloudwatch_event_target" "target_updateStampDownloads" {
-  rule = aws_cloudwatch_event_rule.daily_trigger.name
-  target_id = "DailyRateJob"
+resource "aws_cloudwatch_event_target" "updateStampDownloads" {
+  rule = aws_cloudwatch_event_rule.daily_trigger.id
   arn = module.updateStampDownloads.arn
 }
