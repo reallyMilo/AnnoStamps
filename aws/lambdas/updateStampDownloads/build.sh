@@ -29,7 +29,7 @@ cp credentials.json temp/
 mkdir -p dist
 
 # Create Lambda zipfile under "dist"
-(cd temp && zip -r ../dist/updateStampDownloads.zip *)
+rm -f dist/updateStampDownloads.zip && (cd temp && zip -r --symlinks ../dist/updateStampDownloads.zip .)
 
 # Clean up
 rm -rf temp

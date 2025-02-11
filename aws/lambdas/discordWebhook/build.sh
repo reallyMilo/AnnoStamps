@@ -19,7 +19,7 @@ cp package*.json temp
 mkdir -p dist
 
 # Create Lambda zipfile under "dist"
-(cd temp && zip -r ../dist/discordWebhook.zip *)
+rm -f dist/discordWebhook.zip && (cd temp && zip -r --symlinks ../dist/discordWebhook.zip .)
 
 # Clean up
 rm -rf temp
