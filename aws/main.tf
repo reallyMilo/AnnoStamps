@@ -35,6 +35,10 @@ resource "aws_lambda_function_url" "discordWebhookLambda_function_url" {
   }
 
 }
+import {
+  to = module.updateStampDownloads.aws_lambda_function.this
+  id = "updateStampDownloads"
+}
 
 module "updateStampDownloads" {
   source = "./module/lambda"
@@ -48,4 +52,24 @@ module "updateStampDownloads" {
     "SUPABASE_SERVICE_KEY": var.supabase_service_key
     "GOOGLE_APPLICATION_CREDENTIALS": "credentials.json"
   }
+}
+
+import {
+  to = aws_cloudwatch_event_rule.daily_trigger
+  id = "arn:aws:events:eu-central-1:216548231692:rule/DailyRateJob"
+}
+resource "aws_cloudwatch_event_rule" "daily_trigger" {
+  name = "DailyRateJob"
+  description = "Event that runs daily."
+  schedule_expression = "rate (1 day)"
+}
+
+import {
+  to = aws_cloudwatch_event_target.target_updateStampDownloads
+  id = "arn:aws:events:eu-central-1:216548231692:rule/DailyRateJob"
+}
+resource "aws_cloudwatch_event_target" "target_updateStampDownloads" {
+  rule = aws_cloudwatch_event_rule.daily_trigger.name
+  target_id = "DailyRateJob"
+  arn = module.updateStampDownloads.arn
 }
