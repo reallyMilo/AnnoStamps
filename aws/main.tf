@@ -23,7 +23,7 @@ provider "aws" {
 module "discordWebhookLambda" {
   source = "./module/lambda"
   filename = "./lambdas/discordWebhook/dist/discordWebhook.zip"
-  description = "Discord webhook lambda that notifies discord members of a newly created stamp."
+  description = "A Supabase webhook triggers this Lambda on new stamp creation, which then notifies a Discord webhook to alert members."
   function_name = "discordWebhook"
   runtime = "nodejs20.x"
   role = aws_iam_role.lambda_role
@@ -41,4 +41,32 @@ resource "aws_lambda_function_url" "discordWebhookLambda_function_url" {
     allow_headers     = ["date", "keep-alive", "auth"]
   }
 
+}
+import {
+  to = module.updateStampDownloads.aws_lambda_function.this
+  id = "updateStampDownloads"
+}
+
+module "updateStampDownloads" {
+  source = "./module/lambda"
+  filename = "./lambdas/updateStampDownloads/dist/updateStampDownloads.zip"
+  description = "Daily cron scheduled task that pulls google analytics data and triggers Supabase RPC that increments stamp downloads."
+  function_name = "updateStampDownloads"
+  runtime = "nodejs20.x"
+  role = aws_iam_role.lambda_role
+  environment_vars = {
+    "SUPABASE_DB_URL": var.supabase_db_url
+    "SUPABASE_SERVICE_KEY": var.supabase_service_key
+    "GOOGLE_APPLICATION_CREDENTIALS": "credentials.json"
+  }
+}
+
+resource "aws_cloudwatch_event_rule" "daily_trigger" {
+  name = "DailyRateJob"
+  description = "Event that runs daily."
+  schedule_expression = "rate(1 day)"
+}
+resource "aws_cloudwatch_event_target" "updateStampDownloads" {
+  rule = aws_cloudwatch_event_rule.daily_trigger.id
+  arn = module.updateStampDownloads.arn
 }
