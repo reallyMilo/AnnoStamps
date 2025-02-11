@@ -5,6 +5,13 @@ terraform {
       version = "5.84.0"
     }
   }
+  backend "s3" {
+    bucket = "annostamps-tf-state"
+    key = "terraform.tfstate"
+    region = "eu-central-1"
+    encrypt = true
+    kms_key_id = "d7bca957-d679-4c45-9d80-722823ca3a6f"    
+  }
 
   required_version = ">= 1.2.0"
 }
