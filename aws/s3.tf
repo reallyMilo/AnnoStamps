@@ -1,14 +1,8 @@
-import {
-    to = aws_s3_bucket.annostamps-bucket
-    id = "annostamps"
-}
+
 resource "aws_s3_bucket" "annostamps-bucket" {
     bucket = "annostamps"
 }
-import {
-  to = aws_s3_bucket_versioning.bucket-versioning
-  id = "annostamps"
-}
+
 resource "aws_s3_bucket_versioning" "bucket-versioning" {
     bucket = aws_s3_bucket.annostamps-bucket.id
     versioning_configuration {
@@ -16,10 +10,6 @@ resource "aws_s3_bucket_versioning" "bucket-versioning" {
     }
 }
 
-import {
-  to = aws_s3_bucket_cors_configuration.annostamps_cors
-  id = "annostamps"
-}
 resource "aws_s3_bucket_cors_configuration" "annostamps_cors" {
   bucket = aws_s3_bucket.annostamps-bucket.id
   cors_rule {

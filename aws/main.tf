@@ -42,10 +42,6 @@ resource "aws_lambda_function_url" "discordWebhookLambda_function_url" {
   }
 
 }
-import {
-  to = module.updateStampDownloads.aws_lambda_function.this
-  id = "updateStampDownloads"
-}
 
 module "updateStampDownloads" {
   source = "./module/lambda"
