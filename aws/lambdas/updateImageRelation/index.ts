@@ -1,6 +1,13 @@
 import { createClient } from '@supabase/supabase-js'
+import { S3Event, S3Handler } from 'aws-lambda'
+export const handler: S3Handler = async (event: S3Event) => {
+  const supabaseURL = process.env.SUPABASE_DB_URL
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
 
-export const handler = async (event) => {
+  if (!supabaseURL || !supabaseServiceKey) {
+    throw new Error('Missing supabase env')
+  }
+
   const srcKey = decodeURIComponent(
     event.Records[0].s3.object.key.replace(/\+/g, ' '),
   )
@@ -13,18 +20,17 @@ export const handler = async (event) => {
 
   const appendUrl = key + 'Url'
 
-  const supabase = createClient(
-    process.env.SUPA_DB,
-    process.env.SUPA_SERVICE_KEY,
-  )
+  const supabase = createClient(supabaseURL, supabaseServiceKey)
   try {
     const { error } = await supabase
       .from('Image')
       .update({ [appendUrl]: 'https://d16532dqapk4x.cloudfront.net/' + srcKey })
       .eq('id', id)
 
-    console.log(error)
+    if (error) {
+      console.error(error)
+    }
   } catch (e) {
-    console.log(e)
+    console.error(e)
   }
 }

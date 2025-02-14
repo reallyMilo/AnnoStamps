@@ -32,4 +32,5 @@ lambda_function {
 
 depends_on = [ aws_lambda_permission.allow_bucket_generateResponsiveImages ]
 
+
 }

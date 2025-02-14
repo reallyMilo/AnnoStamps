@@ -84,3 +84,16 @@ resource "aws_lambda_permission" "allow_bucket_generateResponsiveImages" {
   principal     = "s3.amazonaws.com"
   source_arn    = aws_s3_bucket.annostamps-bucket.arn
 }
+
+module "updateImageRelation" {
+  source = "./module/lambda"
+  filename = "./lambdas/updateImageRelation/dist/updateImageRelation.zip"
+  function_name = "updateImageRelation"
+  description = "Updates Supabase database relations with newly created responsive images."
+  runtime = "nodejs20.x"
+  role = aws_iam_role.lambda_role
+  environment_vars = {
+    "SUPABASE_DB_URL": var.supabase_db_url
+    "SUPABASE_SERVICE_KEY": var.supabase_service_key
+  }
+}
