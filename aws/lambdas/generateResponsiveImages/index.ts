@@ -68,11 +68,6 @@ export const handler: S3Handler = async (event: S3Event) => {
         Key: dstKey,
       }
 
-      /**
-       * Generate responsive images if
-       * 1. Images whose resolution exceeds display breakpoints
-       * 2. Images that are within breakpoints but are large
-       */
       //TODO: attach size,width,height meta tags to object on client upload.
       //@ts-expect-error undefined
       if (breakpoint < width || breakpoint < height) {
