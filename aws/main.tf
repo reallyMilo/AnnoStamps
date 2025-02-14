@@ -66,3 +66,14 @@ resource "aws_cloudwatch_event_target" "updateStampDownloads" {
   rule = aws_cloudwatch_event_rule.daily_trigger.id
   arn = module.updateStampDownloads.arn
 }
+
+module "generateResponsiveImages" {
+  source = "./module/lambda"
+  filename = "./lambdas/generateResponsiveImages/dist/generateResponsiveImages.zip"
+  function_name = "generateResponsiveImages"
+  description = "Generates optimized WebP images, including thumbnails and breakpoints at 1024, 768, 640, and 250 pixels."
+  runtime = "nodejs18.x"
+  role = aws_iam_role.lambda_role
+  environment_vars = {}
+}
+
