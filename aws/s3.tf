@@ -21,3 +21,15 @@ resource "aws_s3_bucket_cors_configuration" "annostamps_cors" {
     "https://annostamps.com/"]
   }
 }
+
+resource "aws_s3_bucket_notification" "bucket_notifications" {
+bucket = aws_s3_bucket.annostamps-bucket.id
+lambda_function {
+  lambda_function_arn = module.generateResponsiveImages.arn
+   events = ["s3:ObjectCreated:Put"]
+   filter_prefix = "images/"
+}
+
+depends_on = [ aws_lambda_permission.allow_bucket_generateResponsiveImages ]
+
+}

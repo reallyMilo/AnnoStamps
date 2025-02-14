@@ -77,3 +77,10 @@ module "generateResponsiveImages" {
   environment_vars = {}
 }
 
+resource "aws_lambda_permission" "allow_bucket_generateResponsiveImages" {
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = module.generateResponsiveImages.arn
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.annostamps-bucket.arn
+}
