@@ -1,0 +1,84 @@
+import {
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3'
+import { S3Event, S3Handler } from 'aws-lambda'
+import sharp from 'sharp'
+import { Readable } from 'stream'
+
+const s3 = new S3Client({ region: 'eu-central-1' })
+
+export const handler: S3Handler = async (event: S3Event) => {
+  const srcBucket = event.Records[0].s3.bucket.name
+
+  // TODO: add meta tags to the object for path and file name on client upload
+  const srcKey = decodeURIComponent(
+    event.Records[0].s3.object.key.replace(/\+/g, ' '),
+  )
+  const dstBucket = srcBucket
+  const startIdx = srcKey.lastIndexOf('/')
+  const lastIndex = srcKey.lastIndexOf('.')
+  const [path, filename] = [
+    srcKey.slice(0, startIdx),
+    srcKey.slice(startIdx + 1, lastIndex),
+  ]
+  let content_buffer = null
+  try {
+    const params = {
+      Bucket: srcBucket,
+      Key: srcKey,
+    }
+    const response = await s3.send(new GetObjectCommand(params))
+    const stream = response.Body
+
+    if (stream instanceof Readable) {
+      content_buffer = Buffer.concat(await stream.toArray())
+    } else {
+      throw new Error('Unknown object stream type')
+    }
+  } catch (error) {
+    console.error(error)
+    return
+  }
+
+  const BREAKPOINTS = {
+    large: 1024,
+    medium: 768,
+    small: 640,
+    thumbnail: 250,
+  } as const
+
+  try {
+    const { height, size, width } = await sharp(content_buffer).metadata()
+    for (const [key, value] of Object.entries(BREAKPOINTS)) {
+      const breakpoint = value
+      const dstKey = `responsive/${path}/${key}_${filename}.webp`
+
+      const imageBuffer = await sharp(content_buffer)
+        .resize(breakpoint, null, {
+          fit: 'inside',
+        })
+        .toFormat('webp')
+        .toBuffer()
+      const destinationParams = {
+        Body: imageBuffer,
+        Bucket: dstBucket,
+        ContentType: 'image',
+        Key: dstKey,
+      }
+
+      //TODO: attach size,width,height meta tags to object on client upload.
+      //@ts-expect-error undefined
+      if (breakpoint < width || breakpoint < height) {
+        await s3.send(new PutObjectCommand(destinationParams))
+        //@ts-expect-error undefined
+      } else if (size > 100000) {
+        await s3.send(new PutObjectCommand(destinationParams))
+      }
+    }
+  } catch (error) {
+    console.error(error)
+    return
+  }
+}
