@@ -6,11 +6,11 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "annostamps-tf-state"
-    key = "terraform.tfstate"
-    region = "eu-central-1"
-    encrypt = true
-    kms_key_id = "d7bca957-d679-4c45-9d80-722823ca3a6f"    
+    bucket     = "annostamps-tf-state"
+    key        = "terraform.tfstate"
+    region     = "eu-central-1"
+    encrypt    = true
+    kms_key_id = "d7bca957-d679-4c45-9d80-722823ca3a6f"
   }
 
   required_version = ">= 1.2.0"
@@ -21,13 +21,13 @@ provider "aws" {
 }
 
 module "discordWebhookLambda" {
-  source = "./module/lambda"
-  filename = "./lambdas/discordWebhook/dist/discordWebhook.zip"
-  description = "A Supabase webhook triggers this Lambda on new stamp creation, which then notifies a Discord webhook to alert members."
-  function_name = "discordWebhook"
-  runtime = "nodejs20.x"
-  role = aws_iam_role.lambda_role
-  environment_vars = {"DISCORD_WEBHOOK_URL": var.discord_webhook_url}
+  source           = "./module/lambda"
+  filename         = "./lambdas/discordWebhook/dist/discordWebhook.zip"
+  description      = "A Supabase webhook triggers this Lambda on new stamp creation, which then notifies a Discord webhook to alert members."
+  function_name    = "discordWebhook"
+  runtime          = "nodejs20.x"
+  role             = aws_iam_role.lambda_role
+  environment_vars = { "DISCORD_WEBHOOK_URL" : var.discord_webhook_url }
 }
 
 resource "aws_lambda_function_url" "discordWebhookLambda_function_url" {
@@ -44,36 +44,39 @@ resource "aws_lambda_function_url" "discordWebhookLambda_function_url" {
 }
 
 module "updateStampDownloads" {
-  source = "./module/lambda"
-  filename = "./lambdas/updateStampDownloads/dist/updateStampDownloads.zip"
-  description = "Daily cron scheduled task that pulls google analytics data and triggers Supabase RPC that increments stamp downloads."
+  source        = "./module/lambda"
+  filename      = "./lambdas/updateStampDownloads/dist/updateStampDownloads.zip"
+  description   = "Daily cron scheduled task that pulls google analytics data and triggers Supabase RPC that increments stamp downloads."
   function_name = "updateStampDownloads"
-  runtime = "nodejs20.x"
-  role = aws_iam_role.lambda_role
+  runtime       = "nodejs20.x"
+  role          = aws_iam_role.lambda_role
   environment_vars = {
-    "SUPABASE_DB_URL": var.supabase_db_url
-    "SUPABASE_SERVICE_KEY": var.supabase_service_key
-    "GOOGLE_APPLICATION_CREDENTIALS": "credentials.json"
+    "SUPABASE_DB_URL" : var.supabase_db_url
+    "SUPABASE_SERVICE_KEY" : var.supabase_service_key
+    "GOOGLE_APPLICATION_CREDENTIALS" : "credentials.json"
   }
 }
 
 resource "aws_cloudwatch_event_rule" "daily_trigger" {
-  name = "DailyRateJob"
-  description = "Event that runs daily."
+  name                = "DailyRateJob"
+  description         = "Event that runs daily."
   schedule_expression = "rate(1 day)"
 }
 resource "aws_cloudwatch_event_target" "updateStampDownloads" {
   rule = aws_cloudwatch_event_rule.daily_trigger.id
-  arn = module.updateStampDownloads.arn
+  arn  = module.updateStampDownloads.arn
 }
-
+import {
+  to = module.generateResponsiveImages.aws_lambda_function.this
+  id = "responsiveImages"
+}
 module "generateResponsiveImages" {
-  source = "./module/lambda"
-  filename = "./lambdas/generateResponsiveImages/dist/generateResponsiveImages.zip"
-  function_name = "generateResponsiveImages"
-  description = "Generates optimized WebP images, including thumbnails and breakpoints at 1024, 768, 640, and 250 pixels."
-  runtime = "nodejs18.x"
-  role = aws_iam_role.lambda_role
+  source           = "./module/lambda"
+  filename         = "./lambdas/generateResponsiveImages/dist/generateResponsiveImages.zip"
+  function_name    = "generateResponsiveImages"
+  description      = "Generates optimized WebP images, including thumbnails and breakpoints at 1024, 768, 640, and 250 pixels."
+  runtime          = "nodejs18.x"
+  role             = aws_iam_role.lambda_role
   environment_vars = {}
 }
 
@@ -85,15 +88,27 @@ resource "aws_lambda_permission" "allow_bucket_generateResponsiveImages" {
   source_arn    = aws_s3_bucket.annostamps-bucket.arn
 }
 
+import {
+  to = module.updateImageRelation.aws_lambda_function.this
+  id = "updateDirect"
+}
 module "updateImageRelation" {
-  source = "./module/lambda"
-  filename = "./lambdas/updateImageRelation/dist/updateImageRelation.zip"
+  source        = "./module/lambda"
+  filename      = "./lambdas/updateImageRelation/dist/updateImageRelation.zip"
   function_name = "updateImageRelation"
-  description = "Updates Supabase database relations with newly created responsive images."
-  runtime = "nodejs20.x"
-  role = aws_iam_role.lambda_role
+  description   = "Updates Supabase database relations with newly created responsive images."
+  runtime       = "nodejs20.x"
+  role          = aws_iam_role.lambda_role
   environment_vars = {
-    "SUPABASE_DB_URL": var.supabase_db_url
-    "SUPABASE_SERVICE_KEY": var.supabase_service_key
+    "SUPABASE_DB_URL" : var.supabase_db_url
+    "SUPABASE_SERVICE_KEY" : var.supabase_service_key
   }
+}
+
+resource "aws_lambda_permission" "allow_bucket_updateImageRelation" {
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = module.updateImageRelation.arn
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.annostamps-bucket.arn
 }
