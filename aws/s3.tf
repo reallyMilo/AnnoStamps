@@ -40,11 +40,6 @@ resource "aws_s3_bucket_notification" "bucket_notifications" {
 
 }
 
-import {
-  to = aws_s3_bucket_policy.cloudfront_web_app_access
-  id = "annostamps"
-}
-
 resource "aws_s3_bucket_policy" "cloudfront_web_app_access" {
   bucket = aws_s3_bucket.annostamps-bucket.id
 
