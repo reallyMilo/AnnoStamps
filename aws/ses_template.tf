@@ -1,8 +1,3 @@
-import {
-  to = aws_ses_template.comment_notification_template
-  id = "CommentNotificationTemplate"
-}
-
 resource "aws_ses_template" "comment_notification_template" {
   name         = "CommentNotificationTemplate"
   subject = "New comment on your stamp"
