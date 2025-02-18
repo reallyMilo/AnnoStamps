@@ -17,3 +17,9 @@ variable "discord_webhook_url" {
   sensitive   = true
   type        = string
 }
+
+variable "annostamps_user_arn" {
+  description = "Full arn of IAM user that is used by the web application to access s3 resources."
+  sensitive = true
+  type = string
+}
