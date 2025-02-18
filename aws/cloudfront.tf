@@ -6,31 +6,28 @@ import {
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name              = aws_s3_bucket.tfbucket.bucket_domain_name
+    domain_name              = aws_s3_bucket.annostamps-bucket.bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.default.id
-    origin_id                = "annostamps.s3.eu-central-1.amazonaws.com"
+    origin_id                = aws_s3_bucket.annostamps-bucket.bucket_regional_domain_name
   }
 
   http_version        = "http2and3"
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = "Some comment"
   default_root_object = "anno-stamps-logo.png"
 
-
-  #aliases = ["annostamps.com"]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "annostamps.s3.eu-central-1.amazonaws.com"
+    target_origin_id = aws_s3_bucket.annostamps-bucket.bucket_regional_domain_name
 
 
     smooth_streaming = false
     compress         = true
 
     cache_policy_id            = data.aws_cloudfront_cache_policy.MangedCachingOptimized.id
-    response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.policy.id
     viewer_protocol_policy     = "redirect-to-https"
 
   }
@@ -52,8 +49,7 @@ import {
 }
 
 resource "aws_cloudfront_origin_access_control" "default" {
-  name                              = "tf-test-OAC"
-  description                       = "OAC TEST"
+  name                              = "${aws_s3_bucket.annostamps-bucket.bucket_regional_domain_name}-signed"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
   origin_access_control_origin_type = "s3"
@@ -64,17 +60,18 @@ import {
   id = "696c9467-8dc6-416f-8711-5944547445e0"
 }
 resource "aws_cloudfront_response_headers_policy" "policy" {
-  name = "allowAnnostamps-tf-test"
+  name = "allowAnnostamps"
 
   cors_config {
     access_control_allow_credentials = false
+    access_control_max_age_sec = 600
     origin_override                  = true
     access_control_allow_headers {
       items = ["annostamps.com"]
     }
 
     access_control_allow_methods {
-      items = ["GET"]
+      items = ["ALL"]
     }
     access_control_allow_origins {
       items = ["https://annostamps.com"]
