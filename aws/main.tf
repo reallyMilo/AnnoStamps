@@ -105,12 +105,25 @@ resource "aws_lambda_permission" "allow_bucket_updateImageRelation" {
   principal     = "s3.amazonaws.com"
   source_arn    = aws_s3_bucket.annostamps-bucket.arn
 }
+module "sendEmailSES" {
+  source        = "./module/lambda"
+  filename      = "./lambdas/sendEmailSES/dist/sendEmailSES.zip"
+  function_name = "sendEmailSES"
+  description   = "Notifies stamp owner by email whenever an user comments on their stamp."
+  runtime       = "nodejs20.x"
+  role          = aws_iam_role.lambda_role
+  environment_vars = {
+    "SUPABASE_DB_URL" : var.supabase_db_url
+    "SUPABASE_SERVICE_KEY" : var.supabase_service_key
+  }
+}
+
 resource "aws_sns_topic" "report_SES_fail" {
   name = "ses-failure"
 }
 resource "aws_sns_topic_subscription" "email" {
-  protocol = "email"
-  endpoint = "annostampsite@gmail.com"
+  protocol  = "email"
+  endpoint  = "annostampsite@gmail.com"
   topic_arn = aws_sns_topic.report_SES_fail.arn
 }
 
@@ -119,10 +132,10 @@ resource "aws_ses_configuration_set" "ses_fail" {
 }
 
 resource "aws_ses_event_destination" "ses_fail" {
-  name = "ses-fail"
-  enabled = true
+  name                   = "ses-fail"
+  enabled                = true
   configuration_set_name = aws_ses_configuration_set.ses_fail.name
-  matching_types = ["reject", "renderingFailure", "bounce", "complaint"]
+  matching_types         = ["reject", "renderingFailure", "bounce", "complaint"]
 
   sns_destination {
     topic_arn = aws_sns_topic.report_SES_fail.arn
@@ -142,6 +155,6 @@ resource "aws_ses_domain_dkim" "annostamps_com" {
 }
 
 resource "aws_ses_domain_mail_from" "email_annostamps_com" {
-  domain = aws_ses_domain_identity.annostamps_com.domain
+  domain           = aws_ses_domain_identity.annostamps_com.domain
   mail_from_domain = "email.${aws_ses_domain_identity.annostamps_com.domain}"
 }
