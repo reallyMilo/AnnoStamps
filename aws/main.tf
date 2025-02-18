@@ -66,10 +66,7 @@ resource "aws_cloudwatch_event_target" "updateStampDownloads" {
   rule = aws_cloudwatch_event_rule.daily_trigger.id
   arn  = module.updateStampDownloads.arn
 }
-import {
-  to = module.generateResponsiveImages.aws_lambda_function.this
-  id = "responsiveImages"
-}
+
 module "generateResponsiveImages" {
   source           = "./module/lambda"
   filename         = "./lambdas/generateResponsiveImages/dist/generateResponsiveImages.zip"
@@ -88,10 +85,6 @@ resource "aws_lambda_permission" "allow_bucket_generateResponsiveImages" {
   source_arn    = aws_s3_bucket.annostamps-bucket.arn
 }
 
-import {
-  to = module.updateImageRelation.aws_lambda_function.this
-  id = "updateDirect"
-}
 module "updateImageRelation" {
   source        = "./module/lambda"
   filename      = "./lambdas/updateImageRelation/dist/updateImageRelation.zip"
