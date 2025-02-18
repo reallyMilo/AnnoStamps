@@ -1,14 +1,19 @@
 import { SendTemplatedEmailCommand, SESClient } from '@aws-sdk/client-ses'
 import { createClient } from '@supabase/supabase-js'
+import { Handler } from 'aws-lambda'
+
 const ses = new SESClient({ region: 'eu-central-1' })
 
-export const handler = async (event) => {
+export const handler: Handler = async (event) => {
   const { body, targetUrl, userIdToNotify } = event
 
-  const supabase = createClient(
-    process.env.SUPA_DB,
-    process.env.SUPA_SERVICE_KEY,
-  )
+  const supabaseURL = process.env.SUPABASE_DB_URL
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
+
+  if (!supabaseURL || !supabaseServiceKey) {
+    throw new Error('Missing supabase env')
+  }
+  const supabase = createClient(supabaseURL, supabaseServiceKey)
 
   const { data, error } = await supabase
     .from('User')
@@ -16,8 +21,8 @@ export const handler = async (event) => {
     .eq('id', userIdToNotify)
 
   if (error) {
-    console.log(error)
-    return
+    console.error(error)
+    throw new Error(JSON.stringify(error))
   }
 
   const templateData = {
@@ -38,9 +43,8 @@ export const handler = async (event) => {
   })
 
   try {
-    const res = await ses.send(command)
-    console.log(res)
+    await ses.send(command)
   } catch (e) {
-    console.log(e)
+    console.error(e)
   }
 }
