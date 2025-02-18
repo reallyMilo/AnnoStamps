@@ -1,9 +1,3 @@
-
-import {
-  to = aws_cloudfront_distribution.s3_distribution
-  id = "E2FHHL8ELSFRK9"
-}
-
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name              = aws_s3_bucket.annostamps-bucket.bucket_regional_domain_name
@@ -43,10 +37,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     cloudfront_default_certificate = true
   }
 }
-import {
-    to = aws_cloudfront_origin_access_control.default
-    id = "E19JAL7W4CKWK9"
-}
 
 resource "aws_cloudfront_origin_access_control" "default" {
   name                              = "${aws_s3_bucket.annostamps-bucket.bucket_regional_domain_name}-signed"
@@ -55,10 +45,6 @@ resource "aws_cloudfront_origin_access_control" "default" {
   origin_access_control_origin_type = "s3"
 }
 
-import {
-  to = aws_cloudfront_response_headers_policy.policy
-  id = "696c9467-8dc6-416f-8711-5944547445e0"
-}
 resource "aws_cloudfront_response_headers_policy" "policy" {
   name = "allowAnnostamps"
 
