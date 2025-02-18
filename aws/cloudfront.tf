@@ -50,7 +50,7 @@ resource "aws_cloudfront_response_headers_policy" "policy" {
 
   cors_config {
     access_control_allow_credentials = false
-    access_control_max_age_sec = 600
+    access_control_max_age_sec       = 600
     origin_override                  = true
     access_control_allow_headers {
       items = ["annostamps.com"]

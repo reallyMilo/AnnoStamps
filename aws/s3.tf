@@ -36,7 +36,7 @@ resource "aws_s3_bucket_notification" "bucket_notifications" {
   }
 
   depends_on = [aws_lambda_permission.allow_bucket_generateResponsiveImages,
-   aws_lambda_permission.allow_bucket_updateImageRelation]
+  aws_lambda_permission.allow_bucket_updateImageRelation]
 
 }
 
@@ -60,17 +60,17 @@ resource "aws_s3_bucket_policy" "cloudfront_web_app_access" {
         }
       },
       {
-            "Sid": "Stmt1696707166060",
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": var.annostamps_user_arn
-            },
-            "Action": "s3:*",
-            "Resource": [
-                "arn:aws:s3:::annostamps/*",
-                "arn:aws:s3:::annostamps"
-            ]
-        }
+        "Sid" : "Stmt1696707166060",
+        "Effect" : "Allow",
+        "Principal" : {
+          "AWS" : var.annostamps_user_arn
+        },
+        "Action" : "s3:*",
+        "Resource" : [
+          "arn:aws:s3:::annostamps/*",
+          "arn:aws:s3:::annostamps"
+        ]
+      }
     ]
   })
 }
