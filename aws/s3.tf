@@ -38,5 +38,44 @@ resource "aws_s3_bucket_notification" "bucket_notifications" {
   depends_on = [aws_lambda_permission.allow_bucket_generateResponsiveImages,
    aws_lambda_permission.allow_bucket_updateImageRelation]
 
+}
 
+import {
+  to = aws_s3_bucket_policy.cloudfront_web_app_access
+  id = "annostamps"
+}
+
+resource "aws_s3_bucket_policy" "cloudfront_web_app_access" {
+  bucket = aws_s3_bucket.annostamps-bucket.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action   = "s3:GetObject"
+        Resource = "${aws_s3_bucket.annostamps-bucket.arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" : aws_cloudfront_distribution.s3_distribution.arn
+          }
+        }
+      },
+      {
+            "Sid": "Stmt1696707166060",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": var.annostamps_user_arn
+            },
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::annostamps/*",
+                "arn:aws:s3:::annostamps"
+            ]
+        }
+    ]
+  })
 }
