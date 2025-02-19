@@ -1,13 +1,24 @@
-[![Anno Stamps](https://annostamps.com/anno-stamps-logo.svg)](https://annostamps.com/)
+<div align="center">
+  <a href="https://annostamps.com">
+    <img src="https://annostamps.com/anno-stamps-logo.svg" 
+    width="420px"
+    alt="Logo">
+  </a>
 
-A site for uploading and sharing stamps for Anno 1800
-[Anno Stamps](https://annostamps.com).
+<h3 align="center">Upload and share stamps for the Anno franchise.</h3>
 
-### Setup local environment
+  <p align="center">
+    <a href="https://discord.gg/73hfP54qXe"><strong>Join the Discord »</strong></a>
+  </p>
+</div>
 
-[install postgres](https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database)
+## Getting Started
 
-Use the guide above to install postgres then run the following commands
+### Prerequisites
+
+- [Postgres](https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database)
+
+If you are installing postgres locally from the link above, you have to initialize a database. Use the commands below.
 
 ```bash
 sudo -u postgres psql
@@ -16,26 +27,51 @@ GRANT ALL PRIVILEGES ON DATABASE annostamps TO postgres;
 ALTER USER postgres PASSWORD 'postgres';
 ```
 
-create .env in root
+- [Node 20.x](https://nodejs.org/en/download)
 
-```sh
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/annostamps"
-DIRECT_URL="postgresql://postgres:postgres@localhost:5432/annostamps"
-AUTH_SECRET="openssl rand -base64 33"
-```
+- [pnpm](https://pnpm.io/installation)
 
-Finally run the following commands..
+### Installation
 
-```sh
-pnpm i
-pnpm migrate
-pnpm db-seed
-```
+1. Clone the repo
 
-### AWS
+   ```bash
+   git clone https://github.com/reallyMilo/AnnoStamps.git
+   ```
 
-[Eraser Diagram](https://app.eraser.io/workspace/7bgyufQrutIRtW89jbxx?origin=share)
+2. Create .env in root and connect your postgres database.
 
-![Create-Stamps](https://d16532dqapk4x.cloudfront.net/diagram/annostamps-create.png)
+   ```bash
+   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/annostamps"
+   DIRECT_URL="postgresql://postgres:postgres@localhost:5432/annostamps"
+   AUTH_SECRET="openssl rand -base64 33"
+   ```
 
-![Download-Stamp](https://d16532dqapk4x.cloudfront.net/diagram/downloads2.png)
+3. Install dependencies, apply the prisma schema to the database and optionally seed the database.
+
+   ```bash
+   pnpm i
+   pnpm migrate
+   pnpm db-seed
+   ```
+
+4. (Optional) Add Discord authentication to test out provider login and user features.
+
+   1. Use your Discord account to create an [application](https://discord.com/developers/applications).
+
+   2. Copy the CLIENT ID and CLIENT SECRET values from OAuth2.
+
+   3. Add them to the env variables.
+
+   ```bash
+   AUTH_DISCORD_ID=
+   AUTH_DISCORD_SECRET=
+   ```
+
+## Contributing
+
+Any contributions you make are **greatly appreciated**.
+
+## Contact
+
+Join the [Discord](https://discord.gg/73hfP54qXe).
