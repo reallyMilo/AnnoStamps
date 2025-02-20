@@ -28,6 +28,7 @@ export const generateUserData = (
       .replace(/\./g, '_')
 
     return {
+      avatarURL: null,
       biography: faker.person.bio(),
       email: faker.internet.email({
         firstName,
