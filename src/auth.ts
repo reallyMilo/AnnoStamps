@@ -59,6 +59,7 @@ const config = {
         ...session,
         user: {
           ...session.user,
+          avatarURL: user.avatarURL,
           biography: user.biography,
           username: user.username,
           usernameURL: user.usernameURL,
