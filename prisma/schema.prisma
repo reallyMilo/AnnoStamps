@@ -115,7 +115,6 @@ model User {
   email         String?        @unique
   emailVerified DateTime?
   image         String?
-  avatarURL     String?        
   username      String?        @unique
   usernameURL   String?        @unique
   biography     String?
