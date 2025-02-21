@@ -1,6 +1,4 @@
 'use client'
-import type { Prisma } from '@prisma/client'
-import type { Session } from 'next-auth'
 
 import { CheckBadgeIcon } from '@heroicons/react/20/solid'
 import { useSession } from 'next-auth/react'
@@ -39,15 +37,9 @@ const SubmitButton = () => {
     </Button>
   )
 }
-type SettingsFormProps = Pick<Prisma.PreferenceGetPayload<true>, 'enabled'> &
-  Pick<Session['user'], 'biography' | 'username'>
 
-export const SettingsForm = ({
-  biography,
-  enabled,
-  username,
-}: SettingsFormProps) => {
-  const { update } = useSession()
+export const SettingsForm = () => {
+  const { data, status, update } = useSession<true>()
   const [formState, setFormState] = useState<
     Awaited<ReturnType<typeof updateUserSettings>>
   >({
@@ -55,6 +47,18 @@ export const SettingsForm = ({
     ok: false,
     status: 'idle',
   })
+
+  const { biography, preferences, username } =
+    status === 'loading'
+      ? {
+          biography: '',
+          preferences: [],
+          username: '',
+        }
+      : data.user
+
+  const isEmailEnabled =
+    preferences.length === 0 ? true : preferences[0].enabled
   return (
     <form
       action={async (formData) => {
@@ -119,7 +123,10 @@ export const SettingsForm = ({
         <Legend>Preferences</Legend>
         <CheckboxGroup>
           <CheckboxField>
-            <Checkbox defaultChecked={enabled} name="emailNotifications" />
+            <Checkbox
+              defaultChecked={isEmailEnabled}
+              name="emailNotifications"
+            />
             <Label>Email Notifications</Label>
             <Description>
               Receive email notifications for new comments on your stamps or

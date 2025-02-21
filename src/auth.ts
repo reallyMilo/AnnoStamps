@@ -29,6 +29,14 @@ const adapter = {
               },
               take: 1,
             },
+            preferences: {
+              select: {
+                enabled: true,
+              },
+              where: {
+                channel: 'email',
+              },
+            },
           },
         },
       },
@@ -93,7 +101,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth(config)
 declare module 'next-auth' {
   interface Session extends AdapterSession {
     user: AdapterUser &
-      Pick<User, 'biography' | 'notifications' | 'username' | 'usernameURL'>
+      Pick<
+        User,
+        | 'biography'
+        | 'notifications'
+        | 'preferences'
+        | 'username'
+        | 'usernameURL'
+      >
   }
 
   interface User
@@ -107,6 +122,14 @@ declare module 'next-auth' {
             isRead: true
           }
           take: 1
+        }
+        preferences: {
+          select: {
+            enabled: true
+          }
+          where: {
+            channel: 'email'
+          }
         }
       }
     }> {}
