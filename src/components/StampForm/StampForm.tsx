@@ -38,7 +38,8 @@ export type StampFormContextValue = {
   >
   stamp?: Stamp
   status:
-    | 'error'
+    | 'errorAction'
+    | 'errorAWS'
     | 'idle'
     | 'invalidImages'
     | 'invalidZip'
@@ -91,15 +92,44 @@ const isAsset = (b: Asset | Image | JSZipObjectWithData): b is Asset => {
 const UploadModal = () => {
   const { status } = useStampFormContext()
 
+  const statusMessage = (() => {
+    switch (status) {
+      case 'errorAction':
+        return {
+          isOpen: true,
+          message: 'An error occurred while creating the stamp.',
+          title: 'Action Error',
+        }
+      case 'errorAWS':
+        return {
+          isOpen: true,
+          message: 'An error occurred while uploading to AWS.',
+          title: 'AWS Error',
+        }
+      case 'upload':
+        return {
+          isOpen: true,
+          message: 'You will be redirected if stamp creation is successful.',
+          title: 'Creating Stamp...',
+        }
+      default:
+        return {
+          isOpen: false,
+          message: 'The status provided is not recognized.',
+          title: 'Unknown Status',
+        }
+    }
+  })()
+
   return (
     <Modal
       data-testid="upload-modal"
       onClose={() => {}}
-      open={status === 'upload'}
+      open={statusMessage.isOpen}
     >
-      <ModalTitle>Creating Stamp...</ModalTitle>
+      <ModalTitle>{statusMessage.title}</ModalTitle>
       <ModalBody className="space-y-2">
-        <Text>You will be redirected if stamp creation is successful.</Text>
+        <Text>{statusMessage.message}</Text>
       </ModalBody>
     </Modal>
   )
@@ -152,29 +182,34 @@ const Form = ({
     }
     const zipped = await zip.generateAsync({ type: 'blob' })
 
-    const [uploadedImageUrls, uploadedStampZipUrl] = await Promise.all([
-      Promise.all(
-        imagesToUpload.map(async (image) => {
-          const imagePath = await uploadAsset(
-            stampId,
-            image.rawFile,
-            image.rawFile.type,
-            image.name,
-          )
-          return imagePath
-        }),
-      ),
-      uploadAsset(stampId, zipped, 'zip', formData.get('title') as string),
-    ])
+    try {
+      const [uploadedImageUrls, uploadedStampZipUrl] = await Promise.all([
+        Promise.all(
+          imagesToUpload.map(async (image) => {
+            const imagePath = await uploadAsset(
+              stampId,
+              image.rawFile,
+              image.rawFile.type,
+              image.name,
+            )
+            return imagePath
+          }),
+        ),
+        uploadAsset(stampId, zipped, 'zip', formData.get('title') as string),
+      ])
 
-    formData.set('stampFileUrl', uploadedStampZipUrl)
-    formData.set('uploadedImageUrls', JSON.stringify(uploadedImageUrls))
+      formData.set('stampFileUrl', uploadedStampZipUrl)
+      formData.set('uploadedImageUrls', JSON.stringify(uploadedImageUrls))
+    } catch (e) {
+      setStatus('errorAWS')
+      return
+    }
     formData.set('imageIdsToRemove', JSON.stringify([...imageIdsToRemove]))
 
     const error = await action(formData)
 
     if (error) {
-      throw new Error(error.message)
+      setStatus('errorAction')
     }
   }
 

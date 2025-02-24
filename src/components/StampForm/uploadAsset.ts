@@ -28,13 +28,17 @@ export const uploadAsset = async (
   )
   const { path, url }: { path: string; url: string } = await presigned.json()
 
-  const putObject = await fetch(url, {
-    body,
-    method: 'PUT',
-  })
+  try {
+    const putObject = await fetch(url, {
+      body,
+      method: 'PUT',
+    })
 
-  if (!putObject.ok) {
-    throw new Error(putObject.statusText)
+    if (!putObject.ok) {
+      throw new Error(putObject.statusText)
+    }
+    return 'https://d16532dqapk4x.cloudfront.net/' + path
+  } catch (e) {
+    return Promise.reject(new Error(`Upload failed: ${e}`))
   }
-  return 'https://d16532dqapk4x.cloudfront.net/' + path
 }
