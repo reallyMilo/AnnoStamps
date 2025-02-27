@@ -111,7 +111,7 @@ module "sendEmailSES" {
   function_name = "sendEmailSES"
   description   = "Notifies stamp owner by email whenever an user comments on their stamp."
   runtime       = "nodejs20.x"
-  role          = aws_iam_role.lambda_role
+  role          = aws_iam_role.lambda_send_ses
   environment_vars = {
     "SUPABASE_DB_URL" : var.supabase_db_url
     "SUPABASE_SERVICE_KEY" : var.supabase_service_key
