@@ -1,15 +1,16 @@
 export const uploadAsset = async (
-  stampId: string,
   body: Blob | File,
   type: string,
   name: string,
+  directory: 'avatar' | 'images' | 'stamps',
+  stampId?: string,
 ) => {
   const filename = encodeURIComponent(name)
   const fileType = encodeURIComponent(type)
 
   if (process.env.NODE_ENV === 'development') {
     const localRes = await fetch(
-      `/api/upload/local?stampId=${stampId}&filename=${filename}&fileType=${fileType}`,
+      `/api/upload/local?stampId=${stampId}&filename=${filename}&fileType=${fileType}&directory=${directory}`,
       {
         body,
         method: 'POST',
@@ -24,7 +25,7 @@ export const uploadAsset = async (
   }
 
   const presigned = await fetch(
-    `/api/upload/presigned?stampId=${stampId}&filename=${filename}&fileType=${fileType}`,
+    `/api/upload/presigned?stampId=${stampId}&filename=${filename}&fileType=${fileType}&directory=${directory}`,
   )
   const { path, url }: { path: string; url: string } = await presigned.json()
 
