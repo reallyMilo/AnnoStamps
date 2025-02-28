@@ -6,10 +6,15 @@ import {
 import { S3Event, S3Handler } from 'aws-lambda'
 import sharp from 'sharp'
 import { Readable } from 'stream'
+import util from 'util'
 
 const s3 = new S3Client({ region: 'eu-central-1' })
 
 export const handler: S3Handler = async (event: S3Event) => {
+  console.log(
+    'Reading options from event:\n',
+    util.inspect(event, { depth: 5 }),
+  )
   const srcBucket = event.Records[0].s3.bucket.name
 
   // TODO: add meta tags to the object for path and file name on client upload
@@ -71,10 +76,35 @@ export const handler: S3Handler = async (event: S3Event) => {
       //TODO: attach size,width,height meta tags to object on client upload.
       //@ts-expect-error undefined
       if (breakpoint < width || breakpoint < height) {
+        console.log()
         await s3.send(new PutObjectCommand(destinationParams))
+        console.log(
+          'Successfully resized ' +
+            srcBucket +
+            '/' +
+            srcKey +
+            ' and uploaded to ' +
+            dstBucket +
+            '/' +
+            dstKey,
+        )
         //@ts-expect-error undefined
       } else if (size > 100000) {
         await s3.send(new PutObjectCommand(destinationParams))
+        console.log(
+          'Successfully resized small resolution image' +
+            srcBucket +
+            '/' +
+            srcKey +
+            ' and uploaded to ' +
+            dstBucket +
+            '/' +
+            dstKey,
+        )
+      } else {
+        console.warn(
+          `${srcKey} object did not have responsive image generated for: ${key}:${value}`,
+        )
       }
     }
   } catch (error) {
