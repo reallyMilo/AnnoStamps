@@ -44,7 +44,7 @@ export const handler: S3Handler = async (event: S3Event) => {
   try {
     const { error } = await supabase
       .from('Image')
-      .update({ [appendUrl]: cloudfrontURL + srcKey })
+      .update({ [imageVariant]: cloudfrontURL + srcKey })
       .eq('id', id)
 
     if (error) {
