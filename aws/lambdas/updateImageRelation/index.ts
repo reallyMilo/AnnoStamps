@@ -13,7 +13,7 @@ const s3 = new S3Client({ region: 'eu-central-1' })
 export const handler: S3Handler = async (event: S3Event) => {
   const supabaseURL = process.env.SUPABASE_DB_URL
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
-
+  const cloudfrontURL = process.env.CLOUDFRONT_CDN_URL
   if (!supabaseURL || !supabaseServiceKey) {
     throw new Error('Missing supabase env')
   }
@@ -47,7 +47,7 @@ export const handler: S3Handler = async (event: S3Event) => {
   try {
     const { error } = await supabase
       .from('Image')
-      .update({ [appendUrl]: 'https://d16532dqapk4x.cloudfront.net/' + srcKey })
+      .update({ [appendUrl]: cloudfrontURL + srcKey })
       .eq('id', id)
 
     if (error) {
