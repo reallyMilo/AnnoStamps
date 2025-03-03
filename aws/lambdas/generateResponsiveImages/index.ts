@@ -35,6 +35,7 @@ export const handler: S3Handler = async (event: S3Event) => {
       Key: srcKey,
     }
     const response = await s3.send(new GetObjectCommand(params))
+    console.log('Metadata:\n', util.inspect(response.Metadata, { depth: 5 }))
     const stream = response.Body
 
     if (stream instanceof Readable) {
@@ -76,7 +77,6 @@ export const handler: S3Handler = async (event: S3Event) => {
       //TODO: attach size,width,height meta tags to object on client upload.
       //@ts-expect-error undefined
       if (breakpoint < width || breakpoint < height) {
-        console.log()
         await s3.send(new PutObjectCommand(destinationParams))
         console.log(
           'Successfully resized ' +
