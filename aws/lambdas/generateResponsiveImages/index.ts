@@ -29,14 +29,16 @@ export const handler: S3Handler = async (event: S3Event) => {
     srcKey.slice(startIdx + 1, lastIndex),
   ]
   let content_buffer = null
+  let metadata = null
   try {
     const params = {
       Bucket: srcBucket,
       Key: srcKey,
     }
     const response = await s3.send(new GetObjectCommand(params))
+    console.log('Metadata:\n', util.inspect(response.Metadata, { depth: 5 }))
     const stream = response.Body
-
+    metadata = response.Metadata
     if (stream instanceof Readable) {
       content_buffer = Buffer.concat(await stream.toArray())
     } else {
@@ -71,12 +73,12 @@ export const handler: S3Handler = async (event: S3Event) => {
         Bucket: dstBucket,
         ContentType: 'image',
         Key: dstKey,
+        Metadata: { ...metadata, imageVariant: `${key}Url` },
       }
 
       //TODO: attach size,width,height meta tags to object on client upload.
       //@ts-expect-error undefined
       if (breakpoint < width || breakpoint < height) {
-        console.log()
         await s3.send(new PutObjectCommand(destinationParams))
         console.log(
           'Successfully resized ' +
