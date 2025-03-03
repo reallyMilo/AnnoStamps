@@ -28,21 +28,18 @@ export const handler: S3Handler = async (event: S3Event) => {
     event.Records[0].s3.object.key.replace(/\+/g, ' '),
   )
 
-  const startKeyIdx = srcKey.lastIndexOf('/')
-  const start = srcKey.lastIndexOf('_')
-  const end = srcKey.lastIndexOf('.')
-  const id = srcKey.slice(start + 1, end)
-  const key = srcKey.slice(startKeyIdx + 1, start)
-
-  const appendUrl = key + 'Url'
-
   const params = {
     Bucket: srcBucket,
     Key: srcKey,
   }
   const response = await s3.send(new GetObjectCommand(params))
   console.log('Metadata:\n', util.inspect(response.Metadata, { depth: 5 }))
-
+  if (!response.Metadata) {
+    console.error('No metadata set.')
+    return
+  }
+  const id = response.Metadata.imageid
+  const imageVariant = response.Metadata.imagevariant
   const supabase = createClient(supabaseURL, supabaseServiceKey)
   try {
     const { error } = await supabase
