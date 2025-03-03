@@ -95,6 +95,7 @@ module "updateImageRelation" {
   environment_vars = {
     "SUPABASE_DB_URL" : var.supabase_db_url
     "SUPABASE_SERVICE_KEY" : var.supabase_service_key
+    "CLOUDFRONT_CDN_URL" : "https://${aws_cloudfront_distribution.s3_distribution.domain_name}/"
   }
 }
 
