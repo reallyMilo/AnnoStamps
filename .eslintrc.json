@@ -11,6 +11,7 @@
     {
       "extends": ["plugin:@typescript-eslint/recommended"],
       "files": ["**/*.{ts,tsx}"],
+      "excludedFiles": ["aws/*"],
       "rules": {
         "no-console": ["error", { "allow": ["error"] }],
         "@next/next/no-img-element": "off",

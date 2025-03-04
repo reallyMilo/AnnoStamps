@@ -73,7 +73,7 @@ module "generateResponsiveImages" {
   function_name    = "generateResponsiveImages"
   description      = "Generates optimized WebP images, including thumbnails and breakpoints at 1024, 768, 640, and 250 pixels."
   runtime          = "nodejs18.x"
-  role             = aws_iam_role.lambda_role
+  role             = aws_iam_role.lambda_s3_access
   environment_vars = {}
 }
 
@@ -91,10 +91,11 @@ module "updateImageRelation" {
   function_name = "updateImageRelation"
   description   = "Updates Supabase database relations with newly created responsive images."
   runtime       = "nodejs20.x"
-  role          = aws_iam_role.lambda_role
+  role          = aws_iam_role.lambda_s3_access
   environment_vars = {
     "SUPABASE_DB_URL" : var.supabase_db_url
     "SUPABASE_SERVICE_KEY" : var.supabase_service_key
+    "CLOUDFRONT_CDN_URL" : "https://${aws_cloudfront_distribution.s3_distribution.domain_name}/"
   }
 }
 
@@ -111,7 +112,7 @@ module "sendEmailSES" {
   function_name = "sendEmailSES"
   description   = "Notifies stamp owner by email whenever an user comments on their stamp."
   runtime       = "nodejs20.x"
-  role          = aws_iam_role.lambda_role
+  role          = aws_iam_role.lambda_send_ses
   environment_vars = {
     "SUPABASE_DB_URL" : var.supabase_db_url
     "SUPABASE_SERVICE_KEY" : var.supabase_service_key
