@@ -70,7 +70,7 @@ describe('Update user profile', () => {
         })
       }).as('uploadAsset')
 
-      cy.intercept('PUT', '/stamp/presigned*', (req) => {
+      cy.intercept('PUT', '/settings/presigned*', (req) => {
         const directory = req.url
           .split('&')
           .find((param) => param.includes('directory='))
