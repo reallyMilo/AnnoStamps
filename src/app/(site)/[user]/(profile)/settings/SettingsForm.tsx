@@ -24,6 +24,7 @@ import {
   InputGroup,
   Label,
   Legend,
+  Text,
   Textarea,
 } from '@/components/ui'
 
@@ -81,7 +82,7 @@ export const SettingsForm = () => {
         'avatar',
       )
       formData.set('image', uploadAvatarUrl)
-    } else if (avatar === 'remove') {
+    } else if (avatar === null) {
       formData.set('image', 'remove')
     }
 
@@ -175,12 +176,15 @@ export const SettingsForm = () => {
                   src={avatarSrc}
                 />
               ) : (
-                <CloudArrowUpIcon className="size-6 text-gray-500" />
+                <>
+                  <CloudArrowUpIcon className="size-6 text-gray-500" />
+                  <Text>Upload</Text>
+                </>
               )}
             </label>
             <Button
               className="cursor-pointer border-0 font-light hover:underline"
-              onClick={() => setAvatar('remove')}
+              onClick={() => setAvatar(null)}
               outline
             >
               Remove and use AnnoStamps default image

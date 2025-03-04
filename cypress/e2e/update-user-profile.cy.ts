@@ -94,7 +94,7 @@ describe('Update user profile', () => {
         'data-checked',
       )
 
-      cy.findByLabelText('avatar').selectFile(
+      cy.findByLabelText('Upload').selectFile(
         'cypress/fixtures/cypress-test-image.png',
         {
           force: true,
@@ -166,7 +166,7 @@ describe('Update user profile', () => {
         name: 'Remove and use AnnoStamps default image',
       }).click()
 
-      cy.findByLabelText('avatar').should('exist')
+      cy.findByLabelText('Upload').should('exist')
       cy.findByRole('button', { name: 'Save' }).click()
 
       cy.wait('@setBio')
@@ -180,10 +180,11 @@ describe('Update user profile', () => {
       cy.database(
         `SELECT * FROM "User" LEFT JOIN "Preference" ON "User".id = "Preference"."userId" WHERE username = 'testSeedUser';`,
       ).then((users) => {
-        const user = users[0]
-        cy.wrap(user).its('biography').should('eq', 'cypress tester biography')
-        cy.wrap(user).its('enabled').should('eq', false)
-        cy.wrap(user).its('image').should('eq', null)
+        cy.wrap(users[0]).should('deep.include', {
+          biography: 'cypress tester biography',
+          enabled: false,
+          image: null,
+        })
       })
     })
   })
