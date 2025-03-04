@@ -11,7 +11,6 @@ import { useFormStatus } from 'react-dom'
 import { uploadAsset } from '@/components/StampForm/uploadAsset'
 import { type Asset, fileToAsset } from '@/components/StampForm/useUpload'
 import {
-  Avatar,
   Button,
   Checkbox,
   CheckboxField,
@@ -30,7 +29,7 @@ import {
 
 import { updateUserSettings } from './actions'
 
-const isAsset = (b: Asset | string): b is Asset => {
+const isAsset = (b: Asset | null | string | undefined): b is Asset => {
   return (b as Asset).rawFile !== undefined
 }
 
@@ -74,13 +73,16 @@ export const SettingsForm = () => {
 
   const avatarSrc = typeof avatar === 'string' ? avatar : avatar?.url
   const formAction = async (formData: FormData) => {
-    if (avatar && isAsset(avatar)) {
-      const uploadAvatar = await uploadAsset(
+    if (isAsset(avatar)) {
+      const uploadAvatarUrl = await uploadAsset(
         avatar.rawFile,
         avatar.rawFile.type,
         avatar.name,
         'avatar',
       )
+      formData.set('image', uploadAvatarUrl)
+    } else if (avatar === 'remove') {
+      formData.set('image', 'remove')
     }
 
     const res = await updateUserSettings(formData)
@@ -163,7 +165,7 @@ export const SettingsForm = () => {
             />
 
             <label
-              className="flex h-40 w-40 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-gray-300 hover:border-gray-400"
+              className="flex size-40 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-gray-300 hover:border-gray-400"
               htmlFor="avatar"
             >
               {avatar ? (
@@ -176,7 +178,13 @@ export const SettingsForm = () => {
                 <CloudArrowUpIcon className="size-6 text-gray-500" />
               )}
             </label>
-            <Description>128x128</Description>
+            <Button
+              className="cursor-pointer border-0 font-light hover:underline"
+              onClick={() => setAvatar('remove')}
+              outline
+            >
+              Remove and use AnnoStamps default image
+            </Button>
           </Field>
           <Field>
             <Label>About</Label>

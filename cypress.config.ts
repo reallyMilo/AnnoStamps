@@ -83,9 +83,10 @@ export default defineConfig({
             }),
           ])
         },
-        async 'db:testUser'(setUsername?: boolean) {
+        async 'db:testUser'(setUsername = false) {
           const username = {
             biography: 'amazing test user bio',
+            image: '/anno-stamps-logo.png',
             username: 'testSeedUser',
             usernameURL: 'testseeduser',
           }

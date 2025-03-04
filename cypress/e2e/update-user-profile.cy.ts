@@ -54,6 +54,34 @@ describe('Update user profile', () => {
     })
 
     it('user can set user profile fields', () => {
+      cy.intercept('/api/upload/*', (req) => {
+        const directory = req.url
+          .split('&')
+          .find((param) => param.includes('directory='))
+          .split('=')[1]
+        req.continue((res) => {
+          if (directory === 'avatar') {
+            res.send(200, {
+              ok: true,
+              path: 'anno-stamps-logo.png',
+              url: 'presigned?fileType=img',
+            })
+          }
+        })
+      }).as('uploadAsset')
+
+      cy.intercept('PUT', '/stamp/presigned*', (req) => {
+        const directory = req.url
+          .split('&')
+          .find((param) => param.includes('directory='))
+          .split('=')[1]
+        req.continue((res) => {
+          if (directory === 'avatar') {
+            res.send(200, { ok: true, path: 'anno-stamps-logo.png' })
+          }
+        })
+      }).as('S3Put')
+
       cy.intercept('/testSeedUserId/settings').as('setUsername')
       cy.setSessionCookie()
 
@@ -65,7 +93,24 @@ describe('Update user profile', () => {
         'have.attr',
         'data-checked',
       )
+
+      cy.findByLabelText('avatar').selectFile(
+        'cypress/fixtures/cypress-test-image.png',
+        {
+          force: true,
+        },
+      )
+      cy.findByAltText('Uploaded avatar').should('exist')
+
       cy.findByRole('button', { name: 'Save' }).click()
+
+      cy.wait('@uploadAsset').then((interception) => {
+        assert.isNotNull(interception.response.body, '1st Presigned Url')
+      })
+
+      cy.wait('@S3Put').then((interception) => {
+        assert.isNotNull(interception.response.body, '1st S3 Put')
+      })
 
       cy.wait('@setUsername')
 
@@ -82,13 +127,14 @@ describe('Update user profile', () => {
       cy.database(
         `SELECT * FROM "User" LEFT JOIN "Preference" ON "User".id = "Preference"."userId" WHERE username = 'cypressTester';`,
       ).then((users) => {
-        const user = users[0]
-        cy.log(user)
-        cy.wrap(user).its('username').should('eq', 'cypressTester')
-        cy.wrap(user).its('usernameURL').should('eq', 'cypresstester')
-        cy.wrap(user).its('biography').should('eq', 'cypress tester biography')
-        cy.wrap(user).its('channel').should('eq', 'email')
-        cy.wrap(user).its('enabled').should('eq', true)
+        cy.wrap(users[0]).should('deep.include', {
+          biography: 'cypress tester biography',
+          channel: 'email',
+          enabled: true,
+          image: '/anno-stamps-logo.png',
+          username: 'cypressTester',
+          usernameURL: 'cypresstester',
+        })
       })
     })
   })
@@ -100,7 +146,7 @@ describe('Update user profile', () => {
     afterEach(() => {
       cy.task('db:removeTestUser')
     })
-    it('user can update profile with username set', () => {
+    it('user can update profile with username set and remove profile picture', () => {
       cy.intercept('/testSeedUserId/settings').as('setBio')
       cy.setSessionCookie()
 
@@ -115,6 +161,12 @@ describe('Update user profile', () => {
 
       cy.findByLabelText('About').clear().type('cypress tester biography')
       cy.findByLabelText('Email Notifications').click()
+
+      cy.findByRole('button', {
+        name: 'Remove and use AnnoStamps default image',
+      }).click()
+
+      cy.findByLabelText('avatar').should('exist')
       cy.findByRole('button', { name: 'Save' }).click()
 
       cy.wait('@setBio')
@@ -131,6 +183,7 @@ describe('Update user profile', () => {
         const user = users[0]
         cy.wrap(user).its('biography').should('eq', 'cypress tester biography')
         cy.wrap(user).its('enabled').should('eq', false)
+        cy.wrap(user).its('image').should('eq', null)
       })
     })
   })
