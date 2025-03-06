@@ -56,18 +56,22 @@ export const POST = auth(async (req) => {
   const stampId = searchParams.get('stampId')
   const filename = searchParams.get('filename')
   const fileType = searchParams.get('fileType')
+  const directory = searchParams.get('directory')
 
   const arrayBuffer = await req.arrayBuffer()
 
   const name = fileType === 'zip' ? createId() + '.zip' : filename
-  const filepath = `public/tmp/${stampId}/${name}`
+  const filepath =
+    directory === 'avatar'
+      ? `public/tmp/${directory}/${req.auth.userId}/${name}`
+      : `public/tmp/${directory}/${req.auth.userId}/${stampId}/${name}`
   outputFileSync(filepath, new Uint8Array(arrayBuffer))
-  if (fileType !== 'zip') {
+  if (directory === 'images') {
     await generateResponsiveImages(filepath, name ?? 'nofilename')
   }
   return Response.json({
     message: 'asset uploaded',
     ok: true,
-    path: `/tmp/${stampId}/${name}`,
+    path: filepath.substring(filepath.indexOf('/')),
   })
 })

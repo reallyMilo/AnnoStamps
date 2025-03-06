@@ -24,11 +24,15 @@ export const updateUserSettings = async (
   if (!session) {
     return { message: 'Unauthorized.', ok: false, status: 'error' }
   }
-  const { biography, emailNotifications, username } = Object.fromEntries(
-    formData,
-  ) as {
+  const {
+    biography,
+    emailNotifications,
+    image: avatar,
+    username,
+  } = Object.fromEntries(formData) as {
     biography: string
     emailNotifications?: 'on'
+    image: string | undefined
     username: string
   }
 
@@ -42,10 +46,12 @@ export const updateUserSettings = async (
     }
   }
 
+  const image = avatar === 'remove' ? null : avatar
   const updateData: Prisma.UserUncheckedUpdateInput = session.user.username
-    ? { biography }
+    ? { biography, image }
     : {
         biography,
+        image,
         username,
         usernameURL,
       }

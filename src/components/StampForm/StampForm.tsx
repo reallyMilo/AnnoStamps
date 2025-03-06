@@ -187,15 +187,22 @@ const Form = ({
         Promise.all(
           imagesToUpload.map(async (image) => {
             const imagePath = await uploadAsset(
-              stampId,
               image.rawFile,
               image.rawFile.type,
               image.name,
+              'images',
+              stampId,
             )
             return imagePath
           }),
         ),
-        uploadAsset(stampId, zipped, 'zip', formData.get('title') as string),
+        uploadAsset(
+          zipped,
+          'zip',
+          formData.get('title') as string,
+          'stamps',
+          stampId,
+        ),
       ])
 
       formData.set('stampFileUrl', uploadedStampZipUrl)

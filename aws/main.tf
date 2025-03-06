@@ -119,6 +119,31 @@ module "sendEmailSES" {
   }
 }
 
+module "generateAvatarAndUpdateDb" {
+
+  source        = "./module/lambda"
+  filename      = "./lambdas/generateAvatarAndUpdateDb/dist/generateAvatarAndUpdateDb.zip"
+  function_name = "generateAvatarAndUpdateDb"
+  description   = "Generates 128x128 avatar for user profiles and updates User relation in database."
+  runtime       = "nodejs18.x"
+  role          = aws_iam_role.lambda_s3_access
+
+
+  environment_vars = {
+    "SUPABASE_DB_URL" : var.supabase_db_url
+    "SUPABASE_SERVICE_KEY" : var.supabase_service_key
+    "CLOUDFRONT_CDN_URL" : "https://${aws_cloudfront_distribution.s3_distribution.domain_name}/"
+  }
+}
+
+resource "aws_lambda_permission" "allow_bucket_generateAvatarAndUpdateDb" {
+  statement_id  = "AllowExecutionFromS3Bucket"
+  action        = "lambda:InvokeFunction"
+  function_name = module.generateAvatarAndUpdateDb.arn
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.annostamps-bucket.arn
+}
+
 resource "aws_sns_topic" "report_SES_fail" {
   name = "ses-failure"
 }

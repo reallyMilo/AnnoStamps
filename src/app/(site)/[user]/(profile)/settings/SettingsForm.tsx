@@ -1,10 +1,15 @@
 'use client'
 
+import type { Session } from 'next-auth'
+
 import { CheckBadgeIcon } from '@heroicons/react/20/solid'
+import { CloudArrowUpIcon } from '@heroicons/react/24/outline'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 
+import { uploadAsset } from '@/components/StampForm/uploadAsset'
+import { type Asset, fileToAsset } from '@/components/StampForm/useUpload'
 import {
   Button,
   Checkbox,
@@ -19,10 +24,15 @@ import {
   InputGroup,
   Label,
   Legend,
+  Text,
   Textarea,
 } from '@/components/ui'
 
 import { updateUserSettings } from './actions'
+
+const isAsset = (b: Asset | null | string | undefined): b is Asset => {
+  return !!b && typeof b === 'object' && 'rawFile' in b
+}
 
 const SubmitButton = () => {
   const { pending } = useFormStatus()
@@ -48,26 +58,44 @@ export const SettingsForm = () => {
     status: 'idle',
   })
 
-  const { biography, preferences, username } =
+  const { biography, image, preferences, username } =
     status === 'loading'
       ? {
           biography: '',
+          image: null,
           preferences: [],
           username: '',
         }
       : data.user
 
+  const [avatar, setAvatar] = useState<Asset | Session['user']['image']>(image)
   const isEmailEnabled =
     preferences.length === 0 ? true : preferences[0].enabled
+
+  const avatarSrc = typeof avatar === 'string' ? avatar : avatar?.url
+  const formAction = async (formData: FormData) => {
+    if (isAsset(avatar)) {
+      const uploadAvatarUrl = await uploadAsset(
+        avatar.rawFile,
+        avatar.rawFile.type,
+        avatar.name,
+        'avatar',
+      )
+      formData.set('image', uploadAvatarUrl)
+    } else if (avatar === null) {
+      formData.set('image', 'remove')
+    }
+
+    const res = await updateUserSettings(formData)
+    if (res.ok) {
+      await update({ username: formData.get('username') })
+    }
+    setFormState(res)
+  }
+
   return (
     <form
-      action={async (formData) => {
-        const res = await updateUserSettings(formData)
-        if (res.ok) {
-          await update({ username: formData.get('username') })
-        }
-        setFormState(res)
-      }}
+      action={formAction}
       className="grid max-w-3xl space-y-8"
       id="user-settings"
     >
@@ -107,7 +135,61 @@ export const SettingsForm = () => {
               <ErrorMessage>{formState.message}</ErrorMessage>
             )}
           </Field>
+          <Field className="space-y-2">
+            <Label>Avatar</Label>
+            <input
+              accept=".png, .jpg, .jpeg, .webp"
+              formNoValidate
+              hidden
+              id="avatar"
+              multiple
+              name="avatar"
+              onChange={(e) => {
+                const files = e.currentTarget.files
 
+                if (!files || !files[0].size) {
+                  return
+                }
+
+                if (files[0].size > 1028 * 1028) {
+                  setFormState({
+                    message: 'avatar upload bigger then 1 mb',
+                    ok: false,
+                    status: 'error',
+                  })
+                  return
+                }
+                const asset = fileToAsset(files[0])
+                setAvatar(asset)
+              }}
+              type="file"
+            />
+
+            <label
+              className="flex size-40 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-gray-300 hover:border-gray-400"
+              htmlFor="avatar"
+            >
+              {avatar ? (
+                <img
+                  alt="Uploaded avatar"
+                  className="h-full w-full object-cover"
+                  src={avatarSrc}
+                />
+              ) : (
+                <>
+                  <CloudArrowUpIcon className="size-6 text-gray-500" />
+                  <Text>Upload</Text>
+                </>
+              )}
+            </label>
+            <Button
+              className="cursor-pointer border-0 font-light hover:underline"
+              onClick={() => setAvatar(null)}
+              outline
+            >
+              Remove and use AnnoStamps default image
+            </Button>
+          </Field>
           <Field>
             <Label>About</Label>
             <Textarea

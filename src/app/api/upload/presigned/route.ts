@@ -18,20 +18,23 @@ export const GET = auth(async (req) => {
   const stampId = searchParams.get('stampId')
   const filename = searchParams.get('filename')
   const fileType = searchParams.get('fileType')
+  const directory = searchParams.get('directory')
 
-  if (!stampId || !filename || !fileType) {
+  if (!filename || !fileType || !directory) {
     return Response.json(
       { message: 'Missing params field', ok: false },
       { status: 400 },
     )
   }
 
-  const type = fileType === 'zip' ? 'stamps' : 'images'
   const ext =
     fileType === 'zip' ? 'zip' : decodeURIComponent(fileType).split('/')[1]
 
   const imageId = createId()
-  const path = `${type}/${req.auth.user.id}/${stampId}/${imageId}.${ext}`
+  const path =
+    directory === 'avatar'
+      ? `${directory}/${req.auth.user.id}/${imageId}.${ext}`
+      : `${directory}/${req.auth.user.id}/${stampId}/${imageId}.${ext}`
 
   const client = new S3Client({ region: AWS_S3_REGION })
   const command = new PutObjectCommand({
@@ -39,10 +42,11 @@ export const GET = auth(async (req) => {
     ContentType: fileType,
     Key: path,
     Metadata: {
+      directory,
       filename: decodeURIComponent(filename),
       imageId,
-      stampId,
       userId: req.auth.user.id,
+      ...(stampId && { stampId }),
     },
   })
 

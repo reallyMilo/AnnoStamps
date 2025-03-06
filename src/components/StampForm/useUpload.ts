@@ -4,7 +4,7 @@ const sizeLimit = 1028 * 1028 //1 mb
 const fileLimit = 10
 
 export type Asset = ReturnType<typeof fileToAsset>
-const fileToAsset = (rawFile: File) => {
+export const fileToAsset = (rawFile: File) => {
   return {
     createdAt: new Date(rawFile.lastModified).toISOString(),
     ext: rawFile.name.split('.').pop(),
