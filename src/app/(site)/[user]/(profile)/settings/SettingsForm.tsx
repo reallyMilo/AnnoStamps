@@ -31,7 +31,7 @@ import {
 import { updateUserSettings } from './actions'
 
 const isAsset = (b: Asset | null | string | undefined): b is Asset => {
-  return (b as Asset).rawFile !== undefined
+  return !!b && typeof b === 'object' && 'rawFile' in b
 }
 
 const SubmitButton = () => {

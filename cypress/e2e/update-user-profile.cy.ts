@@ -64,13 +64,13 @@ describe('Update user profile', () => {
             res.send(200, {
               ok: true,
               path: 'anno-stamps-logo.png',
-              url: 'presigned?fileType=img',
+              url: 'presigned?fileType=img&directory=avatar',
             })
           }
         })
       }).as('uploadAsset')
 
-      cy.intercept('PUT', '/settings/presigned*', (req) => {
+      cy.intercept('PUT', '/testSeedUserId/presigned*', (req) => {
         const directory = req.url
           .split('&')
           .find((param) => param.includes('directory='))
@@ -105,11 +105,23 @@ describe('Update user profile', () => {
       cy.findByRole('button', { name: 'Save' }).click()
 
       cy.wait('@uploadAsset').then((interception) => {
-        assert.isNotNull(interception.response.body, '1st Presigned Url')
+        assert.deepEqual(
+          interception.response.body,
+          {
+            ok: true,
+            path: 'anno-stamps-logo.png',
+            url: 'presigned?fileType=img&directory=avatar',
+          },
+          'upload asset',
+        )
       })
 
       cy.wait('@S3Put').then((interception) => {
-        assert.isNotNull(interception.response.body, '1st S3 Put')
+        assert.deepEqual(
+          interception.response.body,
+          { ok: true, path: 'anno-stamps-logo.png' },
+          'presigned put',
+        )
       })
 
       cy.wait('@setUsername')
@@ -131,7 +143,7 @@ describe('Update user profile', () => {
           biography: 'cypress tester biography',
           channel: 'email',
           enabled: true,
-          image: '/anno-stamps-logo.png',
+          image: 'https://d16532dqapk4x.cloudfront.net/anno-stamps-logo.png',
           username: 'cypressTester',
           usernameURL: 'cypresstester',
         })

@@ -72,6 +72,6 @@ export const POST = auth(async (req) => {
   return Response.json({
     message: 'asset uploaded',
     ok: true,
-    path: filepath.substring(filepath.indexOf('/') + 1),
+    path: filepath.substring(filepath.indexOf('/')),
   })
 })
