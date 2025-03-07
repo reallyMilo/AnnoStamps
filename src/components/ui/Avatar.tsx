@@ -31,7 +31,6 @@ export const Avatar = ({
       className={cn(
         // Basic layout
         'inline-grid shrink-0 align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1',
-        'size-9',
         // Add the correct border radius
         square
           ? 'rounded-[--avatar-radius] *:rounded-[--avatar-radius]'
@@ -59,7 +58,7 @@ export const Avatar = ({
         </svg>
       )}
       {src ? (
-        <img alt={alt} className="size-9" height={36} src={src} width={36} />
+        <img alt={alt} height={36} src={src} width={36} />
       ) : (
         <Image
           alt="default avatar icon"
