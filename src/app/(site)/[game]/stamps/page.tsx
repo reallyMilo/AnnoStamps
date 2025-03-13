@@ -18,6 +18,11 @@ import { CATEGORIES } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 import prisma from '@/lib/prisma/singleton'
 
+type StampsPageProps = {
+  params: { game: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
 const getFilteredStamps = unstable_cache(
   async (query: QueryParams) => {
     return prisma.stamp.filterFindManyWithCount(query)
@@ -33,12 +38,11 @@ export const metadata: Metadata = {
   title: `All Stamps | AnnoStamps`,
 }
 
-const Stamps = async ({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
-}) => {
-  const parseResult = queryParamsSchema.safeParse(searchParams)
+const Stamps = async ({ params, searchParams }: StampsPageProps) => {
+  const parseResult = queryParamsSchema.safeParse({
+    ...searchParams,
+    game: params.game,
+  })
   const [count, stamps, pageNumber] = await getFilteredStamps(
     parseResult.success ? parseResult.data : {},
   )
@@ -82,11 +86,8 @@ const checkboxFilterOptions = [
   },
 ]
 
-const StampsPage = async ({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
-}) => {
+const StampsPage = async ({ params, searchParams }: StampsPageProps) => {
+  console.log(params)
   return (
     <Container className="space-y-6">
       <Heading className="sm:text-4xl/8">1800 Stamps</Heading>
@@ -103,7 +104,7 @@ const StampsPage = async ({
             </div>
           }
         >
-          <Stamps searchParams={searchParams} />
+          <Stamps params={params} searchParams={searchParams} />
         </Suspense>
       </Filter>
     </Container>

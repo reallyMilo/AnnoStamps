@@ -15,6 +15,7 @@ export const metadata: Metadata = {
         with others.`,
   title: 'How to use stamps | AnnoStamps',
 }
+// params: { game: string } to load different HowTos
 const HowTo = () => {
   return (
     <Container className="prose">

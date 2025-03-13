@@ -49,6 +49,11 @@ const adapter = {
   },
 } as Adapter
 
+const useSecureCookies =
+  process.env.NEXT_PUBLIC_ROOT_DOMAIN?.startsWith('https://') ?? false
+const cookiePrefix = useSecureCookies ? '__Secure-' : ''
+const hostName = new URL(process.env.NEXT_PUBLIC_ROOT_DOMAIN!).hostname
+
 const config = {
   adapter,
   callbacks: {
@@ -72,6 +77,18 @@ const config = {
           usernameURL: user.usernameURL,
         },
       }
+    },
+  },
+  cookies: {
+    sessionToken: {
+      name: `${cookiePrefix}next-auth.session-token`,
+      options: {
+        domain: hostName === 'localhost' ? hostName : '.' + hostName,
+        httpOnly: true,
+        path: '/',
+        sameSite: 'lax',
+        secure: useSecureCookies,
+      },
     },
   },
   pages: {

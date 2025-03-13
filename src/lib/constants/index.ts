@@ -21,6 +21,7 @@ export const queryParamsSchema = z
   .object({
     capital: z.union([z.string().array(), z.string()]),
     category: z.union([z.string().array(), z.string()]),
+    game: z.string(),
     page: z.string(),
     region: z.union([z.string().array(), z.string()]),
     search: z.string(),

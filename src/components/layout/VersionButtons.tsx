@@ -9,11 +9,11 @@ import { Button } from '@/components/ui'
 export const VersionButtons = () => {
   return (
     <div className="29px py-1">
-      <Button disabled plain>
+      <Button href="http://localhost:3000" plain>
         <Image alt="anno 117 logo icon" height={20} src={anno117} width={20} />
-        Soon
+        117
       </Button>
-      <Button href="/" plain>
+      <Button href="http://1800.localhost:3000" plain>
         <Image
           alt="anno 1800 logo icon"
           height={20}
