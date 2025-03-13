@@ -1,5 +1,4 @@
-const PreviousVersionHomePage = ({ params }: { params: { game: string } }) => {
-  console.log(params, 'frompage')
+const PreviousVersionHomePage = () => {
   return <div>page</div>
 }
 

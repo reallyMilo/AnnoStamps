@@ -87,7 +87,6 @@ const checkboxFilterOptions = [
 ]
 
 const StampsPage = async ({ params, searchParams }: StampsPageProps) => {
-  console.log(params)
   return (
     <Container className="space-y-6">
       <Heading className="sm:text-4xl/8">1800 Stamps</Heading>

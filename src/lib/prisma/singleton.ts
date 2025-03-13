@@ -46,7 +46,6 @@ const prismaClientSingleton = () => {
                 skip = 0
                 pageNumber = 1
               }
-              console.log(filter, 'FROM INSIDE')
               const stamps = await q.stamp.findMany({
                 include: stampIncludeStatement,
                 orderBy: buildOrderByClause(sort),

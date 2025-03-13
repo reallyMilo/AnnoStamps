@@ -36,21 +36,11 @@ export default async function middleware(req: NextRequest) {
   const path = `${url.pathname}${
     searchParams.length > 0 ? `?${searchParams}` : ''
   }`
-  console.log(path)
-  // rewrites for app pages
-  console.log(hostname)
 
   if (path === '/auth/signin') {
     return NextResponse.rewrite(new URL(`${path}`, req.url))
   }
   if (hostname === `${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
-    console.log(
-      // NextResponse.rewrite(
-      //   new URL(`/${path === '/' ? '' : `117${path}`}`, req.url),
-      // ),
-
-      new URL(`${path}`, req.url),
-    )
     return NextResponse.rewrite(
       new URL(`/${path === '/' ? '' : `117${path}`}`, req.url),
     )
