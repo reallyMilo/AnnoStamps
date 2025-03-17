@@ -49,10 +49,10 @@ const adapter = {
   },
 } as Adapter
 
-const useSecureCookies =
-  process.env.NEXT_PUBLIC_ROOT_DOMAIN?.startsWith('https://') ?? false
+const stagingTest = 'annostamps.vercel.app'
+const useSecureCookies = true
 const cookiePrefix = useSecureCookies ? '__Secure-' : ''
-const hostName = new URL(process.env.NEXT_PUBLIC_ROOT_DOMAIN!).hostname
+const hostName = new URL(stagingTest!).hostname
 
 const config = {
   adapter,
