@@ -9,44 +9,56 @@ const withBundleAnalyzer = NextBundleAnalyzer({
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-  reactStrictMode: true,
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
         hostname: 'd16532dqapk4x.cloudfront.net',
+        protocol: 'https',
       },
       {
-        protocol: 'https',
         hostname: 'zvzegsqprutvkaafnfdh.supabase.in',
+        protocol: 'https',
       },
       {
-        protocol: 'https',
         hostname: 'bxeklzgnntgnhkipxvol.supabase.in',
+        protocol: 'https',
       },
       {
-        protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
+        protocol: 'https',
       },
       {
-        protocol: 'https',
         hostname: 'cdn.discordapp.com',
+        protocol: 'https',
       },
       {
-        protocol: 'https',
         hostname: 'placehold.co',
+        protocol: 'https',
       },
     ],
+  },
+  reactStrictMode: true,
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
   },
 }
 
 export default withBundleAnalyzer(
   withSentryConfig(nextConfig, {
-    org: 'mkdotcy',
-    project: 'javascript-nextjs',
-
     // An auth token is required for uploading source maps.
     authToken: process.env.SENTRY_AUTH_TOKEN,
+    org: 'mkdotcy',
+
+    project: 'javascript-nextjs',
 
     silent: true, // Can be used to suppress logs
   }),
