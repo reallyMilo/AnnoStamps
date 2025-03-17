@@ -49,7 +49,7 @@ const adapter = {
   },
 } as Adapter
 
-const stagingTest = 'annostamps.vercel.app'
+const stagingTest = 'https://annostamps.vercel.app'
 const useSecureCookies = true
 const cookiePrefix = useSecureCookies ? '__Secure-' : ''
 const hostName = new URL(stagingTest!).hostname
