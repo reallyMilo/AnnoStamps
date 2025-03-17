@@ -19,16 +19,14 @@ export default async function middleware(req: NextRequest) {
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
   let hostname = req.headers
     .get('host')!
-    .replace('.localhost:3000', `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    .replace('.localhost:3000', `.${process.env.VERCEL_URL}`)
 
   // special case for Vercel preview deployment URLs
   if (
     hostname.includes('---') &&
     hostname.endsWith(`.${process.env.NEXT_PUBLIC_VERCEL_DEPLOYMENT_SUFFIX}`)
   ) {
-    hostname = `${hostname.split('---')[0]}.${
-      process.env.NEXT_PUBLIC_ROOT_DOMAIN
-    }`
+    hostname = `${hostname.split('---')[0]}.${process.env.VERCEL_URL}`
   }
 
   const searchParams = req.nextUrl.searchParams.toString()
@@ -40,7 +38,7 @@ export default async function middleware(req: NextRequest) {
   if (path === '/auth/signin') {
     return NextResponse.rewrite(new URL(`${path}`, req.url))
   }
-  if (hostname === `${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
+  if (hostname === `${process.env.VERCEL_URL}`) {
     return NextResponse.rewrite(
       new URL(`/${path === '/' ? '' : `117${path}`}`, req.url),
     )
