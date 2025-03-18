@@ -38,6 +38,7 @@ export default async function middleware(req: NextRequest) {
   if (path === '/auth/signin') {
     return NextResponse.rewrite(new URL(`${path}`, req.url))
   }
+  console.log(hostname)
   if (hostname === `${process.env.VERCEL_URL}`) {
     return NextResponse.rewrite(
       new URL(`/${path === '/' ? '' : `117${path}`}`, req.url),
