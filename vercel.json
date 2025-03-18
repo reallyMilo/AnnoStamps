@@ -1,7 +1,7 @@
 {
   "git": {
     "deploymentEnabled": {
-      "main": false
+      "main": true
     }
   },
   "buildCommand": "prisma migrate deploy && prisma generate --sql && next build"
