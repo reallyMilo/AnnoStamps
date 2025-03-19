@@ -49,7 +49,7 @@ const adapter = {
   },
 } as Adapter
 
-const stagingTest = `https://${process.env.VERCEL_URL}`
+const stagingTest = `https://${process.env.NEXT_PUBLIC_VERCEL_DEPLOYMENT_SUFFIX}`
 const useSecureCookies = true
 const cookiePrefix = useSecureCookies ? '__Secure-' : ''
 const hostName = new URL(stagingTest!).hostname
