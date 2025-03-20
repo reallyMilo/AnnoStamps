@@ -10,13 +10,13 @@ import { Button } from '@/components/ui'
 export const VersionButtons = () => {
   const pathname = usePathname()
   return (
-    <div className="29px py-1">
+    <div className="py-1">
       <Button href={pathname} plain>
         <Image alt="anno 117 logo icon" height={20} src={anno117} width={20} />
         117
       </Button>
       <Button
-        href={`1800.${process.env.VERCEL_PROJECT_PRODUCTION_URL + pathname}`}
+        href={`https://1800.${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL + pathname}`}
         plain
       >
         <Image
