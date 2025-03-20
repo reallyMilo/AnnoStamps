@@ -11,7 +11,10 @@ export const VersionButtons = () => {
   const pathname = usePathname()
   return (
     <div className="py-1">
-      <Button href={pathname} plain>
+      <Button
+        href={`https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL + pathname}`}
+        plain
+      >
         <Image alt="anno 117 logo icon" height={20} src={anno117} width={20} />
         117
       </Button>
