@@ -15,8 +15,9 @@ export const deleteStamp = async (stampId: string) => {
     return { message: 'UsernameURL not set', ok: false }
   }
 
+  let deletedRecord = null
   try {
-    await prisma.$transaction(async (tx) => {
+    deletedRecord = await prisma.$transaction(async (tx) => {
       const userStamp = await tx.user.findUnique({
         select: {
           listedStamps: {
@@ -54,7 +55,9 @@ export const deleteStamp = async (stampId: string) => {
     return { message: `${stampId} - failed to delete`, ok: false }
   }
 
-  revalidatePath(`/${session.user.usernameURL}`)
-  revalidatePath(`/${session.userId}`)
+  const appendGameRoute =
+    deletedRecord.game === '117' ? '' : `/${deletedRecord.game}`
+  revalidatePath(`/${session.user.usernameURL}${appendGameRoute}`)
+  revalidatePath(`/${session.userId}${appendGameRoute}`)
   return { message: `${stampId} - successfully deleted`, ok: true }
 }

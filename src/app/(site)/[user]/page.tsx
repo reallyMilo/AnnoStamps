@@ -17,7 +17,7 @@ import { UserPublicPage } from './UserPublicPage'
 const getUserWithStamps = unstable_cache(
   async (user: string) => {
     return prisma.user.findFirst({
-      include: userIncludeStatement,
+      include: userIncludeStatement(),
       where: {
         OR: [{ usernameURL: user.toLowerCase() }, { id: user }],
       },

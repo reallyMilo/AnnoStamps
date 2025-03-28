@@ -49,11 +49,6 @@ const adapter = {
   },
 } as Adapter
 
-const stagingTest = `https://${process.env.VERCEL_URL}`
-const useSecureCookies = true
-const cookiePrefix = useSecureCookies ? '__Secure-' : ''
-const hostName = new URL(stagingTest!).hostname
-
 const config = {
   adapter,
   callbacks: {
@@ -77,18 +72,6 @@ const config = {
           usernameURL: user.usernameURL,
         },
       }
-    },
-  },
-  cookies: {
-    sessionToken: {
-      name: `${cookiePrefix}next-auth.session-token`,
-      options: {
-        domain: hostName === 'localhost' ? hostName : '.' + hostName,
-        httpOnly: true,
-        path: '/',
-        sameSite: 'lax',
-        secure: useSecureCookies,
-      },
     },
   },
   pages: {

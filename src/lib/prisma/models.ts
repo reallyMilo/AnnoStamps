@@ -148,31 +148,36 @@ export const stampExtensions = Prisma.defineExtension({
 /* -------------------------------------------------------------------------------------------------
  * User
  * -----------------------------------------------------------------------------------------------*/
-export const userIncludeStatement = {
-  likedStamps: {
-    select: {
-      id: true,
-    },
-  },
-  listedStamps: {
-    include: {
-      _count: {
-        select: {
-          likedBy: true,
-        },
+export const userIncludeStatement = (game = '117') => {
+  return {
+    likedStamps: {
+      select: {
+        id: true,
       },
-      images: true,
     },
-    orderBy: {
-      changedAt: 'desc',
+    listedStamps: {
+      include: {
+        _count: {
+          select: {
+            likedBy: true,
+          },
+        },
+        images: true,
+      },
+      orderBy: {
+        changedAt: 'desc',
+      },
+      where: {
+        game,
+      },
     },
-  },
-} satisfies Prisma.UserInclude
+  } satisfies Prisma.UserInclude
+}
 
 export interface UserWithStamps
   extends Omit<
     Prisma.UserGetPayload<{
-      include: typeof userIncludeStatement
+      include: ReturnType<typeof userIncludeStatement>
       omit: {
         email: true
         emailVerified: true

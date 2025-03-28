@@ -24,7 +24,10 @@ export default defineConfig({
               where: {
                 OR: [
                   {
-                    stampId: 'testSeedUserStampId',
+                    stampId: 'testSeed1800StampId',
+                  },
+                  {
+                    stampId: 'testSeed117StampId',
                   },
                   { id: 'anno-stamps-logo' },
                 ],
@@ -129,39 +132,61 @@ export default defineConfig({
                 userId: 'testSeedUserId',
               },
             }),
-            prisma.stamp.create({
+            prisma.stamp.createMany({
+              data: [
+                {
+                  category: 'production',
+                  downloads: 200000,
+                  game: '117',
+                  id: 'testSeed117StampId',
+                  markdownDescription: `<h1>117 test stamp</h1>`,
+                  region: 'rome',
+                  stampFileUrl: '/stamp.zip',
+                  title: '117 Test stamp',
+                  unsafeDescription: `117 test stamp`,
+                  userId: 'testSeedUserId',
+                },
+                {
+                  category: 'cosmetic',
+                  downloads: 123,
+                  game: '1800',
+                  id: 'testSeed1800StampId',
+                  markdownDescription: `<h1>Test seed user stamp</h1>`,
+                  region: 'old world',
+                  stampFileUrl: '/stamp.zip',
+                  title: `Test-Seed-User-Stamp`,
+                  unsafeDescription: `Test seed user stamp`,
+                  userId: 'testSeedUserId',
+                },
+              ],
+            }),
+            prisma.image.createMany({
+              data: [
+                {
+                  id: 'testSeed1800ImageId',
+                  largeUrl: `https://placehold.co/1024x576.png?text=Large`,
+                  originalUrl:
+                    'https://placehold.co/2000x2000.png?text=Original',
+                  smallUrl: `https://placehold.co/500x281.png?text=Small`,
+                  stampId: 'testSeed1800StampId',
+                },
+                {
+                  id: 'testSeed117ImageId',
+                  largeUrl: `https://placehold.co/1024x576.png?text=Large2`,
+                  originalUrl:
+                    'https://placehold.co/2000x2000.png?text=Original2',
+                  smallUrl: `https://placehold.co/500x281.png?text=Small2`,
+                  stampId: 'testSeed117StampId',
+                },
+              ],
+            }),
+            prisma.comment.create({
               data: {
-                category: 'cosmetic',
-                comments: {
-                  create: [
-                    {
-                      content: 'cypress seed comment',
-                      id: 'cypressComment',
-                      parentId: null,
-                      userId: 'replySeedUserId',
-                    },
-                  ],
-                },
-                downloads: 123,
-                game: '1800',
-                id: 'testSeedUserStampId',
-                images: {
-                  create: [
-                    {
-                      id: 'testSeedStampImageId',
-                      largeUrl: `https://placehold.co/1024x576.png?text=Large`,
-                      originalUrl:
-                        'https://placehold.co/2000x2000.png?text=Original',
-                      smallUrl: `https://placehold.co/500x281.png?text=Small`,
-                    },
-                  ],
-                },
-                markdownDescription: `<h1>Test seed user stamp</h1>`,
-                region: 'old world',
-                stampFileUrl: '/stamp.zip',
-                title: `Test-Seed-User-Stamp`,
-                unsafeDescription: `Test seed user stamp`,
-                userId: 'testSeedUserId',
+                content: 'cypress seed comment',
+                id: 'cypressComment',
+                parentId: null,
+                stampId: 'testSeed1800StampId',
+                userId: 'replySeedUserId',
               },
             }),
             prisma.notification.create({
@@ -173,7 +198,7 @@ export default defineConfig({
                 },
                 channel: 'web',
                 id: 'testUserNotificationId',
-                targetUrl: '/stamp/testSeedUserStampId',
+                targetUrl: '/stamp/testSeed1800StampId',
                 userId: 'testSeedUserId',
               },
             }),

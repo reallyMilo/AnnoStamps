@@ -1,5 +1,4 @@
-import type { Metadata } from 'next'
-
+'use server'
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { unstable_cache } from 'next/cache'
 import { Suspense } from 'react'
@@ -18,15 +17,12 @@ import { CATEGORIES } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 import prisma from '@/lib/prisma/singleton'
 
-type StampsPageProps = {
-  params: { game: string }
+type StampGalleryProps = {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
 const getFilteredStamps = unstable_cache(
-  async (query: QueryParams) => {
-    return prisma.stamp.filterFindManyWithCount(query)
-  },
+  async (query: QueryParams) => prisma.stamp.filterFindManyWithCount(query),
   ['filterStamps'],
   {
     revalidate: 900,
@@ -34,15 +30,8 @@ const getFilteredStamps = unstable_cache(
   },
 )
 
-export const metadata: Metadata = {
-  title: `All Stamps | AnnoStamps`,
-}
-
-const Stamps = async ({ params, searchParams }: StampsPageProps) => {
-  const parseResult = queryParamsSchema.safeParse({
-    ...searchParams,
-    game: params.game,
-  })
+const Stamps = async ({ searchParams }: StampGalleryProps) => {
+  const parseResult = queryParamsSchema.safeParse(searchParams)
   const [count, stamps, pageNumber] = await getFilteredStamps(
     parseResult.success ? parseResult.data : {},
   )
@@ -71,25 +60,36 @@ const Stamps = async ({ params, searchParams }: StampsPageProps) => {
   )
 }
 
-const checkboxFilterOptions = [
-  {
-    id: 'category',
-    options: Object.values(CATEGORIES),
-  },
-  {
-    id: 'region',
-    options: Object.values(REGIONS_1800),
-  },
-  {
-    id: 'capital',
-    options: Object.values(CAPITALS_1800),
-  },
-]
+export const StampGallery = ({ searchParams }: StampGalleryProps) => {
+  const gameVersion =
+    typeof searchParams?.game === 'string' ? searchParams.game : '117'
 
-const StampsPage = async ({ params, searchParams }: StampsPageProps) => {
+  // TODO: when we know 117 game data
+  const additionalFilters =
+    gameVersion === '1800'
+      ? [
+          {
+            id: 'region',
+            options: Object.values(REGIONS_1800),
+          },
+          {
+            id: 'capital',
+            options: Object.values(CAPITALS_1800),
+          },
+        ]
+      : []
+
+  const checkboxFilterOptions = [
+    {
+      id: 'category',
+      options: Object.values(CATEGORIES),
+    },
+    ...additionalFilters,
+  ]
+
   return (
     <Container className="space-y-6">
-      <Heading className="sm:text-4xl/8">1800 Stamps</Heading>
+      <Heading className="sm:text-4xl/8">{gameVersion} Stamps</Heading>
       <Filter checkboxFilterOptions={checkboxFilterOptions}>
         <Suspense
           fallback={
@@ -103,10 +103,9 @@ const StampsPage = async ({ params, searchParams }: StampsPageProps) => {
             </div>
           }
         >
-          <Stamps params={params} searchParams={searchParams} />
+          <Stamps searchParams={searchParams} />
         </Suspense>
       </Filter>
     </Container>
   )
 }
-export default StampsPage
