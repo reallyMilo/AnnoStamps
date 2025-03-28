@@ -72,7 +72,7 @@ export const generateStampData = (
       changedAt: timestamp,
       createdAt: timestamp,
       downloads: faker.number.int({ max: 1000000, min: 0 }),
-      game: '1800',
+      game: index % 2 ? '1800' : '117',
       good: rndCategory === 'production' ? getGood() : null,
       id: createId(),
       markdownDescription: `<h2> Stamp-${index} </h2>`,
