@@ -1,3 +1,4 @@
+'use server'
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { unstable_cache } from 'next/cache'
 import { Suspense } from 'react'
@@ -87,7 +88,7 @@ export const StampGallery = ({ searchParams }: StampGalleryProps) => {
 
   return (
     <Container className="space-y-6">
-      <Heading className="sm:text-4xl/8">1800 Stamps</Heading>
+      <Heading className="sm:text-4xl/8">{gameVersion} Stamps</Heading>
       <Filter checkboxFilterOptions={checkboxFilterOptions}>
         <Suspense
           fallback={
