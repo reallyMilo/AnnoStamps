@@ -64,6 +64,7 @@ export const StampGallery = ({ searchParams }: StampGalleryProps) => {
   const gameVersion =
     typeof searchParams?.game === 'string' ? searchParams.game : '117'
 
+  // TODO: when we know 117 game data
   const additionalFilters =
     gameVersion === '1800'
       ? [
