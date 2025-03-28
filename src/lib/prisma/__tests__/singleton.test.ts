@@ -4,13 +4,14 @@ describe('buildFilterWhereClause', () => {
   it('returns empty where clause when filter is empty', () => {
     const filter = {}
     const result = buildFilterWhereClause(filter)
-    expect(result).toEqual({})
+    expect(result).toEqual({ game: '117' })
   })
 
   it('builds a where clause with all single string filter properties', () => {
     const filter = {
       capital: 'crown falls',
       category: 'production',
+      game: '1800',
       region: 'new world',
       search: 'Cool stamp',
     }
@@ -18,6 +19,7 @@ describe('buildFilterWhereClause', () => {
     expect(result).toEqual({
       capital: 'crown falls',
       category: 'production',
+      game: '1800',
       region: 'new world',
       title: {
         search: 'Cool | stamp',
@@ -33,6 +35,7 @@ describe('buildFilterWhereClause', () => {
     }
     const result = buildFilterWhereClause(filter)
     expect(result).toEqual({
+      game: '117',
       title: {
         search: 'Test',
       },
@@ -42,9 +45,11 @@ describe('buildFilterWhereClause', () => {
   it('builds a where clause with OR filter array', () => {
     const filter = {
       category: ['production', 'cosmetic'],
+      game: '1800',
     }
     const result = buildFilterWhereClause(filter)
     expect(result).toEqual({
+      game: '1800',
       OR: [
         {
           category: 'production',
