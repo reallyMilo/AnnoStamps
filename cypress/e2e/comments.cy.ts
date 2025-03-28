@@ -41,8 +41,8 @@ describe('Comment on stamp', () => {
     beforeEach(() => {
       cy.task('db:testUser', true)
       cy.setSessionCookie()
-      cy.visit('/stamp/testSeedUserStampId')
-      cy.intercept('/stamp/testSeedUserStampId').as('addComment')
+      cy.visit('/stamp/testSeed1800StampId')
+      cy.intercept('/stamp/testSeed1800StampId').as('addComment')
     })
     afterEach(() => {
       cy.task('db:removeTestUser')
@@ -59,7 +59,7 @@ describe('Comment on stamp', () => {
         cy.wrap(comments[0]).should('be.an', 'object').and('contain', {
           content: 'Great stamp!',
           parentId: null,
-          stampId: 'testSeedUserStampId',
+          stampId: 'testSeed1800StampId',
           userId: 'testSeedUserId',
         })
       })
@@ -70,7 +70,7 @@ describe('Comment on stamp', () => {
           .should('be.an', 'object')
           .and('contain', {
             channel: 'web',
-            targetUrl: '/stamp/testSeedUserStampId',
+            targetUrl: '/stamp/testSeed1800StampId',
           })
           .wrap(notifications[1].body)
           .should('contain', {
@@ -106,7 +106,7 @@ describe('Comment on stamp', () => {
       ).then((comments) => {
         cy.wrap(comments[0]).should('be.an', 'object').and('contain', {
           content: 'Thanks for your comment!',
-          stampId: 'testSeedUserStampId',
+          stampId: 'testSeed1800StampId',
         })
       })
       cy.database(
@@ -116,7 +116,7 @@ describe('Comment on stamp', () => {
           .should('be.an', 'object')
           .and('contain', {
             channel: 'web',
-            targetUrl: '/stamp/testSeedUserStampId',
+            targetUrl: '/stamp/testSeed1800StampId',
           })
           .wrap(notifications[0].body)
           .should('contain', {
