@@ -1,7 +1,7 @@
-'use server'
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { unstable_cache } from 'next/cache'
 import { Suspense } from 'react'
+import 'server-only'
 
 import { Filter } from '@/components/Filter/Filter'
 import { Pagination } from '@/components/Filter/Pagination'
