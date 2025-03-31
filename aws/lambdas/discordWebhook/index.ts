@@ -1,8 +1,10 @@
 import type { Handler } from 'aws-lambda'
 
 export const handler: Handler = async (event) => {
-  const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL
-  if (!discordWebhookUrl) {
+  if (
+    !process.env.DISCORD_WEBHOOK_1800_URL ||
+    !process.env.DISCORD_WEBHOOK_117_URL
+  ) {
     throw new Error('DISCORD_WEBHOOK_URL')
   }
 
@@ -10,6 +12,11 @@ export const handler: Handler = async (event) => {
   const { record: stampData } = JSON.parse(body)
 
   const content = `[${stampData.title}](https://annostamps.com/stamp/${stampData.id})`
+
+  const discordWebhookUrl =
+    stampData.game === '117'
+      ? process.env.DISCORD_WEBHOOK_117_URL
+      : process.env.DISCORD_WEBHOOK_1800_URL
 
   try {
     const response = await fetch(discordWebhookUrl, {

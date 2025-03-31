@@ -21,13 +21,16 @@ provider "aws" {
 }
 
 module "discordWebhookLambda" {
-  source           = "./module/lambda"
-  filename         = "./lambdas/discordWebhook/dist/discordWebhook.zip"
-  description      = "A Supabase webhook triggers this Lambda on new stamp creation, which then notifies a Discord webhook to alert members."
-  function_name    = "discordWebhook"
-  runtime          = "nodejs20.x"
-  role             = aws_iam_role.lambda_role
-  environment_vars = { "DISCORD_WEBHOOK_URL" : var.discord_webhook_url }
+  source        = "./module/lambda"
+  filename      = "./lambdas/discordWebhook/dist/discordWebhook.zip"
+  description   = "A Supabase webhook triggers this Lambda on new stamp creation, which then notifies a Discord webhook to alert members."
+  function_name = "discordWebhook"
+  runtime       = "nodejs20.x"
+  role          = aws_iam_role.lambda_role
+  environment_vars = {
+    "DISCORD_WEBHOOK_1800_URL" : var.discord_webhook_1800_url
+    "DISCORD_WEBHOOK_117_URL" : var.discord_webhook_117_url
+  }
 }
 
 resource "aws_lambda_function_url" "discordWebhookLambda_function_url" {
