@@ -48,11 +48,19 @@ export const VersionButtons = () => {
 
   return (
     <div className="py-1">
-      <Button href={buildEquivalentPath[117]} plain>
+      <Button
+        data-testid="default-version-link"
+        href={buildEquivalentPath[117]}
+        plain
+      >
         <Image alt="anno 117 logo icon" height={20} src={anno117} width={20} />
         117
       </Button>
-      <Button href={buildEquivalentPath[1800]} plain>
+      <Button
+        data-testid="1800-version-link"
+        href={buildEquivalentPath[1800]}
+        plain
+      >
         <Image
           alt="anno 1800 logo icon"
           height={20}
