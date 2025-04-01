@@ -1,12 +1,13 @@
 'use client'
 
 import JSZip, { type JSZipObjectWithData } from 'jszip'
+import { useState } from 'react'
 import useSWR from 'swr'
 
 import type { StampWithRelations } from '@/lib/prisma/models'
 
 import { StampForm } from '@/components/StampForm/StampForm'
-import { Heading } from '@/components/ui'
+import { Field, Heading, Label, Select } from '@/components/ui'
 
 import { updateStamp } from './actions'
 
@@ -22,6 +23,7 @@ export const UpdateStampForm = ({ stamp }: { stamp: StampWithRelations }) => {
     return zip
   })
 
+  const [gameVersion, setGameVersion] = useState<string>(stamp.game)
   if (error) {
     return <Heading>Failed to get zip file.</Heading>
   }
@@ -49,9 +51,24 @@ export const UpdateStampForm = ({ stamp }: { stamp: StampWithRelations }) => {
           subTitle="Fill out the form below to update your stamp."
           title="Edit your stamp"
         />
+        <Field>
+          <Label>Switch Game Version</Label>
+          <Select
+            defaultValue={gameVersion}
+            id="game"
+            name="game"
+            onChange={(e) => setGameVersion(e.target.value)}
+            required
+          >
+            <option value="117">117</option>
+            <option value="1800">1800</option>
+          </Select>
+        </Field>
+
         <StampForm.ImageUpload />
         <StampForm.FileUpload />
-        <StampForm.StampInfoFieldGroup />
+        <StampForm.StampInfoFieldGroup game={gameVersion} />
+        <input name="game" type="hidden" value={gameVersion} />
         <StampForm.Submit> Update Stamp </StampForm.Submit>
       </StampForm.Form>
     </StampForm.Root>

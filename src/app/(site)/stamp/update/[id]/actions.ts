@@ -15,6 +15,7 @@ type FormDataEntries = {
 } & Pick<
   Prisma.StampUncheckedCreateInput,
   | 'category'
+  | 'game'
   | 'modded'
   | 'region'
   | 'stampFileUrl'
@@ -34,6 +35,7 @@ export const updateStamp = async (formData: FormData) => {
   }
 
   const {
+    game,
     imageIdsToRemove,
     stampId,
     unsafeDescription,
@@ -43,6 +45,7 @@ export const updateStamp = async (formData: FormData) => {
 
   const deleteImages = JSON.parse(imageIdsToRemove) as string[]
   const addImages = JSON.parse(uploadedImageUrls) as string[]
+  let prevVersion = null
   try {
     const markdownDescription = parseAndSanitizedMarkdown(unsafeDescription)
     await prisma.$transaction(async (tx) => {
@@ -61,6 +64,7 @@ export const updateStamp = async (formData: FormData) => {
       if (userStamp?.listedStamps.length === 0) {
         throw new Error('Not stamp owner')
       }
+      prevVersion = userStamp?.listedStamps[0].game
 
       if (deleteImages.length > 0) {
         await tx.image.deleteMany({
@@ -88,6 +92,7 @@ export const updateStamp = async (formData: FormData) => {
             },
           }),
           changedAt: new Date().toISOString(),
+          game,
           markdownDescription,
           unsafeDescription,
           ...fields,
@@ -101,8 +106,17 @@ export const updateStamp = async (formData: FormData) => {
     console.error(e)
     return { message: 'Server error.', ok: false }
   }
+
   revalidatePath(`/stamp/${stampId}`)
-  revalidatePath(`/${session.user.usernameURL}`)
-  revalidatePath(`/${session.userId}`)
-  redirect(`/${session.user.usernameURL}`)
+
+  const appendGameRoute = game === '117' ? '' : `/${game}`
+  const oldRoute = prevVersion === '117' ? '' : `/${prevVersion}`
+  if (prevVersion !== game) {
+    revalidatePath(`/${session.user.usernameURL}${oldRoute}`)
+    revalidatePath(`/${session.userId}${oldRoute}`)
+  }
+
+  revalidatePath(`/${session.user.usernameURL}${appendGameRoute}`)
+  revalidatePath(`/${session.userId}${appendGameRoute}`)
+  redirect(`/${session.user.usernameURL}${appendGameRoute}`)
 }
