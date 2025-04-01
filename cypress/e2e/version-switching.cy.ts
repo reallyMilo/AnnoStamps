@@ -37,4 +37,19 @@ describe('Switch between game versions via navigation links and see correspondin
 
     cy.task('db:removeTestUser')
   })
+  it('authenticated user can view stamp create and 1800/stamp/create with version specific fields', () => {
+    cy.task('db:testUser', true)
+    cy.setSessionCookie()
+    cy.visit('/stamp/create')
+
+    cy.findByText('Upload 117 Stamp').should('exist')
+
+    cy.getBySel('version-1800-link').click()
+
+    cy.findByText('Upload 1800 Stamp').should('exist')
+    cy.title().should('contain', '1800')
+    cy.findByLabelText('Region').should('exist')
+
+    cy.task('db:removeTestUser')
+  })
 })
