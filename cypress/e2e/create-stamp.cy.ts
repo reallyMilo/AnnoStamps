@@ -23,7 +23,7 @@ describe('Stamp creation', () => {
     beforeEach(() => {
       cy.task('db:testUser', true)
       cy.setSessionCookie()
-      cy.visit('/stamp/create')
+      cy.visit('/stamp/create/1800')
     })
 
     it('user cannot submit a stamp without all fields being filled', () => {
@@ -170,6 +170,7 @@ describe('Stamp creation', () => {
           ])
           .and('contain', {
             category: 'general',
+            game: '1800',
             markdownDescription: '<h1>H1 Heading</h1>\n',
             modded: false,
             region: 'arctic',

@@ -2,8 +2,6 @@ import { Prisma } from '@prisma/client'
 import { formatDistanceToNowStrict, getUnixTime } from 'date-fns'
 import z from 'zod'
 
-import { REGIONS_1800 } from '@/lib/constants/1800/data'
-
 import { CATEGORIES } from '../constants'
 import { formatIntegerWithSuffix } from './utils'
 //Exception: you cannot mutate include or select because that would change the
@@ -45,7 +43,7 @@ const stampSchema = z.object({
   capital: z.string().optional(),
   category: z.nativeEnum(CATEGORIES),
   downloads: z.object({ increment: z.number() }).optional(),
-  game: z.enum(['1800']),
+  game: z.enum(['1800', '117']),
   good: z.string().optional(),
   id: z.string(),
   images: z.object({
@@ -70,7 +68,7 @@ const stampSchema = z.object({
     .optional(),
   markdownDescription: z.string(),
   modded: z.string(),
-  region: z.nativeEnum(REGIONS_1800),
+  region: z.string().optional(),
   stampFileUrl: z.string(),
   title: z.string(),
   unsafeDescription: z.string(),
@@ -79,15 +77,17 @@ const stampSchema = z.object({
 
 const createStampSchema = stampSchema
   .omit({ downloads: true, likedBy: true })
-  .transform(({ modded, ...schema }) => ({
+  .transform(({ modded, region, ...schema }) => ({
     modded: modded === 'true',
+    region: region ?? 'rome',
     ...schema,
   })) satisfies z.Schema<
   Prisma.StampUncheckedCreateInput,
   z.ZodTypeDef,
   {
     modded: string
-  } & Omit<Prisma.StampUncheckedCreateInput, 'modded'>
+    region?: string
+  } & Omit<Prisma.StampUncheckedCreateInput, 'modded' | 'region'>
 >
 
 const updateStampSchema = stampSchema

@@ -9,11 +9,12 @@ export const CreateStampForm = () => {
       <StampForm.Form action={createStamp}>
         <StampForm.Header
           subTitle="Fill out the form below to upload your stamp."
-          title="Upload stamp"
+          title="Upload 117 stamp"
         />
         <StampForm.ImageUpload />
         <StampForm.FileUpload />
-        <StampForm.StampInfoFieldGroup />
+        <StampForm.StampInfoFieldGroup game="117" />
+        <input name="game" type="hidden" value="117" />
         <StampForm.Submit>Submit Stamp</StampForm.Submit>
       </StampForm.Form>
     </StampForm.Root>

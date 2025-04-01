@@ -14,6 +14,7 @@ type FormDataEntries = {
 } & Pick<
   Prisma.StampUncheckedCreateInput,
   | 'category'
+  | 'game'
   | 'modded'
   | 'region'
   | 'stampFileUrl'
@@ -36,23 +37,23 @@ export const createStamp = async (
     return { message: 'UsernameURL not set.', ok: false }
   }
 
-  const fromDataEntries = Object.fromEntries(formData)
-  try {
-    const {
-      stampFileUrl,
-      stampId,
-      unsafeDescription,
-      uploadedImageUrls,
-      ...fields
-    } = fromDataEntries as unknown as FormDataEntries
+  const {
+    game,
+    stampFileUrl,
+    stampId,
+    unsafeDescription,
+    uploadedImageUrls,
+    ...fields
+  } = Object.fromEntries(formData) as unknown as FormDataEntries
 
+  try {
     const sanitizedMarkdown = parseAndSanitizedMarkdown(unsafeDescription)
 
     const addImages = JSON.parse(uploadedImageUrls) as string[]
 
     await prisma.stamp.create({
       data: {
-        game: '1800',
+        game,
         id: stampId,
         images: {
           create: addImages.map((image) => {
@@ -77,7 +78,8 @@ export const createStamp = async (
     return { message: 'Server error in creating stamps', ok: false }
   }
 
-  revalidatePath(`/${session.user.usernameURL}`)
-  revalidatePath(`/${session.userId}`)
-  redirect(`/${session.user.usernameURL}`)
+  const appendGameRoute = game === '117' ? '' : `/${game}`
+  revalidatePath(`/${session.user.usernameURL}${appendGameRoute}`)
+  revalidatePath(`/${session.userId}${appendGameRoute}`)
+  redirect(`/${session.user.usernameURL}${appendGameRoute}`)
 }
