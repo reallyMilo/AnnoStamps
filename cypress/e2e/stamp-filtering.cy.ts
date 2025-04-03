@@ -50,9 +50,9 @@ describe('Filtering 1800 stamps', () => {
     cy.findByLabelText('Page 10').click()
     cy.url().should('include', 'page=10')
 
-    cy.get('#search').type('Stamp-800{enter}')
+    cy.get('#search').type('Stamp-801{enter}')
 
-    cy.url().should('include', 'page=1&search=Stamp-800')
+    cy.url().should('include', 'page=1&search=Stamp-801')
     cy.getBySel('stamp-card-link').should('have.length', 1)
   })
 })
