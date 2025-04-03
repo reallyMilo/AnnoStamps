@@ -2,7 +2,7 @@
 describe('Filtering 1800 stamps', () => {
   beforeEach(() => {
     cy.viewport(1920, 1080)
-    cy.visit('/stamps/1800')
+    cy.visit('/1800/stamps')
   })
   it('user can filter and sort stamps', () => {
     cy.findByText('1800 Stamps').should('exist')

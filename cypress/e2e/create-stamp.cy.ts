@@ -23,7 +23,7 @@ describe('Stamp creation', () => {
     beforeEach(() => {
       cy.task('db:testUser', true)
       cy.setSessionCookie()
-      cy.visit('/stamp/create/1800')
+      cy.visit('/1800/stamp/create')
     })
 
     it('user cannot submit a stamp without all fields being filled', () => {

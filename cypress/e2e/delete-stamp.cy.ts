@@ -58,7 +58,7 @@ describe('Delete stamp', () => {
     // cy.findByText('Test-Seed-User-Stamp').should('be.visible')
   })
   it('user can delete version stamps', () => {
-    cy.intercept('/testseeduser').as('deleteStamp')
+    cy.intercept('/testseeduser/1800').as('deleteStamp')
     cy.visit('/testseeduser/1800')
 
     cy.getBySel('delete-stamp')
