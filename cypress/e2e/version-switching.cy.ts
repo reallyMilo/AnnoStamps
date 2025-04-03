@@ -44,7 +44,7 @@ describe('Switch between game versions via navigation links and see correspondin
 
     cy.findByText('Upload 117 stamp').should('exist')
 
-    cy.getBySel('version-1800-link').click()
+    cy.getBySel('1800-version-link').click()
 
     cy.findByText('Upload 1800 stamp').should('exist')
     cy.title().should('contain', '1800')
