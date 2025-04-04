@@ -82,6 +82,7 @@ describe('Updating Stamp', () => {
       cy.wait('@getStampZip')
       cy.findByText('Edit your stamp').should('be.visible')
 
+      cy.get('#game').should('have.value', '1800')
       cy.findByText('test-stamp-zip').should('exist')
       cy.get('#category').should('have.value', 'cosmetic')
       cy.get('#region').should('have.value', 'old world')
