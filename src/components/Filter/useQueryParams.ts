@@ -6,6 +6,7 @@ import qs from 'qs'
 import type { QueryParams } from '../../lib/constants'
 
 const queryParamsOrder = [
+  'game',
   'category',
   'region',
   'capital',

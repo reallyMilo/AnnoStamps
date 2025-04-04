@@ -21,13 +21,15 @@ import {
 } from '@/components/ui'
 
 export const UserDropdownButton = () => {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
 
-  if (!session) {
+  if (status === 'loading') return
+  if (status === 'unauthenticated') {
     return <Button href="/auth/signin">Add Stamp</Button>
   }
 
-  const { id, image, usernameURL } = session.user
+  const { id, image, usernameURL } =
+    status === 'authenticated' ? session.user : {}
   const isUsernameSet = Boolean(usernameURL)
   const userPath = isUsernameSet ? `/${usernameURL}` : `/${id}`
 

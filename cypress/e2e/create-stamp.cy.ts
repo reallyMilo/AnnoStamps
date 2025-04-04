@@ -23,7 +23,7 @@ describe('Stamp creation', () => {
     beforeEach(() => {
       cy.task('db:testUser', true)
       cy.setSessionCookie()
-      cy.visit('/stamp/create')
+      cy.visit('/1800/stamp/create')
     })
 
     it('user cannot submit a stamp without all fields being filled', () => {
@@ -63,7 +63,7 @@ describe('Stamp creation', () => {
     })
 
     it('user can create a stamp with all fields filled', () => {
-      cy.intercept('/stamp/create').as('createStamp')
+      cy.intercept('/1800/stamp/create').as('createStamp')
       // since 2 calls are made to upload 1 image, and 1 zip
       // we set the zip call to an api-route to catch for updating
       cy.intercept('/api/upload/*', (req) => {
@@ -88,7 +88,7 @@ describe('Stamp creation', () => {
         })
       }).as('uploadAsset')
 
-      cy.intercept('PUT', '/stamp/presigned*', (req) => {
+      cy.intercept('PUT', '/1800/stamp/presigned*', (req) => {
         const fileType = req.url
           .split('&')
           .find((param) => param.includes('fileType='))
@@ -170,6 +170,7 @@ describe('Stamp creation', () => {
           ])
           .and('contain', {
             category: 'general',
+            game: '1800',
             markdownDescription: '<h1>H1 Heading</h1>\n',
             modded: false,
             region: 'arctic',

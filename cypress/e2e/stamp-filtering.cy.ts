@@ -1,10 +1,12 @@
 // const { _ } = Cypress
-describe('Filtering stamps', () => {
+describe('Filtering 1800 stamps', () => {
   beforeEach(() => {
     cy.viewport(1920, 1080)
-    cy.visit('/stamps')
+    cy.visit('/1800/stamps')
   })
   it('user can filter and sort stamps', () => {
+    cy.findByText('1800 Stamps').should('exist')
+
     cy.get('#production').click()
     cy.url().should('include', '?category=production')
 
@@ -48,9 +50,28 @@ describe('Filtering stamps', () => {
     cy.findByLabelText('Page 10').click()
     cy.url().should('include', 'page=10')
 
-    cy.get('#search').type('Stamp-800{enter}')
+    cy.get('#search').type('Stamp-801{enter}')
 
-    cy.url().should('include', 'page=1&search=Stamp-800')
+    cy.url().should('include', 'page=1&search=Stamp-801')
     cy.getBySel('stamp-card-link').should('have.length', 1)
+  })
+})
+
+describe('Filtering 117 Stamps', () => {
+  beforeEach(() => {
+    cy.viewport(1920, 1080)
+    cy.visit('/stamps')
+  })
+
+  it('user can filter and sort stamps', () => {
+    cy.findByText('117 Stamps').should('exist')
+
+    cy.get('#production').click()
+    cy.url().should('include', '?category=production')
+
+    cy.findAllByText('Production', { exact: false }).should(
+      'have.length.greaterThan',
+      10,
+    )
   })
 })

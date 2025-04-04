@@ -46,7 +46,6 @@ const prismaClientSingleton = () => {
                 skip = 0
                 pageNumber = 1
               }
-
               const stamps = await q.stamp.findMany({
                 include: stampIncludeStatement,
                 orderBy: buildOrderByClause(sort),
@@ -78,7 +77,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 export const buildFilterWhereClause = (
   filter: Omit<QueryParams, 'page' | 'sort'>,
 ): Prisma.StampWhereInput => {
-  const { capital, category, region, search } = filter
+  const { capital, category, game, region, search } = filter
 
   // https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search#postgresql
   // increase chance that user search returns something with or matching
@@ -95,8 +94,10 @@ export const buildFilterWhereClause = (
       return { [column]: params }
     }
   }
+  const gameVersion = game ? game.match(/^\d+/) : null
 
   return {
+    game: gameVersion ? gameVersion[0] : '117',
     ...(region ? buildArrayFiltering('region', region) : {}),
     ...(category ? buildArrayFiltering('category', category) : {}),
     ...(capital ? buildArrayFiltering('capital', capital) : {}),

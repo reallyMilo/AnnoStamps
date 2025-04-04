@@ -15,6 +15,7 @@ import type { Notification, UserWithStamps } from '@/lib/prisma/models'
 import '@/app/globals.css'
 import { auth } from '@/auth'
 import { MobileNavbar } from '@/components/layout/MobileNavbar'
+import { NavItems } from '@/components/layout/NavItems'
 import { NotificationDropdownButton } from '@/components/layout/NotificationDropdownButton'
 import { UserDropdownButton } from '@/components/layout/UserDropdownButton'
 import { VersionButtons } from '@/components/layout/VersionButtons'
@@ -27,7 +28,6 @@ import {
   Navbar as NavbarRoot,
   NavbarSection,
   NavbarSpacer,
-  SidebarItem,
 } from '@/components/ui'
 import prisma from '@/lib/prisma/singleton'
 
@@ -60,16 +60,6 @@ const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '700'],
 })
-const navigation = [
-  {
-    href: '/stamps',
-    text: 'All Stamps',
-  },
-  {
-    href: '/how-to',
-    text: 'How To',
-  },
-]
 
 const socials = [
   {
@@ -160,11 +150,7 @@ const Navbar = () => {
         </div>
         <NavbarRoot className="pt-0">
           <MobileNavbar socials={<SocialIcons />}>
-            {navigation.map((item) => (
-              <SidebarItem href={item.href} key={item.text}>
-                {item.text}
-              </SidebarItem>
-            ))}
+            <NavItems isSidebar />
           </MobileNavbar>
           <NavbarSpacer className="md:hidden" />
           <Link href="/" id="header-logo">
@@ -180,11 +166,7 @@ const Navbar = () => {
           </Link>
           <NavbarDivider className="max-lg:hidden" />
           <NavbarSection className="max-md:hidden">
-            {navigation.map((item) => (
-              <NavbarItem href={item.href} key={item.text}>
-                {item.text}
-              </NavbarItem>
-            ))}
+            <NavItems />
           </NavbarSection>
           <NavbarSpacer />
           <Suspense fallback={null}>

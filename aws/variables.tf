@@ -12,7 +12,13 @@ variable "supabase_service_key" {
 }
 
 # Discord server -> Server settings -> Integrations -> Webhooks -> Copy Webhook URL
-variable "discord_webhook_url" {
+variable "discord_webhook_1800_url" {
+  description = "Discord webhook url for the new stamp notifying."
+  sensitive   = true
+  type        = string
+}
+
+variable "discord_webhook_117_url" {
   description = "Discord webhook url for the new stamp notifying."
   sensitive   = true
   type        = string

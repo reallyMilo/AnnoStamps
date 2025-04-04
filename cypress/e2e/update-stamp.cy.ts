@@ -78,10 +78,11 @@ describe('Updating Stamp', () => {
         statusCode: 200,
       }).as('S3Put')
       //FIXME: Need to revalidate the path for [username]
-      cy.visit('/stamp/update/testSeedUserStampId')
+      cy.visit('/stamp/update/testSeed1800StampId')
       cy.wait('@getStampZip')
       cy.findByText('Edit your stamp').should('be.visible')
 
+      cy.get('#game').should('have.value', '1800')
       cy.findByText('test-stamp-zip').should('exist')
       cy.get('#category').should('have.value', 'cosmetic')
       cy.get('#region').should('have.value', 'old world')

@@ -16,7 +16,6 @@ import {
   commentIncludeStatement,
   stampIncludeStatement,
   type StampWithRelations,
-  userIncludeStatement,
   type UserWithStamps,
 } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
@@ -41,7 +40,13 @@ const getStamp = unstable_cache(
 const getUserLikedStamp = unstable_cache(
   async (userId: UserWithStamps['id'], id: StampWithRelations['id']) =>
     prisma.user.findUnique({
-      include: userIncludeStatement,
+      include: {
+        likedStamps: {
+          select: {
+            id: true,
+          },
+        },
+      },
       where: {
         id: userId,
         likedStamps: {

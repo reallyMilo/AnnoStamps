@@ -57,4 +57,27 @@ describe('Delete stamp', () => {
     })
     // cy.findByText('Test-Seed-User-Stamp').should('be.visible')
   })
+  it('user can delete version stamps', () => {
+    cy.intercept('/testseeduser/1800').as('deleteStamp')
+    cy.visit('/testseeduser/1800')
+
+    cy.getBySel('delete-stamp')
+      .first()
+      .trigger('mouseover')
+      .then(($link) => {
+        expect($link.css('cursor')).to.equal('pointer')
+      })
+      .click()
+
+    cy.findByRole('button', { name: 'Yes, delete' })
+      .should('be.visible')
+      .click()
+    cy.wait('@deleteStamp')
+
+    cy.database(
+      `SELECT * FROM "Stamp" WHERE title = 'cypress test title';`,
+    ).then((stamps) => {
+      cy.wrap(stamps).should('have.length', 0)
+    })
+  })
 })

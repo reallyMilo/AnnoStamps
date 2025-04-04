@@ -26,7 +26,80 @@ const presetCategories = Object.values(CATEGORIES)
 const presetRegions = Object.values(REGIONS_1800)
 const presetCapitals = Object.values(CAPITALS_1800)
 
-export const StampInfoFieldGroup = () => {
+const VersionSpecificFields = ({ category = '', game = '117' }) => {
+  const { stamp } = useStampFormContext()
+
+  if (game === '1800') {
+    return (
+      <div className="flex space-x-6">
+        <Field>
+          <Label>Region</Label>
+          <Select
+            defaultValue={stamp?.region ?? ''}
+            id="region"
+            name="region"
+            required
+          >
+            <option disabled value="">
+              Select a region&hellip;
+            </option>
+            {presetRegions.map((region, idx) => (
+              <option
+                className="capitalize"
+                key={`${region}-${idx}`}
+                value={region}
+              >
+                {' '}
+                {region}
+              </option>
+            ))}
+          </Select>
+        </Field>
+        {category === 'production' && (
+          <Field>
+            <Label>Enter Good</Label>
+            <Input
+              defaultValue={stamp?.good ?? undefined}
+              id="good"
+              name="good"
+              placeholder="Enter final good in chain"
+              required
+              type="text"
+            />
+          </Field>
+        )}
+
+        {category === 'island' && (
+          <Field>
+            <Label>Capital</Label>
+            <Select
+              defaultValue={stamp?.capital ?? undefined}
+              id="capital"
+              name="capital"
+            >
+              <option value="">Not capital</option>
+              {presetCapitals.map((capital, idx) => (
+                <option
+                  className="capitalize"
+                  key={`${capital}-${idx}`}
+                  value={capital}
+                >
+                  {' '}
+                  {capital}
+                </option>
+              ))}
+            </Select>
+          </Field>
+        )}
+      </div>
+    )
+  }
+
+  //default game
+  return null
+}
+
+export const StampInfoFieldGroup = ({ game }: { game: string }) => {
   const { stamp } = useStampFormContext()
 
   const [category, setCategory] = useState(stamp?.category)
@@ -69,29 +142,6 @@ export const StampInfoFieldGroup = () => {
           </Select>
         </Field>
         <Field>
-          <Label>Region</Label>
-          <Select
-            defaultValue={stamp?.region ?? ''}
-            id="region"
-            name="region"
-            required
-          >
-            <option disabled value="">
-              Select a region&hellip;
-            </option>
-            {presetRegions.map((region, idx) => (
-              <option
-                className="capitalize"
-                key={`${region}-${idx}`}
-                value={region}
-              >
-                {' '}
-                {region}
-              </option>
-            ))}
-          </Select>
-        </Field>
-        <Field>
           <Label>Mods</Label>
           <Select
             defaultValue={stamp?.modded.toString() ?? ''}
@@ -108,42 +158,7 @@ export const StampInfoFieldGroup = () => {
         </Field>
       </div>
 
-      {category === 'production' && (
-        <Field>
-          <Label>Enter Good</Label>
-          <Input
-            defaultValue={stamp?.good ?? undefined}
-            id="good"
-            name="good"
-            placeholder="Enter final good in chain"
-            required
-            type="text"
-          />
-        </Field>
-      )}
-
-      {category === 'island' && (
-        <Field>
-          <Label>Capital</Label>
-          <Select
-            defaultValue={stamp?.capital ?? undefined}
-            id="capital"
-            name="capital"
-          >
-            <option value="">Not capital</option>
-            {presetCapitals.map((capital, idx) => (
-              <option
-                className="capitalize"
-                key={`${capital}-${idx}`}
-                value={capital}
-              >
-                {' '}
-                {capital}
-              </option>
-            ))}
-          </Select>
-        </Field>
-      )}
+      <VersionSpecificFields category={category} game={game} />
 
       <Field>
         <Label>Title</Label>

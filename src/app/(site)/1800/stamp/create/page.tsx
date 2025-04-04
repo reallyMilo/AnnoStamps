@@ -5,9 +5,8 @@ import { CreateStamp } from '@/view/CreateStamp'
 import { CreateStampForm } from './CreateStampForm'
 
 export const metadata: Metadata = {
-  title: 'Create 117 Stamp | AnnoStamps',
+  title: 'Create 1800 Stamp | AnnoStamps',
 }
-
 const CreateStampPage = async () => {
   return (
     <CreateStamp>
