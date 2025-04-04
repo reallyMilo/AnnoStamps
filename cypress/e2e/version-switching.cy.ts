@@ -4,6 +4,11 @@ describe('Switch between game versions via navigation links and see correspondin
   })
 
   it('user route should display default version stamps and switch to 1800 stamps', () => {
+    cy.getBySel('default-version-link').should(
+      'have.css',
+      'background-color',
+      'rgb(246, 174, 45)',
+    )
     cy.getBySel('stamp-card-username-link')
       .last()
       .then((link) => {
@@ -18,9 +23,16 @@ describe('Switch between game versions via navigation links and see correspondin
 
     cy.title().should('contain', '117')
 
-    cy.getBySel('1800-version-link').click()
-
-    cy.title().should('contain', '1800')
+    cy.getBySel('1800-version-link')
+      .click()
+      .then(() => {
+        cy.title().should('contain', '1800')
+        cy.getBySel('1800-version-link').should(
+          'have.css',
+          'background-color',
+          'rgb(246, 174, 45)',
+        )
+      })
   })
 
   it('authenticated user viewing his homepage should be able to switch between his stamps', () => {
