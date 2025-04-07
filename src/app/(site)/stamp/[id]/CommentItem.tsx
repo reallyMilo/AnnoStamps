@@ -30,7 +30,7 @@ export const CommentItem = ({
     <li id={commentId}>
       <div className="flex space-x-5 pb-2">
         <AvatarButton className="self-start" src={user.image} />
-        <div className="flex flex-grow flex-col">
+        <div className="flex grow flex-col">
           <div className="flex space-x-5">
             <Link
               className="text-midnight hover:text-primary dark:text-white"

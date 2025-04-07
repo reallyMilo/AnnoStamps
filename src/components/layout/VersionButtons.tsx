@@ -53,10 +53,10 @@ export const VersionButtons = () => {
   }, [pathname])
 
   const activeStyle =
-    'bg-secondary dark:bg-secondary dark:data-[active]:bg-secondary dark:text-midnight dark:data-[hover]:bg-secondary data-[hover]:bg-secondary'
+    'bg-secondary dark:bg-secondary dark:data-active:bg-secondary dark:text-midnight dark:data-hover:bg-secondary data-hover:bg-secondary'
 
   const buttonStyle =
-    'data-[hover]:bg-transparent data-[hover]:text-midnight/75 dark:hover:text-default dark:active:text-midnight dark:data-[hover]:bg-transparent dark:data-[hover]:text-default/75'
+    'data-hover:bg-transparent data-hover:text-midnight/75 dark:hover:text-default dark:active:text-midnight dark:data-hover:bg-transparent dark:data-hover:text-default/75'
   return (
     <div className="py-1">
       <Button

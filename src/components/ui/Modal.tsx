@@ -31,7 +31,7 @@ export const Modal = ({
   return (
     <Headless.Dialog {...props}>
       <Headless.DialogBackdrop
-        className="fixed inset-0 flex w-screen justify-center overflow-y-auto bg-zinc-950/25 px-2 py-2 transition duration-100 focus:outline-0 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in sm:px-6 sm:py-8 lg:px-8 lg:py-16 dark:bg-zinc-950/50"
+        className="fixed inset-0 flex w-screen justify-center overflow-y-auto bg-zinc-950/25 px-2 py-2 transition duration-100 focus:outline-0 data-closed:opacity-0 data-enter:ease-out data-leave:ease-in sm:px-6 sm:py-8 lg:px-8 lg:py-16 dark:bg-zinc-950/50"
         transition
       />
 
@@ -40,8 +40,8 @@ export const Modal = ({
           <Headless.DialogPanel
             className={cn(
               sizes[size],
-              'row-start-2 w-full min-w-0 rounded-t-3xl bg-white p-[--gutter] shadow-lg ring-1 ring-midnight/10 [--gutter:theme(spacing.8)] sm:mb-auto sm:rounded-2xl dark:bg-zinc-900 dark:ring-white/10 forced-colors:outline',
-              'transition duration-100 data-[closed]:translate-y-12 data-[closed]:opacity-0 data-[enter]:ease-out data-[leave]:ease-in sm:data-[closed]:translate-y-0 sm:data-[closed]:data-[enter]:scale-95',
+              'ring-midnight/10 row-start-2 w-full min-w-0 rounded-t-3xl bg-white p-(--gutter) shadow-lg ring-1 [--gutter:--spacing(8)] sm:mb-auto sm:rounded-2xl dark:bg-zinc-900 dark:ring-white/10 forced-colors:outline',
+              'transition duration-100 data-closed:translate-y-12 data-closed:opacity-0 data-enter:ease-out data-leave:ease-in sm:data-closed:translate-y-0 sm:data-closed:data-enter:scale-95',
               className,
             )}
           >
@@ -61,7 +61,7 @@ export const ModalTitle = ({
     <Headless.DialogTitle
       {...props}
       className={cn(
-        'text-balance text-lg/6 font-semibold text-midnight sm:text-base/6 dark:text-white',
+        'text-midnight text-lg/6 font-semibold text-balance sm:text-base/6 dark:text-white',
         className,
       )}
     />

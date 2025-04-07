@@ -12,7 +12,7 @@ export const Fieldset = ({
     <Headless.Fieldset
       {...props}
       className={cn(
-        '[&>*+[data-slot=control]]:mt-6 [&>[data-slot=text]]:mt-1',
+        '*:data-[slot=text]:mt-1 [&>*+[data-slot=control]]:mt-6',
         className,
       )}
     />
@@ -28,7 +28,7 @@ export const Legend = ({
       data-slot="legend"
       {...props}
       className={cn(
-        'text-base/6 font-semibold text-midnight data-[disabled]:opacity-50 sm:text-sm/6 dark:text-white',
+        'text-midnight text-base/6 font-semibold data-disabled:opacity-50 sm:text-sm/6 dark:text-white',
         className,
       )}
     />
@@ -61,7 +61,7 @@ export const Field = ({
         '[&>[data-slot=description]+[data-slot=control]]:mt-3',
         '[&>[data-slot=control]+[data-slot=description]]:mt-3',
         '[&>[data-slot=control]+[data-slot=error]]:mt-3',
-        '[&>[data-slot=label]]:font-medium',
+        '*:data-[slot=label]:font-medium',
         className,
       )}
     />
@@ -77,7 +77,7 @@ export const Label = ({
       data-slot="label"
       {...props}
       className={cn(
-        'select-none text-base/6 text-midnight data-[disabled]:opacity-50 dark:text-white',
+        'text-midnight text-base/6 select-none data-disabled:opacity-50 dark:text-white',
         className,
       )}
     />
@@ -93,7 +93,7 @@ export const Description = ({
       data-slot="description"
       {...props}
       className={cn(
-        'text-base/6 text-zinc-500 data-[disabled]:opacity-50 sm:text-sm/6 dark:text-zinc-400',
+        'text-base/6 text-zinc-500 data-disabled:opacity-50 sm:text-sm/6 dark:text-zinc-400',
         className,
       )}
     />
@@ -109,7 +109,7 @@ export const ErrorMessage = ({
       data-slot="error"
       {...props}
       className={cn(
-        'text-base/6 text-accent data-[disabled]:opacity-50 sm:text-sm/6 dark:text-accent',
+        'text-accent dark:text-accent text-base/6 data-disabled:opacity-50 sm:text-sm/6',
         className,
       )}
     />

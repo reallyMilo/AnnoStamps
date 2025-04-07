@@ -109,7 +109,7 @@ export const SettingsForm = () => {
               If you wish to change your username please contact us via the
               discord server.{' '}
             </Description>
-            <InputGroup className="[&>[data-slot=icon]]:text-green-500 dark:[&>[data-slot=icon]]:text-green-500">
+            <InputGroup className="*:data-[slot=icon]:text-green-500 dark:*:data-[slot=icon]:text-green-500">
               <span data-slot="custom-text">annostamps.com/</span>
               <Input
                 autoComplete="false"

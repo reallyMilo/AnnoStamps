@@ -46,17 +46,17 @@ export const Table = ({
         <div
           {...props}
           className={cn(
-            '-mx-[--gutter] overflow-x-auto whitespace-nowrap',
+            '-mx-(--gutter) overflow-x-auto whitespace-nowrap',
             className,
           )}
         >
           <div
             className={cn(
               'inline-block min-w-full align-middle',
-              !bleed && 'sm:px-[--gutter]',
+              !bleed && 'sm:px-(--gutter)',
             )}
           >
-            <table className="min-w-full text-left text-sm/6 text-midnight dark:text-white">
+            <table className="text-midnight min-w-full text-left text-sm/6 dark:text-white">
               {children}
             </table>
           </div>
@@ -138,9 +138,9 @@ export const TableHeader = ({
     <th
       {...props}
       className={cn(
-        'border-b border-b-midnight/10 px-4 py-2 font-medium first:pl-[var(--gutter,theme(spacing.2))] last:pr-[var(--gutter,theme(spacing.2))] dark:border-b-white/10',
+        'border-b-midnight/10 border-b px-4 py-2 font-medium first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) dark:border-b-white/10',
         grid &&
-          'border-l border-l-midnight/5 first:border-l-0 dark:border-l-white/5',
+          'border-l-midnight/5 border-l first:border-l-0 dark:border-l-white/5',
         !bleed && 'sm:first:pl-1 sm:last:pr-1',
         className,
       )}
@@ -162,10 +162,10 @@ export const TableCell = ({
       ref={href ? setCellRef : undefined}
       {...props}
       className={cn(
-        'relative px-4 first:pl-[var(--gutter,theme(spacing.2))] last:pr-[var(--gutter,theme(spacing.2))]',
-        !striped && 'border-b border-midnight/5 dark:border-white/5',
+        'relative px-4 first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2))',
+        !striped && 'border-midnight/5 border-b dark:border-white/5',
         grid &&
-          'border-l border-l-midnight/5 first:border-l-0 dark:border-l-white/5',
+          'border-l-midnight/5 border-l first:border-l-0 dark:border-l-white/5',
         dense ? 'py-2.5' : 'py-4',
         !bleed && 'sm:first:pl-1 sm:last:pr-1',
         className,
@@ -174,7 +174,7 @@ export const TableCell = ({
       {href && (
         <Link
           aria-label={title}
-          className="absolute inset-0 focus:outline-none"
+          className="absolute inset-0 focus:outline-hidden"
           data-row-link
           href={href}
           tabIndex={cellRef?.previousElementSibling === null ? 0 : -1}
