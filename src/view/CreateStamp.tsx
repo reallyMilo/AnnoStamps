@@ -17,7 +17,7 @@ export const CreateStamp = async ({ children }: React.PropsWithChildren) => {
     return (
       <Container>
         <div className="flex">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <ExclamationTriangleIcon
               aria-hidden="true"
               className="size-5 text-yellow-400"

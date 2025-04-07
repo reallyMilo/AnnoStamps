@@ -72,8 +72,8 @@ export const LikeButton = ({
   return (
     <Button
       className={cn(
-        'cursor-pointer [&>[data-slot=icon]]:sm:size-6',
-        optimisticLike.isLiked && '[&>[data-slot=icon]]:sm:text-primary',
+        'cursor-pointer sm:*:data-[slot=icon]:size-6',
+        optimisticLike.isLiked && 'sm:*:data-[slot=icon]:text-primary',
       )}
       data-testid={testId}
       onClick={addLike}

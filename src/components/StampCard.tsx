@@ -45,7 +45,7 @@ export const StampCard = ({
           }}
         />
         {modded && (
-          <div className="absolute right-2 top-2 ml-auto flex h-fit w-fit flex-row items-center rounded-full bg-accent px-2 py-1 text-xs text-default">
+          <div className="bg-accent text-default absolute top-2 right-2 ml-auto flex h-fit w-fit flex-row items-center rounded-full px-2 py-1 text-xs">
             <WrenchIcon className="mr-1 h-3 w-3" />
             mods
           </div>
@@ -55,7 +55,7 @@ export const StampCard = ({
       <div className="flex h-full min-h-[200px] flex-col gap-y-2 px-3 py-2">
         <div className="flex items-baseline justify-between">
           <Text
-            className="font-semibold capitalize text-accent dark:text-rose-400"
+            className="text-accent font-semibold capitalize dark:text-rose-400"
             id="stamp-region"
           >
             {region}
@@ -68,7 +68,7 @@ export const StampCard = ({
           </Text>
         </div>
         <Heading
-          className="line-clamp-2 w-full flex-grow overflow-hidden text-ellipsis"
+          className="line-clamp-2 w-full grow overflow-hidden text-ellipsis"
           id="stamp-title"
           level={2}
         >
@@ -84,7 +84,7 @@ export const StampCard = ({
 
         {user?.username ? (
           <Link
-            className="z-10 flex h-11 w-fit items-center gap-1 text-slate-500 hover:text-primary dark:text-white"
+            className="hover:text-primary z-10 flex h-11 w-fit items-center gap-1 text-slate-500 dark:text-white"
             data-testid="stamp-card-username-link"
             href={`/${user.usernameURL}`}
             prefetch={false}
@@ -98,7 +98,7 @@ export const StampCard = ({
 
         <div className="mt-auto flex justify-between">
           <StampCategoryIcon category={category} />
-          <div className="flex items-end text-midnight dark:text-white">
+          <div className="text-midnight flex items-end dark:text-white">
             <ArrowDownTrayIcon className="mr-2 inline-block h-5 w-5 self-center" />
             <span data-testid="stamp-card-downloads">{suffixDownloads}</span>
           </div>
@@ -115,7 +115,7 @@ export const StampCardSkeleton = () => {
 
       <div className="flex h-full min-h-[200px] flex-col gap-y-2 px-3 py-2">
         <div className="flex items-baseline justify-between"></div>
-        <div className="line-clamp-2 w-full flex-grow overflow-hidden text-ellipsis"></div>
+        <div className="line-clamp-2 w-full grow overflow-hidden text-ellipsis"></div>
 
         <span className="h-11"></span>
 

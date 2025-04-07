@@ -26,7 +26,7 @@ export const TextLink = ({
     <Link
       {...props}
       className={cn(
-        'text-midnight underline decoration-midnight/50 data-[hover]:decoration-midnight dark:text-white dark:decoration-white/50 dark:data-[hover]:decoration-white',
+        'text-midnight decoration-midnight/50 data-hover:decoration-midnight underline dark:text-white dark:decoration-white/50 dark:data-hover:decoration-white',
         className,
       )}
     />
@@ -40,7 +40,7 @@ export const Strong = ({
   return (
     <strong
       {...props}
-      className={cn('font-medium text-midnight dark:text-white', className)}
+      className={cn('text-midnight font-medium dark:text-white', className)}
     />
   )
 }

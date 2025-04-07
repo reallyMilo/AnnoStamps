@@ -13,8 +13,8 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html className={poppins.className} lang="en">
       <body>
-        <div className="flex min-h-screen flex-col bg-default dark:bg-zinc-900">
-          <main className="relative mx-auto min-h-full w-full flex-grow">
+        <div className="bg-default flex min-h-screen flex-col dark:bg-zinc-900">
+          <main className="relative mx-auto min-h-full w-full grow">
             {children}
           </main>
         </div>

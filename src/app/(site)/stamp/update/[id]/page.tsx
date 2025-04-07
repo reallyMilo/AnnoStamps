@@ -31,7 +31,7 @@ const EditStampPage = async ({ params }: { params: { id: string } }) => {
     return (
       <Container>
         <div className="flex">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <ExclamationTriangleIcon
               aria-hidden="true"
               className="h-5 w-5 text-yellow-400"

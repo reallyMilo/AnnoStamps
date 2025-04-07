@@ -52,7 +52,7 @@ export const ImageUpload = () => {
       />
       {images.length === 0 ? (
         <label
-          className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
           htmlFor="image"
         >
           <ArrowUpIcon className="mx-auto h-6 w-6 text-gray-400" />
@@ -70,7 +70,7 @@ export const ImageUpload = () => {
             return (
               <div className="relative" key={url}>
                 <TrashIcon
-                  className="absolute right-0 top-0 z-10 mr-2 mt-2 h-6 w-6 cursor-pointer rounded-md bg-white"
+                  className="absolute top-0 right-0 z-10 mt-2 mr-2 h-6 w-6 cursor-pointer rounded-md bg-white"
                   onClick={() => handleRemove(image)}
                 />
                 <div className="aspect-h-3 aspect-w-4 overflow-hidden border-2 shadow-md">

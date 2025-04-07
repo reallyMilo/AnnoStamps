@@ -53,7 +53,7 @@ export const FileUpload = () => {
 
       <div className="mt-8 flow-root">
         <Table
-          className="[--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]"
+          className="[--gutter:--spacing(6)] sm:[--gutter:--spacing(8)]"
           striped
         >
           <TableHead>
@@ -81,7 +81,7 @@ export const FileUpload = () => {
                     kb
                   </TableCell>
                   <TableCell
-                    className="cursor-pointer text-accent hover:text-accent/75"
+                    className="text-accent hover:text-accent/75 cursor-pointer"
                     onClick={() => handleRemove(file)}
                   >
                     delete

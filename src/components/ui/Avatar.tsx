@@ -33,7 +33,7 @@ export const Avatar = ({
         'inline-grid shrink-0 align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1',
         // Add the correct border radius
         square
-          ? 'rounded-[--avatar-radius] *:rounded-[--avatar-radius]'
+          ? 'rounded-(--avatar-radius) *:rounded-(--avatar-radius)'
           : 'rounded-full *:rounded-full',
         className,
       )}
@@ -41,7 +41,7 @@ export const Avatar = ({
       {initials && (
         <svg
           aria-hidden={alt ? undefined : 'true'}
-          className="select-none fill-current text-[48px] font-medium uppercase"
+          className="fill-current text-[48px] font-medium uppercase select-none"
           viewBox="0 0 100 100"
         >
           {alt && <title>{alt}</title>}
@@ -89,7 +89,7 @@ export const AvatarButton = React.forwardRef(
   ) => {
     const classes = cn(
       square ? 'rounded-[20%]' : 'rounded-full',
-      'relative focus:outline-none data-[focus]:outline data-[focus]:outline-2 data-[focus]:outline-offset-2 data-[focus]:outline-blue-500',
+      'relative focus:outline-hidden data-focus:outline data-focus:outline-2 data-focus:outline-offset-2 data-focus:outline-blue-500',
       className,
     )
 

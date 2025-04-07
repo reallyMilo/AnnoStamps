@@ -219,9 +219,9 @@ const SiteLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html className={poppins.className} lang="en">
       <body>
-        <div className="flex min-h-screen flex-col bg-default dark:bg-zinc-900">
+        <div className="bg-default flex min-h-screen flex-col dark:bg-zinc-900">
           <Navbar />
-          <main className="relative mx-auto min-h-full w-full flex-grow">
+          <main className="relative mx-auto min-h-full w-full grow">
             {children}
           </main>
           <Footer />
