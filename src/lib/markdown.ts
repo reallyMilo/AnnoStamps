@@ -1,6 +1,6 @@
 import type sanitize from 'sanitize-html'
 
-import { marked } from 'marked'
+import { marked, type Renderer, type RendererObject } from 'marked'
 import sanitizeHtml from 'sanitize-html'
 
 import type { StampWithRelations } from '@/lib/prisma/models'
@@ -104,10 +104,12 @@ export const parseAndSanitizedMarkdown = (
   description: StampWithRelations['unsafeDescription'],
 ) => {
   const renderer = {
-    link(href: string, _: null | string | undefined, text: string) {
+    link({ href, tokens }) {
       const prependHttps = href.startsWith('https://')
         ? href
         : href.padStart(href.length + 8, 'https://')
+
+      const text = this.parser.parseInline(tokens)
 
       return `  
             <a target="_blank" href="${prependHttps}">
@@ -115,7 +117,7 @@ export const parseAndSanitizedMarkdown = (
                   </a>
             `
     },
-  }
+  } satisfies RendererObject
   marked.use({ renderer })
 
   return sanitizeHtml(marked.parse(description) as string, sanitizeOptions)
