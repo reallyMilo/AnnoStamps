@@ -1,6 +1,6 @@
 import type sanitize from 'sanitize-html'
 
-import { marked, type Renderer, type RendererObject } from 'marked'
+import { marked, type RendererObject } from 'marked'
 import sanitizeHtml from 'sanitize-html'
 
 import type { StampWithRelations } from '@/lib/prisma/models'
