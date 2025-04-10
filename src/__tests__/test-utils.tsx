@@ -1,7 +1,7 @@
-import { render, RenderOptions } from '@testing-library/react'
-import { Session } from 'next-auth'
+import { render, type RenderOptions } from '@testing-library/react'
+import type { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
-import { ReactElement } from 'react'
+import type { ReactElement } from 'react'
 import { Suspense } from 'react'
 
 type RecursivePartial<T> = {
