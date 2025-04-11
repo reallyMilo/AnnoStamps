@@ -67,17 +67,18 @@ export const Pagination = ({ count, page }: PaginationProps) => {
   const totalPageCount = Math.ceil(count / STAMPS_PER_PAGE)
   const pageNumbers = paginate(totalPageCount, page)
 
+  const queryString = stringifyQuery({ ...parsedQuery, page: 1 })
+  const queryWithoutPageNumber = queryString.slice(0, -1)
+
   useEffect(() => {
     if (page === 1 && Number(parsedQuery.page) !== 1 && parsedQuery.page) {
-      router.replace(`${stringifyQuery({ ...parsedQuery, page: 1 })}`)
+      router.replace(queryString)
     }
-  })
+  }, [page, parsedQuery.page, queryString, router])
   return (
     <PaginationRoot>
       <PaginationPrevious
-        href={
-          page === 1 ? null : stringifyQuery({ ...parsedQuery, page: page - 1 })
-        }
+        href={page === 1 ? null : `${queryWithoutPageNumber}${page - 1}`}
       />
       <PaginationList>
         {pageNumbers.map((pageNum, idx) => {
@@ -87,7 +88,7 @@ export const Pagination = ({ count, page }: PaginationProps) => {
           return (
             <PaginationPage
               current={pageNum === page}
-              href={stringifyQuery({ ...parsedQuery, page: pageNum }) ?? ''}
+              href={`${queryWithoutPageNumber}${pageNum}`}
               key={pageNum + '-pagination'}
             >
               {pageNum}
@@ -99,7 +100,7 @@ export const Pagination = ({ count, page }: PaginationProps) => {
         href={
           page === totalPageCount
             ? null
-            : stringifyQuery({ ...parsedQuery, page: page + 1 })
+            : `${queryWithoutPageNumber}${page + 1}`
         }
       />
     </PaginationRoot>
