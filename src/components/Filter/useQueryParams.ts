@@ -11,8 +11,8 @@ const queryParamsOrder = [
   'region',
   'capital',
   'sort',
-  'page',
   'search',
+  'page',
 ] satisfies (keyof QueryParams)[]
 
 const useQueryParams = () => {
