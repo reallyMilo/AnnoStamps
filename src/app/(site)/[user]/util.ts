@@ -22,12 +22,15 @@ export const getUserWithStamps = unstable_cache(
 export const userMetadata = (
   {
     biography,
+    id,
     listedStamps,
     username,
   }: NonNullable<Awaited<ReturnType<typeof getUserWithStamps>>>,
   game = '117',
 ) => {
-  const title = `${username} ${game} | AnnoStamps`
+  const title = username
+    ? `${username} ${game} | AnnoStamps`
+    : `${id} ${game} | AnnoStamps`
   const description = biography ?? `${username} AnnoStamps page`
 
   if (listedStamps.length === 0) {
