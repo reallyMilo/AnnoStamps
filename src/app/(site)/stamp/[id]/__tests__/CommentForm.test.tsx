@@ -21,6 +21,10 @@ vi.mock('react-dom', async () => {
 })
 vi.mocked(useOptimistic).mockReturnValue([[], () => {}])
 
+vi.mock('@/app/(site)/stamp/[id]/actions', () => ({
+  addCommentToStamp: vi.fn(),
+}))
+
 const user = {
   biography: null,
   id: '1',
