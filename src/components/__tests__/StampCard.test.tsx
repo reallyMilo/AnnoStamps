@@ -1,4 +1,4 @@
-import { StampWithRelations } from '@/lib/prisma/models'
+import type { StampWithRelations } from '@/lib/prisma/models'
 
 import {
   render as renderRTL,
