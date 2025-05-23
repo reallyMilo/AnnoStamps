@@ -69,7 +69,7 @@
     "@types/autosize": "^4.0.3",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.12.12",
-    "@types/qs": "^6.9.18",
+    "@types/qs": "^6.14.0",
     "@types/react": "18.3.1",
     "@types/react-dom": "^18.3.0",
     "@types/sanitize-html": "^2.16.0",
