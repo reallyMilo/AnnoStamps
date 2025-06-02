@@ -55,7 +55,7 @@
     "swiper": "11.2.6",
     "swr": "^2.3.3",
     "tailwind-merge": "^3.3.0",
-    "zod": "^3.25.28"
+    "zod": "^3.25.47"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.8.0",
