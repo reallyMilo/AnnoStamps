@@ -46,7 +46,7 @@ describe('UserDropdownButton', () => {
     )
   })
   it('user-menu nav items have correct hrefs depending on game version', async () => {
-    ;(usePathname as Mock).mockReturnValue('1800')
+    ;(usePathname as Mock).mockReturnValue('1800') // eslint-disable-line no-extra-semi
     const user = {
       biography: null,
       id: '1',
