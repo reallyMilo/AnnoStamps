@@ -8,6 +8,7 @@ import {
   UserIcon,
 } from '@heroicons/react/24/outline'
 import { signOut, useSession } from 'next-auth/react'
+import { usePathname } from 'next/navigation'
 
 import {
   AvatarButton,
@@ -22,11 +23,15 @@ import {
 
 export const UserDropdownButton = () => {
   const { data: session, status } = useSession()
+  const pathname = usePathname()
 
   if (status === 'loading') return
   if (status === 'unauthenticated') {
     return <Button href="/auth/signin">Add Stamp</Button>
   }
+  const isVersionRoute = pathname.includes('1800')
+
+  const gameVersion = isVersionRoute ? '/1800' : ''
 
   const { id, image, usernameURL } =
     status === 'authenticated' ? session.user : {}
@@ -41,12 +46,12 @@ export const UserDropdownButton = () => {
       label: 'My Account',
     },
     {
-      href: userPath,
+      href: `${userPath}${gameVersion}`,
       icon: HomeIcon,
       label: 'My stamps',
     },
     {
-      href: '/stamp/create',
+      href: `${gameVersion}/stamp/create`,
       icon: PlusIcon,
       label: 'Add new stamp',
     },
