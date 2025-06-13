@@ -1,25 +1,6 @@
-import { useOptimistic } from 'react'
-
 import { render as renderRTL, screen, userEvent } from '@/__tests__/test-utils'
 
 import { CommentForm } from '../CommentForm'
-
-// mocking both due to nextjs using its own react version
-vi.mock('react', async () => {
-  const actual = await vi.importActual('react')
-  return {
-    ...actual,
-    useOptimistic: vi.fn(() => [null, () => {}]),
-  }
-})
-vi.mock('react-dom', async () => {
-  const actual = await vi.importActual('react-dom')
-  return {
-    ...actual,
-    useFormStatus: vi.fn(() => [null, () => {}]),
-  }
-})
-vi.mocked(useOptimistic).mockReturnValue([[], () => {}])
 
 vi.mock('@/app/(site)/stamp/[id]/actions', () => ({
   addCommentToStamp: vi.fn(),
