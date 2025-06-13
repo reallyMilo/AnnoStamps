@@ -12,17 +12,17 @@ import { getUserWithStamps, userMetadata } from '../util'
 //   return [] // add content creators here to generate path at build time
 // }
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: { user: string }
+export const generateMetadata = async (props: {
+  params: Promise<{ user: string }>
 }): Promise<Metadata> => {
+  const params = await props.params
   const user = await getUserWithStamps(params.user)
 
   return user ? userMetadata(user, '1800') : {}
 }
 
-const User1800Page = async ({ params }: { params: { user: string } }) => {
+const User1800Page = async (props: { params: Promise<{ user: string }> }) => {
+  const params = await props.params
   const user = await getUserWithStamps(params.user, '1800')
 
   if (!user) {

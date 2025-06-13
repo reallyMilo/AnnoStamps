@@ -81,11 +81,10 @@ const getCommentThread = unstable_cache(
   { revalidate: 3600 },
 )
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: { id: string }
+export const generateMetadata = async (props: {
+  params: Promise<{ id: string }>
 }) => {
+  const params = await props.params
   const stamp = await getStamp(params.id)
 
   return {
@@ -158,7 +157,8 @@ const StampLikeButton = async ({ id }: Pick<StampWithRelations, 'id'>) => {
   )
 }
 
-const StampPage = async ({ params }: { params: { id: string } }) => {
+const StampPage = async (props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params
   const stamp = await getStamp(params.id)
   if (!stamp) {
     notFound()
@@ -184,7 +184,7 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
   return (
     <Container className="max-w-5xl space-y-6 px-0 pb-24">
       <CarouselImage images={images} />
-      <div className="space-y-6 px-2 text-midnight sm:px-0 dark:text-white">
+      <div className="text-midnight space-y-6 px-2 sm:px-0 dark:text-white">
         <Heading className="truncate">{title} </Heading>
 
         <div className="flex items-center space-x-5">
@@ -194,7 +194,7 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
             </Link>
           )}
           {modded && (
-            <div className="flex w-fit items-center gap-1 rounded-full bg-accent py-1 pl-2 pr-3 text-xs capitalize text-white">
+            <div className="bg-accent flex w-fit items-center gap-1 rounded-full py-1 pr-3 pl-2 text-xs text-white capitalize">
               <WrenchIcon className="h-5 w-5" />
               mods
             </div>
@@ -204,12 +204,12 @@ const StampPage = async ({ params }: { params: { id: string } }) => {
           </div>
 
           <div className="hidden grow space-x-5 text-sm md:flex">
-            <Text className="capitalize text-accent dark:text-rose-400">
+            <Text className="text-accent capitalize dark:text-rose-400">
               {region}
             </Text>
 
             {category === 'production' && (
-              <div className="capitalize text-gray-500">{good}</div>
+              <div className="text-gray-500 capitalize">{good}</div>
             )}
 
             <div>
