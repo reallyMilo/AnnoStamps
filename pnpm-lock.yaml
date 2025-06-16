@@ -100,8 +100,8 @@ importers:
         specifier: ^3.3.1
         version: 3.3.1
       zod:
-        specifier: ^3.25.56
-        version: 3.25.63
+        specifier: ^3.25.64
+        version: 3.25.64
     devDependencies:
       '@faker-js/faker':
         specifier: ^9.8.0
@@ -5949,8 +5949,8 @@ packages:
     peerDependencies:
       zod: ^3.24.4
 
-  zod@3.25.63:
-    resolution: {integrity: sha512-3ttCkqhtpncYXfP0f6dsyabbYV/nEUW+Xlu89jiXbTBifUfjaSqXOG6JnQPLtqt87n7KAmnMqcjay6c0Wq0Vbw==}
+  zod@3.25.64:
+    resolution: {integrity: sha512-hbP9FpSZf7pkS7hRVUrOjhwKJNyampPgtXKc3AN6DsWtoHsg2Sb4SQaS4Tcay380zSwd2VPo9G9180emBACp5g==}
 
 snapshots:
 
@@ -10412,8 +10412,8 @@ snapshots:
       '@babel/plugin-proposal-private-methods': 7.18.6(@babel/core@7.27.1)
       eslint: 8.57.0
       hermes-parser: 0.25.1
-      zod: 3.25.63
-      zod-validation-error: 3.4.1(zod@3.25.63)
+      zod: 3.25.64
+      zod-validation-error: 3.4.1(zod@3.25.64)
     transitivePeerDependencies:
       - supports-color
 
@@ -13096,8 +13096,8 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod-validation-error@3.4.1(zod@3.25.63):
+  zod-validation-error@3.4.1(zod@3.25.64):
     dependencies:
-      zod: 3.25.63
+      zod: 3.25.64
 
-  zod@3.25.63: {}
+  zod@3.25.64: {}
