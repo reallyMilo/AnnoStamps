@@ -6,11 +6,10 @@ import { redirect } from 'next/navigation'
 import { auth, providerMap, signIn } from '@/auth'
 import { Container, Heading, Text } from '@/components/ui'
 
-const SignInPage = async ({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
+const SignInPage = async (props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) => {
+  const searchParams = await props.searchParams
   const session = await auth()
   if (session) {
     redirect(`/${session.userId}`)

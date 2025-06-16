@@ -10,10 +10,10 @@ Cypress.Commands.add('setSessionCookie', () => {
 
 Cypress.Commands.add('database', (rawQuery, logTask = false) => {
   const log = Cypress.log({
-    name: 'database',
+    autoEnd: false,
     displayName: 'DATABASE',
     message: [`🔎 ${rawQuery}`],
-    autoEnd: false,
+    name: 'database',
   })
 
   return cy.task(`db:query`, rawQuery, { log: logTask }).then((data) => {
@@ -21,4 +21,10 @@ Cypress.Commands.add('database', (rawQuery, logTask = false) => {
     log.end()
     return data
   })
+})
+//FIXME: NEXT_REDIRECT issue with cypress
+Cypress.on('uncaught:exception', (err) => {
+  if (err.message.includes('NEXT_REDIRECT')) {
+    return false
+  }
 })

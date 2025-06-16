@@ -20,7 +20,7 @@ type CommentContext = {
   setContent: React.Dispatch<React.SetStateAction<string>>
   setIsFormVisible: React.Dispatch<React.SetStateAction<boolean>>
   setIsTextareaFocused: React.Dispatch<React.SetStateAction<boolean>>
-  textareaRef: React.RefObject<HTMLTextAreaElement>
+  textareaRef: React.RefObject<HTMLTextAreaElement | null>
 }
 
 const CommentContext = React.createContext<CommentContext | null>(null)

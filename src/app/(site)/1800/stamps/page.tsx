@@ -6,11 +6,10 @@ export const metadata: Metadata = {
   title: `1800 Stamps | AnnoStamps`,
 }
 
-const StampsPage = async ({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
+const StampsPage = async (props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) => {
+  const searchParams = await props.searchParams
   return <StampGallery searchParams={{ ...searchParams, game: '1800' }} />
 }
 export default StampsPage

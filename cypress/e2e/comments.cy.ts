@@ -133,7 +133,7 @@ describe('Comment on stamp', () => {
           cy.findAllByLabelText('Comment')
             .last()
             .type('Nested reply to reply comment')
-          cy.getBySel('comment-submit-button').click()
+          cy.findAllByTestId('comment-submit-button').last().click()
         })
 
       cy.findByRole('link', { name: '@testSeedUser' }).should('exist')
