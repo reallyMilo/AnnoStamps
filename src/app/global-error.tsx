@@ -12,10 +12,7 @@ const GlobalError = ({ error }: { error: { digest?: string } & Error }) => {
   return (
     <html>
       <body>
-        {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          <NextError statusCode={undefined as any} />
-        }
+        <NextError statusCode={0} />
       </body>
     </html>
   )
