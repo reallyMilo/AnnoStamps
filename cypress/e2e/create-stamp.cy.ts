@@ -52,6 +52,17 @@ describe('Stamp creation', () => {
         },
       )
       cy.findByAltText('stamp image preview').should('exist')
+
+      cy.get('#category').select('general').should('have.value', 'general')
+      cy.get('#region').select('arctic').should('have.value', 'arctic')
+      cy.get('#modded').select('No').should('have.value', 'false')
+      cy.get('#title')
+        .type('cypress test title')
+        .should('have.value', 'cypress test title')
+      cy.get('#description')
+        .type('cypress test description')
+        .should('have.value', 'cypress test description')
+
       cy.findByText('Submit Stamp').click()
 
       cy.findByText('Please add stamps').should('exist')
