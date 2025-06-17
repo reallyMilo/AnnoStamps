@@ -9,13 +9,16 @@ import { startTransition, useOptimistic } from 'react'
 import type { StampWithRelations } from '@/lib/prisma/models'
 
 import { Button } from '@/components/ui'
-import { cn, type ServerAction } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 
 type LikeButtonProps = {
   id: StampWithRelations['id']
   initialLikes: number
   isLiked: boolean
-  likeButtonAction: ServerAction<StampWithRelations['id'], { ok: boolean }>
+  likeButtonAction: (id: string) => Promise<{
+    message: string
+    ok: boolean
+  }>
   testId: string
 }
 

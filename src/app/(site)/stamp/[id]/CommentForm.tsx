@@ -7,7 +7,6 @@ import { useOptimistic } from 'react'
 import { useFormStatus } from 'react-dom'
 
 import type { Comment } from '@/lib/prisma/models'
-import type { ServerAction } from '@/lib/utils'
 
 import { Button, Textarea } from '@/components/ui'
 
@@ -105,7 +104,10 @@ const Form = ({
   action,
   children,
 }: React.PropsWithChildren<{
-  action: ServerAction<FormData, { message: string; ok: boolean }>
+  action: (formData: FormData) => Promise<{
+    message: string
+    ok: boolean
+  }>
 }>) => {
   const { content, setContent, setIsTextareaFocused, textareaRef } =
     useCommentContext()
