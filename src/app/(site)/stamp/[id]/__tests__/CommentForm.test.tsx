@@ -12,7 +12,7 @@ const user = {
   username: 'test123',
   usernameURL: 'test123',
 }
-const mockAction = async (): Promise<{ message: string; ok: boolean }> => {
+const mockAction = async () => {
   return { message: 'Test message', ok: true }
 }
 describe('CommentForm', () => {
