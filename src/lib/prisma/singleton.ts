@@ -81,33 +81,55 @@ export const buildFilterWhereClause = (
 
   // https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search#postgresql
   // increase chance that user search returns something with or matching
-  const parsedQuery = search
-    ? search.replace(/(\w)\s+(\w)/g, '$1 | $2')
-    : undefined
+  const searchOrPattern = search
+    ? search.replace(/\s*([^\s]+)\s*/g, (_, word, i) => (i ? '|' : '') + word)
+    : null
 
-  const buildArrayFiltering = (column: string, params: string | string[]) => {
+  const buildFieldMatchFilter = (column: string, params: string | string[]) => {
     if (Array.isArray(params)) {
       return {
         OR: params.map((param) => ({ [column]: param })),
       }
-    } else {
-      return { [column]: params }
     }
+    return { [column]: params }
   }
   const gameVersion = game ? game.match(/^\d+/) : null
 
-  return {
+  const categoryFilter = category
+    ? buildFieldMatchFilter('category', category)
+    : null
+  const regionFilter = region ? buildFieldMatchFilter('region', region) : null
+  const capitalFilter = capital
+    ? buildFieldMatchFilter('capital', capital)
+    : null
+
+  type FilterObj = { OR: Record<string, string>[] }
+  const columnArr = [categoryFilter, regionFilter, capitalFilter].filter(
+    (e): e is FilterObj => e !== null && typeof e === 'object' && 'OR' in e,
+  )
+
+  const stampWhereInputBase = {
     game: gameVersion ? gameVersion[0] : '117',
-    ...(region ? buildArrayFiltering('region', region) : {}),
-    ...(category ? buildArrayFiltering('category', category) : {}),
-    ...(capital ? buildArrayFiltering('capital', capital) : {}),
-    ...(parsedQuery
+    ...(searchOrPattern
       ? {
           title: {
-            search: parsedQuery,
+            search: searchOrPattern,
           },
         }
       : {}),
+  }
+
+  if (columnArr.length >= 2) {
+    return {
+      ...stampWhereInputBase,
+      AND: columnArr,
+    }
+  }
+  return {
+    ...stampWhereInputBase,
+    ...(categoryFilter ?? {}),
+    ...(regionFilter ?? {}),
+    ...(capitalFilter ?? {}),
   }
 }
 export const buildOrderByClause = (
