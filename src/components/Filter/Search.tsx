@@ -9,7 +9,7 @@ import { useQueryParams } from './useQueryParams'
 
 export const Search = () => {
   const router = useRouter()
-  const [searchParams, parsedQuery, stringifyQuery] = useQueryParams()
+  const [searchParams, stringifyQuery] = useQueryParams()
 
   return (
     <form
@@ -20,16 +20,14 @@ export const Search = () => {
 
         if (!formData.get('search')) {
           router.push(
-            stringifyQuery({
-              ...parsedQuery,
+            stringifyQuery(searchParams, {
               search: null,
             }),
           )
           return
         }
         router.push(
-          stringifyQuery({
-            ...parsedQuery,
+          stringifyQuery(searchParams, {
             search: formData.get('search'),
           }),
         )

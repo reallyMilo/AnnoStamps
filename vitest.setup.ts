@@ -16,7 +16,11 @@ beforeAll(() => {
       }
     },
     useSearchParams() {
-      return {}
+      return {
+        get: () => {
+          return ''
+        },
+      }
     },
   }))
 })

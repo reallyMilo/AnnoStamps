@@ -31,7 +31,7 @@ type FilterFormProps = {
 const sortOptions = Object.values(SORT_OPTIONS)
 const FilterForm = ({ checkboxFilterOptions, className }: FilterFormProps) => {
   const router = useRouter()
-  const [searchParams, parsedQuery, stringifyQuery] = useQueryParams()
+  const [searchParams, stringifyQuery] = useQueryParams()
   const searchParamsString = searchParams?.toString()
 
   return (
@@ -40,72 +40,67 @@ const FilterForm = ({ checkboxFilterOptions, className }: FilterFormProps) => {
       className={cn('space-y-6 divide-y divide-gray-200', className)}
     >
       {checkboxFilterOptions.map((section, sectionIdx) => (
-        <div className="pt-6 first:pt-0" key={`${section.id}-${sectionIdx}`}>
-          <Fieldset>
-            <Legend className="capitalize">{section.id}</Legend>
-            <CheckboxGroup>
-              {section.options.map((option, optionIdx) => (
-                <CheckboxField key={`${section.id}-${option}-${optionIdx}`}>
-                  <Checkbox
-                    data-section={section.id}
-                    defaultChecked={searchParamsString?.includes(
-                      `${section.id}=${option}`,
-                    )}
-                    id={option}
-                    name={option}
-                    onChange={(isChecked) => {
-                      const existingParams =
-                        searchParams?.getAll(section.id) ?? []
+        <Fieldset className="pb-6" key={`${section.id}-${sectionIdx}`}>
+          <Legend className="capitalize">{section.id}</Legend>
+          <CheckboxGroup>
+            {section.options.map((option, optionIdx) => (
+              <CheckboxField key={`${section.id}-${option}-${optionIdx}`}>
+                <Checkbox
+                  data-section={section.id}
+                  defaultChecked={searchParamsString?.includes(
+                    `${section.id}=${option}`,
+                  )}
+                  id={option}
+                  name={option}
+                  onChange={(isChecked) => {
+                    const existingParams =
+                      searchParams?.getAll(section.id) ?? []
 
-                      if (isChecked) {
-                        existingParams.push(option)
+                    if (isChecked) {
+                      existingParams.push(option)
 
-                        router.push(
-                          stringifyQuery({
-                            ...parsedQuery,
-                            [section.id]: existingParams,
-                          }),
-                        )
-
-                        return
-                      }
-                      const filtered = existingParams.filter(
-                        (param) => param !== option,
-                      )
                       router.push(
-                        stringifyQuery({
-                          ...parsedQuery,
-                          [section.id]: filtered,
+                        stringifyQuery(searchParams, {
+                          [section.id]: existingParams,
                         }),
                       )
-                    }}
-                    value={option}
-                  />
-                  <Label className="capitalize">{option}</Label>
-                </CheckboxField>
-              ))}
-            </CheckboxGroup>
-          </Fieldset>
-        </div>
+
+                      return
+                    }
+                    const filtered = existingParams.filter(
+                      (param) => param !== option,
+                    )
+                    router.push(
+                      stringifyQuery(searchParams, {
+                        [section.id]: filtered,
+                      }),
+                    )
+                  }}
+                  value={option}
+                />
+                <Label className="capitalize">{option}</Label>
+              </CheckboxField>
+            ))}
+          </CheckboxGroup>
+        </Fieldset>
       ))}
     </form>
   )
 }
 const SortOptionsSelect = () => {
   const router = useRouter()
-  const [, parsedQuery, stringifyQuery] = useQueryParams()
+  const [searchParams, stringifyQuery] = useQueryParams()
 
   return (
     <Headless.Field className="flex items-baseline justify-center gap-4">
       <Label>Sort</Label>
       <Select
         className="max-w-48"
-        defaultValue={(parsedQuery['sort'] as string) ?? undefined}
+        defaultValue={searchParams.get('sort') ?? undefined}
         name="sort"
         onChange={(e) =>
           router.push(
-            stringifyQuery({
-              ...parsedQuery,
+            stringifyQuery(searchParams, {
               sort: e.target.value,
             }),
           )
@@ -128,7 +123,7 @@ const MobileFilter = ({ children }: PropsWithChildren) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <>
+    <div>
       <Button
         className="self-end lg:hidden"
         color="secondary"
@@ -142,7 +137,7 @@ const MobileFilter = ({ children }: PropsWithChildren) => {
       <MobileSidebar close={() => setIsOpen(false)} open={isOpen}>
         {children}
       </MobileSidebar>
-    </>
+    </div>
   )
 }
 
@@ -161,8 +156,8 @@ export const Filter = ({
         />
       </Suspense>
 
-      <div className="space-y-6 lg:col-span-5">
-        <div className="flex items-baseline justify-between space-x-5 space-y-6">
+      <div className="lg:col-span-5">
+        <div className="flex items-baseline justify-between space-y-6 space-x-5">
           <Suspense>
             <Search />
             <SortOptionsSelect />
