@@ -1,13 +1,21 @@
 import { buildFilterWhereClause } from '../singleton'
 
 describe('buildFilterWhereClause', () => {
-  it('returns empty where clause when filter is empty', () => {
-    const filter = {}
-    const result = buildFilterWhereClause(filter)
-    expect(result).toEqual({ game: '117' })
+  it('returns default game when filter is empty', () => {
+    expect(buildFilterWhereClause({})).toEqual({ game: '117' })
   })
 
-  it('builds a where clause with all single string filter properties', () => {
+  it('parses game version from alphanumeric string', () => {
+    expect(buildFilterWhereClause({ game: '117a' })).toEqual({ game: '117' })
+  })
+
+  it('uses default game when no game is provided', () => {
+    expect(buildFilterWhereClause({ region: 'rome' })).toEqual({
+      game: '117',
+      region: 'rome',
+    })
+  })
+  it('handles capital, category, and region as strings', () => {
     const filter = {
       capital: 'crown falls',
       category: 'production',
@@ -15,49 +23,99 @@ describe('buildFilterWhereClause', () => {
       region: 'new world',
       search: 'Cool stamp',
     }
-    const result = buildFilterWhereClause(filter)
-    expect(result).toEqual({
+    expect(buildFilterWhereClause(filter)).toEqual({
       capital: 'crown falls',
       category: 'production',
       game: '1800',
       region: 'new world',
       title: {
-        search: 'Cool | stamp',
+        search: 'Cool|stamp',
       },
     })
   })
+  it('handles a category array and region as string', () => {
+    const filter = {
+      category: ['production', 'cosmetic'],
+      game: '1800',
+      region: 'old world',
+      search: 'Cool|stamp',
+    }
+    expect(buildFilterWhereClause(filter)).toEqual({
+      game: '1800',
+      OR: [{ category: 'production' }, { category: 'cosmetic' }],
+      region: 'old world',
+      title: {
+        search: 'Cool|stamp',
+      },
+    })
+  })
+  it('handles capital, category and region as arrays', () => {
+    const filter = {
+      capital: ['manila', 'crown falls'],
+      category: ['production', 'cosmetic'],
+      game: '1800',
+      region: ['old world', 'new world', 'enbesa'],
+    }
+    expect(buildFilterWhereClause(filter)).toEqual({
+      AND: [
+        {
+          OR: [
+            {
+              category: 'production',
+            },
+            {
+              category: 'cosmetic',
+            },
+          ],
+        },
+        {
+          OR: [
+            {
+              region: 'old world',
+            },
+            {
+              region: 'new world',
+            },
+            {
+              region: 'enbesa',
+            },
+          ],
+        },
+        {
+          OR: [
+            {
+              capital: 'manila',
+            },
+            {
+              capital: 'crown falls',
+            },
+          ],
+        },
+      ],
+      game: '1800',
+    })
+  })
 
+  it('trims and parses extra whitespace in search query', () => {
+    const result = buildFilterWhereClause({
+      search: '  red   panda  king   x    ',
+    })
+    expect(result).toEqual({
+      game: '117',
+      title: { search: 'red|panda|king|x' },
+    })
+  })
   it('ignores undefined and empty string properties in the filter', () => {
     const filter = {
       category: '',
       region: undefined,
       search: 'Test',
     }
-    const result = buildFilterWhereClause(filter)
-    expect(result).toEqual({
+    expect(buildFilterWhereClause(filter)).toEqual({
       game: '117',
       title: {
         search: 'Test',
       },
-    })
-  })
-
-  it('builds a where clause with OR filter array', () => {
-    const filter = {
-      category: ['production', 'cosmetic'],
-      game: '1800',
-    }
-    const result = buildFilterWhereClause(filter)
-    expect(result).toEqual({
-      game: '1800',
-      OR: [
-        {
-          category: 'production',
-        },
-        {
-          category: 'cosmetic',
-        },
-      ],
     })
   })
 })
