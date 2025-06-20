@@ -19,22 +19,25 @@ const useQueryParams = () => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  const parsedQuery = qs.parse(searchParams?.toString() ?? '') as QueryParams
+  const stringifyQuery = (searchParams: URLSearchParams, params: object) => {
+    const previousQuery = qs.parse(searchParams.toString())
 
-  const stringifyQuery = (params: object) => {
-    const queryString = qs.stringify(params, {
-      arrayFormat: 'repeat',
-      skipNulls: true,
-      sort: (a, b) =>
-        queryParamsOrder.indexOf(a as keyof QueryParams) -
-        queryParamsOrder.indexOf(b as keyof QueryParams),
-    })
+    const queryString = qs.stringify(
+      { ...previousQuery, ...params },
+      {
+        arrayFormat: 'repeat',
+        skipNulls: true,
+        sort: (a, b) =>
+          queryParamsOrder.indexOf(a as keyof QueryParams) -
+          queryParamsOrder.indexOf(b as keyof QueryParams),
+      },
+    )
     const isEmpty = queryString.length === 0
 
     return isEmpty ? pathname : `${pathname}?${queryString}`
   }
 
-  return [searchParams, parsedQuery, stringifyQuery] as const
+  return [searchParams, stringifyQuery] as const
 }
 
 export { useQueryParams }

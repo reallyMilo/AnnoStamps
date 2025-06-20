@@ -63,18 +63,18 @@ const paginate = (
 
 export const Pagination = ({ count, page }: PaginationProps) => {
   const router = useRouter()
-  const [, parsedQuery, stringifyQuery] = useQueryParams()
+  const [searchParams, stringifyQuery] = useQueryParams()
   const totalPageCount = Math.ceil(count / STAMPS_PER_PAGE)
   const pageNumbers = paginate(totalPageCount, page)
-
-  const queryString = stringifyQuery({ ...parsedQuery, page: 1 })
+  const currentPage = searchParams.get('page')
+  const queryString = stringifyQuery(searchParams, { page: 1 })
   const queryWithoutPageNumber = queryString.slice(0, -1)
 
   useEffect(() => {
-    if (page === 1 && Number(parsedQuery.page) !== 1 && parsedQuery.page) {
+    if (page === 1 && Number(currentPage) !== 1 && currentPage) {
       router.replace(queryString)
     }
-  }, [page, parsedQuery.page, queryString, router])
+  }, [page, currentPage, queryString, router])
   return (
     <PaginationRoot>
       <PaginationPrevious
