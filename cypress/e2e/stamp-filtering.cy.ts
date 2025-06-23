@@ -20,17 +20,29 @@ describe('Filtering 117 Stamps', () => {
     cy.findByLabelText('Page 10').click()
     cy.url().should('include', 'page=10')
 
-    cy.get('#search').type('Stamp-801{enter}')
+    cy.getBySel('stamp-card-link')
+      .first()
+      .invoke('text')
+      .then((text) => {
+        const match = text.match(/Stamp-\d+-(\S*)/)
+        expect(match).to.not.be.null
+        const result = match![0] // e.g. "Stamp-460-" or "Stamp-460-strenuus"
+        cy.get('#search').type(`${result}{enter}`)
+        cy.url().should('include', `${result}&page=1`)
+      })
 
-    cy.url().should('include', 'search=Stamp-801&page=1')
     cy.getBySel('stamp-card-link').should('have.length', 1)
   })
 
   it('preselects checkboxes based on category query params', () => {
     cy.visit('/stamps?category=production&category=general')
 
-    cy.get('#production').should('be.checked')
-    cy.get('#general').should('be.checked')
+    cy.get('#production')
+      .should('have.attr', 'aria-checked', 'true')
+      .and('have.attr', 'data-headlessui-state', 'checked')
+    cy.get('#general')
+      .should('have.attr', 'aria-checked', 'true')
+      .and('have.attr', 'data-headlessui-state', 'checked')
   })
 })
 
@@ -64,6 +76,8 @@ describe('Filtering 1800 stamps', () => {
   it('preselects checkboxes based on category query params', () => {
     cy.visit('/1800/stamps?region=old%20world')
 
-    cy.get('#old world').should('be.checked')
+    cy.get('#old\\ world')
+      .should('have.attr', 'aria-checked', 'true')
+      .and('have.attr', 'data-headlessui-state', 'checked')
   })
 })
