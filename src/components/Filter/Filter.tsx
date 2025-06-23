@@ -32,8 +32,7 @@ const sortOptions = Object.values(SORT_OPTIONS)
 const FilterForm = ({ checkboxFilterOptions, className }: FilterFormProps) => {
   const router = useRouter()
   const [searchParams, stringifyQuery] = useQueryParams()
-  const searchParamsString = searchParams?.toString()
-
+  const searchParamsString = searchParams.toString().replace('+', ' ')
   return (
     <form
       aria-label="Filters"
@@ -47,7 +46,7 @@ const FilterForm = ({ checkboxFilterOptions, className }: FilterFormProps) => {
               <CheckboxField key={`${section.id}-${option}-${optionIdx}`}>
                 <Checkbox
                   data-section={section.id}
-                  defaultChecked={searchParamsString?.includes(
+                  defaultChecked={searchParamsString.includes(
                     `${section.id}=${option}`,
                   )}
                   id={option}
