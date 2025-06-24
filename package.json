@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "studio": "prisma studio",
-    "migrate": "prisma migrate dev",
+    "migrate": "prisma migrate dev && prisma generate --sql",
     "analyze-build": "ANALZYE=true pnpm build",
     "test": "vitest run",
     "test:watch": "vitest",
