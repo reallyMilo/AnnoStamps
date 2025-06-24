@@ -27,7 +27,7 @@ GRANT ALL PRIVILEGES ON DATABASE annostamps TO postgres;
 ALTER USER postgres PASSWORD 'postgres';
 ```
 
-- [Node 20.x](https://nodejs.org/en/download)
+- [Node 22.x](https://nodejs.org/en/download)
 
 - [pnpm](https://pnpm.io/installation)
 
@@ -39,13 +39,7 @@ ALTER USER postgres PASSWORD 'postgres';
    git clone https://github.com/reallyMilo/AnnoStamps.git
    ```
 
-2. Create .env in root and connect your postgres database.
-
-   ```bash
-   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/annostamps"
-   DIRECT_URL="postgresql://postgres:postgres@localhost:5432/annostamps"
-   AUTH_SECRET="openssl rand -base64 33"
-   ```
+2. If you followed the above steps rename .env.example to .env
 
 3. Install dependencies, apply the prisma schema to the database and optionally seed the database.
 
@@ -56,7 +50,6 @@ ALTER USER postgres PASSWORD 'postgres';
    ```
 
 4. (Optional) Add Discord authentication to test out provider login and user features.
-
    1. Use your Discord account to create an [application](https://discord.com/developers/applications).
 
    2. Copy the CLIENT ID and CLIENT SECRET values from OAuth2.
