@@ -88,7 +88,9 @@ export const SettingsForm = () => {
 
     const res = await updateUserSettings(formData)
     if (res.ok) {
-      await update({ username: formData.get('username') })
+      await update({
+        user: res.data,
+      })
     }
     setFormState(res)
   }
