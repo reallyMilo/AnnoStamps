@@ -136,7 +136,6 @@ describe('Update user profile', () => {
         'If you wish to change your username please contact us via the discord server.',
       ).should('exist')
 
-      cy.url().should('include', 'cypresstester')
       cy.database(
         `SELECT * FROM "User" LEFT JOIN "Preference" ON "User".id = "Preference"."userId" WHERE username = 'cypressTester';`,
       ).then((users) => {

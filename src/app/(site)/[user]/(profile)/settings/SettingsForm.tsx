@@ -5,7 +5,6 @@ import type { Session } from 'next-auth'
 import { CheckBadgeIcon } from '@heroicons/react/20/solid'
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 
@@ -50,7 +49,6 @@ const SubmitButton = () => {
 }
 
 export const SettingsForm = () => {
-  const router = useRouter()
   const { data, status, update } = useSession<true>()
   const [formState, setFormState] = useState<
     Awaited<ReturnType<typeof updateUserSettings>>
@@ -90,16 +88,9 @@ export const SettingsForm = () => {
 
     const res = await updateUserSettings(formData)
     if (res.ok) {
-      const { username: actionUsername, usernameURL: actionUsernameUrl } =
-        res.data
-
-      if (actionUsername !== username) {
-        await update({
-          username: actionUsername,
-          usernameURL: actionUsernameUrl,
-        })
-        router.replace(`/${actionUsernameUrl}/settings`)
-      }
+      await update({
+        user: res.data,
+      })
     }
     setFormState(res)
   }
