@@ -2,6 +2,8 @@
 
 import { Prisma } from '@prisma/client'
 
+import type { UserWithStamps } from '@/lib/prisma/models'
+
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
 
@@ -13,13 +15,26 @@ const blockedUsernames = new Set<string>([
   'stamps',
 ])
 
+type BaseResponse = {
+  message: null | string
+  status: 'error' | 'idle' | 'success'
+}
+
+type SuccessResponse = {
+  data: Omit<UserWithStamps, 'likedStamps' | 'listedStamps'>
+  ok: true
+} & BaseResponse
+
+type ErrorResponse = {
+  data?: undefined
+  ok: false
+} & BaseResponse
+
+type Response = Promise<ErrorResponse | SuccessResponse>
+
 export const updateUserSettings = async (
   formData: FormData,
-): Promise<{
-  message: null | string
-  ok: boolean
-  status: 'error' | 'idle' | 'success'
-}> => {
+): Promise<Response> => {
   const session = await auth()
   if (!session) {
     return { message: 'Unauthorized.', ok: false, status: 'error' }
@@ -61,7 +76,7 @@ export const updateUserSettings = async (
     : false
 
   try {
-    await prisma.user.update({
+    const res = await prisma.user.update({
       data: {
         ...updateData,
         preferences: {
@@ -85,6 +100,12 @@ export const updateUserSettings = async (
       },
       where: { id: session.userId },
     })
+    return {
+      data: res,
+      message: 'Updated user info.',
+      ok: true,
+      status: 'success',
+    }
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2002') {
@@ -102,6 +123,4 @@ export const updateUserSettings = async (
       status: 'error',
     }
   }
-
-  return { message: 'Updated user info.', ok: true, status: 'success' }
 }
