@@ -93,7 +93,7 @@
     "prettier": "^3.6.0",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "prisma": "^6.8.2",
-    "tailwindcss": "^4.1.10",
+    "tailwindcss": "^4.1.11",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "vite-tsconfig-paths": "^5.1.4",
