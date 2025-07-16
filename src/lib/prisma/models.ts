@@ -83,7 +83,6 @@ const createStampSchema = stampSchema
     ...schema,
   })) satisfies z.Schema<
   Prisma.StampUncheckedCreateInput,
-  z.ZodTypeDef,
   {
     modded: string
     region?: string
@@ -99,7 +98,6 @@ const updateStampSchema = stampSchema
     ...schema,
   })) satisfies z.Schema<
   Prisma.StampUncheckedUpdateInput,
-  z.ZodTypeDef,
   {
     modded?: string
   } & Omit<Prisma.StampUncheckedUpdateInput, 'modded'>
