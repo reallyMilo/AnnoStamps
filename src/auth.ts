@@ -76,7 +76,7 @@ const config = {
   },
   pages: {
     error: '/auth/error',
-    newUser: '/',
+    newUser: '/auth/new-user',
     signIn: '/auth/signin',
     signOut: '/',
     verifyRequest: '/',
