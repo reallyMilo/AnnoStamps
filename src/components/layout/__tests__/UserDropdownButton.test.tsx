@@ -17,7 +17,6 @@ describe('UserDropdownButton', () => {
     expect(button).toBeInTheDocument()
 
     await act(async () => await userEvent.click(button))
-    expect(screen.getByTestId('triangle-icon')).toBeInTheDocument()
     expect(
       screen.getByRole('menuitem', { name: 'My Account' }),
     ).toHaveAttribute('href', '/1/settings')

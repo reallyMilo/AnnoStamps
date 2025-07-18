@@ -2,7 +2,6 @@
 
 import {
   ArrowLeftIcon,
-  ExclamationTriangleIcon,
   HomeIcon,
   PlusIcon,
   UserIcon,
@@ -35,12 +34,11 @@ export const UserDropdownButton = () => {
 
   const { id, image, usernameURL } =
     status === 'authenticated' ? session.user : {}
-  const isUsernameSet = Boolean(usernameURL)
-  const userPath = isUsernameSet ? `/${usernameURL}` : `/${id}`
+
+  const userPath = usernameURL ? `/${usernameURL}` : `/${id}`
 
   const menuItems = [
     {
-      alert: isUsernameSet,
       href: `${userPath}/settings`,
       icon: UserIcon,
       label: 'My Account',
@@ -65,18 +63,10 @@ export const UserDropdownButton = () => {
       />
 
       <DropdownMenu anchor="bottom end" className="z-40">
-        {menuItems.map(({ alert, href, icon: Icon, label }) => (
+        {menuItems.map(({ href, icon: Icon, label }) => (
           <DropdownItem href={href} key={label}>
             <Icon />
             <DropdownLabel>{label}</DropdownLabel>
-            <div className="flex justify-end">
-              {alert === false && (
-                <ExclamationTriangleIcon
-                  className="size-4"
-                  data-testid="triangle-icon"
-                />
-              )}
-            </div>
           </DropdownItem>
         ))}
         <DropdownDivider />
