@@ -188,11 +188,10 @@ const StampPage = async (props: { params: Promise<{ id: string }> }) => {
         <Heading className="truncate">{title} </Heading>
 
         <div className="flex items-center space-x-5">
-          {user.usernameURL && (
-            <Link className="hover:text-primary" href={`/${user.usernameURL}`}>
-              {user.username}
-            </Link>
-          )}
+          <Link className="hover:text-primary" href={`/${user.usernameURL}`}>
+            {user.username}
+          </Link>
+
           {modded && (
             <div className="bg-accent flex w-fit items-center gap-1 rounded-full py-1 pr-3 pl-2 text-xs text-white capitalize">
               <WrenchIcon className="h-5 w-5" />
