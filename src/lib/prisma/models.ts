@@ -4,9 +4,7 @@ import z from 'zod'
 
 import { CATEGORIES } from '../constants'
 import { formatIntegerWithSuffix } from './utils'
-//Exception: you cannot mutate include or select because that would change the
-//expected output type and break type safety. Will have to keep exporting this
-//unfortunately or every statement call would have to be cast
+
 export const stampIncludeStatement = {
   _count: {
     select: {
@@ -41,7 +39,7 @@ export interface StampWithRelations
 
 const stampSchema = z.object({
   capital: z.string().optional(),
-  category: z.nativeEnum(CATEGORIES),
+  category: z.enum(CATEGORIES),
   downloads: z.object({ increment: z.number() }).optional(),
   game: z.enum(['1800', '117']),
   good: z.string().optional(),
@@ -331,12 +329,12 @@ export const imageExtension = Prisma.defineExtension({
     image: {
       createdAt: {
         compute({ createdAt }) {
-          return getUnixTime(new Date(createdAt))
+          return getUnixTime(createdAt)
         },
       },
       updatedAt: {
         compute({ updatedAt }) {
-          return getUnixTime(new Date(updatedAt))
+          return getUnixTime(updatedAt)
         },
       },
     },
