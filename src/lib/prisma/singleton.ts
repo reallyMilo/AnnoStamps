@@ -10,8 +10,6 @@ import {
   stampIncludeStatement,
   type StampWithRelations,
   userExtension,
-  userIncludeStatement,
-  type UserWithStamps,
 } from './models'
 
 const prismaClientSingleton = () => {
