@@ -10,6 +10,8 @@ import {
   stampIncludeStatement,
   type StampWithRelations,
   userExtension,
+  userIncludeStatement,
+  type UserWithStamps,
 } from './models'
 
 const prismaClientSingleton = () => {
@@ -77,15 +79,14 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 export const buildFilterWhereClause = (
   filter: Omit<QueryParams, 'page' | 'sort'>,
 ): Prisma.StampWhereInput => {
+  const where: Prisma.StampWhereInput = {}
   const { capital, category, game, region, search } = filter
 
-  // https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search#postgresql
-  // increase chance that user search returns something with or matching
-  const searchOrPattern = search
-    ? search.replace(/\s*([^\s]+)\s*/g, (_, word, i) => (i ? '|' : '') + word)
-    : null
-
-  const buildFieldMatchFilter = (column: string, params: string | string[]) => {
+  const buildFieldMatchFilter = (
+    column: string,
+    params: string | string[] | undefined,
+  ) => {
+    if (!params) return null
     if (Array.isArray(params)) {
       return {
         OR: params.map((param) => ({ [column]: param })),
@@ -93,40 +94,35 @@ export const buildFilterWhereClause = (
     }
     return { [column]: params }
   }
-  const gameVersion = game ? game.match(/^\d+/) : null
 
-  const categoryFilter = category
-    ? buildFieldMatchFilter('category', category)
-    : null
-  const regionFilter = region ? buildFieldMatchFilter('region', region) : null
-  const capitalFilter = capital
-    ? buildFieldMatchFilter('capital', capital)
-    : null
+  // https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search#postgresql
+  if (search) {
+    where.title = {
+      search: search.replace(
+        /\s*([^\s]+)\s*/g,
+        (_, word, i) => (i ? '|' : '') + word,
+      ),
+    }
+  }
+
+  where.game = game?.match(/^\d+/)?.[0] ?? '117'
+
+  const categoryFilter = buildFieldMatchFilter('category', category)
+  const regionFilter = buildFieldMatchFilter('region', region)
+  const capitalFilter = buildFieldMatchFilter('capital', capital)
 
   type FilterObj = { OR: Record<string, string>[] }
   const columnArr = [categoryFilter, regionFilter, capitalFilter].filter(
     (e): e is FilterObj => e !== null && typeof e === 'object' && 'OR' in e,
   )
 
-  const stampWhereInputBase = {
-    game: gameVersion ? gameVersion[0] : '117',
-    ...(searchOrPattern
-      ? {
-          title: {
-            search: searchOrPattern,
-          },
-        }
-      : {}),
+  if (columnArr.length >= 2) {
+    where.AND = columnArr
+    return where
   }
 
-  if (columnArr.length >= 2) {
-    return {
-      ...stampWhereInputBase,
-      AND: columnArr,
-    }
-  }
   return {
-    ...stampWhereInputBase,
+    ...where,
     ...(categoryFilter ?? {}),
     ...(regionFilter ?? {}),
     ...(capitalFilter ?? {}),
