@@ -44,6 +44,9 @@ const prismaClientSingleton = () => {
               const count = await q.stamp.count({
                 where: buildFilterWhereClause(filter),
               })
+              if (count === 0) {
+                return { count: 0, pageNumber: 1, stamps: [] }
+              }
               let skip = (pageNumber - 1) * STAMPS_PER_PAGE
               if (skip > count) {
                 skip = 0
@@ -156,8 +159,10 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 export const buildFilterWhereClause = (
   filter: Omit<QueryParams, 'page' | 'sort'>,
 ): Prisma.StampWhereInput => {
-  const where: Prisma.StampWhereInput = {}
   const { capital, category, game, region, search } = filter
+  const where: Prisma.StampWhereInput = {
+    game,
+  }
 
   const buildFieldMatchFilter = (
     column: string,
@@ -181,8 +186,6 @@ export const buildFilterWhereClause = (
       ),
     }
   }
-
-  where.game = game?.match(/^\d+/)?.[0] ?? '117'
 
   const categoryFilter = buildFieldMatchFilter('category', category)
   const regionFilter = buildFieldMatchFilter('region', region)
