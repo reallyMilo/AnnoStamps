@@ -1,5 +1,3 @@
-import type { SearchParams } from 'next/dist/server/request/search-params'
-
 import { PencilSquareIcon } from '@heroicons/react/20/solid'
 import { unstable_cache } from 'next/cache'
 import { notFound } from 'next/navigation'
@@ -33,12 +31,12 @@ export const UserPageView = async ({
   searchParams,
 }: {
   params: { user: string }
-  searchParams: SearchParams
+  searchParams: QueryParams
 }) => {
   const parseResult = queryParamsSchema.safeParse(searchParams)
   const { count, pageNumber, stamps, user } = await getUserWithStamps(
     params.user,
-    parseResult.success ? parseResult.data : {},
+    parseResult.success ? parseResult.data : { game: searchParams.game },
   )
 
   if (!user) {
