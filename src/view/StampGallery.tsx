@@ -63,7 +63,9 @@ export const StampGallery = ({
 
   return (
     <>
-      <Heading className="sm:text-4xl/8">{searchParams.game} Stamps</Heading>
+      <Heading className="pb-6 sm:text-4xl/8">
+        {searchParams.game} Stamps
+      </Heading>
       <Filter checkboxFilterOptions={checkboxFilterOptions}>
         <Suspense
           fallback={

@@ -34,7 +34,7 @@ const StampsPage = async (props: {
     parseResult.success ? parseResult.data : { game: '117' },
   )
   return (
-    <Container className="space-y-6">
+    <Container>
       <StampGallery
         paginatedStamps={{
           ...filteredStamps,
