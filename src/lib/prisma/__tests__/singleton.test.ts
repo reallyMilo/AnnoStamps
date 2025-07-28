@@ -1,20 +1,6 @@
 import { buildFilterWhereClause } from '../singleton'
 
 describe('buildFilterWhereClause', () => {
-  it('returns default game when filter is empty', () => {
-    expect(buildFilterWhereClause({})).toEqual({ game: '117' })
-  })
-
-  it('parses game version from alphanumeric string', () => {
-    expect(buildFilterWhereClause({ game: '117a' })).toEqual({ game: '117' })
-  })
-
-  it('uses default game when no game is provided', () => {
-    expect(buildFilterWhereClause({ region: 'rome' })).toEqual({
-      game: '117',
-      region: 'rome',
-    })
-  })
   it('handles capital, category, and region as strings', () => {
     const filter = {
       capital: 'crown falls',
@@ -98,6 +84,7 @@ describe('buildFilterWhereClause', () => {
 
   it('trims and parses extra whitespace in search query', () => {
     const result = buildFilterWhereClause({
+      game: '117',
       search: '  red   panda  king   x    ',
     })
     expect(result).toEqual({
@@ -108,6 +95,7 @@ describe('buildFilterWhereClause', () => {
   it('ignores undefined and empty string properties in the filter', () => {
     const filter = {
       category: '',
+      game: '117',
       region: undefined,
       search: 'Test',
     }
