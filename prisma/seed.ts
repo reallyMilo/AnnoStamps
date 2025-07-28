@@ -52,12 +52,6 @@ export const generateStampData = (
     const regionIdx = Math.floor(Math.random() * region.length)
     const rndRegion = region[regionIdx]
 
-    const getGood = () => {
-      const goodsInRegion = goods[regionIdx]
-      const goodIdx = Math.floor(Math.random() * goodsInRegion.length)
-      const rndGood = goodsInRegion[goodIdx]
-      return rndGood.toLowerCase()
-    }
     const getCapital = () => {
       if (rndCategory === 'island' && rndRegion === 'new world') {
         return 'manola'
@@ -66,14 +60,33 @@ export const generateStampData = (
     }
 
     const timestamp = faker.date.past()
+
+    if (index % 2 === 0) {
+      return {
+        category: rndCategory,
+        changedAt: timestamp,
+        createdAt: timestamp,
+        downloads: faker.number.int({ max: 1000000, min: 0 }),
+        game: '117',
+        id: createId(),
+        markdownDescription: `<h2> Stamp-${index} </h2>`,
+        modded: index % 20 === 0 ? true : false,
+        region: 'rome',
+        stampFileUrl: 'http://localhost:3000/test-stamp.zip',
+        title: `Stamp-${index}-${faker.lorem.words({ max: 12, min: 0 })}`,
+        unsafeDescription: `## Stamp-${index}`,
+        updatedAt: timestamp,
+        userId: users[index % users.length].id,
+      }
+    }
+
     return {
       capital: getCapital(),
       category: rndCategory,
       changedAt: timestamp,
       createdAt: timestamp,
       downloads: faker.number.int({ max: 1000000, min: 0 }),
-      game: index % 2 ? '1800' : '117',
-      good: rndCategory === 'production' ? getGood() : null,
+      game: '1800',
       id: createId(),
       markdownDescription: `<h2> Stamp-${index} </h2>`,
       modded: index % 20 === 0 ? true : false,
