@@ -7,8 +7,8 @@ import type { PrismaClientSingleton } from '@/lib/prisma/singleton'
 import { Filter } from '@/components/Filter/Filter'
 import { Pagination } from '@/components/Filter/Pagination'
 import { StampCardSkeleton } from '@/components/StampCard'
-import { Container, Grid, Heading, Subheading, Text } from '@/components/ui'
-import { STAMPS_PER_PAGE } from '@/lib/constants'
+import { Grid, Heading, Subheading, Text } from '@/components/ui'
+import { type QueryParams, STAMPS_PER_PAGE } from '@/lib/constants'
 import { CATEGORIES } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
 
@@ -26,7 +26,7 @@ type StampGalleryProps = {
         >,
         'stamps' | 'user'
       >)
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: QueryParams
 }
 
 export const StampGallery = ({
@@ -34,12 +34,9 @@ export const StampGallery = ({
   paginatedStamps,
   searchParams,
 }: React.PropsWithChildren<StampGalleryProps>) => {
-  const gameVersion =
-    typeof searchParams?.game === 'string' ? searchParams.game : '117'
-
   // TODO: when we know 117 game data
   const additionalFilters =
-    gameVersion === '1800'
+    searchParams.game === '1800'
       ? [
           {
             id: 'region',
@@ -66,7 +63,7 @@ export const StampGallery = ({
 
   return (
     <>
-      <Heading className="sm:text-4xl/8">{gameVersion} Stamps</Heading>
+      <Heading className="sm:text-4xl/8">{searchParams.game} Stamps</Heading>
       <Filter checkboxFilterOptions={checkboxFilterOptions}>
         <Suspense
           fallback={
