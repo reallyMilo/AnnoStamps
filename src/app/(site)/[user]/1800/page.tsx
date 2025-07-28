@@ -22,7 +22,12 @@ const User1800Page = async (props: {
     props.searchParams,
   ])
 
-  return <UserPageView params={params} searchParams={searchParams} />
+  return (
+    <UserPageView
+      params={params}
+      searchParams={{ ...searchParams, game: '1800' }}
+    />
+  )
 }
 
 export default User1800Page
