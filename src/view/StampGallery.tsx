@@ -65,7 +65,7 @@ export const StampGallery = ({
   const ending = Math.min(starting + STAMPS_PER_PAGE - 1, count)
 
   return (
-    <Container className="space-y-6">
+    <>
       <Heading className="sm:text-4xl/8">{gameVersion} Stamps</Heading>
       <Filter checkboxFilterOptions={checkboxFilterOptions}>
         <Suspense
@@ -94,6 +94,6 @@ export const StampGallery = ({
           )}
         </Suspense>
       </Filter>
-    </Container>
+    </>
   )
 }

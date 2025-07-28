@@ -4,6 +4,7 @@ import { unstable_cache } from 'next/cache'
 import 'server-only'
 
 import { StampCard } from '@/components/StampCard'
+import { Container } from '@/components/ui'
 import { type QueryParams, queryParamsSchema } from '@/lib/constants'
 import prisma from '@/lib/prisma/singleton'
 import { StampGallery } from '@/view/StampGallery'
@@ -31,17 +32,19 @@ const StampsPage = async (props: {
     parseResult.success ? parseResult.data : {},
   )
   return (
-    <StampGallery
-      paginatedStamps={{
-        ...filteredStamps,
-        stampsLength: filteredStamps.stamps.length,
-      }}
-      searchParams={{ ...searchParams, game: '117' }}
-    >
-      {filteredStamps.stamps.map((stamp) => (
-        <StampCard key={stamp.id} {...stamp} />
-      ))}
-    </StampGallery>
+    <Container className="space-y-6">
+      <StampGallery
+        paginatedStamps={{
+          ...filteredStamps,
+          stampsLength: filteredStamps.stamps.length,
+        }}
+        searchParams={{ ...searchParams, game: '117' }}
+      >
+        {filteredStamps.stamps.map((stamp) => (
+          <StampCard key={stamp.id} {...stamp} />
+        ))}
+      </StampGallery>
+    </Container>
   )
 }
 export default StampsPage

@@ -1,36 +1,39 @@
 import { unstable_cache } from 'next/cache'
 import 'server-only'
 
-import { userIncludeStatement } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 
-export const getUserWithStamps = unstable_cache(
-  async (user: string, game = '117') =>
+export const getUser = unstable_cache(
+  async (user: string) =>
     prisma.user.findFirst({
-      include: userIncludeStatement(game),
+      include: {
+        listedStamps: {
+          include: {
+            images: true,
+          },
+          take: 1,
+        },
+      },
       where: {
         OR: [{ usernameURL: user.toLowerCase() }, { id: user }],
       },
     }),
-  ['getUserWithStamps'],
+  ['getUser'],
   {
-    revalidate: 900,
-    tags: ['getUserWithStamps'],
+    revalidate: 3000,
+    tags: ['getUser'],
   },
 )
 
 export const userMetadata = (
   {
     biography,
-    id,
     listedStamps,
     username,
-  }: NonNullable<Awaited<ReturnType<typeof getUserWithStamps>>>,
+  }: NonNullable<Awaited<ReturnType<typeof getUser>>>,
   game = '117',
 ) => {
-  const title = username
-    ? `${username} ${game} | AnnoStamps`
-    : `${id} ${game} | AnnoStamps`
+  const title = `${username} ${game} | AnnoStamps`
   const description = biography ?? `${username} AnnoStamps page`
 
   if (listedStamps.length === 0) {

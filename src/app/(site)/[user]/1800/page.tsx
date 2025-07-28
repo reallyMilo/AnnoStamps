@@ -1,40 +1,28 @@
 import type { Metadata } from 'next'
+import type { SearchParams } from 'next/dist/server/request/search-params'
 
-import { notFound } from 'next/navigation'
-
-import { auth } from '@/auth'
-
-import { UserHomePage } from '../UserHomePage'
-import { UserPublicPage } from '../UserPublicPage'
-import { getUserWithStamps, userMetadata } from '../util'
-
-// export function generateStaticParams() {
-//   return [] // add content creators here to generate path at build time
-// }
+import { UserPageView } from '../UserPageView'
+import { getUser, userMetadata } from '../util'
 
 export const generateMetadata = async (props: {
   params: Promise<{ user: string }>
 }): Promise<Metadata> => {
   const params = await props.params
-  const user = await getUserWithStamps(params.user)
+  const user = await getUser(params.user)
 
   return user ? userMetadata(user, '1800') : {}
 }
 
-const User1800Page = async (props: { params: Promise<{ user: string }> }) => {
-  const params = await props.params
-  const user = await getUserWithStamps(params.user, '1800')
+const User1800Page = async (props: {
+  params: Promise<{ user: string }>
+  searchParams: Promise<SearchParams>
+}) => {
+  const [params, searchParams] = await Promise.all([
+    props.params,
+    props.searchParams,
+  ])
 
-  if (!user) {
-    notFound()
-  }
-  const session = await auth()
-
-  return user.id === session?.userId ? (
-    <UserHomePage {...user} />
-  ) : (
-    <UserPublicPage {...user} />
-  )
+  return <UserPageView params={params} searchParams={searchParams} />
 }
 
 export default User1800Page
