@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 
 import { unstable_cache } from 'next/cache'
-import 'server-only'
 
 import { StampCard } from '@/components/StampCard'
 import { Container } from '@/components/ui'
@@ -27,9 +26,12 @@ const StampsPage = async (props: {
 }) => {
   const searchParams = await props.searchParams
 
-  const parseResult = queryParamsSchema.safeParse(searchParams)
+  const parseResult = queryParamsSchema.safeParse({
+    ...searchParams,
+    game: '117',
+  })
   const filteredStamps = await getFilteredStamps(
-    parseResult.success ? parseResult.data : {},
+    parseResult.success ? parseResult.data : { game: '117' },
   )
   return (
     <Container className="space-y-6">
