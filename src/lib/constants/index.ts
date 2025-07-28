@@ -17,16 +17,14 @@ export const SORT_OPTIONS = {
 export const STAMPS_PER_PAGE =
   Number(process.env.NEXT_PUBLIC_STAMPS_PER_PAGE) || 20
 
-export const queryParamsSchema = z
-  .object({
-    capital: z.union([z.string().array(), z.string()]),
-    category: z.union([z.string().array(), z.string()]),
-    game: z.string(),
-    page: z.string(),
-    region: z.union([z.string().array(), z.string()]),
-    search: z.string(),
-    sort: z.string(),
-  })
-  .partial()
+export const queryParamsSchema = z.object({
+  capital: z.union([z.string().array(), z.string()]).optional(),
+  category: z.union([z.string().array(), z.string()]).optional(),
+  game: z.string(),
+  page: z.string().optional(),
+  region: z.union([z.string().array(), z.string()]).optional(),
+  search: z.string().optional(),
+  sort: z.string().optional(),
+})
 
 export type QueryParams = z.infer<typeof queryParamsSchema>
