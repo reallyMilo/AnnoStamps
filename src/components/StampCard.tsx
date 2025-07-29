@@ -82,19 +82,15 @@ export const StampCard = ({
           </Link>
         </Heading>
 
-        {user?.username ? (
-          <Link
-            className="hover:text-primary z-10 flex h-11 w-fit items-center gap-1 text-slate-500 dark:text-white"
-            data-testid="stamp-card-username-link"
-            href={`/${user.usernameURL}`}
-            prefetch={false}
-          >
-            <Avatar className="size-5" src={user.image} />
-            {user.username}
-          </Link>
-        ) : (
-          <span className="h-11"></span>
-        )}
+        <Link
+          className="hover:text-primary z-10 flex h-11 w-fit items-center gap-1 text-slate-500 dark:text-white"
+          data-testid="stamp-card-username-link"
+          href={`/${user.usernameURL}`}
+          prefetch={false}
+        >
+          <Avatar className="size-5" src={user.image} />
+          {user.username}
+        </Link>
 
         <div className="mt-auto flex justify-between">
           <StampCategoryIcon category={category} />
