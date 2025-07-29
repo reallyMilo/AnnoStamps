@@ -3,19 +3,12 @@ import { createId } from '@paralleldrive/cuid2'
 import { PrismaClient, type User } from '@prisma/client'
 
 import { CATEGORIES } from '../src/lib/constants'
-import {
-  ARCTIC_GOODS,
-  ENBESA_GOODS,
-  NEW_WORLD_GOODS,
-  OLD_WORLD_GOODS,
-  REGIONS_1800,
-} from '../src/lib/constants/1800/data'
+import { REGIONS_1800 } from '../src/lib/constants/1800/data'
 
 const prisma = new PrismaClient()
 
 const categories = Object.values(CATEGORIES)
 const region = Object.values(REGIONS_1800)
-const goods = [OLD_WORLD_GOODS, NEW_WORLD_GOODS, ENBESA_GOODS, ARCTIC_GOODS]
 
 export const generateUserData = (
   length: number,
@@ -140,6 +133,64 @@ async function seed() {
       },
     })
   }
+
+  await prisma.$transaction([
+    prisma.user.create({
+      data: {
+        email: 'filterSeedUser@example.com',
+        id: 'filterSeedUserId',
+        username: 'filterSeedUser',
+        usernameURL: 'filterseeduser',
+      },
+    }),
+    prisma.stamp.createMany({
+      data: [
+        ...Array.from({ length: 30 }).map((_, i) => ({
+          category: i % 2 === 0 ? 'cosmetic' : 'production',
+          downloads: 100 + i,
+          game: '117',
+          id: `filterSeedUser117StampId_${i}`,
+          markdownDescription: `<h2>117 Test Stamp ${i}</h2>`,
+          region: 'rome',
+          stampFileUrl: 'http://localhost:3000/test-stamp.zip',
+          title: `117 Test Stamp ${i}`,
+          unsafeDescription: `117 test stamp ${i}`,
+          userId: 'filterSeedUserId',
+        })),
+        ...Array.from({ length: 30 }).map((_, i) => ({
+          category: i % 2 === 0 ? 'cosmetic' : 'production',
+          downloads: 50 + i,
+          game: '1800',
+          id: `filterSeedUser1800StampId_${i}`,
+          markdownDescription: `<h2>1800 Test Stamp ${i}</h2>`,
+          region: i % 2 === 0 ? 'old world' : 'new world',
+          stampFileUrl: 'http://localhost:3000/test-stamp.zip',
+          title: `1800 Test Stamp ${i}`,
+          unsafeDescription: `1800 test stamp ${i}`,
+          userId: 'filterSeedUserId',
+        })),
+      ],
+    }),
+    prisma.image.createMany({
+      data: [
+        ...Array.from({ length: 30 }).map((_, i) => ({
+          id: `filterSeedUser117ImageId_${i}`,
+          largeUrl: `https://placehold.co/1024x576.png?text=Large117_${i}`,
+          originalUrl: `https://placehold.co/2000x2000.png?text=Original117_${i}`,
+          smallUrl: `https://placehold.co/500x281.png?text=Small117_${i}`,
+          stampId: `filterSeedUser117StampId_${i}`,
+        })),
+        ...Array.from({ length: 30 }).map((_, i) => ({
+          id: `filterSeedUser1800ImageId_${i}`,
+          largeUrl: `https://placehold.co/1024x576.png?text=Large1800_${i}`,
+          originalUrl: `https://placehold.co/2000x2000.png?text=Original1800_${i}`,
+          smallUrl: `https://placehold.co/500x281.png?text=Small1800_${i}`,
+          stampId: `filterSeedUser1800StampId_${i}`,
+        })),
+      ],
+    }),
+  ])
+
   console.timeEnd('Database seed time elapsed')
   console.log('Seed completed successfully')
 }

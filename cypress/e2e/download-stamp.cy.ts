@@ -7,6 +7,7 @@ describe('Download Stamp from stamp page', () => {
       .last()
       .then((link) => {
         cy.visit(link.attr('href'))
+        cy.url().should('include', `${link.attr('href')}`)
       })
 
     cy.getBySel('stamp-downloads')
