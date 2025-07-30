@@ -189,7 +189,7 @@ describe('Stamp creation', () => {
             userId: 'testSeedUserId',
           })
       })
-      // redirect after successful stamp creation
+
       cy.url().should('include', `testseeduser`)
 
       cy.findByText('cypress test title').should('be.visible')
