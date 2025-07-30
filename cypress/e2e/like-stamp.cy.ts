@@ -11,8 +11,9 @@ describe('Stamp liking', () => {
     cy.visit('/')
     cy.getBySel('stamp-card-link')
       .last()
+      .click()
       .then((link) => {
-        cy.visit(link.attr('href'))
+        cy.url().should('include', `${link.attr('href')}`)
         cy.getBySel('like-stamp')
           .click()
           .then(() => {
@@ -22,9 +23,10 @@ describe('Stamp liking', () => {
   })
 
   it('user can like stamp', () => {
-    cy.visit('/')
+    cy.intercept('/stamp/*').as('likeStamp')
+    cy.visit('/stamps')
     cy.setSessionCookie()
-    cy.getBySel('stamp-card-link').last().click()
+    cy.getBySel('stamp-card-link').first().click()
 
     cy.getBySel('like-stamp')
       .invoke('text')
@@ -39,6 +41,7 @@ describe('Stamp liking', () => {
           })
           .click()
 
+        cy.wait('@likeStamp')
         cy.database(
           `SELECT * FROM "User" INNER JOIN "_StampLiker" ON "User".id = "_StampLiker"."B" WHERE id = 'testSeedUserId';`,
         ).then((users) => {
