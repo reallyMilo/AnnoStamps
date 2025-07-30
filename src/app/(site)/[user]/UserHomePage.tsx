@@ -1,18 +1,8 @@
-import { PencilSquareIcon, PlusIcon } from '@heroicons/react/20/solid'
+import { PlusIcon } from '@heroicons/react/20/solid'
 
 import type { UserWithStamps } from '@/lib/prisma/models'
 
-import { StampCard } from '@/components/StampCard'
-import {
-  Button,
-  Container,
-  Grid,
-  Heading,
-  Subheading,
-  Text,
-} from '@/components/ui'
-
-import { StampDeleteModal } from './StampDeleteModal'
+import { Button, Container, Heading, Subheading, Text } from '@/components/ui'
 
 /**
  * TODO: home-view additions
@@ -20,26 +10,14 @@ import { StampDeleteModal } from './StampDeleteModal'
  *  2. Customize button that goes to /settings
  */
 
-type UserBannerProps = {
-  downloads: number
-  likes: number
-  stampCount: number
-} & Pick<UserWithStamps, 'biography' | 'username'>
-
 export const UserHomeBanner = ({
   biography,
-  downloads,
-  likes,
-  stampCount,
   username,
-}: UserBannerProps) => {
+}: Pick<UserWithStamps, 'biography' | 'username'>) => {
   return (
     <div className="mb-4 flex flex-col gap-y-2 border-b-2 pb-4">
       <div className="flex space-x-4">
         <Heading>{username}</Heading>
-        <Text className="self-end">{downloads} Downloads</Text>
-        <Text className="self-end">{likes} Likes</Text>
-        <Text className="self-end">{stampCount} Stamps</Text>
       </div>
       <Text className="text-sm">{biography}</Text>
       <Button className="w-fit self-end" href={'/stamp/create'}>
@@ -52,33 +30,18 @@ export const UserHomeBanner = ({
 
 export const UserHomePage = ({
   biography,
-  id,
-  image,
-  listedStamps,
+  children,
+  stampsLength,
   username,
-  usernameURL,
-}: UserWithStamps) => {
-  const stats = listedStamps.reduce(
-    (acc, curr) => {
-      return {
-        downloads: acc.downloads + curr.downloads,
-        likes: acc.likes + curr._count.likedBy,
-      }
-    },
-    {
-      downloads: 0,
-      likes: 0,
-    },
-  )
-
+}: React.PropsWithChildren<
+  { stampsLength: number } & Pick<UserWithStamps, 'biography' | 'username'>
+>) => {
   const userBannerProps = {
-    ...stats,
     biography,
-    stampCount: listedStamps.length,
     username,
   }
 
-  if (listedStamps.length === 0) {
+  if (stampsLength === 0) {
     return (
       <Container>
         <UserHomeBanner {...userBannerProps} />
@@ -114,21 +77,7 @@ export const UserHomePage = ({
   return (
     <Container>
       <UserHomeBanner {...userBannerProps} />
-      <Grid>
-        {listedStamps.map((stamp) => (
-          <div className="flex flex-col" key={stamp.id}>
-            <div className="mb-1 flex justify-between">
-              <StampDeleteModal {...stamp} />
-
-              <Button href={`/stamp/update/${stamp.id}`}>
-                <PencilSquareIcon />
-                Edit Stamp
-              </Button>
-            </div>
-            <StampCard user={{ id, image, username, usernameURL }} {...stamp} />
-          </div>
-        ))}
-      </Grid>
+      {children}
     </Container>
   )
 }

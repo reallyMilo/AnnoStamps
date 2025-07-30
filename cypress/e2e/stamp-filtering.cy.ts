@@ -17,8 +17,8 @@ describe('Filtering 117 Stamps', () => {
   })
 
   it('pagination reset on exceeding pages through search functionality', () => {
-    cy.findByLabelText('Page 10').click()
-    cy.url().should('include', 'page=10')
+    cy.findByLabelText('Page 3').click()
+    cy.url().should('include', 'page=3')
 
     cy.getBySel('stamp-card-link')
       .first()
@@ -79,5 +79,46 @@ describe('Filtering 1800 stamps', () => {
     cy.get('#old\\ world')
       .should('have.attr', 'aria-checked', 'true')
       .and('have.attr', 'data-headlessui-state', 'checked')
+  })
+})
+
+describe('Filtering on User page Stamps', () => {
+  beforeEach(() => {
+    cy.viewport(1920, 1080)
+    cy.visit('/filterseeduser')
+  })
+
+  it('displays 117 stamps as default', () => {
+    cy.findByText('117 Stamps').should('exist')
+    cy.get('#old\\ world').should('not.exist')
+    cy.getBySel('stamp-card-link').should('have.length', 20)
+
+    cy.get('#production').click()
+
+    cy.url().should('include', '?category=production')
+
+    cy.getBySel('stamp-card-link').should('have.length', 15)
+  })
+
+  it('displays no stamps', () => {
+    cy.get('#general').click()
+    cy.findByText('No stamps found.').should('exist')
+  })
+
+  it('displays 1800 stamps', () => {
+    cy.visit('/filterseeduser/1800')
+    cy.findByText('1800 Stamps').should('exist')
+    cy.get('#old\\ world').should('exist')
+  })
+
+  it('pagination resets to page 1', () => {
+    cy.get('[aria-label="Page 2"]').click()
+    cy.findByText('21 to 30 of 30').should('exist')
+    cy.url().should('include', 'page=2')
+    cy.get('#production').click()
+
+    cy.findByText('1 to 15 of 15').should('exist')
+    cy.url().should('include', 'page=1')
+    cy.get('[aria-label="Page 2"]').should('not.exist')
   })
 })

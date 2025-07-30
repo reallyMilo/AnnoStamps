@@ -21,7 +21,7 @@ describe('Delete stamp', () => {
           .should('be.a', 'string')
           .invoke('split', '/')
           .its(2)
-          .should('have.length', 24)
+          .should('have.length', 27)
           .then((id) => {
             cy.request({
               failOnStatusCode: false,
