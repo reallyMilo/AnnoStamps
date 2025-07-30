@@ -122,7 +122,7 @@ const MobileFilter = ({ children }: PropsWithChildren) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div>
+    <div className="lg:hidden">
       <Button
         className="self-end lg:hidden"
         color="secondary"
