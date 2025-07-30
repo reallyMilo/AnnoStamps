@@ -122,6 +122,8 @@ const prismaClientSingleton = () => {
                       images: true,
                     },
                     orderBy: buildOrderByClause(sort),
+                    skip,
+                    take: STAMPS_PER_PAGE,
                     where: buildFilterWhereClause(filter),
                   },
                 },
