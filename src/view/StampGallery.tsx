@@ -80,7 +80,7 @@ export const StampGallery = ({
           }
         >
           {stampsLength === 0 ? (
-            <Text>
+            <Text className="flex space-x-2">
               <ExclamationCircleIcon className="mt-px size-5 shrink-0" />
               <span>No stamps found.</span>
             </Text>
