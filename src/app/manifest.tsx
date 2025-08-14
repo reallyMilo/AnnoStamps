@@ -2,8 +2,7 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    description:
-      'A community site for uploading and sharing stamps for Anno 1800',
+    description: 'A community site for uploading and sharing stamps for Anno',
     icons: [
       {
         sizes: '16x16',

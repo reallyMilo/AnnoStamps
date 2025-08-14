@@ -32,13 +32,11 @@ import {
 import prisma from '@/lib/prisma/singleton'
 
 export const metadata: Metadata = {
-  description:
-    'A community site for uploading and sharing stamps for Anno 1800',
-  keywords: ['Anno', 'Anno 1800', 'Stamps', 'Anno Stamps'],
+  description: 'A community site for uploading and sharing stamps for Anno',
+  keywords: ['Anno', 'Anno 177', 'Anno 1800', 'Stamps', 'Anno Stamps'],
   metadataBase: new URL('https://annostamps.com'),
   openGraph: {
-    description:
-      'A community site for uploading and sharing stamps for Anno 1800',
+    description: 'A community site for uploading and sharing stamps for Anno',
     images: [
       {
         height: 600,
