@@ -22,7 +22,6 @@ module "generateResponsiveImages" {
   function_name    = "generateResponsiveImages"
   description      = "Generates optimized WebP images, including thumbnails and breakpoints at 1024, 768, 640, and 250 pixels."
   runtime          = "nodejs18.x"
-  role             = aws_iam_role.lambda_s3_access
   environment_vars = {}
 }
 
@@ -40,7 +39,6 @@ module "updateImageRelation" {
   function_name = "updateImageRelation"
   description   = "Updates Supabase database relations with newly created responsive images."
   runtime       = "nodejs20.x"
-  role          = aws_iam_role.lambda_s3_access
   environment_vars = {
     "SUPABASE_DB_URL" : var.supabase_db_url
     "SUPABASE_SERVICE_KEY" : var.supabase_service_key
@@ -63,9 +61,6 @@ module "generateAvatarAndUpdateDb" {
   function_name = "generateAvatarAndUpdateDb"
   description   = "Generates 128x128 avatar for user profiles and updates User relation in database."
   runtime       = "nodejs18.x"
-  role          = aws_iam_role.lambda_s3_access
-
-
   environment_vars = {
     "SUPABASE_DB_URL" : var.supabase_db_url
     "SUPABASE_SERVICE_KEY" : var.supabase_service_key
