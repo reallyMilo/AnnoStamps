@@ -10,62 +10,14 @@ provider "aws" {
   skip_requesting_account_id  = true
 
   endpoints {
+    lambda         = "http://localhost:4566"
     s3             = "http://s3.localhost.localstack.cloud:4566"
   }
 }
 
-module "discordWebhookLambda" {
-  source        = ".../module/lambda"
-  filename      = ".../lambdas/discordWebhook/dist/discordWebhook.zip"
-  description   = "A Supabase webhook triggers this Lambda on new stamp creation, which then notifies a Discord webhook to alert members."
-  function_name = "discordWebhook"
-  runtime       = "nodejs20.x"
-  role          = aws_iam_role.lambda_role
-  environment_vars = {
-    "DISCORD_WEBHOOK_1800_URL" : var.discord_webhook_1800_url
-    "DISCORD_WEBHOOK_117_URL" : var.discord_webhook_117_url
-  }
-}
-
-resource "aws_lambda_function_url" "discordWebhookLambda_function_url" {
-  function_name      = module.discordWebhookLambda.function_name
-  authorization_type = "NONE"
-
-  cors {
-    allow_credentials = false
-    allow_origins     = ["${var.supabase_db_url}"]
-    allow_methods     = ["POST"]
-    allow_headers     = ["date", "keep-alive", "auth"]
-  }
-
-}
-
-module "updateStampDownloads" {
-  source        = "../module/lambda"
-  filename      = "../lambdas/updateStampDownloads/dist/updateStampDownloads.zip"
-  description   = "Daily cron scheduled task that pulls google analytics data and triggers Supabase RPC that increments stamp downloads."
-  function_name = "updateStampDownloads"
-  runtime       = "nodejs20.x"
-  role          = aws_iam_role.lambda_role
-  environment_vars = {
-    "SUPABASE_DB_URL" : var.supabase_db_url
-    "SUPABASE_SERVICE_KEY" : var.supabase_service_key
-    "GOOGLE_APPLICATION_CREDENTIALS" : "credentials.json"
-  }
-}
-
-resource "aws_cloudwatch_event_rule" "daily_trigger" {
-  name                = "DailyRateJob"
-  description         = "Event that runs daily."
-  schedule_expression = "rate(1 day)"
-}
-resource "aws_cloudwatch_event_target" "updateStampDownloads" {
-  rule = aws_cloudwatch_event_rule.daily_trigger.id
-  arn  = module.updateStampDownloads.arn
-}
 
 module "generateResponsiveImages" {
-  source           = "../module/lambda"
+  source           = "./module/lambda"
   filename         = "../lambdas/generateResponsiveImages/dist/generateResponsiveImages.zip"
   function_name    = "generateResponsiveImages"
   description      = "Generates optimized WebP images, including thumbnails and breakpoints at 1024, 768, 640, and 250 pixels."
@@ -83,7 +35,7 @@ resource "aws_lambda_permission" "allow_bucket_generateResponsiveImages" {
 }
 
 module "updateImageRelation" {
-  source        = "../module/lambda"
+  source        = "./module/lambda"
   filename      = "../lambdas/updateImageRelation/dist/updateImageRelation.zip"
   function_name = "updateImageRelation"
   description   = "Updates Supabase database relations with newly created responsive images."
@@ -92,7 +44,7 @@ module "updateImageRelation" {
   environment_vars = {
     "SUPABASE_DB_URL" : var.supabase_db_url
     "SUPABASE_SERVICE_KEY" : var.supabase_service_key
-    "CLOUDFRONT_CDN_URL" : "https://${aws_cloudfront_distribution.s3_distribution.domain_name}/"
+    "CLOUDFRONT_CDN_URL" : "${aws_s3_bucket.annostamps-bucket.bucket_domain_name}/"
   }
 }
 
@@ -103,22 +55,10 @@ resource "aws_lambda_permission" "allow_bucket_updateImageRelation" {
   principal     = "s3.amazonaws.com"
   source_arn    = aws_s3_bucket.annostamps-bucket.arn
 }
-module "sendEmailSES" {
-  source        = "../module/lambda"
-  filename      = "../lambdas/sendEmailSES/dist/sendEmailSES.zip"
-  function_name = "sendEmailSES"
-  description   = "Notifies stamp owner by email whenever an user comments on their stamp."
-  runtime       = "nodejs20.x"
-  role          = aws_iam_role.lambda_send_ses
-  environment_vars = {
-    "SUPABASE_DB_URL" : var.supabase_db_url
-    "SUPABASE_SERVICE_KEY" : var.supabase_service_key
-  }
-}
 
 module "generateAvatarAndUpdateDb" {
 
-  source        = "../module/lambda"
+  source        = "./module/lambda"
   filename      = "../lambdas/generateAvatarAndUpdateDb/dist/generateAvatarAndUpdateDb.zip"
   function_name = "generateAvatarAndUpdateDb"
   description   = "Generates 128x128 avatar for user profiles and updates User relation in database."
@@ -129,7 +69,7 @@ module "generateAvatarAndUpdateDb" {
   environment_vars = {
     "SUPABASE_DB_URL" : var.supabase_db_url
     "SUPABASE_SERVICE_KEY" : var.supabase_service_key
-    "CLOUDFRONT_CDN_URL" : "https://${aws_cloudfront_distribution.s3_distribution.domain_name}/"
+    "CLOUDFRONT_CDN_URL" : "${aws_s3_bucket.annostamps-bucket.bucket_domain_name}/"
   }
 }
 
@@ -139,45 +79,4 @@ resource "aws_lambda_permission" "allow_bucket_generateAvatarAndUpdateDb" {
   function_name = module.generateAvatarAndUpdateDb.arn
   principal     = "s3.amazonaws.com"
   source_arn    = aws_s3_bucket.annostamps-bucket.arn
-}
-
-resource "aws_sns_topic" "report_SES_fail" {
-  name = "ses-failure"
-}
-resource "aws_sns_topic_subscription" "email" {
-  protocol  = "email"
-  endpoint  = "annostampsite@gmail.com"
-  topic_arn = aws_sns_topic.report_SES_fail.arn
-}
-
-resource "aws_ses_configuration_set" "ses_fail" {
-  name = "rendering-failure"
-}
-
-resource "aws_ses_event_destination" "ses_fail" {
-  name                   = "ses-fail"
-  enabled                = true
-  configuration_set_name = aws_ses_configuration_set.ses_fail.name
-  matching_types         = ["reject", "renderingFailure", "bounce", "complaint"]
-
-  sns_destination {
-    topic_arn = aws_sns_topic.report_SES_fail.arn
-  }
-}
-
-resource "aws_ses_email_identity" "email" {
-  email = "annostampsite@gmail.com"
-}
-
-resource "aws_ses_domain_identity" "annostamps_com" {
-  domain = "annostamps.com"
-}
-
-resource "aws_ses_domain_dkim" "annostamps_com" {
-  domain = aws_ses_domain_identity.annostamps_com.domain
-}
-
-resource "aws_ses_domain_mail_from" "email_annostamps_com" {
-  domain           = aws_ses_domain_identity.annostamps_com.domain
-  mail_from_domain = "email.${aws_ses_domain_identity.annostamps_com.domain}"
 }
