@@ -3,22 +3,13 @@ resource "aws_s3_bucket" "annostamps-bucket" {
   bucket = "annostamps"
 }
 
-resource "aws_s3_bucket_versioning" "bucket-versioning" {
-  bucket = aws_s3_bucket.annostamps-bucket.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
 
 resource "aws_s3_bucket_cors_configuration" "annostamps_cors" {
   bucket = aws_s3_bucket.annostamps-bucket.id
   cors_rule {
     allowed_headers = ["*"]
     allowed_methods = ["GET", "PUT", "POST"]
-    allowed_origins = ["https://annostamps.vercel.app",
-      "https://annostamps.vercel.app/",
-      "https://annostamps.com",
-    "https://annostamps.com/"]
+    allowed_origins = ["*"]
   }
 }
 
@@ -51,19 +42,6 @@ resource "aws_s3_bucket_policy" "cloudfront_web_app_access" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Service = "cloudfront.amazonaws.com"
-        }
-        Action   = "s3:GetObject"
-        Resource = "${aws_s3_bucket.annostamps-bucket.arn}/*"
-        Condition = {
-          StringEquals = {
-            "AWS:SourceArn" : aws_cloudfront_distribution.s3_distribution.arn
-          }
-        }
-      },
       {
         "Sid" : "Stmt1696707166060",
         "Effect" : "Allow",
