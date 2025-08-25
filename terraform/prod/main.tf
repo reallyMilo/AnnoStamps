@@ -21,8 +21,8 @@ provider "aws" {
 }
 
 module "discordWebhookLambda" {
-  source        = ".../module/lambda"
-  filename      = ".../lambdas/discordWebhook/dist/discordWebhook.zip"
+  source        = "./module/lambda"
+  filename      = "../lambdas/discordWebhook/dist/discordWebhook.zip"
   description   = "A Supabase webhook triggers this Lambda on new stamp creation, which then notifies a Discord webhook to alert members."
   function_name = "discordWebhook"
   runtime       = "nodejs20.x"
@@ -47,7 +47,7 @@ resource "aws_lambda_function_url" "discordWebhookLambda_function_url" {
 }
 
 module "updateStampDownloads" {
-  source        = "../module/lambda"
+  source        = "./module/lambda"
   filename      = "../lambdas/updateStampDownloads/dist/updateStampDownloads.zip"
   description   = "Daily cron scheduled task that pulls google analytics data and triggers Supabase RPC that increments stamp downloads."
   function_name = "updateStampDownloads"
@@ -71,7 +71,7 @@ resource "aws_cloudwatch_event_target" "updateStampDownloads" {
 }
 
 module "generateResponsiveImages" {
-  source           = "../module/lambda"
+  source           = "./module/lambda"
   filename         = "../lambdas/generateResponsiveImages/dist/generateResponsiveImages.zip"
   function_name    = "generateResponsiveImages"
   description      = "Generates optimized WebP images, including thumbnails and breakpoints at 1024, 768, 640, and 250 pixels."
@@ -89,7 +89,7 @@ resource "aws_lambda_permission" "allow_bucket_generateResponsiveImages" {
 }
 
 module "updateImageRelation" {
-  source        = "../module/lambda"
+  source        = "./module/lambda"
   filename      = "../lambdas/updateImageRelation/dist/updateImageRelation.zip"
   function_name = "updateImageRelation"
   description   = "Updates Supabase database relations with newly created responsive images."
@@ -110,7 +110,7 @@ resource "aws_lambda_permission" "allow_bucket_updateImageRelation" {
   source_arn    = aws_s3_bucket.annostamps-bucket.arn
 }
 module "sendEmailSES" {
-  source        = "../module/lambda"
+  source        = "./module/lambda"
   filename      = "../lambdas/sendEmailSES/dist/sendEmailSES.zip"
   function_name = "sendEmailSES"
   description   = "Notifies stamp owner by email whenever an user comments on their stamp."
@@ -124,7 +124,7 @@ module "sendEmailSES" {
 
 module "generateAvatarAndUpdateDb" {
 
-  source        = "../module/lambda"
+  source        = "./module/lambda"
   filename      = "../lambdas/generateAvatarAndUpdateDb/dist/generateAvatarAndUpdateDb.zip"
   function_name = "generateAvatarAndUpdateDb"
   description   = "Generates 128x128 avatar for user profiles and updates User relation in database."
