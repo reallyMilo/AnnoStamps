@@ -3,29 +3,29 @@
 variable "supabase_db_url" {
   description = "Supabase database url"
   type        = string
-  sensitive   = true
+  default = "value"
 }
 variable "supabase_service_key" {
   description = "Supabase service key, must have granted permissions, see README"
   type        = string
-  sensitive   = true
+  default = "value"
 }
 
 # Discord server -> Server settings -> Integrations -> Webhooks -> Copy Webhook URL
 variable "discord_webhook_1800_url" {
   description = "Discord webhook url for the new stamp notifying."
-  sensitive   = true
   type        = string
+  default = "value"
 }
 
 variable "discord_webhook_117_url" {
   description = "Discord webhook url for the new stamp notifying."
-  sensitive   = true
   type        = string
+  default = "value"
 }
 
 variable "annostamps_user_arn" {
   description = "Full arn of IAM user that is used by the web application to access s3 resources."
-  sensitive   = true
   type        = string
+  default = "annostamps"
 }
