@@ -22,7 +22,7 @@ export const uploadAsset = async (
     if (!putObject.ok) {
       throw new Error(putObject.statusText)
     }
-    return 'https://d16532dqapk4x.cloudfront.net/' + path
+    return `${process.env.NEXT_PUBLIC_CLOUDFRONT_CDN}/${path}`
   } catch (e) {
     return Promise.reject(new Error(`Upload failed: ${e}`))
   }
