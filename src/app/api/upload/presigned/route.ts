@@ -37,8 +37,8 @@ export const GET = auth(async (req) => {
       : `${directory}/${req.auth.user.id}/${stampId}/${imageId}.${ext}`
 
   const client = new S3Client({
-    region: AWS_S3_REGION,
     forcePathStyle: process.env.NODE_ENV === 'development',
+    region: AWS_S3_REGION,
   })
   const command = new PutObjectCommand({
     Bucket: AWS_S3_BUCKET,

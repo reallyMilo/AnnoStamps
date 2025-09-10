@@ -24,7 +24,6 @@ export const uploadAsset = async (
     }
     return `${process.env.NEXT_PUBLIC_CLOUDFRONT_CDN}/${path}`
   } catch (e) {
-    console.log(e)
     return Promise.reject(new Error(`Upload failed: ${e}`))
   }
 }
