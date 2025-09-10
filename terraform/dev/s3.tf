@@ -42,17 +42,11 @@ resource "aws_s3_bucket_policy" "cloudfront_web_app_access" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      {
-        "Sid" : "Stmt1696707166060",
-        "Effect" : "Allow",
-        "Principal" : {
-          "AWS" : var.annostamps_user_arn
-        },
-        "Action" : "s3:*",
-        "Resource" : [
-          "arn:aws:s3:::annostamps/*",
-          "arn:aws:s3:::annostamps"
-        ]
+       {
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = "s3:*"
+        Resource  = "${aws_s3_bucket.annostamps-bucket.arn}/*"
       }
     ]
   })
