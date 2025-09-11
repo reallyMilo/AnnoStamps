@@ -143,7 +143,8 @@ describe('Update user profile', () => {
           biography: 'cypress tester biography',
           channel: 'email',
           enabled: true,
-          image: 'https://d16532dqapk4x.cloudfront.net/anno-stamps-logo.png',
+          image:
+            'http://s3.localhost.localstack.cloud:4566/annostamps/anno-stamps-logo.png',
           username: 'cypressTester',
           usernameURL: 'cypresstester',
         })
