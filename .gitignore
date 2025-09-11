@@ -41,3 +41,7 @@ cypress.env.json
 /cypress/downloads/
 # Sentry Config File
 .sentryclirc
+
+
+#localstack
+volume
