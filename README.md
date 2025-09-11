@@ -34,6 +34,7 @@
 
    ```bash
    pnpm i
+   docker compose up
    pnpm migrate
    pnpm db-seed
    ```
