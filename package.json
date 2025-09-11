@@ -8,16 +8,15 @@
     "start": "next start",
     "lint": "next lint",
     "studio": "prisma studio",
-    "migrate": "prisma migrate dev && prisma generate --sql",
+    "migrate": "dotenv -e .env.development -- pnpx prisma migrate dev --skip-generate && dotenv -e .env.development -- pnpx prisma generate --sql",
     "analyze-build": "ANALZYE=true pnpm build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "cypress run --browser chrome",
     "vitest": "vitest --ui",
     "cypress": "cypress open",
-    "db-seed": "NODE_ENV=development prisma db seed",
-    "prepare": "husky",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "db-seed": "NODE_ENV=development dotenv -e .env.development -- prisma db seed",
+    "prepare": "husky"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -79,6 +78,7 @@
     "@vitest/ui": "^3.1.4",
     "cuid2": "link:@types/parralleldrive/cuid2",
     "cypress": "^14.5.4",
+    "dotenv-cli": "^10.0.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "15.4.6",
     "eslint-plugin-jsonc": "^2.20.1",
