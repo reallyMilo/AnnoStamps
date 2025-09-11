@@ -1,4 +1,14 @@
 services:
+  db:
+    # current version of supabase is 15.1
+    image: postgres:15.1-alpine
+    container_name: annostamps-db
+    environment:
+      POSTGRES_DB: annostamps
+      POSTGRES_USER: annouser
+      POSTGRES_PASSWORD: annouser
+    ports:
+      - '5433:5432'
   localstack:
     container_name: '${LOCALSTACK_DOCKER_NAME:-localstack-main}'
     image: localstack/localstack:4.7.0
@@ -11,3 +21,4 @@ services:
     volumes:
       - '${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack'
       - '/var/run/docker.sock:/var/run/docker.sock'
+    profiles: [localstack]
