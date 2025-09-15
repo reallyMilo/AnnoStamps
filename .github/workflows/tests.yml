@@ -73,7 +73,7 @@ jobs:
           start: pnpm dev
           browser: chrome
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5433/annostamps
+          DATABASE_URL: postgresql://annouser:annouser@localhost:5433/annostamps
           NEXTAUTH_URL: http://localhost:3000
           NEXTAUTH_SECRET: '54x5s+4mM6/yoJa/z4q57PElcT67/mPKkI2hgNX2Ht4='
           NEXT_PUBLIC_CLOUDFRONT_CDN: 'http://s3.localhost.localstack.cloud:4566/annostamps'
