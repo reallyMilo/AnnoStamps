@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "studio": "prisma studio",
+    "studio": "dotenv -e .env.development -- prisma studio",
     "migrate": "dotenv -e .env.development -- pnpx prisma migrate dev --skip-generate && dotenv -e .env.development -- pnpx prisma generate --sql",
     "analyze-build": "ANALZYE=true pnpm build",
     "test": "vitest run",
