@@ -75,43 +75,8 @@ describe('Stamp creation', () => {
 
     it('user can create a stamp with all fields filled', () => {
       cy.intercept('/1800/stamp/create').as('createStamp')
-      // since 2 calls are made to upload 1 image, and 1 zip
-      // we set the zip call to an api-route to catch for updating
-      cy.intercept('/api/upload/*', (req) => {
-        const fileType = req.url
-          .split('&')
-          .find((param) => param.includes('fileType='))
-          .split('=')[1]
-        req.continue((res) => {
-          if (fileType === 'zip') {
-            res.send(200, {
-              ok: true,
-              path: '/stamp.zip',
-              url: 'presigned?fileType=zip',
-            })
-          } else {
-            res.send(200, {
-              ok: true,
-              path: 'anno-stamps-logo.png',
-              url: 'presigned?fileType=img',
-            })
-          }
-        })
-      }).as('uploadAsset')
 
-      cy.intercept('PUT', '/1800/stamp/presigned*', (req) => {
-        const fileType = req.url
-          .split('&')
-          .find((param) => param.includes('fileType='))
-          .split('=')[1]
-        req.continue((res) => {
-          if (fileType === 'zip') {
-            res.send(200, { ok: true, path: '/stamp.zip' })
-          } else {
-            res.send(200, { ok: true, path: 'anno-stamps-logo.png' })
-          }
-        })
-      }).as('S3Put')
+      cy.intercept('/api/upload/presigned?stampId=*').as('presigned')
 
       cy.findByLabelText('Add Images').selectFile(
         'cypress/fixtures/cypress-test-image.png',
@@ -139,20 +104,23 @@ describe('Stamp creation', () => {
       cy.findByText('Submit Stamp').click()
       cy.findByText('Creating Stamp...').should('be.visible')
 
-      // should have two api calls, because 1 image and 1 stamp file
-      cy.wait('@uploadAsset').then((interception) => {
-        assert.isNotNull(interception.response.body, '1st Presigned Url')
+      cy.wait('@presigned').then(({ request }) => {
+        const url = new URL(request.url)
+
+        expect(url.searchParams.get('stampId')).to.have.length(24)
+        expect(url.searchParams.get('filename')).to.eq('cypress-test-image.png')
+        expect(url.searchParams.get('fileType')).to.eq('image/png')
+        expect(url.searchParams.get('directory')).to.eq('images')
+      })
+      cy.wait('@presigned').then(({ request }) => {
+        const url = new URL(request.url)
+
+        expect(url.searchParams.get('stampId')).to.have.length(24)
+        expect(url.searchParams.get('filename')).to.eq('cypress test title')
+        expect(url.searchParams.get('fileType')).to.eq('zip')
+        expect(url.searchParams.get('directory')).to.eq('stamps')
       })
 
-      cy.wait('@uploadAsset').then((interception) => {
-        assert.isNotNull(interception.response.body, '2nd Presigned Url')
-      })
-      cy.wait('@S3Put').then((interception) => {
-        assert.isNotNull(interception.response.body, '1st S3 Put')
-      })
-      cy.wait('@S3Put').then((interception) => {
-        assert.isNotNull(interception.response.body, '2nd S3 Put')
-      })
       cy.wait('@createStamp').its('response.statusCode').should('eq', 303)
 
       cy.database(

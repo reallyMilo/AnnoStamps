@@ -32,30 +32,52 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: annostamps
+          POSTGRES_USER: annouser
+          POSTGRES_PASSWORD: annouser
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
         ports:
-          - 5432:5432
+          - 5433:5432
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build
       - name: 'Create Database and Seed'
-        run: pnpm migrate && pnpm prisma generate --sql
+        run: pnpm migrate && pnpm db-seed
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/annostamps
-          DIRECT_URL: postgresql://postgres:postgres@localhost:5432/annostamps
+          DATABASE_URL: postgresql://annouser:annouser@localhost:5433/annostamps
+          DIRECT_URL: postgresql://annouser:annouser@localhost:5433/annostamps
+
+      - name: Start LocalStack
+        uses: LocalStack/setup-localstack@v0.2.2
+        with:
+          image-tag: '4.7.0'
+          install-awslocal: 'true'
+          configuration: DEBUG=1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform/dev
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: ./terraform/dev
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          build: pnpm build
-          start: pnpm start
+          start: pnpm dev
           browser: chrome
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/annostamps
+          DATABASE_URL: postgresql://annouser:annouser@localhost:5433/annostamps
           NEXTAUTH_URL: http://localhost:3000
           NEXTAUTH_SECRET: '54x5s+4mM6/yoJa/z4q57PElcT67/mPKkI2hgNX2Ht4='
+          AWS_S3_REGION: 'us-east-1'
+          AWS_S3_BUCKET: 'annostamps'
+          AWS_ACCESS_KEY_ID: 'test'
+          AWS_SECRET_ACCESS_KEY: 'test'
           NEXT_PUBLIC_CLOUDFRONT_CDN: 'http://s3.localhost.localstack.cloud:4566/annostamps'
