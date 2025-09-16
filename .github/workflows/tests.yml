@@ -55,7 +55,6 @@ jobs:
         uses: LocalStack/setup-localstack@v0.2.2
         with:
           image-tag: '4.7.0'
-          install-awslocal: 'true'
           configuration: DEBUG=1
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
