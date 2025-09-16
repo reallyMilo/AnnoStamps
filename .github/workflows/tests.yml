@@ -77,6 +77,4 @@ jobs:
           NEXTAUTH_SECRET: '54x5s+4mM6/yoJa/z4q57PElcT67/mPKkI2hgNX2Ht4='
           AWS_S3_REGION: 'us-east-1'
           AWS_S3_BUCKET: 'annostamps'
-          AWS_ACCESS_KEY_ID: 'test'
-          AWS_SECRET_ACCESS_KEY: 'test'
           NEXT_PUBLIC_CLOUDFRONT_CDN: 'http://s3.localhost.localstack.cloud:4566/annostamps'

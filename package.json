@@ -9,6 +9,7 @@
     "lint": "next lint",
     "studio": "dotenv -e .env.development -- prisma studio",
     "migrate": "dotenv -e .env.development -- pnpx prisma migrate dev --skip-generate && dotenv -e .env.development -- pnpx prisma generate --sql",
+    "reset-db": "dotenv -e .env.development -- pnpx prisma migrate reset",
     "analyze-build": "ANALZYE=true pnpm build",
     "test": "vitest run",
     "test:watch": "vitest",
