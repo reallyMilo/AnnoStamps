@@ -91,8 +91,8 @@ importers:
         specifier: 0.32.6
         version: 0.32.6
       swiper:
-        specifier: 11.2.10
-        version: 11.2.10
+        specifier: 12.0.1
+        version: 12.0.1
       swr:
         specifier: ^2.3.6
         version: 2.3.6(react@19.1.0)
@@ -5464,8 +5464,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  swiper@11.2.10:
-    resolution: {integrity: sha512-RMeVUUjTQH+6N3ckimK93oxz6Sn5la4aDlgPzB+rBrG/smPdCTicXyhxa+woIpopz+jewEloiEE3lKo1h9w2YQ==}
+  swiper@12.0.1:
+    resolution: {integrity: sha512-Fi+gNw/tfc4hsGowQU5tRC/f1HFknkh4Vz8PaDI4JTinLUMTwhZyaovcH/va+iXq98BNUHN5ok0c2lEI82Fsgw==}
     engines: {node: '>= 4.7.0'}
 
   swr@2.3.6:
@@ -12477,7 +12477,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swiper@11.2.10: {}
+  swiper@12.0.1: {}
 
   swr@2.3.6(react@19.1.0):
     dependencies:
