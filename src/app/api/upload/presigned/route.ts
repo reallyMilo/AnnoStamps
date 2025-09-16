@@ -37,7 +37,7 @@ export const GET = auth(async (req) => {
       : `${directory}/${req.auth.user.id}/${stampId}/${imageId}.${ext}`
 
   const client = new S3Client({
-    forcePathStyle: process.env.NODE_ENV === 'development',
+    forcePathStyle: process.env.NODE_ENV !== 'production',
     region: AWS_S3_REGION,
   })
   const command = new PutObjectCommand({
@@ -60,7 +60,7 @@ export const GET = auth(async (req) => {
     ok: true,
     path,
     url:
-      process.env.NODE_ENV === 'development'
+      process.env.NODE_ENV !== 'production'
         ? `http://s3.localhost.localstack.cloud:4566/annostamps/${path}`
         : url,
   })

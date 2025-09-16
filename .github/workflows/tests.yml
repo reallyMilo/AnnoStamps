@@ -69,7 +69,8 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          start: pnpm dev
+          build: pnpm build
+          start: 'NODE_ENV=test next start'
           browser: chrome
         env:
           DATABASE_URL: postgresql://annouser:annouser@localhost:5433/annostamps
