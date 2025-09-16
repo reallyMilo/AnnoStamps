@@ -47,7 +47,7 @@ importers:
         version: 10.5.0(@opentelemetry/context-async-hooks@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.0.1(@opentelemetry/api@1.9.0))(next@15.4.6(@babel/core@7.28.3)(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(webpack@5.94.0)
       '@tailwindcss/forms':
         specifier: ^0.5.10
-        version: 0.5.10(tailwindcss@4.1.11)
+        version: 0.5.10(tailwindcss@4.1.13)
       autosize:
         specifier: https://codeload.github.com/mkcy3/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b
         version: https://codeload.github.com/mkcy3/autosize/tar.gz/6dea926b1ce18f01de1c62445d1ffc4a8bb80f6b
@@ -108,13 +108,13 @@ importers:
         version: 9.9.0
       '@tailwindcss/aspect-ratio':
         specifier: ^0.4.2
-        version: 0.4.2(tailwindcss@4.1.11)
+        version: 0.4.2(tailwindcss@4.1.13)
       '@tailwindcss/postcss':
         specifier: ^4.1.12
         version: 4.1.12
       '@tailwindcss/typography':
         specifier: ^0.5.16
-        version: 0.5.16(tailwindcss@4.1.11)
+        version: 0.5.16(tailwindcss@4.1.13)
       '@testing-library/cypress':
         specifier: ^10.1.0
         version: 10.1.0(cypress@14.5.4)
@@ -212,8 +212,8 @@ importers:
         specifier: ^6.14.0
         version: 6.14.0(typescript@5.8.3)
       tailwindcss:
-        specifier: ^4.1.11
-        version: 4.1.11
+        specifier: ^4.1.13
+        version: 4.1.13
       tsx:
         specifier: ^4.20.4
         version: 4.20.4
@@ -5486,11 +5486,11 @@ packages:
   tailwind-merge@3.3.1:
     resolution: {integrity: sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g==}
 
-  tailwindcss@4.1.11:
-    resolution: {integrity: sha512-2E9TBm6MDD/xKYe+dvJZAmg3yxIEDNRc0jwlNyDg/4Fil2QcSLjFKGVff0lAf1jjeaArlG/M75Ey/EYr/OJtBA==}
-
   tailwindcss@4.1.12:
     resolution: {integrity: sha512-DzFtxOi+7NsFf7DBtI3BJsynR+0Yp6etH+nRPTbpWnS2pZBaSksv/JGctNwSWzbFjp0vxSqknaUylseZqMDGrA==}
+
+  tailwindcss@4.1.13:
+    resolution: {integrity: sha512-i+zidfmTqtwquj4hMEwdjshYYgMbOrPzb9a0M3ZgNa0JMoZeFC6bxZvO8yr8ozS6ix2SDz0+mvryPeBs2TFE+w==}
 
   tapable@2.2.2:
     resolution: {integrity: sha512-Re10+NauLTMCudc7T5WLFLAwDhQ0JWdrMK+9B2M8zR5hRExKmsRDCBA7/aV/pNJFltmBFO5BAMlQFi/vq3nKOg==}
@@ -8874,14 +8874,14 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@tailwindcss/aspect-ratio@0.4.2(tailwindcss@4.1.11)':
+  '@tailwindcss/aspect-ratio@0.4.2(tailwindcss@4.1.13)':
     dependencies:
-      tailwindcss: 4.1.11
+      tailwindcss: 4.1.13
 
-  '@tailwindcss/forms@0.5.10(tailwindcss@4.1.11)':
+  '@tailwindcss/forms@0.5.10(tailwindcss@4.1.13)':
     dependencies:
       mini-svg-data-uri: 1.4.4
-      tailwindcss: 4.1.11
+      tailwindcss: 4.1.13
 
   '@tailwindcss/node@4.1.12':
     dependencies:
@@ -8955,13 +8955,13 @@ snapshots:
       postcss: 8.5.6
       tailwindcss: 4.1.12
 
-  '@tailwindcss/typography@0.5.16(tailwindcss@4.1.11)':
+  '@tailwindcss/typography@0.5.16(tailwindcss@4.1.13)':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 4.1.11
+      tailwindcss: 4.1.13
 
   '@tanstack/react-virtual@3.13.12(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
@@ -12495,9 +12495,9 @@ snapshots:
 
   tailwind-merge@3.3.1: {}
 
-  tailwindcss@4.1.11: {}
-
   tailwindcss@4.1.12: {}
+
+  tailwindcss@4.1.13: {}
 
   tapable@2.2.2: {}
 
