@@ -30,7 +30,9 @@
    git clone https://github.com/reallyMilo/AnnoStamps.git
    ```
 
-2. Install dependencies, apply the prisma schema to the database and optionally seed the database.
+2. Rename .env.example to .env
+
+3. Install dependencies, apply the prisma schema to the database and optionally seed the database.
 
    ```bash
    pnpm i
@@ -39,7 +41,7 @@
    pnpm db-seed
    ```
 
-3. (Optional) Add Discord authentication to test out provider login and user features.
+4. (Optional) Add Discord authentication to test out provider login and user features.
    1. Use your Discord account to create an [application](https://discord.com/developers/applications).
 
    2. Copy the CLIENT ID and CLIENT SECRET values from OAuth2.
