@@ -42,11 +42,6 @@ describe('Stamp liking', () => {
           .click()
 
         cy.wait('@likeStamp')
-        cy.database(
-          `SELECT * FROM "User" INNER JOIN "_StampLiker" ON "User".id = "_StampLiker"."B" WHERE id = 'testSeedUserId';`,
-        ).then((users) => {
-          cy.wrap(users).should('have.length', 1)
-        })
 
         cy.getBySel('like-stamp')
           .find('svg')
@@ -56,5 +51,11 @@ describe('Stamp liking', () => {
           .then(Number)
           .should('eq', initialLikesCount + 1)
       })
+
+    cy.database(
+      `SELECT * FROM "User" INNER JOIN "_StampLiker" ON "User".id = "_StampLiker"."B" WHERE id = 'testSeedUserId';`,
+    ).then((users) => {
+      cy.wrap(users).should('have.length', 1)
+    })
   })
 })
