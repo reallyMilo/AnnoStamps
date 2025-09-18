@@ -54,35 +54,9 @@ describe('Update user profile', () => {
     })
 
     it('user can set user profile fields', () => {
-      cy.intercept('/api/upload/*', (req) => {
-        const directory = req.url
-          .split('&')
-          .find((param) => param.includes('directory='))
-          .split('=')[1]
-        req.continue((res) => {
-          if (directory === 'avatar') {
-            res.send(200, {
-              ok: true,
-              path: 'anno-stamps-logo.png',
-              url: 'presigned?fileType=img&directory=avatar',
-            })
-          }
-        })
-      }).as('uploadAsset')
+      cy.intercept('/api/upload/presigned*').as('presigned')
 
-      cy.intercept('PUT', '/testSeedUserId/presigned*', (req) => {
-        const directory = req.url
-          .split('&')
-          .find((param) => param.includes('directory='))
-          .split('=')[1]
-        req.continue((res) => {
-          if (directory === 'avatar') {
-            res.send(200, { ok: true, path: 'anno-stamps-logo.png' })
-          }
-        })
-      }).as('S3Put')
-
-      cy.intercept('/testSeedUserId/settings').as('setUsername')
+      cy.intercept('POST', '/testSeedUserId/settings').as('setUsername')
       cy.setSessionCookie()
 
       cy.visit('/testSeedUserId/settings')
@@ -104,27 +78,13 @@ describe('Update user profile', () => {
 
       cy.findByRole('button', { name: 'Save' }).click()
 
-      cy.wait('@uploadAsset').then((interception) => {
-        assert.deepEqual(
-          interception.response.body,
-          {
-            ok: true,
-            path: 'anno-stamps-logo.png',
-            url: 'presigned?fileType=img&directory=avatar',
-          },
-          'upload asset',
-        )
-      })
+      cy.wait('@presigned').then(({ request }) => {
+        const url = new URL(request.url)
 
-      cy.wait('@S3Put').then((interception) => {
-        assert.deepEqual(
-          interception.response.body,
-          { ok: true, path: 'anno-stamps-logo.png' },
-          'presigned put',
-        )
+        expect(url.searchParams.get('filename')).to.eq('cypress-test-image.png')
+        expect(url.searchParams.get('fileType')).to.eq('image/png')
+        expect(url.searchParams.get('directory')).to.eq('avatar')
       })
-
-      cy.wait('@setUsername')
 
       cy.findByLabelText('Username')
         .invoke('val')
@@ -136,17 +96,23 @@ describe('Update user profile', () => {
         'If you wish to change your username please contact us via the discord server.',
       ).should('exist')
 
+      cy.wait('@setUsername').then(({ response }) => {
+        expect(response?.body).to.have.property('1')
+      })
+
       cy.database(
         `SELECT * FROM "User" LEFT JOIN "Preference" ON "User".id = "Preference"."userId" WHERE username = 'cypressTester';`,
       ).then((users) => {
-        cy.wrap(users[0]).should('deep.include', {
-          biography: 'cypress tester biography',
-          channel: 'email',
-          enabled: true,
-          image: 'https://d16532dqapk4x.cloudfront.net/anno-stamps-logo.png',
-          username: 'cypressTester',
-          usernameURL: 'cypresstester',
-        })
+        cy.wrap(users[0])
+          .should('deep.include', {
+            biography: 'cypress tester biography',
+            channel: 'email',
+            enabled: true,
+            username: 'cypressTester',
+            usernameURL: 'cypresstester',
+          })
+          .its('image')
+          .should('match', /annostamps\/avatar\/testSeedUserId\/.*\.png$/)
       })
     })
   })

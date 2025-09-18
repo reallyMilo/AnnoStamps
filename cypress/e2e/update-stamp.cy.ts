@@ -65,19 +65,6 @@ describe('Updating Stamp', () => {
         fixture: 'test-stamp.zip',
       }).as('getStampZip')
 
-      cy.intercept('/api/upload/*', {
-        body: {
-          ok: true,
-          path: '/stamp.zip',
-          url: 'presigned?fileType=zip',
-        },
-        statusCode: 200,
-      }).as('uploadAsset')
-      cy.intercept('PUT', '/stamp/update/presigned*', {
-        body: '/stamp.zip',
-        statusCode: 200,
-      }).as('S3Put')
-      //FIXME: Need to revalidate the path for [username]
       cy.visit('/stamp/update/testSeed1800StampId')
       cy.wait('@getStampZip')
       cy.findByText('Edit your stamp').should('be.visible')
@@ -96,7 +83,7 @@ describe('Updating Stamp', () => {
 
       cy.findByRole('button', { name: 'Update Stamp' }).click()
       cy.findByText('Creating Stamp...').should('be.visible')
-      cy.wait(['@uploadAsset', '@S3Put'])
+
       cy.wait('@updateStamp').its('response.statusCode').should('eq', 200)
 
       cy.url().should('include', '/testseeduser')

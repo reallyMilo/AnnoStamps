@@ -1,7 +1,9 @@
 import { PrismaClient } from '@prisma/client'
 import { defineConfig } from 'cypress'
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({
+  datasourceUrl: 'postgresql://annouser:annouser@localhost:5433/annostamps',
+})
 
 export default defineConfig({
   e2e: {
@@ -29,7 +31,7 @@ export default defineConfig({
                   {
                     stampId: 'testSeed117StampId',
                   },
-                  { id: 'anno-stamps-logo' },
+                  { originalUrl: { contains: 'localhost' } },
                 ],
               },
             }),

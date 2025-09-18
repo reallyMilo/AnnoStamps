@@ -36,7 +36,10 @@ export const GET = auth(async (req) => {
       ? `${directory}/${req.auth.user.id}/${imageId}.${ext}`
       : `${directory}/${req.auth.user.id}/${stampId}/${imageId}.${ext}`
 
-  const client = new S3Client({ region: AWS_S3_REGION })
+  const client = new S3Client({
+    forcePathStyle: AWS_S3_REGION === 'us-east-1',
+    region: AWS_S3_REGION,
+  })
   const command = new PutObjectCommand({
     Bucket: AWS_S3_BUCKET,
     ContentType: fileType,
@@ -56,6 +59,9 @@ export const GET = auth(async (req) => {
     message: 'Returning presigned url.',
     ok: true,
     path,
-    url,
+    url:
+      AWS_S3_REGION === 'us-east-1'
+        ? `http://s3.localhost.localstack.cloud:4566/annostamps/${path}`
+        : url,
   })
 })

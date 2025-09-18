@@ -16,16 +16,7 @@
 
 ### Prerequisites
 
-- [Postgres](https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database)
-
-If you are installing postgres locally from the link above, you have to initialize a database. Use the commands below.
-
-```bash
-sudo -u postgres psql
-CREATE DATABASE annostamps;
-GRANT ALL PRIVILEGES ON DATABASE annostamps TO postgres;
-ALTER USER postgres PASSWORD 'postgres';
-```
+- [Docker](https://docs.docker.com/engine/install/)
 
 - [Node 22.x](https://nodejs.org/en/download)
 
@@ -39,12 +30,13 @@ ALTER USER postgres PASSWORD 'postgres';
    git clone https://github.com/reallyMilo/AnnoStamps.git
    ```
 
-2. If you followed the above steps rename .env.example to .env
+2. Rename .env.example to .env
 
 3. Install dependencies, apply the prisma schema to the database and optionally seed the database.
 
    ```bash
    pnpm i
+   docker compose up
    pnpm migrate
    pnpm db-seed
    ```
