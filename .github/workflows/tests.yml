@@ -79,3 +79,5 @@ jobs:
           AWS_S3_REGION: us-east-1
           AWS_S3_BUCKET: annostamps
           NEXT_PUBLIC_CLOUDFRONT_CDN: http://s3.localhost.localstack.cloud:4566/annostamps
+          AWS_ACCESS_KEY_ID: 'test'
+          AWS_SECRET_ACCESS_KEY: 'test'

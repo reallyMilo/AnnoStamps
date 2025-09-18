@@ -88,7 +88,7 @@ export const addCommentToStamp = async (
     return { message: 'Prisma error.', ok: false }
   }
 
-  if (process.env.AWS_ACCESS_KEY_ID) {
+  if (process.env.AWS_S3_BUCKET === 'eu-central-1') {
     if (!userPreference || userPreference.enabled === true) {
       try {
         const client = new LambdaClient({ region: 'eu-central-1' })
