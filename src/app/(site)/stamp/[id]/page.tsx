@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
 import { getCommentReplyThread } from '@prisma/client/sql'
 import { SessionProvider } from 'next-auth/react'
@@ -25,6 +27,7 @@ import { likeMutation } from './actions'
 import { CarouselImage } from './CarouselImage'
 import { CommentItem } from './CommentItem'
 import { CommentView } from './CommentView'
+import { StampDownloadDisclaimer } from './StampDownloadDisclaimer'
 import { ViewReplyButton } from './ViewReplyButton'
 
 const getStamp = unstable_cache(
@@ -83,7 +86,7 @@ const getCommentThread = unstable_cache(
 
 export const generateMetadata = async (props: {
   params: Promise<{ id: string }>
-}) => {
+}): Promise<Metadata> => {
   const params = await props.params
   const stamp = await getStamp(params.id)
 
@@ -168,6 +171,7 @@ const StampPage = async (props: { params: Promise<{ id: string }> }) => {
     _count: likes,
     category,
     changedAt,
+    changedAtReadable,
     createdAt,
     good,
     id,
@@ -183,7 +187,7 @@ const StampPage = async (props: { params: Promise<{ id: string }> }) => {
 
   return (
     <Container className="max-w-5xl space-y-6 px-0 pb-24">
-      <CarouselImage images={images} />
+      <CarouselImage images={images} title={title} />
       <div className="text-midnight space-y-6 px-2 sm:px-0 dark:text-white">
         <Heading className="truncate">{title} </Heading>
 
@@ -234,24 +238,26 @@ const StampPage = async (props: { params: Promise<{ id: string }> }) => {
             <StampLikeButton id={params.id} />
           </Suspense>
 
-          <a
-            className={cn(
-              buttonStyles.base,
-              buttonStyles.solid,
-              buttonStyles.colors.primary,
-            )}
-            data-testid="stamp-download"
-            download={title}
-            href={stampFileUrl}
-          >
-            <ArrowDownTrayIcon />
-            Download
-          </a>
+          <StampDownloadDisclaimer changedAt={changedAt}>
+            <a
+              className={cn(
+                buttonStyles.base,
+                buttonStyles.solid,
+                buttonStyles.colors.primary,
+              )}
+              data-testid="stamp-download"
+              download={title}
+              href={stampFileUrl}
+            >
+              <ArrowDownTrayIcon />
+              Download
+            </a>
+          </StampDownloadDisclaimer>
         </div>
 
-        {createdAt !== changedAt && (
+        {createdAt !== changedAtReadable && (
           <div className="italic" suppressHydrationWarning>
-            Updated: {changedAt}
+            Updated: {changedAtReadable}
           </div>
         )}
         <div
