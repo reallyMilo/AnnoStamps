@@ -48,10 +48,23 @@
 
    3. Add them to the env variables.
 
-   ```bash
-   AUTH_DISCORD_ID=
-   AUTH_DISCORD_SECRET=
-   ```
+      ```bash
+      AUTH_DISCORD_ID=
+      AUTH_DISCORD_SECRET=
+      ```
+
+   4. Run docker compose with local stack profile
+
+      ```bash
+        docker compose --profile localstack up
+      ```
+
+   5. Install [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) then run the following commands.
+
+      ```bash
+        terraform -chdir=./terraform/dev init
+        terraform -chdir=./terraform/dev apply -auto-approve
+      ```
 
 ## Contributing
 
