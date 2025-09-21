@@ -28,9 +28,8 @@ export interface StampWithRelations
     Prisma.StampGetPayload<{
       include: typeof stampIncludeStatement
     }>,
-    'changedAt' | 'comments' | 'createdAt' | 'images' | 'updatedAt'
+    'comments' | 'createdAt' | 'images' | 'updatedAt'
   > {
-  changedAt: string
   createdAt: string
   images: Image[]
   suffixDownloads: string
@@ -116,7 +115,7 @@ export const stampExtensions = Prisma.defineExtension({
   },
   result: {
     stamp: {
-      changedAt: {
+      changedAtReadable: {
         compute({ changedAt }) {
           return formatDistanceToNowStrict(changedAt)
         },

@@ -1,7 +1,7 @@
 const path = require('path') // eslint-disable-line
 
 describe('Download Stamp from stamp page', () => {
-  it('user can download stamp', () => {
+  it('user can download stamp from disclaimer', () => {
     cy.visit('/')
     cy.getBySel('stamp-card-link')
       .last()
@@ -10,18 +10,23 @@ describe('Download Stamp from stamp page', () => {
         cy.url().should('include', `${link.attr('href')}`)
       })
 
-    cy.getBySel('stamp-downloads')
-      .invoke('text')
-      .then(Number)
-      .then((initDownloads) => {
-        cy.log(String(initDownloads))
-        cy.getBySel('stamp-download')
-          .trigger('mouseover')
-          .then(($link) => {
-            expect($link.css('cursor')).to.equal('pointer')
-          })
-          .click()
-      })
+    cy.findByRole('button', { name: 'Download' })
+      .click()
+      .then(() =>
+        cy
+          .getBySel('stamp-downloads')
+          .invoke('text')
+          .then(Number)
+          .then((initDownloads) => {
+            cy.log(String(initDownloads))
+            cy.getBySel('stamp-download')
+              .trigger('mouseover')
+              .then(($link) => {
+                expect($link.css('cursor')).to.equal('pointer')
+              })
+              .click()
+          }),
+      )
 
     const downloadsFolder = Cypress.config('downloadsFolder')
 

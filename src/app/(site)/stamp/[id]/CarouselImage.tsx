@@ -7,17 +7,17 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import type { StampWithRelations } from '@/lib/prisma/models'
 
-type CarouselProps = {
-  images: StampWithRelations['images']
-}
-export const CarouselImage = ({ images }: CarouselProps) => {
+export const CarouselImage = ({
+  images,
+  title,
+}: Pick<StampWithRelations, 'images' | 'title'>) => {
   return (
-    <Swiper modules={[Navigation]} navigation={true}>
-      {images.map((image) => (
-        <SwiperSlide key={image.id}>
+    <Swiper className="z-0" modules={[Navigation]} navigation>
+      {images.map((image, idx) => (
+        <SwiperSlide className="z-0" key={image.id}>
           <img
-            alt="anno stamp image"
-            className="max-h-[768px] w-full object-contain object-center"
+            alt={`${title} - User uploaded image ${idx + 1}`}
+            className="z-0 max-h-[768px] w-full object-contain object-center"
             height={768}
             src={image.largeUrl ?? image.originalUrl}
             width={1024}
