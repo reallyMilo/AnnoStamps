@@ -185,8 +185,8 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0(eslint@8.57.0)
       eslint-plugin-testing-library:
-        specifier: ^7.8.0
-        version: 7.8.0(eslint@8.57.0)(typescript@5.8.3)
+        specifier: ^7.8.1
+        version: 7.8.1(eslint@8.57.0)(typescript@5.8.3)
       eslint-plugin-yml:
         specifier: ^1.18.0
         version: 1.18.0(eslint@8.57.0)
@@ -2361,6 +2361,9 @@ packages:
   '@types/node@20.19.15':
     resolution: {integrity: sha512-W3bqcbLsRdFDVcmAM5l6oLlcl67vjevn8j1FPZ4nx+K5jNoWCh+FC/btxFoBPnvQlrHHDwfjp1kjIEDfwJ0Mog==}
 
+  '@types/node@20.19.17':
+    resolution: {integrity: sha512-gfehUI8N1z92kygssiuWvLiwcbOB3IRktR6hTDgJlXMYh5OvkPSRmgfoBUmfZt+vhwJtX7v1Yw4KvvAf7c5QKQ==}
+
   '@types/pg-pool@2.0.6':
     resolution: {integrity: sha512-TaAUE5rq2VQYxab5Ts7WZhKNmuN78Q6PiFonTDdpbx8a1H0M1vhy3rhiMjl+e2iHmogyMw7jZF4FrE6eJUy5HQ==}
 
@@ -3616,8 +3619,8 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
 
-  eslint-plugin-testing-library@7.8.0:
-    resolution: {integrity: sha512-zmu9xtpULN5KCtJBABBmXK3jfKZej2ZJ6QzCX4MtywP3UTJ7yn/Zful8Kn5mUiOCxX6KBt0to3OZf7Usuhtvfg==}
+  eslint-plugin-testing-library@7.8.1:
+    resolution: {integrity: sha512-xBCgPoU6tV9NWGj06lUKHDTiluWDH8kRDEwni6lc9wgPOG+M5vSdJd5uza5mVI6nzvW2W/uNNqUZ2Y/w7HxGRg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0, pnpm: ^9.14.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -9051,6 +9054,10 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/node@20.19.17':
+    dependencies:
+      undici-types: 6.21.0
+
   '@types/pg-pool@2.0.6':
     dependencies:
       '@types/pg': 8.15.4
@@ -10521,7 +10528,7 @@ snapshots:
       string.prototype.matchall: 4.0.12
       string.prototype.repeat: 1.0.0
 
-  eslint-plugin-testing-library@7.8.0(eslint@8.57.0)(typescript@5.8.3):
+  eslint-plugin-testing-library@7.8.1(eslint@8.57.0)(typescript@5.8.3):
     dependencies:
       '@typescript-eslint/scope-manager': 8.44.0
       '@typescript-eslint/utils': 8.44.0(eslint@8.57.0)(typescript@5.8.3)
@@ -11227,7 +11234,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.19.15
+      '@types/node': 20.19.17
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
