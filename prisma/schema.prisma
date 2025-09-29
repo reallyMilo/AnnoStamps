@@ -72,32 +72,6 @@ model Stamp {
   comments            Comment[]
 }
 
-model Account {
-  id                String  @id @default(cuid(2))
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: NoAction)
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid(2))
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: NoAction)
-}
-
 model Preference {
   id      String  @id @default(cuid(2))
   channel String
@@ -108,7 +82,6 @@ model Preference {
   updatedAt DateTime @updatedAt
   @@unique([userId, channel])
 }
-
 model User {
   id            String         @id @default(cuid(2))
   name          String?
@@ -125,6 +98,31 @@ model User {
   likedStamps   Stamp[]        @relation("StampLiker")
   comments      Comment[]
   notifications Notification[]
+}
+
+model Session {
+  id           String   @id @default(cuid(2))
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: NoAction)
+}
+model Account {
+  id                String  @id @default(cuid(2))
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: NoAction)
+
+  @@unique([provider, providerAccountId])
 }
 
 model VerificationToken {
