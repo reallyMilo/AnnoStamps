@@ -86,7 +86,7 @@ model User {
   id            String         @id @default(cuid(2))
   name          String?
   email         String?        @unique
-  emailVerified DateTime?
+  emailVerified Boolean        @default(false)
   image         String?
   username      String?        @unique
   usernameURL   String?        @unique
@@ -105,6 +105,8 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
   user         User     @relation(fields: [userId], references: [id], onDelete: NoAction)
 }
 model Account {
