@@ -4,6 +4,16 @@ import { prismaAdapter } from 'better-auth/adapters/prisma'
 import prisma from '@/lib/prisma/singleton'
 
 export const auth = betterAuth({
+  account: {
+    fields: {
+      accessToken: 'access_token',
+      accessTokenExpiresAt: 'expires_at',
+      accountId: 'providerAccountId',
+      idToken: 'id_token',
+      providerId: 'provider',
+      refreshToken: 'refresh_token',
+    },
+  },
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
