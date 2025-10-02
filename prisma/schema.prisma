@@ -112,16 +112,15 @@ model Session {
 model Account {
   id                String  @id @default(cuid(2))
   userId            String
-  type              String
   provider          String
   providerAccountId String
   refresh_token     String?
   access_token      String?
-  expires_at        Int?
-  token_type        String?
+  expires_at        DateTime?
   scope             String?
   id_token          String?
-  session_state     String?
+  createdAt         DateTime?
+  updatedAt         DateTime?
   user              User    @relation(fields: [userId], references: [id], onDelete: NoAction)
 
   @@unique([provider, providerAccountId])
