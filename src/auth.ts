@@ -23,6 +23,12 @@ export const auth = betterAuth({
       token: 'sessionToken',
     },
   },
+  socialProviders: {
+    discord: {
+      clientId: process.env.DISCORD_ID as string,
+      clientSecret: process.env.DISCORD_SECRET as string,
+    },
+  },
 })
 
 // const providers = [Google, Discord] satisfies Provider[]
