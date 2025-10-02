@@ -7,6 +7,12 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
+  session: {
+    fields: {
+      expiresAt: 'expires',
+      token: 'sessionToken',
+    },
+  },
 })
 
 // const providers = [Google, Discord] satisfies Provider[]
