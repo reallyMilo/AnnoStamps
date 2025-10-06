@@ -103,6 +103,8 @@ model User {
 model Session {
   id           String   @id @default(cuid(2))
   sessionToken String   @unique
+  ipAddress    String?
+  userAgent    String?
   userId       String
   expires      DateTime
   createdAt    DateTime @default(now())
@@ -126,10 +128,13 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-model VerificationToken {
+model Verification {
+  id         String   @id
   identifier String
-  token      String   @unique
-  expires    DateTime
+  value      String
+  expiresAt  DateTime
 
-  @@unique([identifier, token])
+  createdAt DateTime?
+  updatedAt DateTime?
+
 }
