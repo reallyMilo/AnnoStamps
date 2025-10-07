@@ -1,5 +1,9 @@
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
+import { nextCookies } from 'better-auth/next-js'
+import { customSession } from 'better-auth/plugins'
+import { headers } from 'next/headers'
+import { cache } from 'react'
 
 import prisma from '@/lib/prisma/singleton'
 
@@ -14,9 +18,51 @@ export const auth = betterAuth({
       refreshToken: 'refresh_token',
     },
   },
+  cookieCache: {
+    enabled: true,
+    maxAge: 10 * 60,
+  },
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
+  plugins: [
+    nextCookies(),
+    customSession(async ({ session, user }) => {
+      const dbSession = await prisma.session.findUnique({
+        include: {
+          user: {
+            include: {
+              notifications: {
+                orderBy: {
+                  createdAt: 'desc',
+                },
+                select: {
+                  isRead: true,
+                },
+                take: 1,
+              },
+              preferences: {
+                select: {
+                  enabled: true,
+                },
+                where: {
+                  channel: 'email',
+                },
+              },
+            },
+          },
+        },
+        where: { sessionToken: session.token },
+      })
+      return {
+        session,
+        user: {
+          ...user,
+          ...dbSession?.user,
+        },
+      }
+    }),
+  ],
   session: {
     fields: {
       expiresAt: 'expires',
@@ -29,6 +75,12 @@ export const auth = betterAuth({
       clientSecret: process.env.DISCORD_SECRET as string,
     },
   },
+})
+
+export const getSession = cache(async () => {
+  return await auth.api.getSession({
+    headers: await headers(),
+  })
 })
 
 // const providers = [Google, Discord] satisfies Provider[]
