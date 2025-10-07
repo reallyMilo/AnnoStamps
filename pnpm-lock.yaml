@@ -11,9 +11,6 @@ overrides:
 importers:
   .:
     dependencies:
-      '@auth/prisma-adapter':
-        specifier: ^2.10.0
-        version: 2.10.0(@prisma/client@6.14.0(prisma@6.14.0(typescript@5.8.3))(typescript@5.8.3))(nodemailer@6.9.14)
       '@aws-sdk/client-lambda':
         specifier: ^3.666.0
         version: 3.666.0
@@ -71,9 +68,6 @@ importers:
       next:
         specifier: 15.4.6
         version: 15.4.6(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      next-auth:
-        specifier: 5.0.0-beta.29
-        version: 5.0.0-beta.29(next@15.4.6(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(nodemailer@6.9.14)(react@19.1.0)
       qs:
         specifier: ^6.14.0
         version: 6.14.0
@@ -274,31 +268,6 @@ packages:
       {
         integrity: sha512-n8GuYSrI9bF7FFZ/SjhwevlHc8xaVlb/7HmHelnc/PZXBD2ZR49NnN9sMMuDdEGPeeRQ5d0hqlSlEpgCX3Wl0Q==,
       }
-
-  '@auth/core@0.40.0':
-    resolution:
-      {
-        integrity: sha512-n53uJE0RH5SqZ7N1xZoMKekbHfQgjd0sAEyUbE+IYJnmuQkbvuZnXItCU7d+i7Fj8VGOgqvNO7Mw4YfBTlZeQw==,
-      }
-    peerDependencies:
-      '@simplewebauthn/browser': ^9.0.1
-      '@simplewebauthn/server': ^9.0.2
-      nodemailer: ^6.8.0
-    peerDependenciesMeta:
-      '@simplewebauthn/browser':
-        optional: true
-      '@simplewebauthn/server':
-        optional: true
-      nodemailer:
-        optional: true
-
-  '@auth/prisma-adapter@2.10.0':
-    resolution:
-      {
-        integrity: sha512-EliOQoTjGK87jWWqnJvlQjbR4PjQZQqtwRwPAe108WwT9ubuuJJIrL68aNnQr4hFESz6P7SEX2bZy+y2yL37Gw==,
-      }
-    peerDependencies:
-      '@prisma/client': '>=2.26.0 || >=3 || >=4 || >=5 || >=6'
 
   '@aws-crypto/crc32@5.2.0':
     resolution:
@@ -2265,12 +2234,6 @@ packages:
     engines: { node: ^18.19.0 || >=20.6.0 }
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
-
-  '@panva/hkdf@1.2.1':
-    resolution:
-      {
-        integrity: sha512-6oclG6Y3PiDFcoyk8srjLfVKyMfVCKJ27JwNPViuXziFpmdz+MZnZN/aKY0JGXgYuO/VghU0jcOAZgWXZ1Dmrw==,
-      }
 
   '@paralleldrive/cuid2@2.2.2':
     resolution:
@@ -7191,12 +7154,6 @@ packages:
       }
     hasBin: true
 
-  jose@6.0.12:
-    resolution:
-      {
-        integrity: sha512-T8xypXs8CpmiIi78k0E+Lk7T2zlK4zDyg+o1CZ4AkOHgDg98ogdP2BeZ61lTFKFyoEwJ9RgAgN+SdM3iPgNonQ==,
-      }
-
   jose@6.1.0:
     resolution:
       {
@@ -7843,25 +7800,6 @@ packages:
         integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==,
       }
 
-  next-auth@5.0.0-beta.29:
-    resolution:
-      {
-        integrity: sha512-Ukpnuk3NMc/LiOl32njZPySk7pABEzbjhMUFd5/n10I0ZNC7NCuVv8IY2JgbDek2t/PUOifQEoUiOOTLy4os5A==,
-      }
-    peerDependencies:
-      '@simplewebauthn/browser': ^9.0.1
-      '@simplewebauthn/server': ^9.0.2
-      next: ^14.0.0-0 || ^15.0.0-0
-      nodemailer: ^6.6.5
-      react: ^18.2.0 || ^19.0.0-0
-    peerDependenciesMeta:
-      '@simplewebauthn/browser':
-        optional: true
-      '@simplewebauthn/server':
-        optional: true
-      nodemailer:
-        optional: true
-
   next@15.4.6:
     resolution:
       {
@@ -7923,13 +7861,6 @@ packages:
         integrity: sha512-5b0pgg78U3hwXkCM8Z9b2FJdPZlr9Psr9V2gQPESdGHqbntyFJKFW4r5TeWGFzafGY3hzs1JC62VEQMbl1JFkw==,
       }
 
-  nodemailer@6.9.14:
-    resolution:
-      {
-        integrity: sha512-Dobp/ebDKBvz91sbtRKhcznLThrKxKt97GI2FAlAyy+fk19j73Uz3sBXolVtmcXjaorivqsbbbjDY+Jkt4/bQA==,
-      }
-    engines: { node: '>=6.0.0' }
-
   normalize-path@3.0.0:
     resolution:
       {
@@ -7951,12 +7882,6 @@ packages:
       }
     engines: { node: ^14.16.0 || >=16.10.0 }
     hasBin: true
-
-  oauth4webapi@3.6.2:
-    resolution:
-      {
-        integrity: sha512-hwWLiyBYuqhVdcIUJMJVKdEvz+DCweOcbSfqDyIv9PuUwrNfqrzfHP2bypZgZdbYOS67QYqnAnvZa2BJwBBrHw==,
-      }
 
   object-assign@4.1.1:
     resolution:
@@ -8308,20 +8233,6 @@ packages:
         integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==,
       }
     engines: { node: '>=0.10.0' }
-
-  preact-render-to-string@6.5.11:
-    resolution:
-      {
-        integrity: sha512-ubnauqoGczeGISiOh6RjX0/cdaF8v/oDXIjO85XALCQjwQP+SB4RDXXtvZ6yTYSjG+PC1QRP2AhPgCEsM2EvUw==,
-      }
-    peerDependencies:
-      preact: '>=10'
-
-  preact@10.24.3:
-    resolution:
-      {
-        integrity: sha512-Z2dPnBnMUfyQfSQ+GBdsGa16hz35YmLmtTLhM169uW944hYL6xzTYkJjC07j+Wosz733pMWx0fgON3JNw1jJQA==,
-      }
 
   prebuild-install@7.1.2:
     resolution:
@@ -10216,25 +10127,6 @@ snapshots:
 
   '@asamuzakjp/nwsapi@2.3.9': {}
 
-  '@auth/core@0.40.0(nodemailer@6.9.14)':
-    dependencies:
-      '@panva/hkdf': 1.2.1
-      jose: 6.0.12
-      oauth4webapi: 3.6.2
-      preact: 10.24.3
-      preact-render-to-string: 6.5.11(preact@10.24.3)
-    optionalDependencies:
-      nodemailer: 6.9.14
-
-  '@auth/prisma-adapter@2.10.0(@prisma/client@6.14.0(prisma@6.14.0(typescript@5.8.3))(typescript@5.8.3))(nodemailer@6.9.14)':
-    dependencies:
-      '@auth/core': 0.40.0(nodemailer@6.9.14)
-      '@prisma/client': 6.14.0(prisma@6.14.0(typescript@5.8.3))(typescript@5.8.3)
-    transitivePeerDependencies:
-      - '@simplewebauthn/browser'
-      - '@simplewebauthn/server'
-      - nodemailer
-
   '@aws-crypto/crc32@5.2.0':
     dependencies:
       '@aws-crypto/util': 5.2.0
@@ -12066,8 +11958,6 @@ snapshots:
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
-
-  '@panva/hkdf@1.2.1': {}
 
   '@paralleldrive/cuid2@2.2.2':
     dependencies:
@@ -15578,8 +15468,6 @@ snapshots:
 
   jiti@2.5.1: {}
 
-  jose@6.0.12: {}
-
   jose@6.1.0: {}
 
   js-tokens@4.0.0: {}
@@ -15915,14 +15803,6 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next-auth@5.0.0-beta.29(next@15.4.6(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(nodemailer@6.9.14)(react@19.1.0):
-    dependencies:
-      '@auth/core': 0.40.0(nodemailer@6.9.14)
-      next: 15.4.6(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      react: 19.1.0
-    optionalDependencies:
-      nodemailer: 6.9.14
-
   next@15.4.6(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       '@next/env': 15.4.6
@@ -15961,9 +15841,6 @@ snapshots:
 
   node-releases@2.0.21: {}
 
-  nodemailer@6.9.14:
-    optional: true
-
   normalize-path@3.0.0: {}
 
   npm-run-path@4.0.1:
@@ -15977,8 +15854,6 @@ snapshots:
       pathe: 2.0.3
       pkg-types: 2.2.0
       tinyexec: 1.0.1
-
-  oauth4webapi@3.6.2: {}
 
   object-assign@4.1.1: {}
 
@@ -16162,12 +16037,6 @@ snapshots:
   postgres-interval@1.2.0:
     dependencies:
       xtend: 4.0.2
-
-  preact-render-to-string@6.5.11(preact@10.24.3):
-    dependencies:
-      preact: 10.24.3
-
-  preact@10.24.3: {}
 
   prebuild-install@7.1.2:
     dependencies:
