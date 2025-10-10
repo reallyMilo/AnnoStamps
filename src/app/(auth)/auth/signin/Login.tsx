@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 
+import { Button } from '@/components/ui'
 import { signIn } from '@/lib/auth-client'
 
 const signInDiscord = async (callbackURL: string) => {
@@ -29,11 +30,7 @@ export const Login = () => {
 
   return (
     <>
-      <button
-        className="focus:ring-opacity-25 flex h-[46px] w-full items-center justify-center space-x-2 rounded-md border bg-white p-2 text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-50 hover:text-gray-600 focus:ring-4 focus:ring-gray-400 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-gray-200 disabled:hover:bg-transparent disabled:hover:text-gray-500"
-        onClick={() => signInDiscord(callbackURL)}
-        type="submit"
-      >
+      <Button onClick={() => signInDiscord(callbackURL)} outline type="submit">
         <Image
           alt="discord sign in"
           height={32}
@@ -45,12 +42,8 @@ export const Login = () => {
           width={32}
         />
         <span>Sign in with Discord</span>
-      </button>
-      <button
-        className="focus:ring-opacity-25 flex h-[46px] w-full items-center justify-center space-x-2 rounded-md border bg-white p-2 text-gray-500 transition-colors hover:border-gray-400 hover:bg-gray-50 hover:text-gray-600 focus:ring-4 focus:ring-gray-400 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-gray-200 disabled:hover:bg-transparent disabled:hover:text-gray-500"
-        onClick={() => signInGoogle(callbackURL)}
-        type="submit"
-      >
+      </Button>
+      <Button onClick={() => signInGoogle(callbackURL)} outline type="submit">
         <Image
           alt="discord sign in"
           height={32}
@@ -62,7 +55,7 @@ export const Login = () => {
           width={32}
         />
         <span>Sign in with Google</span>
-      </button>
+      </Button>
     </>
   )
 }
