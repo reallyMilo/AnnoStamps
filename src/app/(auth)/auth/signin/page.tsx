@@ -8,22 +8,13 @@ import { Container, Heading, Text } from '@/components/ui'
 
 import { Login } from './Login'
 
-const SignInPage = async (props: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}) => {
-  const searchParams = await props.searchParams
+const SignInPage = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
   if (session?.user) {
     return redirect('/')
   }
-
-  const callbackUrl =
-    typeof searchParams['callbackUrl'] === 'string' &&
-    searchParams['callbackUrl'].startsWith('/stamp/')
-      ? searchParams['callbackUrl']
-      : '/'
 
   return (
     <Container className="flex max-w-md flex-col justify-center">
