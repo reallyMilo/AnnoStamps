@@ -12,7 +12,7 @@ import prisma from '@/lib/prisma/singleton'
 export const likeStamp = async (stampId: StampWithRelations['id']) => {
   const session = await auth.api.getSession({ headers: await headers() })
   if (!session) {
-    return { error: 'Unauthorized', ok: false, status: 404 }
+    return { error: 'Unauthorized', ok: false, status: 401 }
   }
   let updateUserLikes = null
   try {
@@ -33,7 +33,7 @@ export const likeStamp = async (stampId: StampWithRelations['id']) => {
     })
   } catch (e) {
     console.error(e)
-    return { message: 'Server error.', ok: false, status: 500 }
+    return { error: 'Server error', ok: false, status: 500 }
   }
 
   revalidatePath(`/stamp/${stampId}`)
@@ -53,11 +53,11 @@ export const addCommentToStamp = async (
 ) => {
   const session = await auth.api.getSession({ headers: await headers() })
   if (!session) {
-    return { error: 'Unauthorized', ok: false, status: 404 }
+    return { error: 'Unauthorized', ok: false, status: 401 }
   }
 
   if (!session.user.username) {
-    return { error: 'Please set username.', ok: false, status: 400 }
+    return { error: 'Please set username', ok: false, status: 400 }
   }
   const { comment } = Object.fromEntries(formData) as {
     comment: string
@@ -97,7 +97,7 @@ export const addCommentToStamp = async (
     userPreference = preference
   } catch (e) {
     console.error(e)
-    return { message: 'Prisma error.', ok: false }
+    return { error: 'Prisma error', ok: false, status: 500 }
   }
 
   if (process.env.AWS_S3_BUCKET === 'eu-central-1') {
@@ -129,5 +129,5 @@ export const addCommentToStamp = async (
   }
 
   revalidatePath(`/stamp/${stampId}`)
-  return { message: 'Added comment to stamp.', ok: true }
+  return { message: 'Added comment to stamp.', ok: true, status: 200 }
 }

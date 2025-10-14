@@ -1,6 +1,7 @@
 'use server'
 
 import { Prisma } from '@prisma/client'
+import { headers } from 'next/headers'
 
 import type { UserWithStamps } from '@/lib/prisma/models'
 
@@ -15,30 +16,20 @@ const blockedUsernames = new Set<string>([
   'stamps',
 ])
 
-type BaseResponse = {
-  message: null | string
-  status: 'error' | 'idle' | 'success'
-}
-
-type SuccessResponse = {
-  data: Omit<UserWithStamps, 'likedStamps' | 'listedStamps'>
-  ok: true
-} & BaseResponse
-
-type ErrorResponse = {
-  data?: undefined
-  ok: false
-} & BaseResponse
-
-type Response = Promise<ErrorResponse | SuccessResponse>
-
 export const updateUserSettings = async (
   formData: FormData,
-): Promise<Response> => {
-  const session = await auth()
+): Promise<{
+  data?: Omit<UserWithStamps, 'likedStamps' | 'listedStamps'>
+  error?: string
+  message?: string
+  ok: boolean
+  status: number
+}> => {
+  const session = await auth.api.getSession({ headers: await headers() })
   if (!session) {
-    return { message: 'Unauthorized.', ok: false, status: 'error' }
+    return { error: 'Unauthorized', ok: false, status: 401 }
   }
+
   const {
     biography,
     emailNotifications,
@@ -55,9 +46,9 @@ export const updateUserSettings = async (
 
   if (blockedUsernames.has(usernameURL)) {
     return {
-      message: 'Not allowed to use as username.',
+      error: 'Not allowed to use as username',
       ok: false,
-      status: 'error',
+      status: 403,
     }
   }
 
@@ -102,25 +93,25 @@ export const updateUserSettings = async (
     })
     return {
       data: res,
-      message: 'Updated user info.',
+      message: 'Updated user info',
       ok: true,
-      status: 'success',
+      status: 200,
     }
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2002') {
         return {
-          message: 'Username already taken.',
+          error: 'Username already taken',
           ok: false,
-          status: 'error',
+          status: 409,
         }
       }
     }
     console.error(e)
     return {
-      message: 'Server error, contact discord.',
+      error: 'Server error, contact discord',
       ok: false,
-      status: 'error',
+      status: 500,
     }
   }
 }
