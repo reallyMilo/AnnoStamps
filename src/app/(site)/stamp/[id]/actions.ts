@@ -2,35 +2,47 @@
 
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
 import { revalidatePath } from 'next/cache'
+import { headers } from 'next/headers'
 
 import type { Comment, StampWithRelations } from '@/lib/prisma/models'
 
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
 
-export const likeMutation = async (id: StampWithRelations['id']) => {
-  const session = await auth()
+export const likeStamp = async (stampId: StampWithRelations['id']) => {
+  const session = await auth.api.getSession({ headers: await headers() })
   if (!session) {
-    return { message: 'Unauthorized', ok: false }
+    return { error: 'Unauthorized', ok: false, status: 404 }
   }
-
+  let updateUserLikes = null
   try {
-    await prisma.stamp.update({
+    updateUserLikes = await prisma.user.update({
       data: {
-        likedBy: {
-          connect: { id: session.userId },
+        likedStamps: {
+          connect: { id: stampId },
         },
       },
-      include: { likedBy: true },
-      where: { id },
+      include: {
+        likedStamps: {
+          select: {
+            id: true,
+          },
+        },
+      },
+      where: { id: session.userId },
     })
   } catch (e) {
     console.error(e)
-    return { message: 'Server error.', ok: false }
+    return { message: 'Server error.', ok: false, status: 500 }
   }
 
-  revalidatePath(`/stamp/${id}`)
-  return { message: 'Successfully liked stamp.', ok: true }
+  revalidatePath(`/stamp/${stampId}`)
+  return {
+    data: updateUserLikes.likedStamps.map((i) => i.id),
+    message: 'Successfully liked stamp.',
+    ok: true,
+    status: 200,
+  }
 }
 
 export const addCommentToStamp = async (
@@ -39,13 +51,13 @@ export const addCommentToStamp = async (
   userIdToNotify: Comment['user']['id'],
   formData: FormData,
 ) => {
-  const session = await auth()
+  const session = await auth.api.getSession({ headers: await headers() })
   if (!session) {
-    return { message: 'Unauthorized.', ok: false }
+    return { error: 'Unauthorized', ok: false, status: 404 }
   }
 
   if (!session.user.username) {
-    return { message: 'Please set username.', ok: false }
+    return { error: 'Please set username.', ok: false, status: 400 }
   }
   const { comment } = Object.fromEntries(formData) as {
     comment: string

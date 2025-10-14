@@ -1,6 +1,5 @@
 'use client'
 import autosize from 'autosize'
-import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 import { useOptimistic } from 'react'
@@ -9,6 +8,7 @@ import { useFormStatus } from 'react-dom'
 import type { Comment } from '@/lib/prisma/models'
 
 import { Button, Textarea } from '@/components/ui'
+import { useSession } from '@/lib/auth-client'
 
 import { CommentItem } from './CommentItem'
 
@@ -113,7 +113,7 @@ const Form = ({
     useCommentContext()
   const pathname = usePathname()
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
 
   const [optimisticComments, addOptimisticComment] = useOptimistic<
     Omit<Comment, '_count'>[],
@@ -171,7 +171,7 @@ const Form = ({
           name="comment"
           onChange={(e) => setContent(e.target.value)}
           onFocus={() => {
-            if (status === 'unauthenticated') {
+            if (!session) {
               router.push(`/auth/signin?callbackUrl=${pathname}`)
               return
             }
