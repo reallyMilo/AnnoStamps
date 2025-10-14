@@ -1,20 +1,23 @@
+import type { NextRequest } from 'next/server'
+
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { createId } from '@paralleldrive/cuid2'
 
 import { auth } from '@/auth'
 
-export const GET = auth(async (req) => {
-  if (!req.auth) {
-    return Response.json(
-      { message: 'Unauthorized.', ok: false },
-      { status: 401 },
-    )
+export const GET = async (request: NextRequest) => {
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  })
+
+  if (!session) {
+    return Response.json({ error: 'Unauthorized', ok: false }, { status: 401 })
   }
 
   const { AWS_S3_BUCKET, AWS_S3_REGION } = process.env
 
-  const searchParams = req.nextUrl.searchParams
+  const searchParams = request.nextUrl.searchParams
   const stampId = searchParams.get('stampId')
   const filename = searchParams.get('filename')
   const fileType = searchParams.get('fileType')
@@ -33,8 +36,8 @@ export const GET = auth(async (req) => {
   const imageId = createId()
   const path =
     directory === 'avatar'
-      ? `${directory}/${req.auth.user.id}/${imageId}.${ext}`
-      : `${directory}/${req.auth.user.id}/${stampId}/${imageId}.${ext}`
+      ? `${directory}/${session.userId}/${imageId}.${ext}`
+      : `${directory}/${session.userId}/${stampId}/${imageId}.${ext}`
 
   const client = new S3Client({
     forcePathStyle: AWS_S3_REGION === 'us-east-1',
@@ -48,7 +51,7 @@ export const GET = auth(async (req) => {
       directory,
       filename: decodeURIComponent(filename),
       imageId,
-      userId: req.auth.user.id,
+      userId: session.userId,
       ...(stampId && { stampId }),
     },
   })
@@ -64,4 +67,4 @@ export const GET = auth(async (req) => {
         ? `http://s3.localhost.localstack.cloud:4566/annostamps/${path}`
         : url,
   })
-})
+}
