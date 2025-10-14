@@ -1,89 +1,99 @@
 'use client'
 
 import { HandThumbUpIcon } from '@heroicons/react/24/solid'
-import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
-import { startTransition, useOptimistic } from 'react'
+import { useState } from 'react'
+import useSWR from 'swr'
 
 import type { StampWithRelations } from '@/lib/prisma/models'
 
+import { likeStamp } from '@/app/(site)/stamp/[id]/actions'
 import { Button } from '@/components/ui'
+import { useSession } from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
 
-type LikeButtonProps = {
-  id: StampWithRelations['id']
-  initialLikes: number
-  isLiked: boolean
-  likeButtonAction: (id: string) => Promise<{
-    message: string
-    ok: boolean
-  }>
-  testId: string
-}
+const STALE_TIME = 10 * 60 * 1000
 
-export const LikeButton = ({
-  id,
-  initialLikes,
-  isLiked,
-  likeButtonAction,
-  testId,
-}: LikeButtonProps) => {
-  const router = useRouter()
-  const pathname = usePathname()
-  const { status: userAuthStatus } = useSession()
+const useLikedStamps = (userId: string | undefined) => {
+  const key = userId ? `/api/user/${userId}/likes` : null
 
-  const [optimisticLike, mutateOptimisticLike] = useOptimistic(
-    {
-      isLiked,
-      likeCount: initialLikes,
+  const { data, error, isLoading, mutate } = useSWR(
+    key,
+    async (url: string): Promise<Set<string>> => {
+      const res = await fetch(url)
+      const { data } = await res.json()
+      return new Set(data)
     },
-    (state, action: 'add' | 'remove') => {
-      switch (action) {
-        case 'add':
-          return { isLiked: true, likeCount: state.likeCount + 1 }
-        case 'remove':
-          return {
-            isLiked: false,
-            likeCount: state.likeCount - 1,
-          }
-        default:
-          return state
-      }
+    {
+      dedupingInterval: STALE_TIME,
+      revalidateIfStale: true,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
     },
   )
 
+  return {
+    isError: !!error,
+    isLoading,
+    likedStamps: data ?? new Set(),
+    mutate,
+  }
+}
+
+type LikeButtonProps = {
+  initialLikes: number
+  stampId: StampWithRelations['id']
+}
+export const LikeButton = ({ initialLikes, stampId }: LikeButtonProps) => {
+  const router = useRouter()
+  const pathname = usePathname()
+  const { data: session } = useSession()
+
+  const { likedStamps, mutate } = useLikedStamps(session?.userId)
+  const isLiked = likedStamps.has(stampId)
+  const [likes, setLikes] = useState(initialLikes)
+
   const addLike = async () => {
-    if (userAuthStatus !== 'authenticated') {
+    if (!session) {
       router.push(`/auth/signin?callbackUrl=${pathname}`)
       return
     }
-    if (isLiked && optimisticLike) {
+    if (isLiked) {
       //TODO: cant unlike until debouncing / rate limiting implemented
       return
     }
-
-    startTransition(() => {
-      mutateOptimisticLike('add')
-    })
-    const res = await likeButtonAction(id)
-
-    if (!res.ok) {
-      return
+    try {
+      await mutate(
+        async () => {
+          const res = await likeStamp(stampId)
+          if (!res.ok) throw new Error('Failed to like stamp.')
+          return new Set(res.data)
+        },
+        {
+          optimisticData: new Set([stampId, ...likedStamps]),
+          populateCache: true,
+          revalidate: false,
+          rollbackOnError: true,
+        },
+      )
+      setLikes((p) => p + 1)
+    } catch (e) {
+      console.error(e)
     }
   }
   return (
     <Button
       className={cn(
         'cursor-pointer sm:*:data-[slot=icon]:size-6',
-        optimisticLike.isLiked && 'sm:*:data-[slot=icon]:text-primary',
+        isLiked && 'sm:*:data-[slot=icon]:text-primary',
       )}
-      data-testid={testId}
+      data-testid="like-stamp"
       onClick={addLike}
       plain
     >
       <HandThumbUpIcon />
-      {optimisticLike.likeCount}
+      {likes}
     </Button>
   )
 }
