@@ -4,7 +4,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
-import { auth } from '@/auth'
+import { getSession } from '@/auth'
 import { Container, Text } from '@/components/ui'
 import { stampIncludeStatement } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
@@ -21,7 +21,7 @@ export const generateMetadata = async (props: {
 }
 const EditStampPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params
-  const session = await auth()
+  const session = await getSession()
 
   if (!session) {
     redirect('/auth/signin')
