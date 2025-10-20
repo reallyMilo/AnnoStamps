@@ -1,12 +1,11 @@
 'use client'
 
-import type { Session } from 'next-auth'
-
 import { CheckBadgeIcon } from '@heroicons/react/20/solid'
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline'
-import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
+
+import type { UserWithStamps } from '@/lib/prisma/models'
 
 import { uploadAsset } from '@/components/StampForm/uploadAsset'
 import { type Asset, fileToAsset } from '@/components/StampForm/useUpload'
@@ -27,6 +26,7 @@ import {
   Text,
   Textarea,
 } from '@/components/ui'
+import { useSession } from '@/lib/auth-client'
 
 import { updateUserSettings } from './actions'
 
@@ -49,28 +49,24 @@ const SubmitButton = () => {
 }
 
 export const SettingsForm = () => {
-  const { data, status, update } = useSession<true>()
+  const { data: session } = useSession()
   const [formState, setFormState] = useState<
-    Awaited<ReturnType<typeof updateUserSettings>>
+    { state: 'error' | 'idle' | 'success' } & Omit<
+      Awaited<ReturnType<typeof updateUserSettings>>,
+      'status'
+    >
   >({
-    message: null,
+    error: '',
+    message: '',
     ok: false,
-    status: 'idle',
+    state: 'idle',
   })
 
-  const { biography, image, preferences, username } =
-    status === 'loading'
-      ? {
-          biography: '',
-          image: null,
-          preferences: [],
-          username: '',
-        }
-      : data.user
+  const { biography, image, isEmailEnabled, username } = session!.user
 
-  const [avatar, setAvatar] = useState<Asset | Session['user']['image']>(image)
-  const isEmailEnabled =
-    preferences.length === 0 ? true : preferences[0].enabled
+  const [avatar, setAvatar] = useState<Asset | UserWithStamps['image']>(
+    image ?? null,
+  )
 
   const avatarSrc = typeof avatar === 'string' ? avatar : avatar?.url
   const formAction = async (formData: FormData) => {
@@ -87,12 +83,10 @@ export const SettingsForm = () => {
     }
 
     const res = await updateUserSettings(formData)
-    if (res.ok) {
-      await update({
-        user: res.data,
-      })
+    if (!res.ok) {
+      setFormState({ ...res, state: 'error' })
     }
-    setFormState(res)
+    setFormState({ ...res, state: 'success' })
   }
 
   return (
@@ -128,12 +122,12 @@ export const SettingsForm = () => {
                 title="Select a username containing only alphanumeric characters, dashes (-), and underscores (_)."
                 type="text"
               />
-              {formState.status === 'success' && (
+              {formState.state === 'success' && (
                 <CheckBadgeIcon data-testid="check-badge-icon" />
               )}
             </InputGroup>
 
-            {formState.status === 'error' && (
+            {formState.state === 'error' && (
               <ErrorMessage>{formState.message}</ErrorMessage>
             )}
           </Field>
@@ -157,7 +151,7 @@ export const SettingsForm = () => {
                   setFormState({
                     message: 'avatar upload bigger then 1 mb',
                     ok: false,
-                    status: 'error',
+                    state: 'error',
                   })
                   return
                 }
