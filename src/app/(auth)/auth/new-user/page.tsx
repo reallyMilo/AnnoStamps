@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation'
 
-import { auth } from '@/auth'
+import { getSession } from '@/auth'
 import { Container } from '@/components/ui'
 
 const NewUserPage = async () => {
-  const session = await auth()
+  const session = await getSession()
   if (!session) {
     redirect(`/auth/sign-in`)
   }
