@@ -64,8 +64,8 @@ importers:
         specifier: ^3.10.1
         version: 3.10.1
       marked:
-        specifier: ^16.4.0
-        version: 16.4.0
+        specifier: ^16.4.1
+        version: 16.4.1
       next:
         specifier: 15.4.6
         version: 15.4.6(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -4487,8 +4487,8 @@ packages:
     resolution: {integrity: sha512-ISQTe55T2ao7XtlAStud6qwYPZjE4GK1S/BeVPus4jrq6JuOnQ00YKQC581RWhR122W7msZV263KzVeLoqidyQ==}
     engines: {node: '>=12'}
 
-  marked@16.4.0:
-    resolution: {integrity: sha512-CTPAcRBq57cn3R8n3hwc2REddc28hjR7RzDXQ+lXLmMJYqn20BaI2cGw6QjgZGIgVfp2Wdfw4aMzgNteQ6qJgQ==}
+  marked@16.4.1:
+    resolution: {integrity: sha512-ntROs7RaN3EvWfy3EZi14H4YxmT6A5YvywfhO+0pm+cH/dnSQRmdAmoFIc3B9aiwTehyk7pESH4ofyBY+V5hZg==}
     engines: {node: '>= 20'}
     hasBin: true
 
@@ -11478,7 +11478,7 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  marked@16.4.0: {}
+  marked@16.4.1: {}
 
   math-intrinsics@1.1.0: {}
 
