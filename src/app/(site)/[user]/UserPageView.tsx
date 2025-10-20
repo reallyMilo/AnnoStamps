@@ -5,7 +5,7 @@ import 'server-only'
 
 import type { QueryParams } from '@/lib/constants'
 
-import { auth } from '@/auth'
+import { getSession } from '@/auth'
 import { StampCard } from '@/components/StampCard'
 import { Button } from '@/components/ui'
 import { queryParamsSchema } from '@/lib/constants'
@@ -43,7 +43,7 @@ export const UserPageView = async ({
     notFound()
   }
 
-  const session = await auth()
+  const session = await getSession()
   const paginatedStamps = { count, pageNumber, stampsLength: stamps.length }
 
   return user.id === session?.userId ? (
