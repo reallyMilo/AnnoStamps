@@ -117,7 +117,7 @@ importers:
         version: 0.5.19(tailwindcss@4.1.14)
       '@testing-library/cypress':
         specifier: ^10.1.0
-        version: 10.1.0(cypress@15.4.0)
+        version: 10.1.0(cypress@15.5.0)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -164,8 +164,8 @@ importers:
         specifier: link:@types/parralleldrive/cuid2
         version: link:@types/parralleldrive/cuid2
       cypress:
-        specifier: ^15.4.0
-        version: 15.4.0
+        specifier: ^15.5.0
+        version: 15.5.0
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -2349,8 +2349,8 @@ packages:
   '@types/node@20.14.13':
     resolution: {integrity: sha512-+bHoGiZb8UiQ0+WEtmph2IWQCjIqg8MDZMAV+ppRRhUZnquF5mQkP/9vpSwJClEiSM/C7fZZExPzfU0vJTyp8w==}
 
-  '@types/node@20.19.21':
-    resolution: {integrity: sha512-CsGG2P3I5y48RPMfprQGfy4JPRZ6csfC3ltBZSRItG3ngggmNY/qs2uZKp4p9VbrpqNNSMzUZNFZKzgOGnd/VA==}
+  '@types/node@20.19.22':
+    resolution: {integrity: sha512-hRnu+5qggKDSyWHlnmThnUqg62l29Aj/6vcYgUaSFL9oc7DVjeWEQN3PRgdSc6F8d9QRMWkf36CLMch1Do/+RQ==}
 
   '@types/node@20.19.22':
     resolution: {integrity: sha512-hRnu+5qggKDSyWHlnmThnUqg62l29Aj/6vcYgUaSFL9oc7DVjeWEQN3PRgdSc6F8d9QRMWkf36CLMch1Do/+RQ==}
@@ -3204,8 +3204,8 @@ packages:
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
-  cypress@15.4.0:
-    resolution: {integrity: sha512-+GC/Y/LXAcaMCzfuM7vRx5okRmonceZbr0ORUAoOrZt/5n2eGK8yh04bok1bWSjZ32wRHrZESqkswQ6biArN5w==}
+  cypress@15.5.0:
+    resolution: {integrity: sha512-7jXBsh5hTfjxr9QQONC2IbdTj0nxSyU8x4eiarMZBzXzCj3pedKviUx8JnLcE4vL8e0TsOzp70WSLRORjEssRA==}
     engines: {node: ^20.1.0 || ^22.0.0 || >=24.0.0}
     hasBin: true
 
@@ -3403,8 +3403,8 @@ packages:
   electron-to-chromium@1.5.237:
     resolution: {integrity: sha512-icUt1NvfhGLar5lSWH3tHNzablaA5js3HVHacQimfP8ViEBOQv+L7DKEuHdbTZ0SKCO1ogTJTIL1Gwk9S6Qvcg==}
 
-  emoji-regex@10.5.0:
-    resolution: {integrity: sha512-lb49vf1Xzfx080OKA0o6l8DQQpV+6Vg95zyCJX9VB/BqKYlhG7N4wgROUUHRA+ZPUefLnteQOad7z1kT2bV7bg==}
+  emoji-regex@10.6.0:
+    resolution: {integrity: sha512-toUI84YS5YmxW219erniWD0CIVOo46xGKColeNQRgOzDorgBi1v4D71/OFzgD9GO2UGKIv1C3Sp8DAn0+j5w7A==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -8926,11 +8926,11 @@ snapshots:
 
   '@tanstack/virtual-core@3.13.12': {}
 
-  '@testing-library/cypress@10.1.0(cypress@15.4.0)':
+  '@testing-library/cypress@10.1.0(cypress@15.5.0)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@testing-library/dom': 10.4.1
-      cypress: 15.4.0
+      cypress: 15.5.0
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -8998,7 +8998,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 20.19.21
+      '@types/node': 20.19.22
 
   '@types/estree@1.0.8': {}
 
@@ -9017,7 +9017,7 @@ snapshots:
 
   '@types/mysql@2.15.27':
     dependencies:
-      '@types/node': 20.19.21
+      '@types/node': 20.19.22
 
   '@types/node@20.12.12':
     dependencies:
@@ -9027,7 +9027,7 @@ snapshots:
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@20.19.21':
+  '@types/node@20.19.22':
     dependencies:
       undici-types: 6.21.0
 
@@ -9041,7 +9041,7 @@ snapshots:
 
   '@types/pg@8.15.4':
     dependencies:
-      '@types/node': 20.19.21
+      '@types/node': 20.19.22
       pg-protocol: 1.10.3
       pg-types: 2.2.0
 
@@ -9067,13 +9067,13 @@ snapshots:
 
   '@types/tedious@4.0.14':
     dependencies:
-      '@types/node': 20.19.21
+      '@types/node': 20.19.22
 
   '@types/tmp@0.2.6': {}
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 20.19.21
+      '@types/node': 20.19.22
     optional: true
 
   '@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.0)(typescript@5.8.3))(eslint@8.57.0)(typescript@5.8.3)':
@@ -9157,7 +9157,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 7.18.0
       '@typescript-eslint/visitor-keys': 7.18.0
-      debug: 4.3.6
+      debug: 4.4.3(supports-color@8.1.1)
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.5
@@ -9960,7 +9960,7 @@ snapshots:
 
   csstype@3.1.3: {}
 
-  cypress@15.4.0:
+  cypress@15.5.0:
     dependencies:
       '@cypress/request': 3.0.9
       '@cypress/xvfb': 1.2.4(supports-color@8.1.1)
@@ -10168,7 +10168,7 @@ snapshots:
 
   electron-to-chromium@1.5.237: {}
 
-  emoji-regex@10.5.0: {}
+  emoji-regex@10.6.0: {}
 
   emoji-regex@8.0.0: {}
 
@@ -12329,7 +12329,7 @@ snapshots:
 
   string-width@7.2.0:
     dependencies:
-      emoji-regex: 10.5.0
+      emoji-regex: 10.6.0
       get-east-asian-width: 1.4.0
       strip-ansi: 7.1.2
 
