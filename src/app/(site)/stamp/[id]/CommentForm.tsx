@@ -105,7 +105,8 @@ const Form = ({
   children,
 }: React.PropsWithChildren<{
   action: (formData: FormData) => Promise<{
-    message: string
+    error?: string
+    message?: string
     ok: boolean
   }>
 }>) => {
