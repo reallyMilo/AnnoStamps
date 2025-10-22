@@ -49,7 +49,7 @@ const SubmitButton = () => {
 }
 
 export const SettingsForm = () => {
-  const { data: session } = useSession()
+  const { data: session, isPending } = useSession()
   const [formState, setFormState] = useState<
     { state: 'error' | 'idle' | 'success' } & Omit<
       Awaited<ReturnType<typeof updateUserSettings>>,
@@ -62,7 +62,9 @@ export const SettingsForm = () => {
     state: 'idle',
   })
 
-  const { biography, image, isEmailEnabled, username } = session!.user
+  const { biography, image, isEmailEnabled, username } = isPending
+    ? { biography: null, image: null, isEmailEnabled: false, username: null }
+    : session!.user
 
   const [avatar, setAvatar] = useState<Asset | UserWithStamps['image']>(
     image ?? null,

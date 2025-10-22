@@ -5,7 +5,9 @@ Cypress.Commands.add('getBySel', (selector, ...args) => {
 })
 
 Cypress.Commands.add('setSessionCookie', () => {
-  cy.setCookie('authjs.session-token', Cypress.env('sessionToken'))
+  cy.task('signedCookie').then((cookie) =>
+    cy.setCookie('better-auth.session_token', cookie as string),
+  )
 })
 
 Cypress.Commands.add('database', (rawQuery, logTask = false) => {

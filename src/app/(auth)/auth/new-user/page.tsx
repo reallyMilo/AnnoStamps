@@ -6,7 +6,7 @@ import { Container } from '@/components/ui'
 const NewUserPage = async () => {
   const session = await getSession()
   if (!session) {
-    redirect(`/auth/sign-in`)
+    redirect(`/auth/signin`)
   }
 
   if (session) {
