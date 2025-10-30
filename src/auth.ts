@@ -61,7 +61,7 @@ export const auth = betterAuth({
           ...user,
           biography: dbSession?.user.biography,
           isEmailEnabled: dbSession?.user.preferences[0]?.enabled ?? true,
-          isNotificationRead: dbSession?.user.notifications[0]?.isRead ?? false,
+          isNotificationRead: dbSession?.user.notifications[0]?.isRead ?? true,
           username: dbSession?.user.username,
           usernameURL: dbSession?.user.usernameURL,
         },
