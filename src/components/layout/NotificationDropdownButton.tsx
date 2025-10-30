@@ -55,7 +55,7 @@ export const NotificationDropdownButton = ({
 }) => {
   const { data: session } = useSession()
 
-  const isUnread = session?.user.isNotificationUnread
+  const isRead = session?.user.isNotificationRead
 
   return (
     <Dropdown>
@@ -65,7 +65,7 @@ export const NotificationDropdownButton = ({
         outline
       >
         <BellAlertIcon />
-        {isUnread && (
+        {!isRead && (
           <span
             className="bg-accent absolute top-0 right-0 flex size-2 items-center justify-center rounded-full"
             data-testid="notification-dropdown-alert-indicator"
@@ -75,10 +75,9 @@ export const NotificationDropdownButton = ({
       <DropdownMenu anchor="bottom end" className="z-40">
         <DropdownHeader className="flex justify-between space-x-4">
           <Heading level={2}>Notifications</Heading>
-          {isUnread && (
+          {!isRead && (
             <Button
               data-testid="read-all-notifications-button"
-              disabled={isUnread}
               onClick={async () => {
                 const res = await readAllAction()
                 if (!res.ok) {
