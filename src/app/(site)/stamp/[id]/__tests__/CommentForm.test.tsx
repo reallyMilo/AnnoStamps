@@ -1,4 +1,7 @@
+import type { Mock } from 'vitest'
+
 import { render as renderRTL, screen, userEvent } from '@/__tests__/test-utils'
+import { useSession } from '@/lib/auth-client'
 
 import { CommentForm } from '../CommentForm'
 
@@ -6,16 +9,20 @@ vi.mock('@/app/(site)/stamp/[id]/actions', () => ({
   addCommentToStamp: vi.fn(),
 }))
 
-const user = {
-  biography: null,
-  id: '1',
-  username: 'test123',
-  usernameURL: 'test123',
+const session = {
+  user: {
+    biography: null,
+    id: '1',
+    username: 'test123',
+    usernameURL: 'test123',
+  },
+  userId: '1',
 }
 const mockAction = async () => {
   return { message: 'Test message', ok: true }
 }
 describe('CommentForm', () => {
+  ;(useSession as Mock).mockReturnValue({ data: session, isPending: false }) // eslint-disable-line no-extra-semi
   describe('Add a comment to stamp', () => {
     const render = () => ({
       ...renderRTL(
@@ -26,7 +33,6 @@ describe('CommentForm', () => {
             </CommentForm.FormActionButtons>
           </CommentForm.Form>
         </CommentForm.Root>,
-        { user },
       ),
       user: userEvent.setup(),
     })
@@ -74,7 +80,6 @@ describe('CommentForm', () => {
             </CommentForm.Form>
           </CommentForm.ShowFormButton>
         </CommentForm.Root>,
-        { user },
       ),
       user: userEvent.setup(),
     })
