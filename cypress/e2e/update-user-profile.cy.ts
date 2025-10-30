@@ -126,10 +126,12 @@ describe('Update user profile', () => {
     })
     it('user can update profile with username set and remove profile picture', () => {
       cy.intercept('/testSeedUserId/settings').as('setBio')
+      cy.intercept('api/auth/get-session').as('getSession')
       cy.setSessionCookie()
 
       cy.visit('/testSeedUserId/settings')
 
+      cy.wait('@getSession')
       cy.findByLabelText('Username')
         .invoke('val')
         .should('equal', 'testSeedUser')
