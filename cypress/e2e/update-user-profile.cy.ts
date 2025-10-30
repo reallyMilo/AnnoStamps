@@ -125,8 +125,8 @@ describe('Update user profile', () => {
       cy.task('db:removeTestUser')
     })
     it('user can update profile with username set and remove profile picture', () => {
-      cy.intercept('/testSeedUserId/settings').as('setBio')
-      cy.intercept('api/auth/get-session').as('getSession')
+      cy.intercept('POST', '/testSeedUserId/settings').as('updateUserSettings')
+      cy.intercept('/api/auth/get-session').as('getSession')
       cy.setSessionCookie()
 
       cy.visit('/testSeedUserId/settings')
@@ -149,7 +149,7 @@ describe('Update user profile', () => {
       cy.findByLabelText('Upload').should('exist')
       cy.findByRole('button', { name: 'Save' }).click()
 
-      cy.wait('@setBio')
+      cy.wait('@updateUserSettings')
 
       cy.findByLabelText('About')
         .invoke('val')
