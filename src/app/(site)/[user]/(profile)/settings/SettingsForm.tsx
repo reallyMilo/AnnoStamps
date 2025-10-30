@@ -5,6 +5,7 @@ import { CloudArrowUpIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 
+import type { Session } from '@/lib/auth-client'
 import type { UserWithStamps } from '@/lib/prisma/models'
 
 import { uploadAsset } from '@/components/StampForm/uploadAsset'
@@ -26,7 +27,6 @@ import {
   Text,
   Textarea,
 } from '@/components/ui'
-import { useSession } from '@/lib/auth-client'
 
 import { updateUserSettings } from './actions'
 
@@ -48,8 +48,15 @@ const SubmitButton = () => {
   )
 }
 
-export const SettingsForm = () => {
-  const { data: session, isPending } = useSession()
+export const SettingsForm = ({
+  biography,
+  image,
+  isEmailEnabled,
+  username,
+}: Pick<
+  Session['user'],
+  'biography' | 'image' | 'isEmailEnabled' | 'username'
+>) => {
   const [formState, setFormState] = useState<
     { state: 'error' | 'idle' | 'success' } & Omit<
       Awaited<ReturnType<typeof updateUserSettings>>,
@@ -61,11 +68,6 @@ export const SettingsForm = () => {
     ok: false,
     state: 'idle',
   })
-
-  const { biography, image, isEmailEnabled, username } = isPending
-    ? { biography: null, image: null, isEmailEnabled: true, username: null }
-    : session!.user
-
   const [avatar, setAvatar] = useState<Asset | UserWithStamps['image']>(
     image ?? null,
   )

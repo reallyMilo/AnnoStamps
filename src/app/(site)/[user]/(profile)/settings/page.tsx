@@ -13,7 +13,7 @@ const UserSettingsPage = async () => {
 
   return (
     <Container>
-      <SettingsForm />
+      <SettingsForm {...session.user} />
     </Container>
   )
 }
