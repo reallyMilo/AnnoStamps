@@ -63,7 +63,7 @@ export const SettingsForm = () => {
   })
 
   const { biography, image, isEmailEnabled, username } = isPending
-    ? { biography: null, image: null, isEmailEnabled: false, username: null }
+    ? { biography: null, image: null, isEmailEnabled: true, username: null }
     : session!.user
 
   const [avatar, setAvatar] = useState<Asset | UserWithStamps['image']>(
@@ -87,6 +87,7 @@ export const SettingsForm = () => {
     const res = await updateUserSettings(formData)
     if (!res.ok) {
       setFormState({ ...res, state: 'error' })
+      return
     }
     setFormState({ ...res, state: 'success' })
   }
@@ -130,7 +131,7 @@ export const SettingsForm = () => {
             </InputGroup>
 
             {formState.state === 'error' && (
-              <ErrorMessage>{formState.message}</ErrorMessage>
+              <ErrorMessage>{formState.error}</ErrorMessage>
             )}
           </Field>
           <Field className="space-y-2">

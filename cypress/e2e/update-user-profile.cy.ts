@@ -37,7 +37,7 @@ describe('Update user profile', () => {
 
       cy.findByRole('button', { name: 'Save' }).click()
       cy.wait('@setUsername')
-      cy.findByText('Username already taken.').should('be.visible')
+      cy.findByText('Username already taken').should('be.visible')
     })
 
     it('blocked username rejected', () => {
@@ -50,7 +50,7 @@ describe('Update user profile', () => {
       cy.findByRole('button', { name: 'Save' }).click()
       cy.wait('@setUsername')
 
-      cy.findByText('Not allowed to use as username.').should('be.visible')
+      cy.findByText('Not allowed to use as username').should('be.visible')
     })
 
     it('user can set user profile fields', () => {
