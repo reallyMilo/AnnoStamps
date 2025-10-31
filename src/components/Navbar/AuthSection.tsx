@@ -5,8 +5,8 @@ import type { Notification, UserWithStamps } from '@/lib/prisma/models'
 
 import '@/app/globals.css'
 import { getSession } from '@/auth'
-import { NotificationDropdownButton } from '@/components/layout/NotificationDropdownButton'
-import { UserDropdownButton } from '@/components/layout/UserDropdownButton'
+import { NotificationDropdownButton } from '@/components/Navbar/NotificationDropdownButton'
+import { UserDropdownButton } from '@/components/Navbar/UserDropdownButton'
 import { Button } from '@/components/ui'
 import prisma from '@/lib/prisma/singleton'
 

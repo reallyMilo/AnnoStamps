@@ -8,10 +8,12 @@ import { Poppins } from 'next/font/google'
 import Image from 'next/image'
 
 import '@/app/globals.css'
-import { AuthSection } from '@/components/layout/AuthSection'
-import { MobileNavbar } from '@/components/layout/MobileNavbar'
-import { NavItems } from '@/components/layout/NavItems'
-import { VersionButtons } from '@/components/layout/VersionButtons'
+import {
+  AuthSection,
+  MobileNavbar,
+  NavItems,
+  VersionButtons,
+} from '@/components/Navbar'
 import {
   Container,
   Link,
