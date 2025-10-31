@@ -3,11 +3,11 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import 'server-only'
 
-import { auth } from '@/auth'
+import { getSession } from '@/auth'
 import { Container, Text } from '@/components/ui'
 
 export const CreateStamp = async ({ children }: React.PropsWithChildren) => {
-  const session = await auth()
+  const session = await getSession()
 
   if (!session) {
     redirect('/auth/signin')

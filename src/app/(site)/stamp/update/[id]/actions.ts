@@ -2,6 +2,7 @@
 import type { Prisma } from '@prisma/client'
 
 import { revalidatePath } from 'next/cache'
+import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { auth } from '@/auth'
@@ -24,14 +25,13 @@ type FormDataEntries = {
 >
 
 export const updateStamp = async (formData: FormData) => {
-  const session = await auth()
-
+  const session = await auth.api.getSession({ headers: await headers() })
   if (!session) {
-    return { message: 'Unauthorized.', ok: false }
+    return { error: 'Unauthorized', ok: false, status: 401 }
   }
 
-  if (!session.user.usernameURL) {
-    return { message: 'UsernameURL not set', ok: false }
+  if (!session.user.username) {
+    return { error: 'Please set username', ok: false, status: 400 }
   }
 
   const {
@@ -104,7 +104,7 @@ export const updateStamp = async (formData: FormData) => {
     })
   } catch (e) {
     console.error(e)
-    return { message: 'Server error.', ok: false }
+    return { error: 'Server error in updating stamp', ok: false, status: 500 }
   }
 
   revalidatePath(`/stamp/${stampId}`)

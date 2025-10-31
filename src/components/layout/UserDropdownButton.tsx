@@ -6,7 +6,6 @@ import {
   PlusIcon,
   UserIcon,
 } from '@heroicons/react/24/outline'
-import { signOut, useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 
 import {
@@ -19,21 +18,21 @@ import {
   DropdownLabel,
   DropdownMenu,
 } from '@/components/ui'
+import { signOut, useSession } from '@/lib/auth-client'
 
 export const UserDropdownButton = () => {
-  const { data: session, status } = useSession()
+  const { data: session, isPending } = useSession()
   const pathname = usePathname()
 
-  if (status === 'loading') return
-  if (status === 'unauthenticated') {
+  if (isPending) return <Button href="/auth/signin">Add Stamp</Button>
+  if (!session) {
     return <Button href="/auth/signin">Add Stamp</Button>
   }
   const isVersionRoute = pathname.includes('1800')
 
   const gameVersion = isVersionRoute ? '/1800' : ''
 
-  const { id, image, usernameURL } =
-    status === 'authenticated' ? session.user : {}
+  const { id, image, usernameURL } = session.user
 
   const userPath = usernameURL ? `/${usernameURL}` : `/${id}`
 

@@ -139,7 +139,7 @@ const Form = ({
   action,
   children,
 }: React.PropsWithChildren<{
-  action: (formData: FormData) => Promise<{ message: string; ok: boolean }>
+  action: (formData: FormData) => Promise<{ error: string; ok: boolean }>
 }>) => {
   const { files, images, setStatus, stamp } = useStampFormContext()
 

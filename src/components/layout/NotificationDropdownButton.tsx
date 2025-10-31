@@ -1,9 +1,10 @@
 'use client'
 import { BellAlertIcon, EnvelopeOpenIcon } from '@heroicons/react/24/solid'
-import { useSession } from 'next-auth/react'
 import { Suspense, use } from 'react'
 
 import type { Notification } from '@/lib/prisma/models'
+
+import { useSession } from '@/lib/auth-client'
 
 import {
   Button,
@@ -52,9 +53,10 @@ export const NotificationDropdownButton = ({
 }: {
   notificationsPromise: Promise<Notification[]>
 }) => {
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
 
-  const isReadNotification = session?.user.notifications[0]?.isRead ?? true
+  const isRead = session?.user.isNotificationRead
+
   return (
     <Dropdown>
       <DropdownButton
@@ -63,9 +65,9 @@ export const NotificationDropdownButton = ({
         outline
       >
         <BellAlertIcon />
-        {!isReadNotification && (
+        {!isRead && (
           <span
-            className="absolute right-0 top-0 flex size-2 items-center justify-center rounded-full bg-accent"
+            className="bg-accent absolute top-0 right-0 flex size-2 items-center justify-center rounded-full"
             data-testid="notification-dropdown-alert-indicator"
           />
         )}
@@ -73,16 +75,14 @@ export const NotificationDropdownButton = ({
       <DropdownMenu anchor="bottom end" className="z-40">
         <DropdownHeader className="flex justify-between space-x-4">
           <Heading level={2}>Notifications</Heading>
-          {!isReadNotification && (
+          {!isRead && (
             <Button
               data-testid="read-all-notifications-button"
-              disabled={isReadNotification}
               onClick={async () => {
                 const res = await readAllAction()
                 if (!res.ok) {
                   return
                 }
-                await update()
               }}
               outline
             >

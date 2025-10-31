@@ -4,23 +4,15 @@ import logo from '@/../public/cropped-anno-stamps-logo.png'
 import discordWhite from '@/../public/discord-white-icon.svg'
 import github from '@/../public/github-mark.svg'
 import { GoogleAnalytics } from '@next/third-parties/google'
-import { SessionProvider } from 'next-auth/react'
-import { unstable_cache } from 'next/cache'
 import { Poppins } from 'next/font/google'
 import Image from 'next/image'
-import { Suspense } from 'react'
-
-import type { Notification, UserWithStamps } from '@/lib/prisma/models'
 
 import '@/app/globals.css'
-import { auth } from '@/auth'
+import { AuthSection } from '@/components/layout/AuthSection'
 import { MobileNavbar } from '@/components/layout/MobileNavbar'
 import { NavItems } from '@/components/layout/NavItems'
-import { NotificationDropdownButton } from '@/components/layout/NotificationDropdownButton'
-import { UserDropdownButton } from '@/components/layout/UserDropdownButton'
 import { VersionButtons } from '@/components/layout/VersionButtons'
 import {
-  Button,
   Container,
   Link,
   NavbarDivider,
@@ -29,7 +21,6 @@ import {
   NavbarSection,
   NavbarSpacer,
 } from '@/components/ui'
-import prisma from '@/lib/prisma/singleton'
 
 export const metadata: Metadata = {
   description: 'A community site for uploading and sharing stamps for Anno',
@@ -72,14 +63,6 @@ const socials = [
   },
 ]
 
-const UserButton = async () => {
-  const session = await auth()
-  return (
-    <SessionProvider session={session}>
-      <UserDropdownButton />
-    </SessionProvider>
-  )
-}
 const SocialIcons = () => {
   return (
     <>
@@ -104,38 +87,6 @@ const SocialIcons = () => {
         </NavbarItem>
       ))}
     </>
-  )
-}
-
-const getUserNotifications = unstable_cache(
-  async (userId: UserWithStamps['id']) =>
-    prisma.notification.findMany({
-      orderBy: { createdAt: 'desc' },
-      where: {
-        channel: 'web',
-        userId,
-      },
-    }),
-  ['getUserNotifications'],
-  {
-    revalidate: 600,
-  },
-)
-
-const Notifications = async () => {
-  const session = await auth()
-  if (!session) {
-    return null
-  }
-
-  const notificationsPromise = getUserNotifications(session?.userId) as Promise<
-    Notification[]
-  >
-
-  return (
-    <SessionProvider session={session}>
-      <NotificationDropdownButton notificationsPromise={notificationsPromise} />
-    </SessionProvider>
   )
 }
 
@@ -167,12 +118,7 @@ const Navbar = () => {
             <NavItems />
           </NavbarSection>
           <NavbarSpacer />
-          <Suspense fallback={null}>
-            <Notifications />
-          </Suspense>
-          <Suspense fallback={<Button href="/auth/signin">Add Stamp</Button>}>
-            <UserButton />
-          </Suspense>
+          <AuthSection />
         </NavbarRoot>
       </Container>
     </header>
