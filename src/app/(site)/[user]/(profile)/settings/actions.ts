@@ -1,6 +1,7 @@
 'use server'
 
 import { Prisma } from '@prisma/client'
+import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
 import type { UserWithStamps } from '@/lib/prisma/models'
@@ -66,8 +67,9 @@ export const updateUserSettings = async (
     ? emailNotifications === 'on'
     : false
 
+  let updateResponse = null
   try {
-    const res = await prisma.user.update({
+    updateResponse = await prisma.user.update({
       data: {
         ...updateData,
         preferences: {
@@ -91,12 +93,6 @@ export const updateUserSettings = async (
       },
       where: { id: session.userId },
     })
-    return {
-      data: res,
-      message: 'Updated user info',
-      ok: true,
-      status: 200,
-    }
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2002') {
@@ -113,5 +109,14 @@ export const updateUserSettings = async (
       ok: false,
       status: 500,
     }
+  }
+
+  revalidatePath(`${session.userId}/settings`)
+  revalidatePath(`${session.user.usernameURL}/settings`)
+  return {
+    data: updateResponse,
+    message: 'Updated user info',
+    ok: true,
+    status: 200,
   }
 }
