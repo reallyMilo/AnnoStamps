@@ -1,6 +1,6 @@
 import { render, screen } from '@/__tests__/test-utils'
 
-import { Pagination } from '../Filter/Pagination'
+import { Pagination } from '../Pagination'
 
 describe('Pagination', () => {
   it('renders when below max size', () => {
