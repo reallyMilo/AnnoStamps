@@ -4,9 +4,9 @@ import 'server-only'
 
 import type { PrismaClientSingleton } from '@/lib/prisma/singleton'
 
-import { Filter } from '@/components/Filter/Filter'
-import { Pagination } from '@/components/Filter/Pagination'
+import { Pagination } from '@/components/Pagination'
 import { StampCardSkeleton } from '@/components/StampCard'
+import { StampsFilterLayout } from '@/components/StampsFilterLayout'
 import { Grid, Heading, Subheading, Text } from '@/components/ui'
 import { type QueryParams, STAMPS_PER_PAGE } from '@/lib/constants'
 import { CATEGORIES } from '@/lib/constants'
@@ -66,7 +66,7 @@ export const StampGallery = ({
       <Heading className="pb-6 sm:text-4xl/8">
         {searchParams.game} Stamps
       </Heading>
-      <Filter checkboxFilterOptions={checkboxFilterOptions}>
+      <StampsFilterLayout checkboxFilterOptions={checkboxFilterOptions}>
         <Suspense
           fallback={
             <div className="space-y-6">
@@ -92,7 +92,7 @@ export const StampGallery = ({
             </div>
           )}
         </Suspense>
-      </Filter>
+      </StampsFilterLayout>
     </>
   )
 }

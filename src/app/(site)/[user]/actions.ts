@@ -1,18 +1,19 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { headers } from 'next/headers'
 
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
 
 export const deleteStamp = async (stampId: string) => {
-  const session = await auth()
-
+  const session = await auth.api.getSession({ headers: await headers() })
   if (!session) {
-    return { message: 'Unauthorized.', ok: false }
+    return { error: 'Unauthorized', ok: false, status: 401 }
   }
-  if (!session.user.usernameURL) {
-    return { message: 'UsernameURL not set', ok: false }
+
+  if (!session.user.username) {
+    return { error: 'Please set username', ok: false, status: 400 }
   }
 
   let deletedRecord = null
@@ -49,15 +50,15 @@ export const deleteStamp = async (stampId: string) => {
     })
   } catch (e) {
     if (e instanceof Error) {
-      return { message: e.message, ok: false }
+      return { error: e.message, ok: false, status: 403 }
     }
     console.error(e)
-    return { message: `${stampId} - failed to delete`, ok: false }
+    return { error: `${stampId} - failed to delete`, ok: false, status: 500 }
   }
 
   const appendGameRoute =
     deletedRecord.game === '117' ? '' : `/${deletedRecord.game}`
   revalidatePath(`/${session.user.usernameURL}${appendGameRoute}`)
   revalidatePath(`/${session.userId}${appendGameRoute}`)
-  return { message: `${stampId} - successfully deleted`, ok: true }
+  return { message: `${stampId} - successfully deleted`, ok: true, status: 200 }
 }

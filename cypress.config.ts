@@ -1,17 +1,16 @@
 import { PrismaClient } from '@prisma/client'
 import { defineConfig } from 'cypress'
+import crypto from 'node:crypto'
 
 const prisma = new PrismaClient({
   datasourceUrl: 'postgresql://annouser:annouser@localhost:5433/annostamps',
 })
-
+const SESSION_TOKEN = '00000000000000000000000000000000'
 export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:3000',
     chromeWebSecurity: false,
-    env: {
-      sessionToken: 'cdc4b0fb-77b5-44b5-947a-dde785af2676',
-    },
+    env: {},
     setupNodeEvents(on) {
       on('task', {
         async 'db:query'(rawQuery: string) {
@@ -122,7 +121,6 @@ export default defineConfig({
                 id: 'testSeedAccountId',
                 provider: 'discord',
                 providerAccountId: '123213123123',
-                type: 'oauth',
                 userId: 'testSeedUserId',
               },
             }),
@@ -130,7 +128,7 @@ export default defineConfig({
               data: {
                 expires: '3000-01-01T00:00:00.000Z',
                 id: 'testSeedUserSessionId',
-                sessionToken: 'cdc4b0fb-77b5-44b5-947a-dde785af2676',
+                sessionToken: SESSION_TOKEN,
                 userId: 'testSeedUserId',
               },
             }),
@@ -205,6 +203,14 @@ export default defineConfig({
               },
             }),
           ])
+        },
+        signedCookie() {
+          const signature = crypto
+            .createHmac('sha256', process.env.BETTER_AUTH_SECRET!)
+            .update(SESSION_TOKEN)
+            .digest('base64')
+          const signedValue = `${SESSION_TOKEN}.${signature}`
+          return signedValue
         },
       })
     },

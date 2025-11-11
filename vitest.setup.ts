@@ -23,4 +23,11 @@ beforeAll(() => {
       }
     },
   }))
+  vi.mock('better-auth/react', () => ({
+    createAuthClient: vi.fn(() => ({
+      signIn: vi.fn(),
+      signOut: vi.fn(),
+      useSession: vi.fn(),
+    })),
+  }))
 })

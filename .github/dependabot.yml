@@ -16,8 +16,7 @@ updates:
       auth:
         applies-to: version-updates
         patterns:
-          - 'next-auth'
-          - '@auth/*'
+          - 'better-auth'
       prisma:
         applies-to: version-updates
         patterns:

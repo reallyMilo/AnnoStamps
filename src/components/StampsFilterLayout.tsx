@@ -1,6 +1,6 @@
 'use client'
 import * as Headless from '@headlessui/react'
-import { FunnelIcon } from '@heroicons/react/20/solid'
+import { FunnelIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/navigation'
 import { type PropsWithChildren, Suspense, useState } from 'react'
 
@@ -10,6 +10,8 @@ import {
   CheckboxField,
   CheckboxGroup,
   Fieldset,
+  Input,
+  InputGroup,
   Label,
   Legend,
   MobileSidebar,
@@ -18,7 +20,6 @@ import {
 import { SORT_OPTIONS } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
-import { Search } from './Search'
 import { useQueryParams } from './useQueryParams'
 
 type FilterFormProps = {
@@ -29,6 +30,48 @@ type FilterFormProps = {
   className?: string
 }
 const sortOptions = Object.values(SORT_OPTIONS)
+
+const Search = () => {
+  const router = useRouter()
+  const [searchParams, stringifyQuery] = useQueryParams()
+
+  return (
+    <form
+      className="flex items-center"
+      onSubmit={(e) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+
+        if (!formData.get('search')) {
+          router.push(
+            stringifyQuery(searchParams, {
+              search: null,
+            }),
+          )
+          return
+        }
+        router.push(
+          stringifyQuery(searchParams, {
+            search: formData.get('search'),
+          }),
+        )
+      }}
+    >
+      <InputGroup>
+        <MagnifyingGlassIcon />
+        <Input
+          aria-label="Search"
+          autoComplete="off"
+          defaultValue={searchParams?.get('search') ?? undefined}
+          id="search"
+          name="search"
+          placeholder="Search Stamps"
+        />
+      </InputGroup>
+    </form>
+  )
+}
+
 const FilterForm = ({ checkboxFilterOptions, className }: FilterFormProps) => {
   const router = useRouter()
   const [searchParams, stringifyQuery] = useQueryParams()
@@ -140,7 +183,7 @@ const MobileFilter = ({ children }: PropsWithChildren) => {
   )
 }
 
-export const Filter = ({
+export const StampsFilterLayout = ({
   checkboxFilterOptions,
   children,
 }: PropsWithChildren<{

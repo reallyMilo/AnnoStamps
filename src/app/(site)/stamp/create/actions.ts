@@ -1,6 +1,7 @@
 'use server'
 import { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
+import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { auth } from '@/auth'
@@ -25,16 +26,17 @@ type FormDataEntries = {
 export const createStamp = async (
   formData: FormData,
 ): Promise<{
-  message: string
+  error: string
   ok: boolean
+  status: number
 }> => {
-  const session = await auth()
-
+  const session = await auth.api.getSession({ headers: await headers() })
   if (!session) {
-    return { message: 'Unauthorized.', ok: false }
+    return { error: 'Unauthorized', ok: false, status: 401 }
   }
-  if (!session.user.usernameURL) {
-    return { message: 'UsernameURL not set.', ok: false }
+
+  if (!session.user.username) {
+    return { error: 'Please set username', ok: false, status: 400 }
   }
 
   const {
@@ -75,7 +77,7 @@ export const createStamp = async (
     })
   } catch (e) {
     console.error(e)
-    return { message: 'Server error in creating stamps', ok: false }
+    return { error: 'Server error in creating stamp', ok: false, status: 500 }
   }
 
   const appendGameRoute = game === '117' ? '' : `/${game}`

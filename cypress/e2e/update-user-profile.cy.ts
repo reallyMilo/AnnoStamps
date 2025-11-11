@@ -37,7 +37,7 @@ describe('Update user profile', () => {
 
       cy.findByRole('button', { name: 'Save' }).click()
       cy.wait('@setUsername')
-      cy.findByText('Username already taken.').should('be.visible')
+      cy.findByText('Username already taken').should('be.visible')
     })
 
     it('blocked username rejected', () => {
@@ -50,7 +50,7 @@ describe('Update user profile', () => {
       cy.findByRole('button', { name: 'Save' }).click()
       cy.wait('@setUsername')
 
-      cy.findByText('Not allowed to use as username.').should('be.visible')
+      cy.findByText('Not allowed to use as username').should('be.visible')
     })
 
     it('user can set user profile fields', () => {
@@ -125,11 +125,13 @@ describe('Update user profile', () => {
       cy.task('db:removeTestUser')
     })
     it('user can update profile with username set and remove profile picture', () => {
-      cy.intercept('/testSeedUserId/settings').as('setBio')
+      cy.intercept('POST', '/testSeedUserId/settings').as('updateUserSettings')
+      cy.intercept('/api/auth/get-session').as('getSession')
       cy.setSessionCookie()
 
       cy.visit('/testSeedUserId/settings')
 
+      cy.wait('@getSession')
       cy.findByLabelText('Username')
         .invoke('val')
         .should('equal', 'testSeedUser')
@@ -147,7 +149,7 @@ describe('Update user profile', () => {
       cy.findByLabelText('Upload').should('exist')
       cy.findByRole('button', { name: 'Save' }).click()
 
-      cy.wait('@setBio')
+      cy.wait('@updateUserSettings')
 
       cy.findByLabelText('About')
         .invoke('val')

@@ -1,22 +1,19 @@
-import { SessionProvider } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 
-import { auth } from '@/auth'
+import { getSession } from '@/auth'
 import { Container } from '@/components/ui'
 
 import { SettingsForm } from './SettingsForm'
 
 const UserSettingsPage = async () => {
-  const session = await auth()
+  const session = await getSession()
   if (!session) {
     redirect('/auth/signin')
   }
 
   return (
     <Container>
-      <SessionProvider session={session}>
-        <SettingsForm />
-      </SessionProvider>
+      <SettingsForm {...session.user} />
     </Container>
   )
 }
