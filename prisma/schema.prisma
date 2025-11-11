@@ -91,6 +91,8 @@ model User {
   username      String?        @unique
   usernameURL   String?        @unique
   biography     String?
+  createdAt     DateTime?
+  updatedAt     DateTime?
   preferences   Preference[]
   accounts      Account[]
   sessions      Session[]
