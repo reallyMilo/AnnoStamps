@@ -22,6 +22,7 @@ export const generateUserData = (
 
     return {
       biography: faker.person.bio(),
+      createdAt: faker.date.past(),
       email: faker.internet.email({
         firstName,
         lastName,
@@ -29,6 +30,7 @@ export const generateUserData = (
       }),
       id: createId(),
       name: faker.person.fullName({ firstName, lastName }),
+      updatedAt: faker.date.past(),
       username,
       usernameURL: username.toLowerCase(),
     }
