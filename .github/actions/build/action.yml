@@ -1,16 +1,16 @@
-name: 'Build'
-description: 'Set up'
+description: Set up
+name: Build
 runs:
-  using: 'composite'
   steps:
     - name: Install pnpm
       uses: pnpm/action-setup@v4
       with:
-        version: 9.8.0
         run_install: false
+        version: 9.8.0
     - name: Install Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 22
+        node-version: 22.21.1
     - run: pnpm install --frozen-lockfile
       shell: bash
+  using: composite

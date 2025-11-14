@@ -1,12 +1,6 @@
-name: Production Tag Deployment
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-on:
-  push:
-    # Pattern matched against refs/tags
-    tags:
-      - '*' # Push events to every tag not containing /
 jobs:
   Deploy-Production:
     runs-on: ubuntu-latest
@@ -21,3 +15,10 @@ jobs:
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+name: Production Tag Deployment
+on:
+  push:
+    # Pattern matched against refs/tags
+    tags:
+      - '*' # Push events to every tag not containing /

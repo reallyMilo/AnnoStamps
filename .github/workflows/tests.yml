@@ -1,40 +1,14 @@
-name: 'Tests'
-
-on:
-  push:
-    branches-ignore:
-      - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/build
-      - name: Run lint
-        run: pnpm lint
-  test:
-    name: 'test_front'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/build
-      - name: Run test
-        run: pnpm test
   e2e:
-    timeout-minutes: 15
-    name: 'e2e tests'
+    name: e2e tests
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres
         env:
           POSTGRES_DB: annostamps
-          POSTGRES_USER: annouser
           POSTGRES_PASSWORD: annouser
+          POSTGRES_USER: annouser
+        image: postgres
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -45,17 +19,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build
-      - name: 'Create Database and Seed'
-        run: pnpm migrate && pnpm db-seed
-        env:
+      - env:
           DATABASE_URL: postgresql://annouser:annouser@localhost:5433/annostamps
           DIRECT_URL: postgresql://annouser:annouser@localhost:5433/annostamps
 
+        name: Create Database and Seed
+        run: pnpm migrate && pnpm db-seed
       - name: Start LocalStack
         uses: LocalStack/setup-localstack@v0.2.2
         with:
-          image-tag: '4.7.0'
           configuration: DEBUG=1
+          image-tag: 4.7.0
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
@@ -66,18 +40,43 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./terraform/dev
-      - name: Cypress run
+      - env:
+          AWS_ACCESS_KEY_ID: test
+          AWS_S3_BUCKET: annostamps
+          AWS_S3_REGION: us-east-1
+          AWS_SECRET_ACCESS_KEY: test
+          BETTER_AUTH_SECRET: f2mwGCORoYHFR9ZZRNqx2y5SEPraT8ML
+          BETTER_AUTH_URL: http://localhost:3000
+          DATABASE_URL: postgresql://annouser:annouser@localhost:5433/annostamps
+          NEXT_PUBLIC_CLOUDFRONT_CDN: http://s3.localhost.localstack.cloud:4566/annostamps
+        name: Cypress run
         uses: cypress-io/github-action@v6
         with:
+          browser: chrome
           build: pnpm build
           start: pnpm start
-          browser: chrome
-        env:
-          DATABASE_URL: postgresql://annouser:annouser@localhost:5433/annostamps
-          BETTER_AUTH_URL: http://localhost:3000
-          BETTER_AUTH_SECRET: f2mwGCORoYHFR9ZZRNqx2y5SEPraT8ML
-          AWS_S3_REGION: us-east-1
-          AWS_S3_BUCKET: annostamps
-          NEXT_PUBLIC_CLOUDFRONT_CDN: http://s3.localhost.localstack.cloud:4566/annostamps
-          AWS_ACCESS_KEY_ID: 'test'
-          AWS_SECRET_ACCESS_KEY: 'test'
+    timeout-minutes: 15
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build
+      - name: Run lint
+        run: pnpm lint
+  test:
+    name: test_front
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build
+      - name: Run test
+        run: pnpm test
+name: Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches-ignore:
+      - main
