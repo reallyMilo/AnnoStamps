@@ -1,7 +1,6 @@
+import '@/app/globals.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { Poppins } from 'next/font/google'
-
-import '@/app/globals.css'
 
 const poppins = Poppins({
   display: 'swap',

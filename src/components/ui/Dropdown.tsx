@@ -16,7 +16,7 @@ export const Dropdown = (props: Headless.MenuProps) => {
 export const DropdownButton = <T extends React.ElementType = typeof Button>({
   as = Button,
   ...props
-}: { className?: string } & Omit<Headless.MenuButtonProps<T>, 'className'>) => {
+}: Omit<Headless.MenuButtonProps<T>, 'className'> & { className?: string }) => {
   return <Headless.MenuButton as={as} {...props} />
 }
 
@@ -24,7 +24,7 @@ export const DropdownMenu = ({
   anchor = 'bottom',
   className,
   ...props
-}: { className?: string } & Omit<Headless.MenuItemsProps, 'className'>) => {
+}: Omit<Headless.MenuItemsProps, 'className'> & { className?: string }) => {
   return (
     <Headless.Transition leave="duration-100 ease-in" leaveTo="opacity-0">
       <Headless.MenuItems
@@ -107,7 +107,7 @@ export const DropdownHeader = ({
 export const DropdownSection = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.MenuSectionProps, 'className'>) => {
+}: Omit<Headless.MenuSectionProps, 'className'> & { className?: string }) => {
   return (
     <Headless.MenuSection
       {...props}
@@ -123,7 +123,7 @@ export const DropdownSection = ({
 export const DropdownHeading = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.MenuHeadingProps, 'className'>) => {
+}: Omit<Headless.MenuHeadingProps, 'className'> & { className?: string }) => {
   return (
     <Headless.MenuHeading
       {...props}
@@ -138,7 +138,7 @@ export const DropdownHeading = ({
 export const DropdownDivider = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.MenuSeparatorProps, 'className'>) => {
+}: Omit<Headless.MenuSeparatorProps, 'className'> & { className?: string }) => {
   return (
     <Headless.MenuSeparator
       {...props}
@@ -153,7 +153,7 @@ export const DropdownDivider = ({
 export const DropdownLabel = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.LabelProps, 'className'>) => {
+}: Omit<Headless.LabelProps, 'className'> & { className?: string }) => {
   return (
     <Headless.Label
       {...props}
@@ -167,7 +167,7 @@ export const DropdownLabel = ({
 export const DropdownDescription = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.DescriptionProps, 'className'>) => {
+}: Omit<Headless.DescriptionProps, 'className'> & { className?: string }) => {
   return (
     <Headless.Description
       data-slot="description"
@@ -184,10 +184,10 @@ export const DropdownShortcut = ({
   className,
   keys,
   ...props
-}: { className?: string; keys: string | string[] } & Omit<
-  Headless.DescriptionProps<'kbd'>,
-  'className'
->) => {
+}: Omit<Headless.DescriptionProps<'kbd'>, 'className'> & {
+  className?: string
+  keys: string | string[]
+}) => {
   return (
     <Headless.Description
       as="kbd"

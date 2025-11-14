@@ -80,10 +80,10 @@ const createStampSchema = stampSchema
     ...schema,
   })) satisfies z.Schema<
   Prisma.StampUncheckedCreateInput,
-  {
+  Omit<Prisma.StampUncheckedCreateInput, 'modded' | 'region'> & {
     modded: string
     region?: string
-  } & Omit<Prisma.StampUncheckedCreateInput, 'modded' | 'region'>
+  }
 >
 
 const updateStampSchema = stampSchema
@@ -95,9 +95,9 @@ const updateStampSchema = stampSchema
     ...schema,
   })) satisfies z.Schema<
   Prisma.StampUncheckedUpdateInput,
-  {
+  Omit<Prisma.StampUncheckedUpdateInput, 'modded'> & {
     modded?: string
-  } & Omit<Prisma.StampUncheckedUpdateInput, 'modded'>
+  }
 >
 
 export const stampExtensions = Prisma.defineExtension({
@@ -181,9 +181,9 @@ export interface UserWithStamps
     }>,
     'listedStamps'
   > {
-  listedStamps: ({
+  listedStamps: (Omit<StampWithRelations, 'likedBy' | 'user'> & {
     _count: { likedBy: number }
-  } & Omit<StampWithRelations, 'likedBy' | 'user'>)[]
+  })[]
 }
 
 const userProfileSchema = z
@@ -225,13 +225,13 @@ export const commentIncludeStatement = {
   },
 } satisfies Prisma.CommentInclude
 
-export type Comment = {
-  createdAt: number
-  updatedAt: number
-} & Omit<
+export type Comment = Omit<
   Prisma.CommentGetPayload<{ include: typeof commentIncludeStatement }>,
   'createdAt' | 'updatedAt'
->
+> & {
+  createdAt: number
+  updatedAt: number
+}
 
 export const commentExtension = Prisma.defineExtension({
   result: {
@@ -253,7 +253,10 @@ export const commentExtension = Prisma.defineExtension({
 /* -------------------------------------------------------------------------------------------------
  * Notifications
  * -----------------------------------------------------------------------------------------------*/
-export type Notification = {
+export type Notification = Omit<
+  Prisma.NotificationGetPayload<Prisma.NotificationDefaultArgs>,
+  'body' | 'createdAt' | 'updatedAt'
+> & {
   body: {
     authorOfContent: string
     authorOfContentURL: string
@@ -261,10 +264,7 @@ export type Notification = {
   }
   createdAt: string
   updatedAt: string
-} & Omit<
-  Prisma.NotificationGetPayload<Prisma.NotificationDefaultArgs>,
-  'body' | 'createdAt' | 'updatedAt'
->
+}
 
 export const notificationExtension = Prisma.defineExtension({
   result: {
@@ -287,13 +287,13 @@ export const notificationExtension = Prisma.defineExtension({
  * Preference
  * -----------------------------------------------------------------------------------------------*/
 
-export type Preference = {
-  createdAt: string
-  updatedAt: string
-} & Omit<
+export type Preference = Omit<
   Prisma.PreferenceGetPayload<Prisma.PreferenceDefaultArgs>,
   'createdAt' | 'updatedAt'
->
+> & {
+  createdAt: string
+  updatedAt: string
+}
 
 export const preferenceExtension = Prisma.defineExtension({
   result: {
@@ -316,13 +316,13 @@ export const preferenceExtension = Prisma.defineExtension({
  * Image
  * -----------------------------------------------------------------------------------------------*/
 
-export type Image = {
-  createdAt: number
-  updatedAt: number
-} & Omit<
+export type Image = Omit<
   Prisma.ImageGetPayload<Prisma.ImageDefaultArgs>,
   'createdAt' | 'updatedAt'
->
+> & {
+  createdAt: number
+  updatedAt: number
+}
 export const imageExtension = Prisma.defineExtension({
   result: {
     image: {

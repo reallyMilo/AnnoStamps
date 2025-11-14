@@ -1,8 +1,8 @@
-import defaultAvatar from '@/../public/anno-stamps-stamp.png'
 import * as Headless from '@headlessui/react'
 import Image from 'next/image'
 import React from 'react'
 
+import defaultAvatar from '@/../public/anno-stamps-stamp.png'
 import { cn } from '@/lib/utils'
 
 import { TouchTarget } from './Button'
@@ -80,11 +80,11 @@ export const AvatarButton = React.forwardRef(
       square = false,
       src,
       ...props
-    }: (
-      | Omit<Headless.ButtonProps, 'className'>
-      | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
-    ) &
-      AvatarProps,
+    }: AvatarProps &
+      (
+        | Omit<Headless.ButtonProps, 'className'>
+        | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
+      ),
     ref: React.ForwardedRef<HTMLElement>,
   ) => {
     const classes = cn(

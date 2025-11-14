@@ -1,11 +1,10 @@
 'use client'
 
-import anno117 from '@/../public/anno117-icon.jpg'
-import anno1800 from '@/../public/anno1800-icon.webp'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { useMemo } from 'react'
 
+import anno117 from '@/../public/anno117-icon.jpg'
+import anno1800 from '@/../public/anno1800-icon.webp'
 import { Button } from '@/components/ui'
 import { cn } from '@/lib/utils'
 
@@ -15,7 +14,7 @@ const duplicatePaths = new Set(['how-to', 'stamp', 'stamps'])
 export const VersionButtons = () => {
   const pathname = usePathname()
 
-  const buildEquivalentPath = useMemo(() => {
+  const buildEquivalentPath = () => {
     if (pathname === '/') {
       return {
         117: pathname,
@@ -50,7 +49,7 @@ export const VersionButtons = () => {
       1800: `/${splitPathname[1]}/1800`,
       active: is1800 ? '1800' : '117',
     }
-  }, [pathname])
+  }
 
   const activeStyle =
     'bg-secondary dark:bg-secondary dark:data-active:bg-secondary dark:text-midnight dark:data-hover:bg-secondary data-hover:bg-secondary'
@@ -62,10 +61,10 @@ export const VersionButtons = () => {
       <Button
         className={cn(
           buttonStyle,
-          buildEquivalentPath.active === '117' && activeStyle,
+          buildEquivalentPath().active === '117' && activeStyle,
         )}
         data-testid="default-version-link"
-        href={buildEquivalentPath[117]}
+        href={buildEquivalentPath()[117]}
         plain
       >
         <Image alt="anno 117 logo icon" height={20} src={anno117} width={20} />
@@ -74,10 +73,10 @@ export const VersionButtons = () => {
       <Button
         className={cn(
           buttonStyle,
-          buildEquivalentPath.active === '1800' && activeStyle,
+          buildEquivalentPath().active === '1800' && activeStyle,
         )}
         data-testid="1800-version-link"
-        href={buildEquivalentPath[1800]}
+        href={buildEquivalentPath()[1800]}
         plain
       >
         <Image

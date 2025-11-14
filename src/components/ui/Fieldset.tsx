@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 export const Fieldset = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.FieldsetProps, 'className'>) => {
+}: Omit<Headless.FieldsetProps, 'className'> & { className?: string }) => {
   return (
     <Headless.Fieldset
       {...props}
@@ -22,7 +22,7 @@ export const Fieldset = ({
 export const Legend = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.LegendProps, 'className'>) => {
+}: Omit<Headless.LegendProps, 'className'> & { className?: string }) => {
   return (
     <Headless.Legend
       data-slot="legend"
@@ -51,7 +51,7 @@ export const FieldGroup = ({
 export const Field = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.FieldProps, 'className'>) => {
+}: Omit<Headless.FieldProps, 'className'> & { className?: string }) => {
   return (
     <Headless.Field
       {...props}
@@ -71,7 +71,7 @@ export const Field = ({
 export const Label = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.LabelProps, 'className'>) => {
+}: Omit<Headless.LabelProps, 'className'> & { className?: string }) => {
   return (
     <Headless.Label
       data-slot="label"
@@ -87,7 +87,7 @@ export const Label = ({
 export const Description = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.DescriptionProps, 'className'>) => {
+}: Omit<Headless.DescriptionProps, 'className'> & { className?: string }) => {
   return (
     <Headless.Description
       data-slot="description"
@@ -103,7 +103,7 @@ export const Description = ({
 export const ErrorMessage = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.DescriptionProps, 'className'>) => {
+}: Omit<Headless.DescriptionProps, 'className'> & { className?: string }) => {
   return (
     <Headless.Description
       data-slot="error"

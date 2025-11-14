@@ -1,26 +1,25 @@
 {
   "name": "annostamps",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
+  "description": "Community site for sharing stamps in Anno game series.",
+  "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "studio": "prisma studio",
-    "migrate": "pnpx prisma migrate dev --skip-generate && pnpx prisma generate --sql",
-    "reset-db": "pnpx prisma migrate reset",
     "analyze-build": "ANALZYE=true pnpm build",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:e2e": "cypress run --browser chrome",
-    "vitest": "vitest --ui",
+    "build": "next build",
     "cypress": "cypress open",
     "db-seed": "prisma db seed",
-    "prepare": "husky"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "dev": "next dev --turbopack",
+    "lint": "eslint .",
+    "migrate": "pnpx prisma migrate dev --skip-generate && pnpx prisma generate --sql",
+    "prepare": "husky",
+    "reset-db": "pnpx prisma migrate reset",
+    "start": "next start",
+    "studio": "prisma studio",
+    "test": "vitest run",
+    "test:e2e": "cypress run --browser chrome",
+    "test:watch": "vitest",
+    "vitest": "vitest --ui"
   },
   "lint-staged": {
     "*": "prettier --ignore-unknown --write"
@@ -57,7 +56,10 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.5.0",
+    "@eslint/js": "^9.39.1",
     "@faker-js/faker": "^10.1.0",
+    "@next/eslint-plugin-next": "^16.0.3",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/postcss": "^4.1.16",
     "@tailwindcss/typography": "^0.5.19",
@@ -72,18 +74,19 @@
     "@types/react": "19.2.3",
     "@types/react-dom": "19.2.2",
     "@types/sanitize-html": "^2.16.0",
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0",
     "@vitejs/plugin-react": "^5.1.0",
+    "@vitest/eslint-plugin": "^1.4.2",
     "@vitest/ui": "^3.1.4",
     "cuid2": "link:@types/parralleldrive/cuid2",
     "cypress": "^15.5.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.39.1",
     "eslint-config-next": "16.0.1",
+    "eslint-plugin-cypress": "^5.2.0",
     "eslint-plugin-jsonc": "^2.21.0",
-    "eslint-plugin-perfectionist": "^3.6.0",
+    "eslint-plugin-n": "^17.23.1",
+    "eslint-plugin-package-json": "^0.74.0",
+    "eslint-plugin-perfectionist": "^4.15.1",
     "eslint-plugin-react-compiler": "0.0.0-experimental-9627644-20250520",
-    "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-testing-library": "^7.13.3",
     "eslint-plugin-yml": "^1.19.0",
     "husky": "^9.1.7",
@@ -96,17 +99,21 @@
     "tailwindcss": "^4.1.16",
     "tsx": "^4.20.6",
     "typescript": "^5.8.3",
+    "typescript-eslint": "^8.46.4",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "3.1.4"
   },
-  "engines": {
-    "node": "22"
-  },
   "packageManager": "pnpm@9.8.0",
+  "engines": {
+    "node": "22.21.1"
+  },
   "pnpm": {
     "overrides": {
       "@types/react": "19.2.3",
       "@types/react-dom": "19.2.2"
     }
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }

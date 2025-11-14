@@ -1,7 +1,6 @@
 import { PencilSquareIcon } from '@heroicons/react/20/solid'
 import { unstable_cache } from 'next/cache'
 import { notFound } from 'next/navigation'
-import 'server-only'
 
 import type { QueryParams } from '@/lib/constants'
 
@@ -11,6 +10,7 @@ import { Button } from '@/components/ui'
 import { queryParamsSchema } from '@/lib/constants'
 import prisma from '@/lib/prisma/singleton'
 import { StampGallery } from '@/view/StampGallery'
+import 'server-only'
 
 import { StampDeleteModal } from './StampDeleteModal'
 import { UserHomePage } from './UserHomePage'

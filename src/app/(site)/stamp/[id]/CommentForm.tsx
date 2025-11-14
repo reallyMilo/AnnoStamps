@@ -12,7 +12,7 @@ import { useSession } from '@/lib/auth-client'
 
 import { CommentItem } from './CommentItem'
 
-type CommentContext = {
+type CommentContextProps = {
   content: string
   isFormVisible: boolean
   isTextareaFocused: boolean
@@ -22,7 +22,7 @@ type CommentContext = {
   textareaRef: React.RefObject<HTMLTextAreaElement | null>
 }
 
-const CommentContext = React.createContext<CommentContext | null>(null)
+const CommentContext = React.createContext<CommentContextProps | null>(null)
 
 const useCommentContext = () => {
   const context = React.useContext(CommentContext)

@@ -8,7 +8,7 @@ import { Heading, Text } from '@/components/ui'
 const UpdateStampErrorPage = ({
   error,
 }: {
-  error: { digest?: string } & Error
+  error: Error & { digest?: string }
 }) => {
   useEffect(() => {
     Sentry.captureException(error)

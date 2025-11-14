@@ -1,10 +1,10 @@
 'use server'
 
 import { headers } from 'next/headers'
-import 'server-only'
 
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
+import 'server-only'
 
 export const readAllAction = async () => {
   const session = await auth.api.getSession({

@@ -1,4 +1,3 @@
-version: 2
 updates:
   - package-ecosystem: 'npm' # See documentation for possible values
     directory: '/' # Location of package manifests
@@ -30,3 +29,4 @@ updates:
       - dependency-name: 'sharp'
       - dependency-name: 'autosize'
       - dependency-name: '@types/node'
+version: 2

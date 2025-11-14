@@ -1,3 +1,6 @@
+/*eslint @eslint-community/eslint-comments/disable-enable-pair: [error, {allowWholeFile: true}] */
+/* eslint-disable cypress/unsafe-to-chain-command */
+//FIXME: unsafe chain
 describe('Switch between game versions via navigation links and see corresponding data', () => {
   beforeEach(() => {
     cy.visit('/')

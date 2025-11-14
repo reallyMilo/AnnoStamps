@@ -4,8 +4,8 @@ import React from 'react'
 
 export const Link = React.forwardRef(
   (
-    props: { htmlLink?: boolean } & LinkProps &
-      React.ComponentPropsWithoutRef<'a'>,
+    props: LinkProps &
+      React.ComponentPropsWithoutRef<'a'> & { htmlLink?: boolean },
     ref: React.ForwardedRef<HTMLAnchorElement>,
   ) => {
     const { htmlLink, ...rest } = props

@@ -1,10 +1,10 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import 'server-only'
 
 import { getSession } from '@/auth'
 import { Container, Text } from '@/components/ui'
+import 'server-only'
 
 export const CreateStamp = async ({ children }: React.PropsWithChildren) => {
   const session = await getSession()

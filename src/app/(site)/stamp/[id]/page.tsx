@@ -5,8 +5,6 @@ import { getCommentReplyThread } from '@prisma/client/sql'
 import { unstable_cache } from 'next/cache'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
-import 'swiper/css'
-import 'swiper/css/navigation'
 
 import { LikeButton } from '@/components/LikeButton'
 import { StampCategoryIcon } from '@/components/StampCategoryIcon'
@@ -19,6 +17,8 @@ import {
 } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 import { cn } from '@/lib/utils'
+import 'swiper/css'
+import 'swiper/css/navigation'
 
 import { CarouselImage } from './CarouselImage'
 import { CommentItem } from './CommentItem'

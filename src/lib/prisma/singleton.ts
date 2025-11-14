@@ -66,7 +66,7 @@ const prismaClientSingleton = () => {
         },
         user: {
           async filterFindManyWithCount(
-            query: { user: string } & QueryParams,
+            query: QueryParams & { user: string },
           ): Promise<{
             count: number
             pageNumber: number

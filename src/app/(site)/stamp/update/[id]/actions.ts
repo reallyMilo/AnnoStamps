@@ -9,11 +9,7 @@ import { auth } from '@/auth'
 import { parseAndSanitizedMarkdown } from '@/lib/markdown'
 import prisma from '@/lib/prisma/singleton'
 
-type FormDataEntries = {
-  imageIdsToRemove: string
-  stampId: string
-  uploadedImageUrls: string
-} & Pick<
+type FormDataEntries = Pick<
   Prisma.StampUncheckedCreateInput,
   | 'category'
   | 'game'
@@ -22,7 +18,11 @@ type FormDataEntries = {
   | 'stampFileUrl'
   | 'title'
   | 'unsafeDescription'
->
+> & {
+  imageIdsToRemove: string
+  stampId: string
+  uploadedImageUrls: string
+}
 
 export const updateStamp = async (formData: FormData) => {
   const session = await auth.api.getSession({ headers: await headers() })

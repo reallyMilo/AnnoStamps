@@ -7,14 +7,17 @@ import { distanceUnixTimeToNow } from '@/lib/prisma/utils'
 
 import { CommentView } from './CommentView'
 
-type CommentItemProps = {
+type CommentItemProps = Pick<
+  Comment,
+  'content' | 'createdAt' | 'id' | 'parentId' | 'user'
+> & {
   level?: number
   replyToUser?: {
     id: string
     username: string
     usernameURL: string
   }
-} & Pick<Comment, 'content' | 'createdAt' | 'id' | 'parentId' | 'user'>
+}
 
 export const CommentItem = ({
   children,

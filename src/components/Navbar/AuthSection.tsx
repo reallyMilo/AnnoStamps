@@ -1,9 +1,10 @@
 import { unstable_cache } from 'next/cache'
+
+import '@/app/globals.css'
 import { Suspense } from 'react'
 
 import type { Notification, UserWithStamps } from '@/lib/prisma/models'
 
-import '@/app/globals.css'
 import { getSession } from '@/auth'
 import { NotificationDropdownButton } from '@/components/Navbar/NotificationDropdownButton'
 import { UserDropdownButton } from '@/components/Navbar/UserDropdownButton'

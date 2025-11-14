@@ -1,3 +1,6 @@
+/*eslint @eslint-community/eslint-comments/disable-enable-pair: [error, {allowWholeFile: true}] */
+/* eslint-disable cypress/unsafe-to-chain-command */
+//FIXME: unsafe chain
 describe('Filtering 117 Stamps', () => {
   beforeEach(() => {
     cy.viewport(1920, 1080)
