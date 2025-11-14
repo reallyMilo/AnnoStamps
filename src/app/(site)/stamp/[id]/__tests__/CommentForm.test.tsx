@@ -22,7 +22,7 @@ const mockAction = async () => {
   return { message: 'Test message', ok: true }
 }
 describe('CommentForm', () => {
-  ;(useSession as Mock).mockReturnValue({ data: session, isPending: false }) // eslint-disable-line no-extra-semi
+  ;(useSession as Mock).mockReturnValue({ data: session, isPending: false })
   describe('Add a comment to stamp', () => {
     const render = () => ({
       ...renderRTL(

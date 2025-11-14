@@ -1,8 +1,8 @@
 'use client'
 
+import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
-import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import type { StampWithRelations } from '@/lib/prisma/models'

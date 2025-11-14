@@ -28,12 +28,12 @@ export const Table = ({
   grid = false,
   striped = false,
   ...props
-}: {
+}: React.ComponentPropsWithoutRef<'div'> & {
   bleed?: boolean
   dense?: boolean
   grid?: boolean
   striped?: boolean
-} & React.ComponentPropsWithoutRef<'div'>) => {
+}) => {
   return (
     <TableContext.Provider
       value={
@@ -98,11 +98,11 @@ export const TableRow = ({
   target,
   title,
   ...props
-}: {
+}: React.ComponentPropsWithoutRef<'tr'> & {
   href?: string
   target?: string
   title?: string
-} & React.ComponentPropsWithoutRef<'tr'>) => {
+}) => {
   const { striped } = useContext(TableContext)
 
   return (

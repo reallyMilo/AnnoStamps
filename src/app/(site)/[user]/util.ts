@@ -1,7 +1,7 @@
 import { unstable_cache } from 'next/cache'
-import 'server-only'
 
 import prisma from '@/lib/prisma/singleton'
+import 'server-only'
 
 export const getUser = unstable_cache(
   async (user: string) =>

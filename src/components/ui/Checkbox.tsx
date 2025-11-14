@@ -26,7 +26,7 @@ export const CheckboxGroup = ({
 export const CheckboxField = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.FieldProps, 'className'>) => {
+}: Omit<Headless.FieldProps, 'className'> & { className?: string }) => {
   return (
     <Headless.Field
       data-slot="field"
@@ -91,10 +91,10 @@ export const Checkbox = ({
   className,
   color = 'primary',
   ...props
-}: {
+}: Omit<Headless.CheckboxProps, 'className'> & {
   className?: string
   color?: Color
-} & Omit<Headless.CheckboxProps, 'className'>) => {
+}) => {
   return (
     <Headless.Checkbox
       data-slot="control"

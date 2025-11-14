@@ -8,7 +8,7 @@ import { UserDropdownButton } from '../UserDropdownButton'
 
 describe('UserDropdownButton', () => {
   it('renders login button for unauthenticated users', () => {
-    ;(useSession as Mock).mockReturnValueOnce({ data: null }) // eslint-disable-line no-extra-semi
+    ;(useSession as Mock).mockReturnValueOnce({ data: null })
     render(<UserDropdownButton />)
     expect(screen.getByRole('link', { name: 'Add Stamp' })).toBeInTheDocument()
   })

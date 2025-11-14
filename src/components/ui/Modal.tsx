@@ -23,11 +23,11 @@ export const Modal = ({
   className,
   size = 'lg',
   ...props
-}: {
+}: Omit<Headless.DialogProps, 'className'> & {
   children: React.ReactNode
   className?: string
   size?: keyof typeof sizes
-} & Omit<Headless.DialogProps, 'className'>) => {
+}) => {
   return (
     <Headless.Dialog {...props}>
       <Headless.DialogBackdrop
@@ -56,7 +56,7 @@ export const Modal = ({
 export const ModalTitle = ({
   className,
   ...props
-}: { className?: string } & Omit<Headless.DialogTitleProps, 'className'>) => {
+}: Omit<Headless.DialogTitleProps, 'className'> & { className?: string }) => {
   return (
     <Headless.DialogTitle
       {...props}
@@ -71,10 +71,9 @@ export const ModalTitle = ({
 export const ModalDescription = ({
   className,
   ...props
-}: { className?: string } & Omit<
-  Headless.DescriptionProps<typeof Text>,
-  'className'
->) => {
+}: Omit<Headless.DescriptionProps<typeof Text>, 'className'> & {
+  className?: string
+}) => {
   return (
     <Headless.Description
       as={Text}

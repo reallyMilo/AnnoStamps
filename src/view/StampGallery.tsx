@@ -1,6 +1,5 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { Suspense } from 'react'
-import 'server-only'
 
 import type { PrismaClientSingleton } from '@/lib/prisma/singleton'
 
@@ -11,21 +10,22 @@ import { Grid, Heading, Subheading, Text } from '@/components/ui'
 import { type QueryParams, STAMPS_PER_PAGE } from '@/lib/constants'
 import { CATEGORIES } from '@/lib/constants'
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
+import 'server-only'
 
 type StampGalleryProps = {
   paginatedStamps:
-    | ({ stampsLength: number } & Omit<
+    | (Omit<
         Awaited<
           ReturnType<PrismaClientSingleton['stamp']['filterFindManyWithCount']>
         >,
         'stamps'
-      >)
-    | ({ stampsLength: number } & Omit<
+      > & { stampsLength: number })
+    | (Omit<
         Awaited<
           ReturnType<PrismaClientSingleton['user']['filterFindManyWithCount']>
         >,
         'stamps' | 'user'
-      >)
+      > & { stampsLength: number })
   searchParams: QueryParams
 }
 

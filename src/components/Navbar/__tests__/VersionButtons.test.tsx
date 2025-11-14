@@ -4,7 +4,7 @@ import { type Mock } from 'vitest'
 import { render, screen } from '@/__tests__/test-utils'
 
 import { VersionButtons } from '../VersionButtons'
-/* eslint-disable no-extra-semi */
+
 describe('VersionButtons', () => {
   it('renders with root path "/"', () => {
     ;(usePathname as Mock).mockReturnValue('/')

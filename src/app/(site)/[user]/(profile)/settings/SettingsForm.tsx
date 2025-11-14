@@ -58,10 +58,9 @@ export const SettingsForm = ({
   'biography' | 'image' | 'isEmailEnabled' | 'username'
 >) => {
   const [formState, setFormState] = useState<
-    { state: 'error' | 'idle' | 'success' } & Omit<
-      Awaited<ReturnType<typeof updateUserSettings>>,
-      'status'
-    >
+    Omit<Awaited<ReturnType<typeof updateUserSettings>>, 'status'> & {
+      state: 'error' | 'idle' | 'success'
+    }
   >({
     error: '',
     message: '',

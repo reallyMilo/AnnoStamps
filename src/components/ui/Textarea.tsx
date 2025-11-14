@@ -9,10 +9,10 @@ export const Textarea = forwardRef(
       className,
       resizable = true,
       ...props
-    }: { className?: string; resizable?: boolean } & Omit<
-      Headless.TextareaProps,
-      'className'
-    >,
+    }: Omit<Headless.TextareaProps, 'className'> & {
+      className?: string
+      resizable?: boolean
+    },
     ref: React.ForwardedRef<HTMLTextAreaElement>,
   ) => {
     return (

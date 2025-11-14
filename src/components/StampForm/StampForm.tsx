@@ -23,9 +23,6 @@ import { ImageUpload } from './ImageUpload'
 import { StampInfoFieldGroup } from './StampInfoFieldGroup'
 import { uploadAsset } from './uploadAsset'
 
-type Stamp = UserWithStamps['listedStamps'][0]
-type Image = Stamp['images'][0]
-
 export type StampFormContextValue = {
   files: (Asset | JSZipObjectWithData)[]
   images: (Asset | Image)[]
@@ -46,6 +43,9 @@ export type StampFormContextValue = {
     | 'success'
     | 'upload'
 }
+type Image = Stamp['images'][0]
+
+type Stamp = UserWithStamps['listedStamps'][0]
 
 const StampFormContext = React.createContext<null | StampFormContextValue>(null)
 
@@ -209,6 +209,7 @@ const Form = ({
       formData.set('uploadedImageUrls', JSON.stringify(uploadedImageUrls))
     } catch (e) {
       setStatus('errorAWS')
+      console.error(e)
       return
     }
     formData.set('imageIdsToRemove', JSON.stringify([...imageIdsToRemove]))

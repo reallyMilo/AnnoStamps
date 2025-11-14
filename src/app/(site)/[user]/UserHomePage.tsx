@@ -34,7 +34,7 @@ export const UserHomePage = ({
   stampsLength,
   username,
 }: React.PropsWithChildren<
-  { stampsLength: number } & Pick<UserWithStamps, 'biography' | 'username'>
+  Pick<UserWithStamps, 'biography' | 'username'> & { stampsLength: number }
 >) => {
   const userBannerProps = {
     biography,

@@ -1,8 +1,7 @@
-import eslint from '@eslint/js'
 import comments from '@eslint-community/eslint-plugin-eslint-comments/configs'
+import eslint from '@eslint/js'
 import eslintNextPlugin from '@next/eslint-plugin-next'
 import vitest from '@vitest/eslint-plugin'
-import { defineConfig } from 'eslint/config'
 import nextVitals from 'eslint-config-next/core-web-vitals'
 import pluginCypress from 'eslint-plugin-cypress'
 import n from 'eslint-plugin-n'
@@ -10,6 +9,7 @@ import packageJson from 'eslint-plugin-package-json'
 import perfectionist from 'eslint-plugin-perfectionist'
 import testingLibrary from 'eslint-plugin-testing-library'
 import yml from 'eslint-plugin-yml'
+import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig(

@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 
-import logo from '@/../public/cropped-anno-stamps-logo.png'
-import discordWhite from '@/../public/discord-white-icon.svg'
-import github from '@/../public/github-mark.svg'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { Poppins } from 'next/font/google'
 import Image from 'next/image'
 
 import '@/app/globals.css'
+import logo from '@/../public/cropped-anno-stamps-logo.png'
+import discordWhite from '@/../public/discord-white-icon.svg'
+import github from '@/../public/github-mark.svg'
 import {
   AuthSection,
   MobileNavbar,

@@ -7,9 +7,9 @@ import type { Comment } from '@/lib/prisma/models'
 import { addCommentToStamp } from './actions'
 import { CommentForm } from './CommentForm'
 
-type CommentViewProps = { userIdToNotify: Comment['user']['id'] } & Partial<
-  Pick<Comment, 'parentId'>
->
+type CommentViewProps = Partial<Pick<Comment, 'parentId'>> & {
+  userIdToNotify: Comment['user']['id']
+}
 
 export const CommentView = ({ parentId, userIdToNotify }: CommentViewProps) => {
   const pathname = usePathname()

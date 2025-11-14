@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 
+import Image from 'next/image'
+
 import stampButton from '@/../public/stamp-button.jpg'
 import stampPage from '@/../public/stamp-download.png'
 import stampPath from '@/../public/stamp-folder-path.jpg'
 import stampHighlight from '@/../public/stamp-highlight.jpg'
 import stampFolder from '@/../public/stamp-name.jpg'
-import Image from 'next/image'
-
 import { Container, Heading, Subheading, Text, TextLink } from '@/components/ui'
 
 export const metadata: Metadata = {

@@ -194,7 +194,6 @@ async function seed() {
   ])
 
   console.timeEnd('Database seed time elapsed')
-  console.log('Seed completed successfully')
 }
 
 seed()
