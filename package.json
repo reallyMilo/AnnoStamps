@@ -10,7 +10,7 @@
     "cypress": "cypress open",
     "db-seed": "prisma db seed",
     "dev": "next dev --turbopack",
-    "lint": "next lint",
+    "lint": "eslint .",
     "migrate": "pnpx prisma migrate dev --skip-generate && pnpx prisma generate --sql",
     "prepare": "husky",
     "reset-db": "pnpx prisma migrate reset",
