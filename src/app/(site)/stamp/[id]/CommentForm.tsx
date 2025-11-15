@@ -46,7 +46,7 @@ const ShowFormButton = ({ children }: React.PropsWithChildren) => {
     if (textareaRef.current) {
       textareaRef.current.focus()
     }
-  }, [textareaRef])
+  })
   return (
     <div className="space-y-2">
       <Button
