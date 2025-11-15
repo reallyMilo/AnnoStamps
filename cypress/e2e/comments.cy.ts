@@ -47,10 +47,10 @@ describe('Comment on stamp', () => {
     beforeEach(() => {
       cy.task('db:testUser', true)
       cy.setSessionCookie()
-      cy.visit('/stamp/testSeed1800StampId')
       cy.intercept('/stamp/testSeed1800StampId').as('addComment')
       cy.intercept('/api/auth/get-session').as('clientSession')
       cy.intercept('/api/user/testSeedUserId/likes', { statusCode: 200 })
+      cy.visit('/stamp/testSeed1800StampId')
       cy.url().should('include', '/stamp/testSeed1800StampId')
       cy.wait('@clientSession')
     })
