@@ -2,12 +2,18 @@
 import autosize from 'autosize'
 import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
-import { useOptimistic } from 'react'
 import { useFormStatus } from 'react-dom'
 
 import type { Comment } from '@/lib/prisma/models'
 
-import { Button, Textarea } from '@/components/ui'
+import {
+  Button,
+  Modal,
+  ModalActions,
+  ModalDescription,
+  ModalTitle,
+  Textarea,
+} from '@/components/ui'
 import { useSession } from '@/lib/auth-client'
 
 import { CommentItem } from './CommentItem'
@@ -40,7 +46,7 @@ const ShowFormButton = ({ children }: React.PropsWithChildren) => {
     if (textareaRef.current) {
       textareaRef.current.focus()
     }
-  })
+  }, [textareaRef])
   return (
     <div className="space-y-2">
       <Button
@@ -100,6 +106,44 @@ const FormActionButtons = ({ children }: React.PropsWithChildren) => {
   )
 }
 
+const UsernameRequiredModal = ({
+  ignoreNextFocusRef,
+  isOpen = false,
+  setIsOpen,
+}: {
+  ignoreNextFocusRef: React.RefObject<boolean>
+  isOpen: boolean
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+}) => {
+  const { data: session } = useSession()
+
+  return (
+    <Modal
+      className="z-1000"
+      data-testid="username-require-modal"
+      onClose={setIsOpen}
+      open={isOpen}
+    >
+      <ModalTitle>Set Your Username</ModalTitle>
+      <ModalDescription>
+        You need to create a username before you can comment on stamps.
+      </ModalDescription>
+      <ModalActions>
+        <Button
+          onClick={() => {
+            ignoreNextFocusRef.current = true
+            setIsOpen(false)
+          }}
+          plain
+        >
+          Close
+        </Button>
+        <Button href={`/${session?.userId}/settings`}>Set Username</Button>
+      </ModalActions>
+    </Modal>
+  )
+}
+
 const Form = ({
   action,
   children,
@@ -115,8 +159,9 @@ const Form = ({
   const pathname = usePathname()
   const router = useRouter()
   const { data: session } = useSession()
-
-  const [optimisticComments, addOptimisticComment] = useOptimistic<
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const ignoreNextFocusRef = React.useRef(false)
+  const [optimisticComments, addOptimisticComment] = React.useOptimistic<
     Omit<Comment, '_count'>[],
     string
   >([], (state, newComment) => [
@@ -158,6 +203,7 @@ const Form = ({
           const res = await action(formData)
           if (!res.ok) {
             //TODO: comment action error handling
+
             return
           }
 
@@ -176,9 +222,12 @@ const Form = ({
               router.push(`/auth/signin?callbackUrl=${pathname}`)
               return
             }
-            if (!session?.user.username) {
-              //TODO: set username modal that notifies
-              router.push(`/${session?.userId}/settings`)
+            if (!session.user.username) {
+              if (ignoreNextFocusRef.current) {
+                ignoreNextFocusRef.current = false
+                return
+              }
+              setIsModalOpen(true)
               return
             }
             setIsTextareaFocused(true)
@@ -191,6 +240,11 @@ const Form = ({
         />
         {children}
       </form>
+      <UsernameRequiredModal
+        ignoreNextFocusRef={ignoreNextFocusRef}
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+      />
       <ul>
         {optimisticComments.map((message) => (
           <CommentItem key={message.id} {...message} />
