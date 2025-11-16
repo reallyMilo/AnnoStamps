@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-
+@import 'tailwindcss' important;
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/aspect-ratio';
 @plugin '@tailwindcss/typography';
@@ -40,4 +40,8 @@
 }
 .stamp-markdown-html-wrapper a {
   @apply underline;
+}
+
+.swiper-wrapper {
+  z-index: auto !important;
 }

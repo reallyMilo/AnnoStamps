@@ -12,12 +12,12 @@ export const CarouselImage = ({
   title,
 }: Pick<StampWithRelations, 'images' | 'title'>) => {
   return (
-    <Swiper className="z-0" modules={[Navigation]} navigation>
+    <Swiper className="z-auto" modules={[Navigation]} navigation>
       {images.map((image, idx) => (
-        <SwiperSlide className="z-0" key={image.id}>
+        <SwiperSlide className="z-auto" key={image.id}>
           <img
             alt={`${title} - User uploaded image ${idx + 1}`}
-            className="z-0 max-h-[768px] w-full object-contain object-center"
+            className="z-auto max-h-[768px] w-full object-contain object-center"
             height={768}
             src={image.largeUrl ?? image.originalUrl}
             width={1024}
