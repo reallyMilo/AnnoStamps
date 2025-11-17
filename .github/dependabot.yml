@@ -4,6 +4,11 @@ updates:
     schedule:
       interval: 'weekly'
     groups:
+      tailwindcss:
+        applies-to: version-updates
+        patterns:
+          - 'tailwindcss'
+          - '@tailwindcss/postcss'
       nextjs:
         applies-to: version-updates
         patterns:
@@ -29,4 +34,7 @@ updates:
       - dependency-name: 'sharp'
       - dependency-name: 'autosize'
       - dependency-name: '@types/node'
+      - dependency-name: '@types/react'
+      - dependency-name: 'react'
+      - dependency-name: 'react-dom'
 version: 2
