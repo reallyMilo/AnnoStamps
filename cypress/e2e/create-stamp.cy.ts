@@ -1,7 +1,3 @@
-/*eslint @eslint-community/eslint-comments/disable-enable-pair: [error, {allowWholeFile: true}] */
-/* eslint-disable cypress/unsafe-to-chain-command */
-//FIXME: unsafe chain
-
 describe('Stamp creation', () => {
   afterEach(() => {
     cy.task('db:removeTestUser')
@@ -36,15 +32,16 @@ describe('Stamp creation', () => {
       cy.getBySel('stamp-form').within(() => {
         cy.get('input:invalid').should('have.length', 1)
       })
-      cy.get('#category').select('general').should('have.value', 'general')
-      cy.get('#region').select('arctic').should('have.value', 'arctic')
-      cy.get('#modded').select('No').should('have.value', 'false')
-      cy.get('#title')
-        .type('cypress test title')
-        .should('have.value', 'cypress test title')
-      cy.get('#description')
-        .type('cypress test description')
-        .should('have.value', 'cypress test description')
+      cy.get('#category').select('general')
+      cy.get('#category').should('have.value', 'general')
+      cy.get('#region').select('arctic')
+      cy.get('#region').should('have.value', 'arctic')
+      cy.get('#modded').select('No')
+      cy.get('#modded').should('have.value', 'false')
+      cy.get('#title').type('cypress test title')
+      cy.get('#title').should('have.value', 'cypress test title')
+      cy.get('#description').type('cypress test description')
+      cy.get('#description').should('have.value', 'cypress test description')
 
       cy.findByText('Submit Stamp').click()
       cy.findByText('Please add images').should('exist')
@@ -57,15 +54,16 @@ describe('Stamp creation', () => {
       )
       cy.findByAltText('stamp image preview').should('exist')
 
-      cy.get('#category').select('general').should('have.value', 'general')
-      cy.get('#region').select('arctic').should('have.value', 'arctic')
-      cy.get('#modded').select('No').should('have.value', 'false')
-      cy.get('#title')
-        .type('cypress test title')
-        .should('have.value', 'cypress test title')
-      cy.get('#description')
-        .type('cypress test description')
-        .should('have.value', 'cypress test description')
+      cy.get('#category').select('general')
+      cy.get('#category').should('have.value', 'general')
+      cy.get('#region').select('arctic')
+      cy.get('#region').should('have.value', 'arctic')
+      cy.get('#modded').select('No')
+      cy.get('#modded').should('have.value', 'false')
+      cy.get('#title').type('cypress test title')
+      cy.get('#title').should('have.value', 'cypress test title')
+      cy.get('#description').type('cypress test description')
+      cy.get('#description').should('have.value', 'cypress test description')
 
       cy.findByText('Submit Stamp').click()
 
@@ -95,15 +93,16 @@ describe('Stamp creation', () => {
       })
       cy.findByText('test-stamp').should('exist')
 
-      cy.get('#category').select('general').should('have.value', 'general')
-      cy.get('#region').select('arctic').should('have.value', 'arctic')
-      cy.get('#modded').select('No').should('have.value', 'false')
-      cy.get('#title')
-        .type('cypress test title')
-        .should('have.value', 'cypress test title')
-      cy.get('#description')
-        .type('# H1 Heading')
-        .should('have.value', '# H1 Heading')
+      cy.get('#category').select('general')
+      cy.get('#category').should('have.value', 'general')
+      cy.get('#region').select('arctic')
+      cy.get('#region').should('have.value', 'arctic')
+      cy.get('#modded').select('No')
+      cy.get('#modded').should('have.value', 'false')
+      cy.get('#title').type('cypress test title')
+      cy.get('#title').should('have.value', 'cypress test title')
+      cy.get('#description').type('# H1 Heading')
+      cy.get('#description').should('have.value', '# H1 Heading')
 
       cy.findByText('Submit Stamp').click()
       cy.findByText('Creating Stamp...').should('be.visible')
