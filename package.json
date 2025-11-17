@@ -25,14 +25,14 @@
     "*": "prettier --ignore-unknown --write"
   },
   "dependencies": {
-    "@aws-sdk/client-lambda": "^3.666.0",
-    "@aws-sdk/client-s3": "^3.620.1",
-    "@aws-sdk/s3-request-presigner": "^3.620.1",
+    "@aws-sdk/client-lambda": "^3.932.0",
+    "@aws-sdk/client-s3": "^3.932.0",
+    "@aws-sdk/s3-request-presigner": "^3.932.0",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
     "@next/bundle-analyzer": "16.0.3",
     "@next/third-parties": "16.0.3",
-    "@paralleldrive/cuid2": "^2.2.2",
+    "@paralleldrive/cuid2": "^3.0.4",
     "@prisma/client": "^6.19.0",
     "@sentry/nextjs": "^10.25.0",
     "@tailwindcss/forms": "^0.5.10",
@@ -52,7 +52,7 @@
     "sharp": "0.32.6",
     "swiper": "12.0.3",
     "swr": "^2.3.6",
-    "tailwind-merge": "^3.3.1",
+    "tailwind-merge": "^3.4.0",
     "zod": "^4.1.12"
   },
   "devDependencies": {
