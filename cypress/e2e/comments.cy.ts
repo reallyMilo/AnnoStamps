@@ -21,11 +21,13 @@ describe('Comment on stamp', () => {
     })
 
     it('authorized user without username set has username required popup with link redirecting to settings page', () => {
+      cy.intercept('/api/auth/get-session').as('clientSession')
       cy.getBySel('stamp-card-link')
         .last()
         .then((link) => {
           cy.visit(link.attr('href'))
           cy.url().should('include', link.attr('href'))
+          cy.wait('@clientSession')
           cy.getBySel('username-require-modal').should('not.exist')
           cy.findByLabelText('Comment').click()
 
