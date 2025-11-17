@@ -61,7 +61,7 @@
     "@faker-js/faker": "^10.1.0",
     "@next/eslint-plugin-next": "^16.0.3",
     "@tailwindcss/aspect-ratio": "^0.4.2",
-    "@tailwindcss/postcss": "^4.1.16",
+    "@tailwindcss/postcss": "^4.1.17",
     "@tailwindcss/typography": "^0.5.19",
     "@testing-library/cypress": "^10.1.0",
     "@testing-library/jest-dom": "^6.9.1",
