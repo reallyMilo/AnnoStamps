@@ -25,9 +25,9 @@
     "*": "prettier --ignore-unknown --write"
   },
   "dependencies": {
-    "@aws-sdk/client-lambda": "^3.666.0",
-    "@aws-sdk/client-s3": "^3.620.1",
-    "@aws-sdk/s3-request-presigner": "^3.620.1",
+    "@aws-sdk/client-lambda": "^3.932.0",
+    "@aws-sdk/client-s3": "^3.932.0",
+    "@aws-sdk/s3-request-presigner": "^3.932.0",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
     "@next/bundle-analyzer": "16.0.3",
