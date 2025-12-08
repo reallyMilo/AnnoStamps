@@ -1,11 +1,15 @@
 import { faker } from '@faker-js/faker'
 import { createId } from '@paralleldrive/cuid2'
-import { PrismaClient, type User } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
 
 import { CATEGORIES } from '../src/lib/constants'
 import { REGIONS_1800 } from '../src/lib/constants/1800/data'
+import { PrismaClient, type User } from './generated/prisma/client'
 
-const prisma = new PrismaClient()
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+})
+const prisma = new PrismaClient({ adapter })
 
 const categories = Object.values(CATEGORIES)
 const region = Object.values(REGIONS_1800)

@@ -26,6 +26,7 @@ export default defineConfig(
       'docker-compose.yml',
       '.env.*',
       'prisma/migrations/*',
+      'prisma/generated/*',
     ],
   },
   { linterOptions: { reportUnusedDisableDirectives: 'error' } },

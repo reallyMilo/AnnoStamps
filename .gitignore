@@ -45,3 +45,7 @@ cypress.env.json
 
 #localstack
 volume
+
+#prisma.io/docs/orm/prisma-schema/overview/generators - in future can include generated directory
+/prisma/generated/prisma
+

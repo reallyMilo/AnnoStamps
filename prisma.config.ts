@@ -8,8 +8,8 @@ export default {
     url: env('DATABASE_URL'),
   },
   migrations: {
-    path: 'prisma/migrations',
-    seed: 'tsx prisma/seed.ts',
+    path: './prisma/migrations',
+    seed: 'tsx ./prisma/seed.ts',
   },
-  schema: 'prisma/schema.prisma',
+  schema: './prisma/schema.prisma',
 } satisfies PrismaConfig
