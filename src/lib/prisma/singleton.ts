@@ -1,3 +1,4 @@
+import { PrismaPg } from '@prisma/adapter-pg'
 import { Prisma, PrismaClient } from '@prisma/client'
 
 import { type QueryParams, STAMPS_PER_PAGE } from '../constants'
@@ -13,8 +14,12 @@ import {
   type UserWithStamps,
 } from './models'
 
+import 'server-only'
+
 const prismaClientSingleton = () => {
+  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
   return new PrismaClient({
+    adapter,
     omit: {
       user: {
         email: true,

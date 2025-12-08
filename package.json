@@ -11,7 +11,7 @@
     "db-seed": "prisma db seed",
     "dev": "next dev --turbopack",
     "lint": "eslint .",
-    "migrate": "pnpx prisma migrate dev --skip-generate && pnpx prisma generate --sql",
+    "migrate": "pnpx prisma migrate dev && pnpx prisma generate --sql",
     "prepare": "husky",
     "reset-db": "pnpx prisma migrate reset",
     "start": "next start",
@@ -33,6 +33,7 @@
     "@next/bundle-analyzer": "16.0.7",
     "@next/third-parties": "16.0.7",
     "@paralleldrive/cuid2": "^3.0.4",
+    "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^6.19.0",
     "@sentry/nextjs": "^10.25.0",
     "@tailwindcss/forms": "^0.5.10",
@@ -40,6 +41,7 @@
     "better-auth": "^1.3.34",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
     "fs-extra": "^11.3.2",
     "jszip": "^3.10.1",
     "marked": "^17.0.0",
@@ -112,8 +114,5 @@
       "@types/react": "19.2.5",
       "@types/react-dom": "19.2.3"
     }
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
   }
 }
