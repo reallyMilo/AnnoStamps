@@ -1,6 +1,5 @@
 'use server'
 
-import { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 
@@ -8,6 +7,8 @@ import type { UserWithStamps } from '@/lib/prisma/models'
 
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
+
+import { Prisma } from '../../../../../../prisma/generated/prisma/client'
 
 const blockedUsernames = new Set<string>([
   '117',

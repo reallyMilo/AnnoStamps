@@ -1,6 +1,4 @@
 'use server'
-import type { Prisma } from '@prisma/client'
-
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -8,6 +6,8 @@ import { redirect } from 'next/navigation'
 import { auth } from '@/auth'
 import { parseAndSanitizedMarkdown } from '@/lib/markdown'
 import prisma from '@/lib/prisma/singleton'
+
+import type { Prisma } from '../../../../../../prisma/generated/prisma/client'
 
 type FormDataEntries = Pick<
   Prisma.StampUncheckedCreateInput,
