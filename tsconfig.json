@@ -2,7 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "#/*": ["./generated/prisma/*"]
     },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

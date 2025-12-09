@@ -1,6 +1,7 @@
-import { Prisma } from '@prisma/client'
 import { formatDistanceToNowStrict, getUnixTime } from 'date-fns'
 import z from 'zod'
+
+import { Prisma } from '#/client'
 
 import { CATEGORIES } from '../constants'
 import { formatIntegerWithSuffix } from './utils'

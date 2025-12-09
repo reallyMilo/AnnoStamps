@@ -26,6 +26,7 @@ export default defineConfig(
       'docker-compose.yml',
       '.env.*',
       'prisma/migrations/*',
+      'generated/*',
     ],
   },
   { linterOptions: { reportUnusedDisableDirectives: 'error' } },
@@ -51,6 +52,16 @@ export default defineConfig(
     },
   },
   perfectionist.configs['recommended-natural'],
+  {
+    rules: {
+      'perfectionist/sort-imports': [
+        'error',
+        {
+          internalPattern: ['^#/.+', '^@/.+'],
+        },
+      ],
+    },
+  },
   testingLibrary.configs['flat/react'],
   {
     files: ['**/*.cy.{js,ts,jsx,tsx}'],
