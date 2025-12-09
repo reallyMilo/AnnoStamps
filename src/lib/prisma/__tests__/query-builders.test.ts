@@ -1,4 +1,4 @@
-import { buildFilterWhereClause } from '../singleton'
+import { buildFilterWhereClause } from '../query-builders'
 
 describe('buildFilterWhereClause', () => {
   it('handles capital, category, and region as strings', () => {
