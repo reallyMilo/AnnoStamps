@@ -1,6 +1,6 @@
-import { type Prisma } from '#/client'
+import type { Prisma } from '#/client'
 
-import { type QueryParams } from '../constants'
+import type { QueryParams } from '../constants'
 
 export const buildFilterWhereClause = (
   filter: Omit<QueryParams, 'page' | 'sort'>,
