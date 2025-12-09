@@ -7,8 +7,7 @@ import type { UserWithStamps } from '@/lib/prisma/models'
 
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma/singleton'
-
-import { Prisma } from '../../../../../../prisma/generated/prisma/client'
+import { Prisma } from '#/client'
 
 const blockedUsernames = new Set<string>([
   '117',

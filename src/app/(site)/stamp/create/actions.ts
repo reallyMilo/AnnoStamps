@@ -6,8 +6,7 @@ import { redirect } from 'next/navigation'
 import { auth } from '@/auth'
 import { parseAndSanitizedMarkdown } from '@/lib/markdown'
 import prisma from '@/lib/prisma/singleton'
-
-import { Prisma } from '../../../../../prisma/generated/prisma/client'
+import { Prisma } from '#/client'
 
 type FormDataEntries = Pick<
   Prisma.StampUncheckedCreateInput,

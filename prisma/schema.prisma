@@ -2,7 +2,7 @@ generator client {
   provider        = "prisma-client"
   previewFeatures = ["fullTextSearchPostgres", "typedSql"]
   engineType = "client"
-  output = "./generated/prisma"
+  output = "../generated/prisma"
 }
 
 datasource db {

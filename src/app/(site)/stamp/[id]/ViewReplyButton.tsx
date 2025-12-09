@@ -4,8 +4,8 @@ import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid'
 import { Suspense, use, useState } from 'react'
 
 import { Button } from '@/components/ui'
+import { getCommentReplyThread } from '#/sql'
 
-import { getCommentReplyThread } from '../../../../../prisma/generated/prisma/sql'
 import { CommentItem } from './CommentItem'
 
 type ViewReplyButtonProps = {

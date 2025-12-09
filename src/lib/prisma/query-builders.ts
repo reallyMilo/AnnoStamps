@@ -1,4 +1,5 @@
-import { type Prisma } from '../../../prisma/generated/prisma/client'
+import { type Prisma } from '#/client'
+
 import { type QueryParams } from '../constants'
 
 export const buildFilterWhereClause = (

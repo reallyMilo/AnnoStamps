@@ -16,8 +16,7 @@ import {
 } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 import { cn } from '@/lib/utils'
-
-import { getCommentReplyThread } from '../../../../../prisma/generated/prisma/sql'
+import { getCommentReplyThread } from '#/sql'
 import 'swiper/css'
 import 'swiper/css/navigation'
 

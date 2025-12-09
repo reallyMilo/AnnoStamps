@@ -2,7 +2,7 @@ import { PrismaPg } from '@prisma/adapter-pg'
 import { defineConfig } from 'cypress'
 import crypto from 'node:crypto'
 
-import { PrismaClient } from './prisma/generated/prisma/client'
+import { PrismaClient } from './generated/prisma/client'
 import 'dotenv/config'
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
