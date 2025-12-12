@@ -41,8 +41,6 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./terraform/dev
-      - name: Allow Cypress build
-        run: pnpm --allow-build=cypress add --save-dev cypress
       - env:
           AWS_ACCESS_KEY_ID: test
           AWS_S3_BUCKET: annostamps
