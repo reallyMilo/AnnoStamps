@@ -25,6 +25,7 @@ jobs:
 
         name: Create Database and Seed
         run: pnpm migrate && pnpm db-seed
+
       - name: Start LocalStack
         uses: LocalStack/setup-localstack@v0.2.2
         with:
@@ -40,6 +41,8 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./terraform/dev
+      - name: Allow Cypress build
+        run: pnpm --allow-build=cypress add --save-dev cypress
       - env:
           AWS_ACCESS_KEY_ID: test
           AWS_S3_BUCKET: annostamps
