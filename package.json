@@ -105,7 +105,7 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "3.1.4"
   },
-  "packageManager": "pnpm@9.8.0",
+  "packageManager": "pnpm@10.23.0",
   "engines": {
     "node": "22.21.1"
   },
@@ -113,6 +113,15 @@
     "overrides": {
       "@types/react": "19.2.5",
       "@types/react-dom": "19.2.3"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "@sentry/cli",
+      "cypress",
+      "esbuild",
+      "prisma",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }
