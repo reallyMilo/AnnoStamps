@@ -1,9 +1,9 @@
 'use server'
-import type { Prisma } from '@prisma/client'
-
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
+
+import type { Prisma } from '#/client'
 
 import { auth } from '@/auth'
 import { parseAndSanitizedMarkdown } from '@/lib/markdown'

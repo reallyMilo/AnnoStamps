@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 
 import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
-import { getCommentReplyThread } from '@prisma/client/sql'
 import { unstable_cache } from 'next/cache'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
@@ -17,6 +16,7 @@ import {
 } from '@/lib/prisma/models'
 import prisma from '@/lib/prisma/singleton'
 import { cn } from '@/lib/utils'
+import { getCommentReplyThread } from '#/sql'
 import 'swiper/css'
 import 'swiper/css/navigation'
 

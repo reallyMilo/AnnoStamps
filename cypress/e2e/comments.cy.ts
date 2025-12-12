@@ -22,6 +22,9 @@ describe('Comment on stamp', () => {
 
     it('authorized user without username set has username required popup with link redirecting to settings page', () => {
       cy.intercept('/api/auth/get-session').as('clientSession')
+      cy.intercept('/api/user/testSeedUserId/likes', { statusCode: 200 }).as(
+        'userLikes',
+      )
       cy.getBySel('stamp-card-link')
         .last()
         .then((link) => {
@@ -31,6 +34,7 @@ describe('Comment on stamp', () => {
           cy.getBySel('username-require-modal').should('not.exist')
           cy.findByLabelText('Comment').click()
 
+          cy.getBySel('username-require-modal').should('exist')
           cy.findByText('Set Your Username').should('be.visible')
           cy.findByRole('link', { name: /Set Username/i }).should(
             'have.attr',
