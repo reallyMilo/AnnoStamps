@@ -11,7 +11,7 @@
     "db-seed": "prisma db seed",
     "dev": "next dev --webpack",
     "lint": "eslint .",
-    "migrate": "prisma migrate dev public-hoist-pattern[]=*pg*&& prisma generate --sql",
+    "migrate": "prisma migrate dev && prisma generate --sql",
     "prepare": "husky",
     "reset-db": "prisma migrate reset",
     "start": "next start",
