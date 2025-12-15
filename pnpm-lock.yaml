@@ -200,8 +200,8 @@ importers:
         specifier: 0.0.0-experimental-9627644-20250520
         version: 0.0.0-experimental-9627644-20250520(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-testing-library:
-        specifier: ^7.13.6
-        version: 7.13.6(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+        specifier: ^7.14.0
+        version: 7.14.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint-plugin-yml:
         specifier: ^1.19.1
         version: 1.19.1(eslint@9.39.2(jiti@2.6.1))
@@ -3709,8 +3709,8 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
 
-  eslint-plugin-testing-library@7.13.6:
-    resolution: {integrity: sha512-90h3bGIK6QEvxkE8WWFiCXhYLG/Q1BZuf7snUSO/Ma7g7AnyTfKGFfjHl23o6nmg6a/lv0VX3VNyBv06m6cOcw==}
+  eslint-plugin-testing-library@7.14.0:
+    resolution: {integrity: sha512-Z2c/UClULF67VAjQL8G2wKVdCpYBmFof9yuThXjyWwAlTxAq4vbROmS6OMPy6n1AGAMiaGgMIrKauARSVXeIHg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -8934,7 +8934,7 @@ snapshots:
   '@typescript-eslint/project-service@8.46.4(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.49.0(typescript@5.9.3)
-      '@typescript-eslint/types': 8.49.0
+      '@typescript-eslint/types': 8.46.4
       debug: 4.4.3(supports-color@8.1.1)
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -9508,7 +9508,7 @@ snapshots:
       prisma: 7.1.0(@types/react@19.2.5)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
-      vitest: 3.1.4(@types/node@20.12.12)(@vitest/ui@3.1.4)(jiti@2.6.1)(jsdom@27.2.0)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
+      vitest: 3.1.4(@types/node@20.12.12)(@vitest/ui@3.1.4)(jiti@2.6.1)(jsdom@27.3.0(postcss@8.5.6))(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
 
   better-call@1.1.5(zod@4.2.0):
     dependencies:
@@ -10423,7 +10423,7 @@ snapshots:
       string.prototype.matchall: 4.0.12
       string.prototype.repeat: 1.0.0
 
-  eslint-plugin-testing-library@7.13.6(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
+  eslint-plugin-testing-library@7.14.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
       '@typescript-eslint/scope-manager': 8.49.0
       '@typescript-eslint/utils': 8.49.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
