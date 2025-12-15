@@ -1,3 +1,13 @@
+locals {
+  cdn_domain = "cdn.annostamps.com"
+}
+
+
+resource "aws_acm_certificate" "cdn_annostamps_com" {
+  domain_name = "${local.cdn_domain}"
+  validation_method = "DNS"
+  provider = aws.us-east-1
+}
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name              = aws_s3_bucket.annostamps-bucket.bucket_regional_domain_name
@@ -9,6 +19,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "anno-stamps-logo.png"
+
+  aliases = ["${local.cdn_domain}"]
 
 
   default_cache_behavior {
@@ -34,7 +46,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = resource.aws_acm_certificate.cdn_annostamps_com
+    ssl_support_method = "sni-only"
   }
 }
 
