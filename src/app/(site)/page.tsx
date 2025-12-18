@@ -29,7 +29,7 @@ const HomePage = async () => {
       {' '}
       <div className="space-y-4 pt-16">
         <div className="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
-          <Heading>New Stamps</Heading>
+          <Heading>New 117 Stamps</Heading>
           <Link className="dark:text-white" href="/stamps">
             Browse all stamps
             <span aria-hidden="true"> &rarr;</span>
