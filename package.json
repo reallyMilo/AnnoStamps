@@ -87,7 +87,7 @@
     "eslint-plugin-jsonc": "^2.21.0",
     "eslint-plugin-n": "^17.23.1",
     "eslint-plugin-package-json": "^0.85.0",
-    "eslint-plugin-perfectionist": "^4.15.1",
+    "eslint-plugin-perfectionist": "^5.1.0",
     "eslint-plugin-react-compiler": "0.0.0-experimental-9627644-20250520",
     "eslint-plugin-testing-library": "^7.15.1",
     "eslint-plugin-yml": "^1.19.1",
