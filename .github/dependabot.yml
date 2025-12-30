@@ -26,6 +26,7 @@ updates:
         patterns:
           - 'prisma'
           - '@prisma/client'
+          - '@prisma/adapter-pg'
     open-pull-requests-limit: 20
     ignore:
       - dependency-name: '@aws-sdk/client-lambda'
