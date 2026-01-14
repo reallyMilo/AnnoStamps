@@ -182,8 +182,8 @@ importers:
         specifier: 16.1.1
         version: 16.1.1(@typescript-eslint/parser@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint-plugin-cypress:
-        specifier: ^5.2.0
-        version: 5.2.0(eslint@9.39.2(jiti@2.6.1))
+        specifier: ^5.2.1
+        version: 5.2.1(eslint@9.39.2(jiti@2.6.1))
       eslint-plugin-jsonc:
         specifier: ^2.21.0
         version: 2.21.0(eslint@9.39.2(jiti@2.6.1))
@@ -2403,8 +2403,8 @@ packages:
   '@types/node@20.19.27':
     resolution: {integrity: sha512-N2clP5pJhB2YnZJ3PIHFk5RkygRX5WO/5f0WC08tp0wd+sv0rsJk3MqWn3CbNmT2J505a5336jaQj4ph1AdMug==}
 
-  '@types/node@20.19.28':
-    resolution: {integrity: sha512-VyKBr25BuFDzBFCK5sUM6ZXiWfqgCTwTAOK8qzGV/m9FCirXYDlmczJ+d5dXBAQALGCdRRdbteKYfJ84NGEusw==}
+  '@types/node@20.19.29':
+    resolution: {integrity: sha512-YrT9ArrGaHForBaCNwFjoqJWmn8G1Pr7+BH/vwyLHciA9qT/wSiuOhxGCT50JA5xLvFBd6PIiGkE3afxcPE1nw==}
 
   '@types/pg-pool@2.0.6':
     resolution: {integrity: sha512-TaAUE5rq2VQYxab5Ts7WZhKNmuN78Q6PiFonTDdpbx8a1H0M1vhy3rhiMjl+e2iHmogyMw7jZF4FrE6eJUy5HQ==}
@@ -3640,8 +3640,8 @@ packages:
       eslint-import-resolver-webpack:
         optional: true
 
-  eslint-plugin-cypress@5.2.0:
-    resolution: {integrity: sha512-vuCUBQloUSILxtJrUWV39vNIQPlbg0L7cTunEAzvaUzv9LFZZym+KFLH18n9j2cZuFPdlxOqTubCvg5se0DyGw==}
+  eslint-plugin-cypress@5.2.1:
+    resolution: {integrity: sha512-HTJLbcd7fwJ4agbHinZ4FUIl38bUTJT3BmH8zdgS2V32LETmPqCtWHi3xlgZ2vpX0aW6kQoHCVVqHm8NxZJ9sA==}
     peerDependencies:
       eslint: '>=9'
 
@@ -4033,6 +4033,10 @@ packages:
 
   globals@16.4.0:
     resolution: {integrity: sha512-ob/2LcVVaVGCYN+r14cnwnoDPUufjiYgSqRhiFD0Q1iI4Odora5RE8Iv1D24hAz5oMophRGkGz+yuvQmmUMnMw==}
+    engines: {node: '>=18'}
+
+  globals@16.5.0:
+    resolution: {integrity: sha512-c/c15i26VrJ4IRt5Z89DnIzCGDn9EcebibhAOjw5ibqEHsE1wLUgkPn9RDmNcUKyU87GeaL633nyJ+pplFR2ZQ==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -8846,7 +8850,7 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
-  '@types/node@20.19.28':
+  '@types/node@20.19.29':
     dependencies:
       undici-types: 6.21.0
 
@@ -10234,10 +10238,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-cypress@5.2.0(eslint@9.39.2(jiti@2.6.1)):
+  eslint-plugin-cypress@5.2.1(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
       eslint: 9.39.2(jiti@2.6.1)
-      globals: 16.4.0
+      globals: 16.5.0
 
   eslint-plugin-es-x@7.8.0(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
@@ -10763,6 +10767,8 @@ snapshots:
 
   globals@16.4.0: {}
 
+  globals@16.5.0: {}
+
   globalthis@1.0.4:
     dependencies:
       define-properties: 1.2.1
@@ -11083,7 +11089,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.19.28
+      '@types/node': 20.19.29
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
