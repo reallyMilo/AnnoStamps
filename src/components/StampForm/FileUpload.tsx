@@ -21,7 +21,7 @@ const isJSZip = (b: Asset | JSZipObjectWithData): b is JSZipObjectWithData => {
 }
 export const FileUpload = () => {
   const { files, setFiles, status } = useStampFormContext()
-  const { handleChange, handleRemove, isError } = useUpload<
+  const { error, handleChange, handleRemove } = useUpload<
     Asset | JSZipObjectWithData
   >(files, setFiles)
 
@@ -95,8 +95,11 @@ export const FileUpload = () => {
       {status === 'invalidZip' && (
         <span className="text-sm text-red-600">Please add stamps</span>
       )}
-      {isError && (
+      {error === 'size' && (
         <span className="text-sm text-red-600">File exceeds 1 MB</span>
+      )}
+      {error === 'limit' && (
+        <span className="text-sm text-red-600">Maximum 10 files</span>
       )}
     </div>
   )
