@@ -1,7 +1,8 @@
 import type { ChangeEvent } from 'react'
 
-import { act, renderHook } from '@testing-library/react'
 import { useState } from 'react'
+
+import { act, renderHook } from '@/__tests__/test-utils'
 
 import { type Asset, fileToAsset, useUpload } from '../useUpload'
 
