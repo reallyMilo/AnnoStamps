@@ -225,9 +225,9 @@ const Form = ({
 
   return (
     <form
-      action={async (formData) => {
+      action={(formData) => {
         setStatus('upload')
-        await handleOnSubmit(formData)
+        void handleOnSubmit(formData)
       }}
       className="mt-8 flex flex-col space-y-8"
       data-testid="stamp-form"
