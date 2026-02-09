@@ -94,8 +94,8 @@ importers:
         specifier: 0.32.6
         version: 0.32.6
       swiper:
-        specifier: 12.0.3
-        version: 12.0.3
+        specifier: 12.1.0
+        version: 12.1.0
       swr:
         specifier: ^2.4.0
         version: 2.4.0(react@19.2.0)
@@ -2489,6 +2489,9 @@ packages:
 
   '@types/node@20.19.32':
     resolution: {integrity: sha512-Ez8QE4DMfhjjTsES9K2dwfV258qBui7qxUsoaixZDiTzbde4U12e1pXGNu/ECsUIOi5/zoCxAQxIhQnaUQ2VvA==}
+
+  '@types/node@20.19.33':
+    resolution: {integrity: sha512-Rs1bVAIdBs5gbTIKza/tgpMuG1k3U/UMJLWecIMxNdJFDMzcM5LOiLVRYh3PilWEYDIeUDv7bpiHPLPsbydGcw==}
 
   '@types/pg-pool@2.0.7':
     resolution: {integrity: sha512-U4CwmGVQcbEuqpyju8/ptOKg6gEC+Tqsvj2xS9o1g71bUh8twxnC6ZL5rZKCsGN0iyH0CwgUyc9VR5owNQF9Ng==}
@@ -5714,8 +5717,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  swiper@12.0.3:
-    resolution: {integrity: sha512-BHd6U1VPEIksrXlyXjMmRWO0onmdNPaTAFduzqR3pgjvi7KfmUCAm/0cj49u2D7B0zNjMw02TSeXfinC1hDCXg==}
+  swiper@12.1.0:
+    resolution: {integrity: sha512-BD4CpAOOyEvZ2f0CDx362ea+vmOwukVcmbsQx+0BhRIaBUz8wvcCd//E7RFmvBZCrfyqXCHUVqmgUwts6ywlxw==}
     engines: {node: '>= 4.7.0'}
 
   swr@2.4.0:
@@ -9067,6 +9070,10 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/node@20.19.33':
+    dependencies:
+      undici-types: 6.21.0
+
   '@types/pg-pool@2.0.7':
     dependencies:
       '@types/pg': 8.15.6
@@ -11312,7 +11319,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.19.32
+      '@types/node': 20.19.33
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -12601,7 +12608,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swiper@12.0.3: {}
+  swiper@12.1.0: {}
 
   swr@2.4.0(react@19.2.0):
     dependencies:
