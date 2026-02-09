@@ -139,7 +139,9 @@ const Form = ({
   action,
   children,
 }: React.PropsWithChildren<{
-  action: (formData: FormData) => Promise<{ error: string; ok: boolean }>
+  action: (
+    formData: FormData,
+  ) => Promise<void | { error: string; ok: boolean; status: number }>
 }>) => {
   const { files, images, setStatus, stamp } = useStampFormContext()
 
@@ -214,9 +216,9 @@ const Form = ({
     }
     formData.set('imageIdsToRemove', JSON.stringify([...imageIdsToRemove]))
 
-    const error = await action(formData)
+    const result = await action(formData)
 
-    if (error) {
+    if (result && !result.ok) {
       setStatus('errorAction')
     }
   }
@@ -225,7 +227,7 @@ const Form = ({
     <form
       action={(formData) => {
         setStatus('upload')
-        handleOnSubmit(formData)
+        void handleOnSubmit(formData)
       }}
       className="mt-8 flex flex-col space-y-8"
       data-testid="stamp-form"
