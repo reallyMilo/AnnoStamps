@@ -1,6 +1,3 @@
-/*eslint @eslint-community/eslint-comments/disable-enable-pair: [error, {allowWholeFile: true}] */
-/* eslint-disable cypress/unsafe-to-chain-command */
-//FIXME: unsafe chain
 describe('Update user profile', () => {
   describe('new user', () => {
     beforeEach(() => {
@@ -24,7 +21,7 @@ describe('Update user profile', () => {
     })
 
     it('duplicate username error is displayed on already taken username', () => {
-      cy.intercept('/testSeedUserId/settings').as('setUsername')
+      cy.intercept('POST', '/testSeedUserId/settings').as('setUsername')
       cy.setSessionCookie()
 
       cy.visit('/testSeedUserId/settings')
@@ -44,7 +41,7 @@ describe('Update user profile', () => {
     })
 
     it('blocked username rejected', () => {
-      cy.intercept('/testSeedUserId/settings').as('setUsername')
+      cy.intercept('POST', '/testSeedUserId/settings').as('setUsername')
       cy.setSessionCookie()
 
       cy.visit('/testSeedUserId/settings')
@@ -66,16 +63,13 @@ describe('Update user profile', () => {
       cy.findByLabelText('Username').type('cypressTester')
       cy.findByLabelText('About').type('cypress tester biography')
 
-      cy.findByLabelText('Email Notifications').should(
-        'have.attr',
-        'data-checked',
+      cy.findByRole('checkbox', { name: 'Email Notifications' }).should(
+        'be.checked',
       )
 
-      cy.findByLabelText('Upload').selectFile(
+      cy.get('input#avatar').selectFile(
         'cypress/fixtures/cypress-test-image.png',
-        {
-          force: true,
-        },
+        { force: true },
       )
       cy.findByAltText('Uploaded avatar').should('exist')
 
@@ -100,7 +94,7 @@ describe('Update user profile', () => {
       ).should('exist')
 
       cy.wait('@setUsername').then(({ response }) => {
-        expect(response?.body).to.have.property('1')
+        expect(response?.statusCode).to.eq(200)
       })
 
       cy.database(
@@ -117,6 +111,68 @@ describe('Update user profile', () => {
           .its('image')
           .should('match', /annostamps\/avatar\/testSeedUserId\/.*\.png$/)
       })
+
+      cy.findByTestId('check-badge-icon').should('exist')
+
+      cy.reload()
+      cy.findByLabelText('Username')
+        .invoke('val')
+        .should('equal', 'cypressTester')
+    })
+
+    it('shows unauthorized error when session is missing', () => {
+      cy.intercept('POST', '/testSeedUserId/settings', {
+        body: { error: 'Unauthorized', ok: false, state: 'error' },
+        statusCode: 401,
+      }).as('updateUserSettings')
+      cy.setSessionCookie()
+
+      cy.visit('/testSeedUserId/settings')
+      cy.findByLabelText('Username').type('cypressTester')
+      cy.findByRole('button', { name: 'Save' }).click()
+
+      cy.wait('@updateUserSettings')
+      cy.findByText('Unauthorized').should('be.visible')
+    })
+
+    it('shows server error when update fails', () => {
+      cy.intercept('POST', '/testSeedUserId/settings', {
+        body: {
+          error: 'Server error, contact discord',
+          ok: false,
+          state: 'error',
+        },
+        statusCode: 500,
+      }).as('updateUserSettings')
+      cy.setSessionCookie()
+
+      cy.visit('/testSeedUserId/settings')
+      cy.findByLabelText('Username').type('cypressTester')
+      cy.findByRole('button', { name: 'Save' }).click()
+
+      cy.wait('@updateUserSettings')
+      cy.findByText('Server error, contact discord').should('be.visible')
+    })
+
+    it('shows an error when avatar upload presign fails', () => {
+      cy.intercept('/api/upload/presigned*', {
+        body: { error: 'Upload failed' },
+        statusCode: 500,
+      }).as('presigned')
+      cy.intercept('POST', '/testSeedUserId/settings').as('updateUserSettings')
+      cy.setSessionCookie()
+
+      cy.visit('/testSeedUserId/settings')
+      cy.findByLabelText('Username').type('cypressTester')
+      cy.get('input#avatar').selectFile(
+        'cypress/fixtures/cypress-test-image.png',
+        { force: true },
+      )
+      cy.findByRole('button', { name: 'Save' }).click()
+
+      cy.wait('@presigned')
+      cy.findByText('Upload failed').should('be.visible')
+      cy.get('@updateUserSettings.all').should('have.length', 0)
     })
   })
 
@@ -138,18 +194,20 @@ describe('Update user profile', () => {
       cy.findByLabelText('Username')
         .invoke('val')
         .should('equal', 'testSeedUser')
+      cy.findByLabelText('Username').should('have.attr', 'readonly')
       cy.findByLabelText('About')
         .invoke('val')
         .should('equal', 'amazing test user bio')
 
-      cy.findByLabelText('About').clear().type('cypress tester biography')
+      cy.findByLabelText('About').clear()
+      cy.findByLabelText('About').type('cypress tester biography')
       cy.findByLabelText('Email Notifications').click()
 
       cy.findByRole('button', {
         name: 'Remove and use AnnoStamps default image',
       }).click()
 
-      cy.findByLabelText('Upload').should('exist')
+      cy.get('input#avatar').should('exist')
       cy.findByRole('button', { name: 'Save' }).click()
 
       cy.wait('@updateUserSettings')
@@ -158,7 +216,9 @@ describe('Update user profile', () => {
         .invoke('val')
         .should('equal', 'cypress tester biography')
 
-      cy.findByLabelText('Email Notifications').should('not.be.checked')
+      cy.findByRole('checkbox', { name: 'Email Notifications' }).should(
+        'not.be.checked',
+      )
 
       cy.database(
         `SELECT * FROM "User" LEFT JOIN "Preference" ON "User".id = "Preference"."userId" WHERE username = 'testSeedUser';`,

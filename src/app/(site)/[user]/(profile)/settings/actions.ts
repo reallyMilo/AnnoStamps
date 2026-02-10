@@ -24,7 +24,7 @@ export const updateUserSettings = async (
   error?: string
   message?: string
   ok: boolean
-  state: 'error' | 'success'
+  state: 'error' | 'idle' | 'success'
 }> => {
   const session = await auth.api.getSession({ headers: await headers() })
   if (!session) {

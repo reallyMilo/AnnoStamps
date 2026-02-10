@@ -49,20 +49,30 @@ export const SettingsForm = ({
   const { error, handleChange } = useUpload<(typeof avatar)[0]>(
     avatar,
     setAvatar,
+    1,
   )
 
   const [formState, formAction, isPending] = useActionState<
-    ReturnType<typeof updateUserSettings>
+    Awaited<ReturnType<typeof updateUserSettings>>,
+    FormData
   >(
     async (_, formData) => {
       if (isAsset(avatar[0])) {
-        const uploadAvatarUrl = await uploadAsset(
-          avatar[0].rawFile,
-          avatar[0].rawFile.type,
-          avatar[0].name,
-          'avatar',
-        )
-        formData.set('image', uploadAvatarUrl)
+        try {
+          const uploadAvatarUrl = await uploadAsset(
+            avatar[0].rawFile,
+            avatar[0].rawFile.type,
+            avatar[0].name,
+            'avatar',
+          )
+          formData.set('image', uploadAvatarUrl)
+        } catch {
+          return {
+            error: 'Upload failed',
+            ok: false,
+            state: 'error',
+          }
+        }
       } else if (avatar[0].url === null) {
         formData.set('image', 'remove')
       }
@@ -137,7 +147,7 @@ export const SettingsForm = ({
               className="flex size-40 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-gray-300 hover:border-gray-400"
               htmlFor="avatar"
             >
-              {avatar[0].url ? (
+              {avatar[0]?.url ? (
                 <img
                   alt="Uploaded avatar"
                   className="h-full w-full object-cover"
