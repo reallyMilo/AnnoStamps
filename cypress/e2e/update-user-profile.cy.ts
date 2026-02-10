@@ -168,10 +168,7 @@ describe('Update user profile', () => {
 
       cy.findByLabelText('About').clear()
       cy.findByLabelText('About').type('cypress tester biography')
-      cy.findByLabelText('Email Notifications')
-        .parent()
-        .find('[role="checkbox"]')
-        .click()
+      cy.findByLabelText('Email Notifications').click()
 
       cy.findByRole('button', {
         name: 'Remove and use AnnoStamps default image',
