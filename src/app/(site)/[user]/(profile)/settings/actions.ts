@@ -24,11 +24,11 @@ export const updateUserSettings = async (
   error?: string
   message?: string
   ok: boolean
-  status: number
+  state: 'error' | 'success'
 }> => {
   const session = await auth.api.getSession({ headers: await headers() })
   if (!session) {
-    return { error: 'Unauthorized', ok: false, status: 401 }
+    return { error: 'Unauthorized', ok: false, state: 'error' }
   }
 
   const {
@@ -49,7 +49,7 @@ export const updateUserSettings = async (
     return {
       error: 'Not allowed to use as username',
       ok: false,
-      status: 403,
+      state: 'error',
     }
   }
 
@@ -99,7 +99,7 @@ export const updateUserSettings = async (
         return {
           error: 'Username already taken',
           ok: false,
-          status: 409,
+          state: 'error',
         }
       }
     }
@@ -107,7 +107,7 @@ export const updateUserSettings = async (
     return {
       error: 'Server error, contact discord',
       ok: false,
-      status: 500,
+      state: 'error',
     }
   }
 
@@ -117,6 +117,6 @@ export const updateUserSettings = async (
     data: updateResponse,
     message: 'Updated user info',
     ok: true,
-    status: 200,
+    state: 'success',
   }
 }
