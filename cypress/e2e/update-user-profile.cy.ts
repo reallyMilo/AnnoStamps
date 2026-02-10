@@ -63,9 +63,10 @@ describe('Update user profile', () => {
       cy.findByLabelText('Username').type('cypressTester')
       cy.findByLabelText('About').type('cypress tester biography')
 
-      cy.findByRole('checkbox', { name: 'emailNotifications' }).should(
-        'be.checked',
-      )
+      cy.findByLabelText('Email Notifications')
+        .parent()
+        .find('[role="checkbox"]')
+        .should('have.attr', 'aria-checked', 'true')
 
       cy.get('input#avatar').selectFile(
         'cypress/fixtures/cypress-test-image.png',
@@ -167,7 +168,10 @@ describe('Update user profile', () => {
 
       cy.findByLabelText('About').clear()
       cy.findByLabelText('About').type('cypress tester biography')
-      cy.findByLabelText('Email Notifications').click()
+      cy.findByLabelText('Email Notifications')
+        .parent()
+        .find('[role="checkbox"]')
+        .click()
 
       cy.findByRole('button', {
         name: 'Remove and use AnnoStamps default image',
@@ -182,9 +186,10 @@ describe('Update user profile', () => {
         .invoke('val')
         .should('equal', 'cypress tester biography')
 
-      cy.findByRole('checkbox', { name: 'Email Notifications' }).should(
-        'not.be.checked',
-      )
+      cy.findByLabelText('Email Notifications')
+        .parent()
+        .find('[role="checkbox"]')
+        .should('have.attr', 'aria-checked', 'false')
 
       cy.database(
         `SELECT * FROM "User" LEFT JOIN "Preference" ON "User".id = "Preference"."userId" WHERE username = 'testSeedUser';`,
