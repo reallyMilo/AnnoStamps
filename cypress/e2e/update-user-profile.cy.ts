@@ -63,7 +63,7 @@ describe('Update user profile', () => {
       cy.findByLabelText('Username').type('cypressTester')
       cy.findByLabelText('About').type('cypress tester biography')
 
-      cy.findByRole('checkbox', { name: 'Email Notifications' }).should(
+      cy.findByRole('checkbox', { name: 'emailNotifications' }).should(
         'be.checked',
       )
 
