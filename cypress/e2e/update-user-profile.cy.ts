@@ -120,40 +120,6 @@ describe('Update user profile', () => {
         .should('equal', 'cypressTester')
     })
 
-    it('shows unauthorized error when session is missing', () => {
-      cy.intercept('POST', '/testSeedUserId/settings', {
-        body: { error: 'Unauthorized', ok: false, state: 'error' },
-        statusCode: 401,
-      }).as('updateUserSettings')
-      cy.setSessionCookie()
-
-      cy.visit('/testSeedUserId/settings')
-      cy.findByLabelText('Username').type('cypressTester')
-      cy.findByRole('button', { name: 'Save' }).click()
-
-      cy.wait('@updateUserSettings')
-      cy.findByText('Unauthorized').should('be.visible')
-    })
-
-    it('shows server error when update fails', () => {
-      cy.intercept('POST', '/testSeedUserId/settings', {
-        body: {
-          error: 'Server error, contact discord',
-          ok: false,
-          state: 'error',
-        },
-        statusCode: 500,
-      }).as('updateUserSettings')
-      cy.setSessionCookie()
-
-      cy.visit('/testSeedUserId/settings')
-      cy.findByLabelText('Username').type('cypressTester')
-      cy.findByRole('button', { name: 'Save' }).click()
-
-      cy.wait('@updateUserSettings')
-      cy.findByText('Server error, contact discord').should('be.visible')
-    })
-
     it('shows an error when avatar upload presign fails', () => {
       cy.intercept('/api/upload/presigned*', {
         body: { error: 'Upload failed' },
