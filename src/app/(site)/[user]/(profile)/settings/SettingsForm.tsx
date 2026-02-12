@@ -164,6 +164,7 @@ export const SettingsForm = ({
               className="cursor-pointer border-0 font-light hover:underline"
               onClick={() => setAvatar([{ url: null }])}
               outline
+              type="button"
             >
               Remove and use AnnoStamps default image
             </Button>
