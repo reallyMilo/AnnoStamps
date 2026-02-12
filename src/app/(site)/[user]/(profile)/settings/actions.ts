@@ -20,7 +20,9 @@ const blockedUsernames = new Set<string>([
 export const updateUserSettings = async (
   formData: FormData,
 ): Promise<{
-  data?: Omit<UserWithStamps, 'likedStamps' | 'listedStamps'>
+  data?: Pick<UserWithStamps, 'biography' | 'username'> & {
+    isEmailEnabled: boolean
+  }
   error?: string
   message?: string
   ok: boolean
@@ -114,7 +116,11 @@ export const updateUserSettings = async (
   revalidatePath(`${session.userId}/settings`)
   revalidatePath(`${session.user.usernameURL}/settings`)
   return {
-    data: updateResponse,
+    data: {
+      biography: updateResponse.biography,
+      isEmailEnabled: isEmailNotificationEnabled,
+      username: updateResponse.username,
+    },
     message: 'Updated user info',
     ok: true,
     state: 'success',

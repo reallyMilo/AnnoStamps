@@ -4,8 +4,6 @@ import { CheckBadgeIcon } from '@heroicons/react/20/solid'
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline'
 import { useActionState, useState } from 'react'
 
-import type { Session } from '@/lib/auth-client'
-
 import { uploadAsset } from '@/components/StampForm/uploadAsset'
 import { type Asset, useUpload } from '@/components/StampForm/useUpload'
 import {
@@ -25,6 +23,7 @@ import {
   Text,
   Textarea,
 } from '@/components/ui'
+import { type Session } from '@/lib/auth-client'
 
 import { updateUserSettings } from './actions'
 
@@ -80,10 +79,12 @@ export const SettingsForm = ({
       return await updateUserSettings(formData)
     },
     {
+      data: { biography, isEmailEnabled, username },
       ok: false,
       state: 'idle',
     },
   )
+  console.log(formState)
 
   return (
     <form
@@ -105,7 +106,7 @@ export const SettingsForm = ({
               <span data-slot="custom-text">annostamps.com/</span>
               <Input
                 autoComplete="false"
-                defaultValue={username ?? ''}
+                defaultValue={formState.data?.username ?? ''}
                 name="username"
                 onInvalid={(e) =>
                   e.currentTarget.setCustomValidity(
@@ -113,7 +114,7 @@ export const SettingsForm = ({
                   )
                 }
                 pattern={`^[a-zA-Z0-9_\\-]+$`}
-                readOnly={!!username}
+                readOnly={!!formState.data?.username}
                 required
                 title="Select a username containing only alphanumeric characters, dashes (-), and underscores (_)."
                 type="text"
@@ -172,7 +173,7 @@ export const SettingsForm = ({
           <Field>
             <Label>About</Label>
             <Textarea
-              defaultValue={biography ?? ''}
+              defaultValue={formState.data?.biography ?? ''}
               name="biography"
               placeholder="To be displayed on your page banner."
               rows={3}
@@ -185,7 +186,7 @@ export const SettingsForm = ({
         <CheckboxGroup>
           <CheckboxField>
             <Checkbox
-              defaultChecked={isEmailEnabled}
+              defaultChecked={formState.data?.isEmailEnabled ?? true}
               name="emailNotifications"
             />
             <Label>Email Notifications</Label>
