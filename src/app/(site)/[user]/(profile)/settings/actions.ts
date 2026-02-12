@@ -20,15 +20,17 @@ const blockedUsernames = new Set<string>([
 export const updateUserSettings = async (
   formData: FormData,
 ): Promise<{
-  data?: Omit<UserWithStamps, 'likedStamps' | 'listedStamps'>
+  data?: Pick<UserWithStamps, 'biography' | 'username'> & {
+    isEmailEnabled: boolean
+  }
   error?: string
   message?: string
   ok: boolean
-  status: number
+  state: 'error' | 'idle' | 'success'
 }> => {
   const session = await auth.api.getSession({ headers: await headers() })
   if (!session) {
-    return { error: 'Unauthorized', ok: false, status: 401 }
+    return { error: 'Unauthorized', ok: false, state: 'error' }
   }
 
   const {
@@ -49,7 +51,7 @@ export const updateUserSettings = async (
     return {
       error: 'Not allowed to use as username',
       ok: false,
-      status: 403,
+      state: 'error',
     }
   }
 
@@ -99,7 +101,7 @@ export const updateUserSettings = async (
         return {
           error: 'Username already taken',
           ok: false,
-          status: 409,
+          state: 'error',
         }
       }
     }
@@ -107,16 +109,20 @@ export const updateUserSettings = async (
     return {
       error: 'Server error, contact discord',
       ok: false,
-      status: 500,
+      state: 'error',
     }
   }
 
   revalidatePath(`${session.userId}/settings`)
   revalidatePath(`${session.user.usernameURL}/settings`)
   return {
-    data: updateResponse,
+    data: {
+      biography: updateResponse.biography,
+      isEmailEnabled: isEmailNotificationEnabled,
+      username: updateResponse.username,
+    },
     message: 'Updated user info',
     ok: true,
-    status: 200,
+    state: 'success',
   }
 }

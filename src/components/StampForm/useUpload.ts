@@ -19,6 +19,7 @@ export const fileToAsset = (rawFile: File) => {
 export const useUpload = <T>(
   files: T[],
   setFiles: React.Dispatch<React.SetStateAction<T[]>>,
+  limit?: number,
 ) => {
   const [error, setError] = useState<'limit' | 'size' | null>(null)
   const isAsset = (value: unknown): value is Asset =>
@@ -49,6 +50,10 @@ export const useUpload = <T>(
 
       const asset = fileToAsset(file)
       assets.push(asset)
+    }
+    if (limit === 1) {
+      setFiles([assets[assets.length - 1] as T])
+      return
     }
     setFiles((prev) => prev.concat(assets as T[]))
   }
