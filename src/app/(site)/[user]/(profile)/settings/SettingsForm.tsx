@@ -50,12 +50,11 @@ export const SettingsForm = ({
     setAvatar,
     1,
   )
-
   const [formState, formAction, isPending] = useActionState<
     Awaited<ReturnType<typeof updateUserSettings>>,
     FormData
   >(
-    async (_, formData) => {
+    async (prevState, formData) => {
       if (isAsset(avatar[0])) {
         try {
           const uploadAvatarUrl = await uploadAsset(
@@ -67,6 +66,7 @@ export const SettingsForm = ({
           formData.set('image', uploadAvatarUrl)
         } catch {
           return {
+            data: prevState.data,
             error: 'Upload failed',
             ok: false,
             state: 'error',
@@ -76,7 +76,11 @@ export const SettingsForm = ({
         formData.set('image', 'remove')
       }
 
-      return await updateUserSettings(formData)
+      const res = await updateUserSettings(formData)
+      if (!res.ok) {
+        return { ...res, data: prevState.data }
+      }
+      return res
     },
     {
       data: { biography, isEmailEnabled, username },
@@ -185,10 +189,15 @@ export const SettingsForm = ({
         <Legend>Preferences</Legend>
         <CheckboxGroup>
           <CheckboxField>
-            <Checkbox
+            <input
               defaultChecked={formState.data?.isEmailEnabled ?? true}
               name="emailNotifications"
+              type="checkbox"
             />
+            {/* <Checkbox
+              defaultChecked={formState.data?.isEmailEnabled ?? true}
+              name="emailNotifications"
+            /> */}
             <Label>Email Notifications</Label>
             <Description>
               Receive email notifications for new comments on your stamps or
