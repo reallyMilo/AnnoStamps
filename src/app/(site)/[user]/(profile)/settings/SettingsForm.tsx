@@ -88,7 +88,6 @@ export const SettingsForm = ({
       state: 'idle',
     },
   )
-  console.log(formState)
 
   return (
     <form
