@@ -189,6 +189,7 @@ export const SettingsForm = ({
         <CheckboxGroup>
           <CheckboxField>
             <input
+              data-testid="email-checkbox"
               defaultChecked={formState.data?.isEmailEnabled ?? true}
               name="emailNotifications"
               type="checkbox"
