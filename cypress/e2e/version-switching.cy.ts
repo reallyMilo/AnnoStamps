@@ -57,7 +57,7 @@ describe('Switch between game versions via navigation links and see correspondin
     cy.setSessionCookie()
     cy.visit('/stamp/create')
 
-    cy.findByText('Upload 117 Stamp').should('exist')
+    cy.findByText('Anno 117 uploads are coming soon').should('exist')
 
     cy.getBySel('1800-version-link').click()
 

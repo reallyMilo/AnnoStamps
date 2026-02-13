@@ -4,6 +4,10 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { auth } from '@/auth'
+import {
+  is117StampWriteBlocked,
+  STAMP_117_WRITE_BLOCKED_MESSAGE,
+} from '@/lib/constants/featureFlags'
 import { parseAndSanitizedMarkdown } from '@/lib/markdown'
 import prisma from '@/lib/prisma/singleton'
 import { Prisma } from '#/client'
@@ -47,6 +51,14 @@ export const createStamp = async (
     uploadedImageUrls,
     ...fields
   } = Object.fromEntries(formData) as unknown as FormDataEntries
+
+  if (is117StampWriteBlocked(game)) {
+    return {
+      error: STAMP_117_WRITE_BLOCKED_MESSAGE,
+      ok: false,
+      status: 403,
+    }
+  }
 
   try {
     const sanitizedMarkdown = parseAndSanitizedMarkdown(unsafeDescription)

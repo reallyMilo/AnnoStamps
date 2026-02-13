@@ -6,6 +6,10 @@ import { redirect } from 'next/navigation'
 import type { Prisma } from '#/client'
 
 import { auth } from '@/auth'
+import {
+  is117StampWriteBlocked,
+  STAMP_117_WRITE_BLOCKED_MESSAGE,
+} from '@/lib/constants/featureFlags'
 import { parseAndSanitizedMarkdown } from '@/lib/markdown'
 import prisma from '@/lib/prisma/singleton'
 
@@ -43,6 +47,14 @@ export const updateStamp = async (formData: FormData) => {
     ...fields
   } = Object.fromEntries(formData) as unknown as FormDataEntries
 
+  if (is117StampWriteBlocked(game)) {
+    return {
+      error: STAMP_117_WRITE_BLOCKED_MESSAGE,
+      ok: false,
+      status: 403,
+    }
+  }
+
   const deleteImages = JSON.parse(imageIdsToRemove) as string[]
   const addImages = JSON.parse(uploadedImageUrls) as string[]
   let prevVersion = null
@@ -65,6 +77,9 @@ export const updateStamp = async (formData: FormData) => {
         throw new Error('Not stamp owner')
       }
       prevVersion = userStamp?.listedStamps[0].game
+      if (prevVersion && is117StampWriteBlocked(prevVersion)) {
+        throw new Error('117 stamp updates are disabled')
+      }
 
       if (deleteImages.length > 0) {
         await tx.image.deleteMany({
@@ -104,6 +119,13 @@ export const updateStamp = async (formData: FormData) => {
     })
   } catch (e) {
     console.error(e)
+    if (e instanceof Error && e.message === '117 stamp updates are disabled') {
+      return {
+        error: STAMP_117_WRITE_BLOCKED_MESSAGE,
+        ok: false,
+        status: 403,
+      }
+    }
     return { error: 'Server error in updating stamp', ok: false, status: 500 }
   }
 
