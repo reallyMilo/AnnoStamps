@@ -45,6 +45,7 @@ const Search = () => {
         if (!formData.get('search')) {
           router.push(
             stringifyQuery(searchParams, {
+              page: 1,
               search: null,
             }),
           )
@@ -52,6 +53,7 @@ const Search = () => {
         }
         router.push(
           stringifyQuery(searchParams, {
+            page: 1,
             search: formData.get('search'),
           }),
         )
