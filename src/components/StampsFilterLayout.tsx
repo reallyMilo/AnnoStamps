@@ -145,7 +145,6 @@ const SortOptionsSelect = () => {
         onChange={(e) =>
           router.push(
             stringifyQuery(searchParams, {
-              page: 1,
               sort: e.target.value,
             }),
           )
