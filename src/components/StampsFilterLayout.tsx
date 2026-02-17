@@ -45,6 +45,7 @@ const Search = () => {
         if (!formData.get('search')) {
           router.push(
             stringifyQuery(searchParams, {
+              page: 1,
               search: null,
             }),
           )
@@ -52,6 +53,7 @@ const Search = () => {
         }
         router.push(
           stringifyQuery(searchParams, {
+            page: 1,
             search: formData.get('search'),
           }),
         )
@@ -103,6 +105,7 @@ const FilterForm = ({ checkboxFilterOptions, className }: FilterFormProps) => {
 
                       router.push(
                         stringifyQuery(searchParams, {
+                          page: 1,
                           [section.id]: existingParams,
                         }),
                       )
@@ -114,6 +117,7 @@ const FilterForm = ({ checkboxFilterOptions, className }: FilterFormProps) => {
                     )
                     router.push(
                       stringifyQuery(searchParams, {
+                        page: 1,
                         [section.id]: filtered,
                       }),
                     )
@@ -143,6 +147,7 @@ const SortOptionsSelect = () => {
         onChange={(e) =>
           router.push(
             stringifyQuery(searchParams, {
+              page: 1,
               sort: e.target.value,
             }),
           )
