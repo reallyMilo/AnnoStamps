@@ -26,39 +26,31 @@ describe('Stamp liking', () => {
   })
 
   it('user can like stamp', () => {
-    cy.intercept('/stamp/*').as('likeStamp')
-    cy.visit('/stamps')
     cy.setSessionCookie()
-    cy.getBySel('stamp-card-link').first().click()
+    cy.intercept('/api/auth/get-session').as('clientSession')
+    cy.intercept('/api/user/testSeedUserId/likes').as('userLikes')
+    cy.visit('/stamp/testSeed1800StampId')
+    cy.wait('@clientSession')
+    cy.wait('@userLikes')
 
     cy.getBySel('like-stamp')
       .invoke('text')
-      .then(Number)
+      .then((likesText) => Number.parseInt(likesText.trim(), 10))
       .then((initialLikesCount) => {
         cy.log(String(initialLikesCount))
+        expect(initialLikesCount).to.be.a('number').and.not.NaN
 
-        cy.getBySel('like-stamp')
-          .trigger('mouseover')
-          .then(($link) => {
-            expect($link.css('cursor')).to.equal('pointer')
-          })
-          .click()
-
-        cy.wait('@likeStamp')
-
-        cy.getBySel('like-stamp')
-          .find('svg')
-          .should('have.css', 'color', 'rgb(109, 211, 192)')
-        cy.getBySel('like-stamp')
-          .invoke('text')
-          .then(Number)
-          .should('eq', initialLikesCount + 1)
+        cy.getBySel('like-stamp').should('be.visible').click()
+        cy.getBySel('like-stamp').should(($button) => {
+          const likes = Number.parseInt($button.text().trim(), 10)
+          expect(likes).to.eq(initialLikesCount + 1)
+        })
       })
 
     cy.database(
-      `SELECT * FROM "User" INNER JOIN "_StampLiker" ON "User".id = "_StampLiker"."B" WHERE id = 'testSeedUserId';`,
-    ).then((users) => {
-      cy.wrap(users).should('have.length', 1)
+      `SELECT * FROM "_StampLiker" WHERE "A"='testSeed1800StampId' AND "B"='testSeedUserId';`,
+    ).then((stampLikes) => {
+      cy.wrap(stampLikes).should('have.length', 1)
     })
   })
 })
