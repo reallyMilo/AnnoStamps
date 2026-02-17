@@ -16,7 +16,7 @@ const isImage = (b: Asset | Image): b is Image => {
 //TODO: ordering of images, drag
 export const ImageUpload = () => {
   const { images, setImages, status } = useStampFormContext()
-  const { handleChange, handleRemove, isError } = useUpload<Asset | Image>(
+  const { error, handleChange, handleRemove } = useUpload<Asset | Image>(
     images,
     setImages,
   )
@@ -53,7 +53,7 @@ export const ImageUpload = () => {
       {images.length === 0 ? (
         <label
           className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
-          htmlFor="image"
+          htmlFor="images"
         >
           <ArrowUpIcon className="mx-auto h-6 w-6 text-gray-400" />
 
@@ -88,10 +88,13 @@ export const ImageUpload = () => {
       {status === 'invalidImages' && (
         <span className="text-sm text-red-600">Please add images</span>
       )}
-      {isError && (
+      {error === 'size' && (
         <span className="text-sm text-red-600">
           File size exceeds 1MB or is not .png .jpg .jpeg .webp
         </span>
+      )}
+      {error === 'limit' && (
+        <span className="text-sm text-red-600">Maximum 10 files</span>
       )}
     </div>
   )

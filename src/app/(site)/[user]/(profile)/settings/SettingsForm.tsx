@@ -2,14 +2,10 @@
 
 import { CheckBadgeIcon } from '@heroicons/react/20/solid'
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline'
-import { useState } from 'react'
-import { useFormStatus } from 'react-dom'
-
-import type { Session } from '@/lib/auth-client'
-import type { UserWithStamps } from '@/lib/prisma/models'
+import { useActionState, useState } from 'react'
 
 import { uploadAsset } from '@/components/StampForm/uploadAsset'
-import { type Asset, fileToAsset } from '@/components/StampForm/useUpload'
+import { type Asset, useUpload } from '@/components/StampForm/useUpload'
 import {
   Button,
   Checkbox,
@@ -27,25 +23,12 @@ import {
   Text,
   Textarea,
 } from '@/components/ui'
+import { type Session } from '@/lib/auth-client'
 
 import { updateUserSettings } from './actions'
 
-const isAsset = (b: Asset | null | string | undefined): b is Asset => {
+const isAsset = (b: Asset | null | object | string | undefined): b is Asset => {
   return !!b && typeof b === 'object' && 'rawFile' in b
-}
-
-const SubmitButton = () => {
-  const { pending } = useFormStatus()
-  return (
-    <Button
-      className="justify-self-end font-normal"
-      color="secondary"
-      disabled={pending}
-      type="submit"
-    >
-      Save
-    </Button>
-  )
 }
 
 export const SettingsForm = ({
@@ -57,41 +40,54 @@ export const SettingsForm = ({
   Session['user'],
   'biography' | 'image' | 'isEmailEnabled' | 'username'
 >) => {
-  const [formState, setFormState] = useState<
-    Omit<Awaited<ReturnType<typeof updateUserSettings>>, 'status'> & {
-      state: 'error' | 'idle' | 'success'
-    }
-  >({
-    error: '',
-    message: '',
-    ok: false,
-    state: 'idle',
-  })
-  const [avatar, setAvatar] = useState<Asset | UserWithStamps['image']>(
-    image ?? null,
+  const currentAvatar = image ? { url: image } : { url: null }
+  const [avatar, setAvatar] = useState<(Asset | typeof currentAvatar)[]>([
+    currentAvatar,
+  ])
+
+  const { error, handleChange } = useUpload<(typeof avatar)[0]>(
+    avatar,
+    setAvatar,
+    1,
   )
+  const [formState, formAction, isPending] = useActionState<
+    Awaited<ReturnType<typeof updateUserSettings>>,
+    FormData
+  >(
+    async (prevState, formData) => {
+      if (isAsset(avatar[0])) {
+        try {
+          const uploadAvatarUrl = await uploadAsset(
+            avatar[0].rawFile,
+            avatar[0].rawFile.type,
+            avatar[0].name,
+            'avatar',
+          )
+          formData.set('image', uploadAvatarUrl)
+        } catch {
+          return {
+            data: prevState.data,
+            error: 'Upload failed',
+            ok: false,
+            state: 'error',
+          }
+        }
+      } else if (avatar[0].url === null) {
+        formData.set('image', 'remove')
+      }
 
-  const avatarSrc = typeof avatar === 'string' ? avatar : avatar?.url
-  const formAction = async (formData: FormData) => {
-    if (isAsset(avatar)) {
-      const uploadAvatarUrl = await uploadAsset(
-        avatar.rawFile,
-        avatar.rawFile.type,
-        avatar.name,
-        'avatar',
-      )
-      formData.set('image', uploadAvatarUrl)
-    } else if (avatar === null) {
-      formData.set('image', 'remove')
-    }
-
-    const res = await updateUserSettings(formData)
-    if (!res.ok) {
-      setFormState({ ...res, state: 'error' })
-      return
-    }
-    setFormState({ ...res, state: 'success' })
-  }
+      const res = await updateUserSettings(formData)
+      if (!res.ok) {
+        return { ...res, data: prevState.data }
+      }
+      return res
+    },
+    {
+      data: { biography, isEmailEnabled, username },
+      ok: false,
+      state: 'idle',
+    },
+  )
 
   return (
     <form
@@ -113,7 +109,7 @@ export const SettingsForm = ({
               <span data-slot="custom-text">annostamps.com/</span>
               <Input
                 autoComplete="false"
-                defaultValue={username ?? ''}
+                defaultValue={formState.data?.username ?? ''}
                 name="username"
                 onInvalid={(e) =>
                   e.currentTarget.setCustomValidity(
@@ -121,7 +117,7 @@ export const SettingsForm = ({
                   )
                 }
                 pattern={`^[a-zA-Z0-9_\\-]+$`}
-                readOnly={!!username}
+                readOnly={!!formState.data?.username}
                 required
                 title="Select a username containing only alphanumeric characters, dashes (-), and underscores (_)."
                 type="text"
@@ -134,6 +130,9 @@ export const SettingsForm = ({
             {formState.state === 'error' && (
               <ErrorMessage>{formState.error}</ErrorMessage>
             )}
+            {error === 'size' && (
+              <ErrorMessage>File size greater then 1 MB.</ErrorMessage>
+            )}
           </Field>
           <Field className="space-y-2">
             <Label>Avatar</Label>
@@ -144,24 +143,7 @@ export const SettingsForm = ({
               id="avatar"
               multiple
               name="avatar"
-              onChange={(e) => {
-                const files = e.currentTarget.files
-
-                if (!files || !files[0].size) {
-                  return
-                }
-
-                if (files[0].size > 1028 * 1028) {
-                  setFormState({
-                    message: 'avatar upload bigger then 1 mb',
-                    ok: false,
-                    state: 'error',
-                  })
-                  return
-                }
-                const asset = fileToAsset(files[0])
-                setAvatar(asset)
-              }}
+              onChange={handleChange}
               type="file"
             />
 
@@ -169,11 +151,11 @@ export const SettingsForm = ({
               className="flex size-40 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-gray-300 hover:border-gray-400"
               htmlFor="avatar"
             >
-              {avatar ? (
+              {avatar[0]?.url ? (
                 <img
                   alt="Uploaded avatar"
                   className="h-full w-full object-cover"
-                  src={avatarSrc}
+                  src={avatar[0].url}
                 />
               ) : (
                 <>
@@ -184,8 +166,9 @@ export const SettingsForm = ({
             </label>
             <Button
               className="cursor-pointer border-0 font-light hover:underline"
-              onClick={() => setAvatar(null)}
+              onClick={() => setAvatar([{ url: null }])}
               outline
+              type="button"
             >
               Remove and use AnnoStamps default image
             </Button>
@@ -193,7 +176,7 @@ export const SettingsForm = ({
           <Field>
             <Label>About</Label>
             <Textarea
-              defaultValue={biography ?? ''}
+              defaultValue={formState.data?.biography ?? ''}
               name="biography"
               placeholder="To be displayed on your page banner."
               rows={3}
@@ -205,10 +188,16 @@ export const SettingsForm = ({
         <Legend>Preferences</Legend>
         <CheckboxGroup>
           <CheckboxField>
-            <Checkbox
-              defaultChecked={isEmailEnabled}
+            <input
+              data-testid="email-checkbox"
+              defaultChecked={formState.data?.isEmailEnabled ?? true}
               name="emailNotifications"
+              type="checkbox"
             />
+            {/* <Checkbox
+              defaultChecked={formState.data?.isEmailEnabled ?? true}
+              name="emailNotifications"
+            /> */}
             <Label>Email Notifications</Label>
             <Description>
               Receive email notifications for new comments on your stamps or
@@ -217,7 +206,14 @@ export const SettingsForm = ({
           </CheckboxField>
         </CheckboxGroup>
       </Fieldset>
-      <SubmitButton />
+      <Button
+        className="justify-self-end font-normal"
+        color="secondary"
+        disabled={isPending}
+        type="submit"
+      >
+        Save
+      </Button>
     </form>
   )
 }

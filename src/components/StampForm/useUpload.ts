@@ -19,38 +19,56 @@ export const fileToAsset = (rawFile: File) => {
 export const useUpload = <T>(
   files: T[],
   setFiles: React.Dispatch<React.SetStateAction<T[]>>,
+  limit?: number,
 ) => {
-  const [isError, setIsError] = useState(false)
+  const [error, setError] = useState<'limit' | 'size' | null>(null)
+  const isAsset = (value: unknown): value is Asset =>
+    typeof value === 'object' &&
+    value !== null &&
+    'rawFile' in value &&
+    'url' in value
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.currentTarget.files
-    if (!files) {
+    setError(null)
+    const fileList = e.currentTarget.files
+    if (!fileList) {
       return
     }
 
     const assets: Asset[] = []
 
-    for (let i = 0; i < files.length; i++) {
-      const file = files.item(i)
-      if (!file || i > fileLimit || file.size > sizeLimit) {
-        setIsError(true)
+    for (let i = 0; i < fileList.length; i++) {
+      const file = fileList.item(i)
+      if (!file || file.size > sizeLimit) {
+        setError('size')
+        return
+      }
+      if (files.length + assets.length >= fileLimit) {
+        setError('limit')
         return
       }
 
       const asset = fileToAsset(file)
       assets.push(asset)
     }
+    if (limit === 1) {
+      setFiles([assets[assets.length - 1] as T])
+      return
+    }
     setFiles((prev) => prev.concat(assets as T[]))
   }
 
   const handleRemove = (fileToRemove: T) => {
+    if (isAsset(fileToRemove)) {
+      URL.revokeObjectURL(fileToRemove.url)
+    }
     const newFiles = files.filter((file) => file !== fileToRemove)
     setFiles(newFiles)
   }
 
   return {
+    error,
     handleChange,
     handleRemove,
-    isError,
   }
 }
