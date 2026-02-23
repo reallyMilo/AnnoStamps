@@ -1,7 +1,7 @@
 import { usePathname } from 'next/navigation'
 import { type Mock } from 'vitest'
 
-import { render, screen } from '@/__tests__/test-utils'
+import { fireEvent, render, screen } from '@/__tests__/test-utils'
 
 import { VersionButtons } from '../VersionButtons'
 
@@ -64,5 +64,18 @@ describe('VersionButtons', () => {
     expect(link117).toHaveAttribute('href', '/user')
     expect(link1800).toHaveAttribute('href', '/user/1800')
     expect(link117.className).toMatch(/bg-secondary/)
+  })
+
+  it('shows version switching info panel when updates button is clicked', () => {
+    ;(usePathname as Mock).mockReturnValue('/')
+
+    render(<VersionButtons />)
+    const toggle = screen.getByTestId('version-info-toggle')
+
+    expect(
+      screen.queryByText('Version Switching Is Live'),
+    ).not.toBeInTheDocument()
+    fireEvent.click(toggle)
+    expect(screen.getByText('Version Switching Is Live')).toBeInTheDocument()
   })
 })
