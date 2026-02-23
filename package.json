@@ -88,7 +88,7 @@
     "eslint-plugin-package-json": "^0.89.1",
     "eslint-plugin-perfectionist": "^5.5.0",
     "eslint-plugin-react-compiler": "0.0.0-experimental-9627644-20250520",
-    "eslint-plugin-testing-library": "^7.15.4",
+    "eslint-plugin-testing-library": "^7.16.0",
     "eslint-plugin-yml": "^3.1.2",
     "husky": "^9.1.7",
     "jsdom": "^28.1.0",
