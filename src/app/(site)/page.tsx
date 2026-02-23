@@ -23,6 +23,7 @@ const getHomePageStamps = unstable_cache(
 
 const HomePage = async () => {
   const newestStamps = await getHomePageStamps()
+
   return (
     <Container className="pt-10">
       <div className="space-y-4">

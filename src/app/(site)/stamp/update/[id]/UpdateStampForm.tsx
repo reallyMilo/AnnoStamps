@@ -8,7 +8,6 @@ import type { StampWithRelations } from '@/lib/prisma/models'
 
 import { StampForm } from '@/components/StampForm/StampForm'
 import { Field, Heading, Label, Select } from '@/components/ui'
-import { ALLOW_117_STAMP_WRITES } from '@/lib/constants/featureFlags'
 
 import { updateStamp } from './actions'
 
@@ -61,9 +60,7 @@ export const UpdateStampForm = ({ stamp }: { stamp: StampWithRelations }) => {
             onChange={(e) => setGameVersion(e.target.value)}
             required
           >
-            <option disabled={!ALLOW_117_STAMP_WRITES} value="117">
-              117{!ALLOW_117_STAMP_WRITES ? ' (coming soon)' : ''}
-            </option>
+            <option value="117">117</option>
             <option value="1800">1800</option>
           </Select>
         </Field>
