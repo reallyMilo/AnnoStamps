@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "^4.6.0",
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^9.39.3",
     "@faker-js/faker": "^10.3.0",
     "@next/eslint-plugin-next": "^16.1.6",
     "@tailwindcss/aspect-ratio": "^0.4.2",
