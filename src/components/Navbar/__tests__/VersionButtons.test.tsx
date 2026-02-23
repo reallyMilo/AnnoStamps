@@ -78,4 +78,36 @@ describe('VersionButtons', () => {
     fireEvent.click(toggle)
     expect(screen.getByText('Version Switching Is Live')).toBeInTheDocument()
   })
+
+  it('highlights 117 button when hovering 117 info card', () => {
+    ;(usePathname as Mock).mockReturnValue('/1800/stamps')
+
+    render(<VersionButtons />)
+    fireEvent.click(screen.getByTestId('version-info-toggle'))
+
+    const link117 = screen.getByTestId('default-version-link')
+    const info117 = screen.getByTestId('version-117-info')
+
+    expect(link117.className).not.toMatch(/bg-secondary/)
+    fireEvent.mouseEnter(info117)
+    expect(link117.className).toMatch(/bg-secondary/)
+    fireEvent.mouseLeave(info117)
+    expect(link117.className).not.toMatch(/bg-secondary/)
+  })
+
+  it('highlights 1800 button when hovering 1800 info card', () => {
+    ;(usePathname as Mock).mockReturnValue('/stamps')
+
+    render(<VersionButtons />)
+    fireEvent.click(screen.getByTestId('version-info-toggle'))
+
+    const link1800 = screen.getByTestId('1800-version-link')
+    const info1800 = screen.getByTestId('version-1800-info')
+
+    expect(link1800.className).not.toMatch(/bg-secondary/)
+    fireEvent.mouseEnter(info1800)
+    expect(link1800.className).toMatch(/bg-secondary/)
+    fireEvent.mouseLeave(info1800)
+    expect(link1800.className).not.toMatch(/bg-secondary/)
+  })
 })

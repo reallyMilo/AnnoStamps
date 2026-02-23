@@ -15,6 +15,9 @@ const duplicatePaths = new Set(['how-to', 'stamp', 'stamps'])
 export const VersionButtons = () => {
   const pathname = usePathname()
   const [isInfoOpen, setIsInfoOpen] = useState(false)
+  const [hoveredVersion, setHoveredVersion] = useState<'117' | '1800' | null>(
+    null,
+  )
 
   const buildEquivalentPath = () => {
     if (pathname === '/') {
@@ -67,7 +70,8 @@ export const VersionButtons = () => {
         <Button
           className={cn(
             buttonStyle,
-            equivalentPath.active === '117' && activeStyle,
+            (equivalentPath.active === '117' || hoveredVersion === '117') &&
+              activeStyle,
           )}
           data-testid="default-version-link"
           href={equivalentPath[117]}
@@ -84,7 +88,8 @@ export const VersionButtons = () => {
         <Button
           className={cn(
             buttonStyle,
-            equivalentPath.active === '1800' && activeStyle,
+            (equivalentPath.active === '1800' || hoveredVersion === '1800') &&
+              activeStyle,
           )}
           data-testid="1800-version-link"
           href={equivalentPath[1800]}
@@ -112,7 +117,6 @@ export const VersionButtons = () => {
           <span className="inline-flex size-5 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-white">
             i
           </span>
-          Updates
         </Button>
       </div>
 
@@ -124,18 +128,28 @@ export const VersionButtons = () => {
           <div className="space-y-2">
             <Heading className="text-lg">Version Switching Is Live</Heading>
             <Text>
-              AnnoStamps now supports game versions from this header switcher.
+              AnnoStamps now supports quick switching between game versions
+              directly from the header.
               <Strong>
                 {' '}
-                Anno 1800 is the active upload version right now.
+                Anno 117 is the current default view when you first load the
+                site.
               </Strong>{' '}
-              Anno 117 uploads are temporarily disabled until that stamp format
-              is fully ready.
+              Use the version buttons to move between matching pages without
+              manually editing URLs.
             </Text>
           </div>
 
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-            <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900">
+            <div
+              className="rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900"
+              data-testid="version-117-info"
+              onBlur={() => setHoveredVersion(null)}
+              onFocus={() => setHoveredVersion('117')}
+              onMouseEnter={() => setHoveredVersion('117')}
+              onMouseLeave={() => setHoveredVersion(null)}
+              tabIndex={0}
+            >
               <div className="mb-2 flex items-center gap-2">
                 <Image
                   alt="Anno 117 icon"
@@ -146,11 +160,19 @@ export const VersionButtons = () => {
                 <Heading className="text-base">117</Heading>
               </div>
               <Text>
-                Use this tab to browse 117 pages and prepare for upcoming
-                uploads.
+                Browse Anno 117 stamps and version-specific pages from this
+                route set. This is the default landing version.
               </Text>
             </div>
-            <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900">
+            <div
+              className="rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900"
+              data-testid="version-1800-info"
+              onBlur={() => setHoveredVersion(null)}
+              onFocus={() => setHoveredVersion('1800')}
+              onMouseEnter={() => setHoveredVersion('1800')}
+              onMouseLeave={() => setHoveredVersion(null)}
+              tabIndex={0}
+            >
               <div className="mb-2 flex items-center gap-2">
                 <Image
                   alt="Anno 1800 icon"
@@ -161,7 +183,8 @@ export const VersionButtons = () => {
                 <Heading className="text-base">1800</Heading>
               </div>
               <Text>
-                Current live version for browsing, creating, and editing stamps.
+                Open the Anno 1800 version of the same section to browse its
+                dedicated pages and stamps.
               </Text>
             </div>
           </div>
@@ -169,8 +192,10 @@ export const VersionButtons = () => {
           <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 dark:border-amber-700/60 dark:bg-amber-950/20">
             <Heading className="text-base">How To Switch Versions</Heading>
             <Text className="pt-2">
-              Click <Strong>117</Strong> or <Strong>1800</Strong> to jump
-              between equivalent pages.
+              Click <Strong>117</Strong> or <Strong>1800</Strong> in the header
+              to switch to the equivalent route. For example,{' '}
+              <Strong>/stamps</Strong> becomes <Strong>/1800/stamps</Strong>,
+              and switching back removes the version prefix.
             </Text>
           </div>
         </div>
