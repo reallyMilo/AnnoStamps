@@ -110,13 +110,13 @@ const UsernameRequiredModal = ({
   ignoreNextFocusRef,
   isOpen = false,
   setIsOpen,
+  settingsHref,
 }: {
   ignoreNextFocusRef: React.RefObject<boolean>
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  settingsHref: string
 }) => {
-  const { data: session } = useSession()
-
   return (
     <Modal
       className="z-1000"
@@ -138,7 +138,7 @@ const UsernameRequiredModal = ({
         >
           Close
         </Button>
-        <Button href={`/${session?.userId}/settings`}>Set Username</Button>
+        <Button href={settingsHref}>Set Username</Button>
       </ModalActions>
     </Modal>
   )
@@ -158,7 +158,7 @@ const Form = ({
     useCommentContext()
   const pathname = usePathname()
   const router = useRouter()
-  const { data: session } = useSession()
+  const { data: session, isPending } = useSession()
   const [isModalOpen, setIsModalOpen] = React.useState(false)
   const ignoreNextFocusRef = React.useRef(false)
   const [optimisticComments, addOptimisticComment] = React.useOptimistic<
@@ -227,6 +227,9 @@ const Form = ({
             name="comment"
             onChange={(e) => setContent(e.target.value)}
             onFocus={() => {
+              if (isPending) {
+                return
+              }
               if (!session) {
                 router.push(`/auth/signin?callbackUrl=${pathname}`)
                 return
@@ -252,6 +255,11 @@ const Form = ({
         ignoreNextFocusRef={ignoreNextFocusRef}
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
+        settingsHref={
+          session
+            ? `/${session.userId}/settings`
+            : `/auth/signin?callbackUrl=${pathname}`
+        }
       />
       <ul>
         {optimisticComments.map((message) => (

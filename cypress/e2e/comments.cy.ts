@@ -1,12 +1,13 @@
 describe('Comment on stamp', () => {
   it('unauthorized user click on comment form redirects to sign in with callback to stamp', () => {
-    cy.intercept('/api/auth/session')
+    cy.intercept('/api/auth/get-session').as('clientSession')
     cy.visit('/')
     cy.getBySel('stamp-card-link')
       .last()
       .then((link) => {
         cy.visit(link.attr('href'))
-        cy.findByLabelText('Comment').click()
+        cy.wait('@clientSession')
+        cy.findByLabelText('Comment').should('be.enabled').click()
         cy.url().should('include', `callbackUrl=${link.attr('href')}`)
       })
   })
@@ -32,7 +33,7 @@ describe('Comment on stamp', () => {
           cy.url().should('include', link.attr('href'))
           cy.wait('@clientSession')
           cy.getBySel('username-require-modal').should('not.exist')
-          cy.findByLabelText('Comment').click()
+          cy.findByLabelText('Comment').should('be.enabled').click()
 
           cy.getBySel('username-require-modal').should('exist')
           cy.findByText('Set Your Username').should('be.visible')
@@ -65,7 +66,7 @@ describe('Comment on stamp', () => {
     })
 
     it('can leave a comment on a stamp', () => {
-      cy.findByLabelText('Comment').type('Great stamp!')
+      cy.findByLabelText('Comment').should('be.enabled').type('Great stamp!')
       cy.findByRole('button', { name: 'Comment' }).click()
       cy.wait('@addComment')
       cy.findByText('Great stamp!').should('exist')
@@ -100,7 +101,10 @@ describe('Comment on stamp', () => {
     it('can reply to another comment and then reply to that reply', () => {
       cy.findAllByRole('button', { name: 'Reply' }).last().click()
 
-      cy.findAllByLabelText('Comment').last().type('Thanks for your comment!')
+      cy.findAllByLabelText('Comment')
+        .last()
+        .should('be.enabled')
+        .type('Thanks for your comment!')
       cy.getBySel('comment-submit-button').click()
 
       cy.wait('@addComment')
@@ -139,6 +143,7 @@ describe('Comment on stamp', () => {
 
       cy.findAllByLabelText('Comment')
         .last()
+        .should('be.enabled')
         .type('Nested reply to reply comment')
       cy.findAllByTestId('comment-submit-button').last().click()
 
