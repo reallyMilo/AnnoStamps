@@ -1,8 +1,8 @@
 'use client'
-import autosize from 'autosize'
 import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 import { useFormStatus } from 'react-dom'
+import TextareaAutosize from 'react-textarea-autosize'
 
 import type { Comment } from '@/lib/prisma/models'
 
@@ -12,9 +12,9 @@ import {
   ModalActions,
   ModalDescription,
   ModalTitle,
-  Textarea,
 } from '@/components/ui'
 import { useSession } from '@/lib/auth-client'
+import { cn } from '@/lib/utils'
 
 import { CommentItem } from './CommentItem'
 
@@ -110,13 +110,13 @@ const UsernameRequiredModal = ({
   ignoreNextFocusRef,
   isOpen = false,
   setIsOpen,
+  settingsHref,
 }: {
   ignoreNextFocusRef: React.RefObject<boolean>
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  settingsHref: string
 }) => {
-  const { data: session } = useSession()
-
   return (
     <Modal
       className="z-1000"
@@ -138,7 +138,7 @@ const UsernameRequiredModal = ({
         >
           Close
         </Button>
-        <Button href={`/${session?.userId}/settings`}>Set Username</Button>
+        <Button href={settingsHref}>Set Username</Button>
       </ModalActions>
     </Modal>
   )
@@ -158,7 +158,7 @@ const Form = ({
     useCommentContext()
   const pathname = usePathname()
   const router = useRouter()
-  const { data: session } = useSession()
+  const { data: session, isPending } = useSession()
   const [isModalOpen, setIsModalOpen] = React.useState(false)
   const ignoreNextFocusRef = React.useRef(false)
   const [optimisticComments, addOptimisticComment] = React.useOptimistic<
@@ -183,18 +183,6 @@ const Form = ({
     ...state,
   ])
 
-  React.useEffect(() => {
-    const textareaRefCurrent = textareaRef.current
-    if (textareaRefCurrent) {
-      autosize(textareaRefCurrent)
-    }
-    return () => {
-      if (textareaRefCurrent) {
-        autosize.destroy(textareaRefCurrent)
-      }
-    }
-  }, [textareaRef])
-
   return (
     <>
       <form
@@ -213,37 +201,65 @@ const Form = ({
         }}
         className="flex flex-col space-y-2"
       >
-        <Textarea
-          aria-label="Comment"
-          name="comment"
-          onChange={(e) => setContent(e.target.value)}
-          onFocus={() => {
-            if (!session) {
-              router.push(`/auth/signin?callbackUrl=${pathname}`)
-              return
-            }
-            if (!session.user.username) {
-              if (ignoreNextFocusRef.current) {
-                ignoreNextFocusRef.current = false
+        <span
+          className={cn([
+            'relative block w-full',
+            'before:absolute before:inset-px before:rounded-[calc(var(--radius-lg)-1px)] before:bg-white before:shadow-sm',
+            'dark:before:hidden',
+            'after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:ring-transparent after:ring-inset sm:focus-within:after:ring-2 sm:focus-within:after:ring-blue-500',
+            'has-data-disabled:before:bg-midnight/5 has-data-disabled:opacity-50 has-data-disabled:before:shadow-none',
+          ])}
+          data-slot="control"
+        >
+          <TextareaAutosize
+            aria-label="Comment"
+            className={cn([
+              'relative block h-full w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)]',
+              'text-midnight text-base/6 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white',
+              'border-midnight/10 data-hover:border-midnight/20 border dark:border-white/10 dark:data-hover:border-white/20',
+              'bg-transparent dark:bg-white/5',
+              'focus:outline-hidden',
+              'data-invalid:border-red-500 data-invalid:data-hover:border-red-500 dark:data-invalid:border-red-600 dark:data-invalid:data-hover:border-red-600',
+              'disabled:border-midnight/20 dark:disabled:border-white/15 dark:disabled:bg-white/2.5 dark:data-hover:disabled:border-white/15',
+              'resize-none',
+            ])}
+            minRows={1}
+            name="comment"
+            onChange={(e) => setContent(e.target.value)}
+            onFocus={() => {
+              if (isPending) {
                 return
               }
-              setIsModalOpen(true)
-              return
-            }
-            setIsTextareaFocused(true)
-          }}
-          placeholder="Add a comment..."
-          ref={textareaRef}
-          resizable={false}
-          rows={1}
-          value={content}
-        />
+              if (!session) {
+                router.push(`/auth/signin?callbackUrl=${pathname}`)
+                return
+              }
+              if (!session.user.username) {
+                if (ignoreNextFocusRef.current) {
+                  ignoreNextFocusRef.current = false
+                  return
+                }
+                setIsModalOpen(true)
+                return
+              }
+              setIsTextareaFocused(true)
+            }}
+            placeholder="Add a comment..."
+            ref={textareaRef}
+            value={content}
+          />
+        </span>
         {children}
       </form>
       <UsernameRequiredModal
         ignoreNextFocusRef={ignoreNextFocusRef}
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
+        settingsHref={
+          session
+            ? `/${session.userId}/settings`
+            : `/auth/signin?callbackUrl=${pathname}`
+        }
       />
       <ul>
         {optimisticComments.map((message) => (
