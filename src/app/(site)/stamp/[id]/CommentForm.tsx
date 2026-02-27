@@ -220,7 +220,7 @@ const Form = ({
               'bg-transparent dark:bg-white/5',
               'focus:outline-hidden',
               'data-invalid:border-red-500 data-invalid:data-hover:border-red-500 dark:data-invalid:border-red-600 dark:data-invalid:data-hover:border-red-600',
-              'disabled:border-midnight/20 dark:disabled:border-white/15 dark:disabled:bg-white/[2.5%] dark:data-hover:disabled:border-white/15',
+              'disabled:border-midnight/20 dark:disabled:border-white/15 dark:disabled:bg-white/2.5 dark:data-hover:disabled:border-white/15',
               'resize-none',
             ])}
             minRows={1}
