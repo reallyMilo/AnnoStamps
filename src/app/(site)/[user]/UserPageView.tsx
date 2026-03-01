@@ -34,6 +34,7 @@ export const UserPageView = async ({
   searchParams: QueryParams
 }) => {
   const parseResult = queryParamsSchema.safeParse(searchParams)
+  const sessionPromise = getSession()
   const { count, pageNumber, stamps, user } = await getUserWithStamps(
     params.user,
     parseResult.success ? parseResult.data : { game: searchParams.game },
@@ -43,7 +44,7 @@ export const UserPageView = async ({
     notFound()
   }
 
-  const session = await getSession()
+  const session = await sessionPromise
   const paginatedStamps = { count, pageNumber, stampsLength: stamps.length }
 
   return user.id === session?.userId ? (
@@ -55,7 +56,7 @@ export const UserPageView = async ({
         {stamps.map((stamp) => (
           <div className="flex flex-col" key={stamp.id}>
             <div className="mb-1 flex justify-between">
-              <StampDeleteModal {...stamp} />
+              <StampDeleteModal id={stamp.id} title={stamp.title} />
 
               <Button href={`/stamp/update/${stamp.id}`}>
                 <PencilSquareIcon />
