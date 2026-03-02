@@ -1,15 +1,9 @@
 describe('Comment on stamp', () => {
   it('unauthorized user click on comment form redirects to sign in with callback to stamp', () => {
     cy.intercept('/api/auth/get-session').as('clientSession')
-    cy.visit('/')
-    cy.getBySel('stamp-card-link')
-      .last()
-      .then((link) => {
-        cy.visit(link.attr('href'))
-        cy.wait('@clientSession')
-        cy.findByLabelText('Comment').should('be.enabled').click()
-        cy.url().should('include', `callbackUrl=${link.attr('href')}`)
-      })
+    cy.visit('/stamp/testSeed1800StampId')
+    cy.findByLabelText('Comment').should('be.enabled').click()
+    cy.url().should('include', `callbackUrl=/stamp/testSeed1800StampId`)
   })
   describe('authorized user without username set', () => {
     beforeEach(() => {
