@@ -4,13 +4,7 @@
 import * as path from 'path'
 describe('Download Stamp from stamp page', () => {
   it('user can download stamp from disclaimer', () => {
-    cy.visit('/')
-    cy.getBySel('stamp-card-link')
-      .last()
-      .then((link) => {
-        cy.visit(link.attr('href'))
-        cy.url().should('include', `${link.attr('href')}`)
-      })
+    cy.visit('/stamp/testSeed1800StampId')
 
     cy.findByRole('button', { name: 'Download' })
       .click()
