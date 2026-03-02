@@ -15,7 +15,7 @@ describe('Comment on stamp', () => {
     beforeEach(() => {
       cy.task('db:testUser')
       cy.setSessionCookie()
-      cy.visit('/')
+      cy.visit('/stamp/testSeed1800StampId')
     })
     afterEach(() => {
       cy.task('db:removeTestUser')
@@ -26,27 +26,17 @@ describe('Comment on stamp', () => {
       cy.intercept('/api/user/testSeedUserId/likes', { statusCode: 200 }).as(
         'userLikes',
       )
-      cy.getBySel('stamp-card-link')
-        .last()
-        .then((link) => {
-          cy.visit(link.attr('href'))
-          cy.url().should('include', link.attr('href'))
-          cy.wait('@clientSession')
-          cy.getBySel('username-require-modal').should('not.exist')
-          cy.findByLabelText('Comment').should('be.enabled').click()
-
-          cy.getBySel('username-require-modal').should('exist')
-          cy.findByText('Set Your Username').should('be.visible')
-          cy.findByRole('link', { name: /Set Username/i }).should(
-            'have.attr',
-            'href',
-            '/testSeedUserId/settings',
-          )
-          cy.findByRole('button', { name: /Close/i })
-            .should('be.visible')
-            .click()
-          cy.getBySel('username-require-modal').should('not.exist')
-        })
+      cy.wait('@clientSession')
+      cy.getBySel('username-require-modal').should('not.exist')
+      cy.findByLabelText('Comment').click()
+      cy.findByText('Set Your Username').should('be.visible')
+      cy.findByRole('link', { name: /Set Username/i }).should(
+        'have.attr',
+        'href',
+        '/testSeedUserId/settings',
+      )
+      cy.findByRole('button', { name: /Close/i }).should('be.visible').click()
+      cy.getBySel('username-require-modal').should('not.exist')
     })
   })
 
