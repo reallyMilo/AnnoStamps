@@ -1,15 +1,16 @@
 describe('Comment on stamp', () => {
   it('unauthorized user click on comment form redirects to sign in with callback to stamp', () => {
     cy.intercept('/api/auth/get-session').as('clientSession')
-    cy.visit('/stamp/testSeed1800StampId')
+    cy.visit('/stamp/filterSeedUser117StampId_1')
+    cy.wait('@clientSession')
     cy.findByLabelText('Comment').click()
-    cy.url().should('include', `callbackUrl=/stamp/testSeed1800StampId`)
+    cy.url().should('include', `callbackUrl=/stamp/filterSeedUser117StampId_1`)
   })
   describe('authorized user without username set', () => {
     beforeEach(() => {
       cy.task('db:testUser')
       cy.setSessionCookie()
-      cy.visit('/stamp/testSeed1800StampId')
+      cy.visit('/stamp/filterSeedUser117StampId_1')
     })
     afterEach(() => {
       cy.task('db:removeTestUser')
@@ -20,8 +21,8 @@ describe('Comment on stamp', () => {
       cy.intercept('/api/user/testSeedUserId/likes', { statusCode: 200 }).as(
         'userLikes',
       )
-      cy.wait('@clientSession')
       cy.getBySel('username-require-modal').should('not.exist')
+      cy.wait('@clientSession')
       cy.findByLabelText('Comment').click()
       cy.findByText('Set Your Username').should('be.visible')
       cy.findByRole('link', { name: /Set Username/i }).should(
