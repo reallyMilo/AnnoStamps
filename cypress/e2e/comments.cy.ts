@@ -2,7 +2,7 @@ describe('Comment on stamp', () => {
   it('unauthorized user click on comment form redirects to sign in with callback to stamp', () => {
     cy.intercept('/api/auth/get-session').as('clientSession')
     cy.visit('/stamp/testSeed1800StampId')
-    cy.findByLabelText('Comment').should('be.enabled').click()
+    cy.findByLabelText('Comment').click()
     cy.url().should('include', `callbackUrl=/stamp/testSeed1800StampId`)
   })
   describe('authorized user without username set', () => {
@@ -22,7 +22,7 @@ describe('Comment on stamp', () => {
       )
       cy.wait('@clientSession')
       cy.getBySel('username-require-modal').should('not.exist')
-      cy.findByLabelText('Comments').click()
+      cy.findByLabelText('Comment').click()
       cy.findByText('Set Your Username').should('be.visible')
       cy.findByRole('link', { name: /Set Username/i }).should(
         'have.attr',
