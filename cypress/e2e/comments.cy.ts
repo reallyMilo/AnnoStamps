@@ -22,7 +22,7 @@ describe('Comment on stamp', () => {
       )
       cy.wait('@clientSession')
       cy.getBySel('username-require-modal').should('not.exist')
-      cy.findByLabelText('Comment').click()
+      cy.findByLabelText('Comments').click()
       cy.findByText('Set Your Username').should('be.visible')
       cy.findByRole('link', { name: /Set Username/i }).should(
         'have.attr',
