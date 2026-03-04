@@ -10,18 +10,12 @@ vi.stubGlobal('ResizeObserver', ResizeObserverMock)
 beforeAll(() => {
   vi.mock('next/navigation', () => ({
     usePathname: vi.fn(() => ''),
-    useRouter() {
-      return {
-        prefetch: () => null,
-      }
-    },
-    useSearchParams() {
-      return {
-        get: () => {
-          return ''
-        },
-      }
-    },
+    useRouter: vi.fn(() => ({
+      prefetch: vi.fn(),
+      push: vi.fn(),
+      replace: vi.fn(),
+    })),
+    useSearchParams: vi.fn(() => new URLSearchParams()),
   }))
   vi.mock('better-auth/react', () => ({
     createAuthClient: vi.fn(() => ({

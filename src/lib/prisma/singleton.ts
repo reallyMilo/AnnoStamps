@@ -55,7 +55,7 @@ const prismaClientSingleton = () => {
                 return { count: 0, pageNumber: 1, stamps: [] }
               }
               let skip = (pageNumber - 1) * STAMPS_PER_PAGE
-              if (skip > count) {
+              if (skip >= count) {
                 skip = 0
                 pageNumber = 1
               }
@@ -112,7 +112,7 @@ const prismaClientSingleton = () => {
 
               let skip = (pageNumber - 1) * STAMPS_PER_PAGE
               const count = userStampsCount._count.listedStamps
-              if (skip > count) {
+              if (skip >= count) {
                 skip = 0
                 pageNumber = 1
               }

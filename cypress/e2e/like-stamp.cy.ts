@@ -11,17 +11,11 @@ describe('Stamp liking', () => {
 
   it('unauthorized user redirected to sign in with callback to stamp', () => {
     cy.intercept('/api/auth/get-session')
-    cy.visit('/')
-    cy.getBySel('stamp-card-link')
-      .last()
+    cy.visit('/stamp/testSeed1800StampId')
+    cy.getBySel('like-stamp')
       .click()
-      .then((link) => {
-        cy.url().should('include', `${link.attr('href')}`)
-        cy.getBySel('like-stamp')
-          .click()
-          .then(() => {
-            cy.url().should('include', `callbackUrl=${link.attr('href')}`)
-          })
+      .then(() => {
+        cy.url().should('include', `callbackUrl=/stamp/testSeed1800StampId`)
       })
   })
 

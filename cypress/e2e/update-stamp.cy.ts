@@ -46,19 +46,12 @@ describe('Updating Stamp', () => {
         return false
       })
 
-      cy.visit('/')
-      cy.getBySel('stamp-card-link')
-        .first()
-        .invoke('attr', 'href')
-        .should('be.a', 'string')
-        .invoke('split', '/')
-        .its(2)
-        .then((id) => {
-          cy.visit(`/stamp/update/${id}`, { failOnStatusCode: false })
+      cy.visit('/stamp/update/filterSeedUser117StampId_1', {
+        failOnStatusCode: false,
+      })
 
-          cy.findByText('Something went wrong!').should('be.visible')
-          cy.findByRole('button', { name: 'Update Stamp' }).should('not.exist')
-        })
+      cy.findByText('Something went wrong!').should('be.visible')
+      cy.findByRole('button', { name: 'Update Stamp' }).should('not.exist')
     })
 
     it('user can click the edit stamp link and update the stamp', () => {
