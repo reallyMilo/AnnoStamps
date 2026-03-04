@@ -1,8 +1,26 @@
-import { render, screen } from '@/__tests__/test-utils'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { type Mock, vi } from 'vitest'
+
+import { render, screen, waitFor } from '@/__tests__/test-utils'
 
 import { Pagination } from '../Pagination'
 
+const mockPush = vi.fn()
+const mockReplace = vi.fn()
+
 describe('Pagination', () => {
+  beforeEach(() => {
+    mockPush.mockReset()
+    mockReplace.mockReset()
+    ;(usePathname as Mock).mockReturnValue('/stamps')
+    ;(useSearchParams as Mock).mockReturnValue(new URLSearchParams())
+    ;(useRouter as Mock).mockReturnValue({
+      prefetch: vi.fn(),
+      push: mockPush,
+      replace: mockReplace,
+    })
+  })
+
   it('renders when below max size', () => {
     render(<Pagination count={100} page={1} />)
 
@@ -77,5 +95,15 @@ describe('Pagination', () => {
     expect(allLinks[10]).toHaveTextContent(/^11$/)
     expect(allLinks[11]).toHaveTextContent(/^14$/)
     expect(screen.getByTestId('pagination-gap')).toBeInTheDocument()
+  })
+
+  it('replaces stale page params when the rendered page is already 1', async () => {
+    ;(useSearchParams as Mock).mockReturnValue(new URLSearchParams('page=2'))
+
+    render(<Pagination count={10} page={1} />)
+
+    await waitFor(() => {
+      expect(mockReplace).toHaveBeenCalledWith('/stamps?page=1')
+    })
   })
 })
