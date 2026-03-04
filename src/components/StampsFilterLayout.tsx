@@ -105,8 +105,8 @@ const FilterForm = ({ checkboxFilterOptions, className }: FilterFormProps) => {
 
                       router.push(
                         stringifyQuery(searchParams, {
-                          [section.id]: existingParams,
                           page: 1,
+                          [section.id]: existingParams,
                         }),
                       )
 
@@ -117,8 +117,8 @@ const FilterForm = ({ checkboxFilterOptions, className }: FilterFormProps) => {
                     )
                     router.push(
                       stringifyQuery(searchParams, {
-                        [section.id]: filtered,
                         page: 1,
+                        [section.id]: filtered,
                       }),
                     )
                   }}
