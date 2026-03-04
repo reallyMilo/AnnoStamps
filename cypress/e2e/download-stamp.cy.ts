@@ -4,7 +4,7 @@
 import * as path from 'path'
 describe('Download Stamp from stamp page', () => {
   it('user can download stamp from disclaimer', () => {
-    cy.visit('/stamp/testSeed1800StampId')
+    cy.visit('/stamp/filterSeedUser117StampId_1')
 
     cy.findByRole('button', { name: 'Download' })
       .click()
