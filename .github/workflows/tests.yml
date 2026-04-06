@@ -26,7 +26,9 @@ jobs:
         name: Create Database and Seed
         run: pnpm migrate && pnpm db-seed
 
-      - name: Start LocalStack
+      - env:
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
+        name: Start LocalStack
         uses: LocalStack/setup-localstack@v0.2.2
         with:
           configuration: DEBUG=1
