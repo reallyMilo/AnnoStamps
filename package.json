@@ -82,7 +82,7 @@
     "cypress": "^15.11.0",
     "eslint": "^9.39.2",
     "eslint-config-next": "16.1.6",
-    "eslint-plugin-cypress": "^6.2.0",
+    "eslint-plugin-cypress": "^6.2.2",
     "eslint-plugin-jsonc": "^3.1.2",
     "eslint-plugin-n": "^17.24.0",
     "eslint-plugin-package-json": "^0.89.4",
