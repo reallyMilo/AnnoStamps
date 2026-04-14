@@ -55,10 +55,10 @@ export const DropdownMenu = ({
 export const DropdownItem = ({
   className,
   ...props
-}: { className?: string } & (
+}: (
   | Omit<Headless.MenuItemProps<'button'>, 'className'>
   | Omit<Headless.MenuItemProps<typeof Link>, 'className'>
-)) => {
+) & { className?: string }) => {
   const classes = cn(
     // Base styles
     'group cursor-default rounded-lg px-3.5 py-2.5 focus:outline-hidden sm:px-3 sm:py-1.5',

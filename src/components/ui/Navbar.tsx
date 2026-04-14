@@ -61,15 +61,15 @@ export const NavbarItem = React.forwardRef(
       current,
       htmlLink = false,
       ...props
-    }: {
+    }: (
+      | Omit<Headless.ButtonProps, 'className'>
+      | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
+    ) & {
       children: React.ReactNode
       className?: string
       current?: boolean
       htmlLink?: boolean
-    } & (
-      | Omit<Headless.ButtonProps, 'className'>
-      | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
-    ),
+    },
     ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>,
   ) => {
     const classes = cn(

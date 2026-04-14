@@ -74,11 +74,10 @@ export const styles = {
   ],
 }
 
-type ButtonProps = { children: React.ReactNode; className?: string } & (
+type ButtonProps = (
   | Omit<Headless.ButtonProps, 'className'>
   | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
-) &
-  (
+) & { children: React.ReactNode; className?: string } & (
     | { color?: keyof typeof styles.colors; outline?: never; plain?: never }
     | { color?: never; outline: true; plain?: never }
     | { color?: never; outline?: never; plain: true }

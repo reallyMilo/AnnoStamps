@@ -123,10 +123,10 @@ export const SidebarItem = React.forwardRef(
       className,
       current,
       ...props
-    }: { children: React.ReactNode; className?: string; current?: boolean } & (
+    }: (
       | Omit<Headless.ButtonProps, 'className'>
       | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className' | 'type'>
-    ),
+    ) & { children: React.ReactNode; className?: string; current?: boolean },
     ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>,
   ) => {
     const classes = cn(
