@@ -26,11 +26,10 @@ jobs:
 
       - env:
           LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
-          LOCALSTACK_CI_PROJECT: annostamps
         name: Start LocalStack
         uses: LocalStack/setup-localstack@v0.3.2
         with:
-          configuration: LOCALSTACK_DEBUG=1
+          configuration: 'LOCALSTACK_DEBUG=1, LOCALSTACK_CI_PROJECT=annostamps'
           image-tag: 4.7.0
 
       - name: Setup Terraform
