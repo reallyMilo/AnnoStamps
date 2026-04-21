@@ -26,7 +26,7 @@ jobs:
 
       - env:
           LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
-          LOCALSTACK_CI_PROJECT: 'annostamps'
+          LOCALSTACK_CI_PROJECT: annostamps
         name: Start LocalStack
         uses: LocalStack/setup-localstack@v0.3.2
         with:
