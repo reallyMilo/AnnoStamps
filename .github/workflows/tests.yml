@@ -30,7 +30,7 @@ jobs:
         uses: LocalStack/setup-localstack@v0.3.2
         with:
           configuration: LOCALSTACK_DEBUG=1
-          image-tag: 4.7.0
+          image-tag: 4.14.0
           ci-project: annostamps
 
       - name: Setup Terraform
