@@ -29,10 +29,10 @@ jobs:
         name: Start LocalStack
         uses: LocalStack/setup-localstack@v0.3.2
         with:
-          configuration: LOCALSTACK_DEBUG=1
-          image-tag: 4.14.0
           ci-project: annostamps
 
+          configuration: LOCALSTACK_DEBUG=1
+          image-tag: 4.14.0
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
