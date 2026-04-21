@@ -27,7 +27,7 @@ jobs:
       - env:
           LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
         name: Start LocalStack
-        uses: LocalStack/setup-localstack@v0.3.1
+        uses: LocalStack/setup-localstack@v0.3.2
         with:
           configuration: DEBUG=1
           image-tag: 4.7.0
