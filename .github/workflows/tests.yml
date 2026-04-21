@@ -31,7 +31,7 @@ jobs:
         with:
           configuration: LOCALSTACK_DEBUG=1
           image-tag: 4.7.0
-          localstack-ci-project: annostamps
+          ci-project: annostamps
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
