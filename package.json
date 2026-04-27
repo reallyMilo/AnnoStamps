@@ -79,7 +79,7 @@
     "@vitest/eslint-plugin": "^1.6.14",
     "@vitest/ui": "^3.1.4",
     "cuid2": "link:@types/parralleldrive/cuid2",
-    "cypress": "^15.13.0",
+    "cypress": "^15.14.1",
     "eslint": "^9.39.2",
     "eslint-config-next": "16.1.6",
     "eslint-plugin-cypress": "^6.2.2",
