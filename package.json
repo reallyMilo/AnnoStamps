@@ -95,7 +95,7 @@
     "lint-staged": "^16.4.0",
     "postcss": "^8.5.8",
     "prettier": "^3.8.1",
-    "prettier-plugin-tailwindcss": "^0.7.1",
+    "prettier-plugin-tailwindcss": "^0.7.3",
     "prisma": "^7.6.0",
     "tailwindcss": "^4.2.2",
     "tsx": "^4.21.0",
