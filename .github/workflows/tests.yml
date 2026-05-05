@@ -30,12 +30,20 @@ jobs:
         uses: LocalStack/setup-localstack@v0.3.2
         with:
           ci-project: annostamps
-
           configuration: LOCALSTACK_DEBUG=1
           image-tag: 4.14.0
-      - name: Show localstack logs
-        run: |
-          localstack logs | tee localstack.log
+          state-action: load
+          state-backend: cloud-pods
+          state-name: my-cloud-pod
+
+      - env:
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
+        name: Save LocalStack State
+        uses: LocalStack/setup-localstack@v0.3.2
+        with:
+          state-action: save
+          state-backend: local
+          state-name: my-ls-state-artifact
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
