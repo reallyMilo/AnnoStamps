@@ -10,16 +10,20 @@
   <p align="center">
     <a href="https://discord.gg/73hfP54qXe"><strong>Join the Discord »</strong></a>
   </p>
-  <p align="center">
-    <span>Supported by  </span>
-    <a href="https://www.localstack.cloud/" style="margin-left: 8px; vertical-align: middle;">
-      <img
-        src="https://cdn.brandfetch.io/id3tnxsAfl/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX"
-        width="180px"
-        alt="Supported by LocalStack"
-      >
-    </a>
-  </p>
+  <table align="center" style="border: 0;">
+    <tr style="border: 0;">
+      <td style="border: 0;">Supported by</td>
+      <td style="border: 0;">
+        <a href="https://www.localstack.cloud/">
+          <img
+            src="https://cdn.brandfetch.io/id3tnxsAfl/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX"
+            width="180px"
+            alt="Supported by LocalStack"
+          >
+        </a>
+      </td>
+    </tr>
+  </table>
 </div>
 
 ## Getting Started
