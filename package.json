@@ -77,7 +77,7 @@
     "@types/sanitize-html": "^2.16.1",
     "@vitejs/plugin-react": "^5.1.4",
     "@vitest/eslint-plugin": "^1.6.17",
-    "@vitest/ui": "^3.1.4",
+    "@vitest/ui": "^4.1.6",
     "cuid2": "link:@types/parralleldrive/cuid2",
     "cypress": "^15.14.2",
     "eslint": "^9.39.2",
