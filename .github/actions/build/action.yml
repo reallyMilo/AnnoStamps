@@ -3,10 +3,10 @@ name: Build
 runs:
   steps:
     - name: Install pnpm
-      uses: pnpm/action-setup@v4
+      uses: pnpm/action-setup@v6
       with:
         run_install: false
-        version: 10.23.0
+        version: 11.4.0
     - name: Install Node.js
       uses: actions/setup-node@v6
       with:
