@@ -1,41 +1,41 @@
 updates:
-  - package-ecosystem: 'npm' # See documentation for possible values
-    directory: '/' # Location of package manifests
-    schedule:
-      interval: 'weekly'
+  - # See documentation for possible values
+    directory: / # Location of package manifests
     groups:
-      tailwindcss:
+      auth:
         applies-to: version-updates
         patterns:
-          - 'tailwindcss'
-          - '@tailwindcss/postcss'
+          - better-auth
       nextjs:
         applies-to: version-updates
         patterns:
           - '@next/*'
-          - 'eslint-config-next'
           - '@types/react'
           - '@types/react-dom'
-          - 'next'
-      auth:
-        applies-to: version-updates
-        patterns:
-          - 'better-auth'
+          - eslint-config-next
+          - next
       prisma:
         applies-to: version-updates
         patterns:
-          - 'prisma'
-          - '@prisma/client'
           - '@prisma/adapter-pg'
-    open-pull-requests-limit: 20
+          - '@prisma/client'
+          - prisma
+      tailwindcss:
+        applies-to: version-updates
+        patterns:
+          - '@tailwindcss/postcss'
+          - tailwindcss
     ignore:
       - dependency-name: '@aws-sdk/client-lambda'
       - dependency-name: '@aws-sdk/client-s3'
       - dependency-name: '@aws-sdk/s3-request-presigner'
-      - dependency-name: 'sharp'
-      - dependency-name: 'autosize'
+      - dependency-name: sharp
       - dependency-name: '@types/node'
       - dependency-name: '@types/react'
-      - dependency-name: 'react'
-      - dependency-name: 'react-dom'
+      - dependency-name: react
+      - dependency-name: react-dom
+    open-pull-requests-limit: 20
+    package-ecosystem: npm # See documentation for possible values
+    schedule:
+      interval: weekly
 version: 2

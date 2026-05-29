@@ -23,7 +23,7 @@ export default defineConfig(
       'pnpm-lock.yaml',
       'terraform',
       'volume',
-      'docker-compose.yml',
+      'docker-compose.yaml',
       '.env.*',
       'prisma/migrations/*',
       'generated/*',
