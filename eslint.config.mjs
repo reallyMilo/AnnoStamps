@@ -162,7 +162,7 @@ export default defineConfig(
     files: ['**/*.{yml,yaml}'],
     ignores: ['**/dependabot.yml'],
     rules: {
-      'yml/file-extension': ['error', { extension: 'yml' }],
+      'yml/file-extension': ['error', { extension: 'yaml' }],
       'yml/sort-keys': [
         'error',
         { order: { type: 'asc' }, pathPattern: '^.*$' },
