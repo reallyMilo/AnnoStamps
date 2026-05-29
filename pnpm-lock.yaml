@@ -184,8 +184,8 @@ importers:
         specifier: ^17.24.0
         version: 17.24.0(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3)
       eslint-plugin-package-json:
-        specifier: ^0.91.1
-        version: 0.91.1(@types/estree@1.0.9)(eslint@9.39.4(jiti@2.7.0))(jsonc-eslint-parser@3.1.0)
+        specifier: ^1.2.0
+        version: 1.2.0(@types/estree@1.0.9)(eslint@9.39.4(jiti@2.7.0))
       eslint-plugin-perfectionist:
         specifier: ^5.5.0
         version: 5.8.0(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3)
@@ -3832,12 +3832,15 @@ packages:
     peerDependencies:
       eslint: '>=8.23.0'
 
-  eslint-plugin-package-json@0.91.1:
-    resolution: {integrity: sha512-rxmCAcuTvDqrtywsmVHcFxEZdJUTByetAelAZiAcjMqo0BS1090KbjTeyEOiEdpEqxwa83c+xHCjFoZX9OKEcA==}
-    engines: {node: ^20.19.0 || >=22.12.0}
+  eslint-plugin-package-json@1.2.0:
+    resolution: {integrity: sha512-3BszsD7XVddaUNbMfK+1lF1Qg8ck0nO3bNT/7IjXP8wrGzPThHZpkhm5UnbY1Nb/s3o6DUNgHI4aEqQV/t83fw==}
+    engines: {node: ^22.22.2 || >=24.15.0}
     peerDependencies:
-      eslint: '>=8.0.0'
-      jsonc-eslint-parser: '>=2.0.0'
+      '@eslint/json': '>=1.0.0'
+      eslint: '>=9.0.0'
+    peerDependenciesMeta:
+      '@eslint/json':
+        optional: true
 
   eslint-plugin-perfectionist@5.8.0:
     resolution: {integrity: sha512-k8uIptWIxkUclonCFGyDzgYs9NI+Qh0a7cUXS3L7IYZDEsjXuimFBVbxXPQQngWqMiaxJRwbtYB4smMGMqF+cw==}
@@ -4242,6 +4245,10 @@ packages:
   hono@4.12.18:
     resolution: {integrity: sha512-RWzP96k/yv0PQfyXnWjs6zot20TqfpfsNXhOnev8d1InAxubW93L11/oNUc3tQqn2G0bSdAOBpX+2uDFHV7kdQ==}
     engines: {node: '>=16.9.0'}
+
+  hosted-git-info@9.0.3:
+    resolution: {integrity: sha512-Hc+ghLoSt6QaYZUv0WBiIvmMDZuZZ7oaDvdH8MbfOO4lOsxdXLEvuC6ePoGs9H1X9oCLyq6+NVN0MKqD+ydxyg==}
+    engines: {node: ^20.17.0 || >=22.9.0}
 
   html-encoding-sniffer@6.0.0:
     resolution: {integrity: sha512-CV9TW3Y3f8/wT0BRFc1/KAVQ3TUHiXmaAb6VW9vtiMFf7SLoMd1PdAc4W3KFOFETBJUb90KatHqlsZMWV+R9Gg==}
@@ -4719,6 +4726,10 @@ packages:
     resolution: {integrity: sha512-Gf/KoL3C/MlI7Bt0PGI9I+TeTC/I6r/csU58N4BSNc4lppLBeKsOdFYkK+dX0ABDUMJNfCHTyPpzwwO21Awd3A==}
     engines: {node: 20 || >=22}
 
+  lru-cache@11.5.1:
+    resolution: {integrity: sha512-RPimw/7aMdv2oqRrxKwvZXcPfwBrn/JZ2xYcY9Hus/6LaS3VOAKVWKWgNLCFSiOm1ESXinjsDlidVU7JlnCN2A==}
+    engines: {node: 20 || >=22}
+
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
@@ -4890,6 +4901,10 @@ packages:
   node-releases@2.0.37:
     resolution: {integrity: sha512-1h5gKZCF+pO/o3Iqt5Jp7wc9rH3eJJ0+nh/CIoiRwjRxde/hAHyLPXYN4V3CqKAbiZPSeJFSWHmJsbkicta0Eg==}
 
+  npm-package-arg@13.0.2:
+    resolution: {integrity: sha512-IciCE3SY3uE84Ld8WZU23gAPPV9rIYod4F+rc+vJ7h7cwAJt9Vk6TVsK60ry7Uj3SRS3bqRRIGuTp9YVlk6WNA==}
+    engines: {node: ^20.17.0 || >=22.9.0}
+
   npm-run-path@4.0.1:
     resolution: {integrity: sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==}
     engines: {node: '>=8'}
@@ -4963,8 +4978,8 @@ packages:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
 
-  package-json-validator@1.4.0:
-    resolution: {integrity: sha512-Nb1qg9Z7Om/r3kw3gZfKbFvFC6e0Cj38Zc5NS2LCogxqbUCbFLTjlvRKk/9doMvaAyrzUVwrR0si/opLru4CHw==}
+  package-json-validator@1.5.1:
+    resolution: {integrity: sha512-5WpI9I6pMy/ueq7rkDcJXfVjcHX6OBVTQk4Z7ObVZzsgPv/sX3kUfFFfvobErl/HpgleLcW4egvNypyBwGlkpw==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
 
   pako@1.0.11:
@@ -5198,6 +5213,10 @@ packages:
       typescript:
         optional: true
 
+  proc-log@6.1.0:
+    resolution: {integrity: sha512-iG+GYldRf2BQ0UDUAd6JQ/RwzaQy6mXmsk/IzlYyal4A4SNFw54MeH4/tLkF4I5WoWG9SQwuqWzS99jaFQHBuQ==}
+    engines: {node: ^20.17.0 || >=22.9.0}
+
   process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
 
@@ -5390,11 +5409,6 @@ packages:
 
   semver@7.7.4:
     resolution: {integrity: sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==}
-    engines: {node: '>=10'}
-    hasBin: true
-
-  semver@7.8.0:
-    resolution: {integrity: sha512-AcM7dV/5ul4EekoQ29Agm5vri8JNqRyj39o0qpX6vDF2GZrtutZl5RwgD1XnZjiTAfncsJhMI48QQH3sN87YNA==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -10179,7 +10193,7 @@ snapshots:
   eslint-compat-utils@0.5.1(eslint@9.39.4(jiti@2.7.0)):
     dependencies:
       eslint: 9.39.4(jiti@2.7.0)
-      semver: 7.7.4
+      semver: 7.8.1
 
   eslint-config-next@16.2.6(@typescript-eslint/parser@8.60.0(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3))(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3):
     dependencies:
@@ -10339,7 +10353,7 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  eslint-plugin-package-json@0.91.1(@types/estree@1.0.9)(eslint@9.39.4(jiti@2.7.0))(jsonc-eslint-parser@3.1.0):
+  eslint-plugin-package-json@1.2.0(@types/estree@1.0.9)(eslint@9.39.4(jiti@2.7.0)):
     dependencies:
       '@altano/repository-tools': 2.0.3
       change-case: 5.4.4
@@ -10347,12 +10361,12 @@ snapshots:
       detect-newline: 4.0.1
       eslint: 9.39.4(jiti@2.7.0)
       eslint-fix-utils: 0.4.2(@types/estree@1.0.9)(eslint@9.39.4(jiti@2.7.0))
+      eslint-json-compat-utils: 0.2.3(eslint@9.39.4(jiti@2.7.0))(jsonc-eslint-parser@3.1.0)
       jsonc-eslint-parser: 3.1.0
-      package-json-validator: 1.4.0
-      semver: 7.7.4
+      package-json-validator: 1.5.1
+      semver: 7.8.1
       sort-object-keys: 2.1.0
       sort-package-json: 3.6.1
-      validate-npm-package-name: 7.0.2
     transitivePeerDependencies:
       - '@types/estree'
 
@@ -10819,6 +10833,10 @@ snapshots:
 
   hono@4.12.18: {}
 
+  hosted-git-info@9.0.3:
+    dependencies:
+      lru-cache: 11.5.1
+
   html-encoding-sniffer@6.0.0(@noble/hashes@2.2.0):
     dependencies:
       '@exodus/bytes': 1.15.0(@noble/hashes@2.2.0)
@@ -11132,7 +11150,7 @@ snapshots:
     dependencies:
       acorn: 8.16.0
       eslint-visitor-keys: 5.0.1
-      semver: 7.7.4
+      semver: 7.8.1
 
   jsonfile@6.2.0:
     dependencies:
@@ -11290,6 +11308,8 @@ snapshots:
 
   lru-cache@11.3.6: {}
 
+  lru-cache@11.5.1: {}
+
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
@@ -11427,6 +11447,13 @@ snapshots:
 
   node-releases@2.0.37: {}
 
+  npm-package-arg@13.0.2:
+    dependencies:
+      hosted-git-info: 9.0.3
+      proc-log: 6.1.0
+      semver: 7.8.1
+      validate-npm-package-name: 7.0.2
+
   npm-run-path@4.0.1:
     dependencies:
       path-key: 3.1.1
@@ -11514,9 +11541,10 @@ snapshots:
     dependencies:
       p-limit: 3.1.0
 
-  package-json-validator@1.4.0:
+  package-json-validator@1.5.1:
     dependencies:
-      semver: 7.7.4
+      npm-package-arg: 13.0.2
+      semver: 7.8.1
       validate-npm-package-license: 3.0.4
       validate-npm-package-name: 7.0.2
 
@@ -11684,6 +11712,8 @@ snapshots:
       - magicast
       - react
       - react-dom
+
+  proc-log@6.1.0: {}
 
   process-nextick-args@2.0.1: {}
 
@@ -11930,9 +11960,6 @@ snapshots:
 
   semver@7.7.4: {}
 
-  semver@7.8.0:
-    optional: true
-
   semver@7.8.1: {}
 
   seq-queue@0.0.5: {}
@@ -11984,7 +12011,7 @@ snapshots:
     dependencies:
       '@img/colour': 1.1.0
       detect-libc: 2.1.2
-      semver: 7.8.0
+      semver: 7.8.1
     optionalDependencies:
       '@img/sharp-darwin-arm64': 0.34.5
       '@img/sharp-darwin-x64': 0.34.5
@@ -12094,7 +12121,7 @@ snapshots:
       detect-newline: 4.0.1
       git-hooks-list: 4.2.1
       is-plain-obj: 4.1.0
-      semver: 7.7.4
+      semver: 7.8.1
       sort-object-keys: 2.1.0
       tinyglobby: 0.2.16
 
