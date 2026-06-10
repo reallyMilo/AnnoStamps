@@ -160,7 +160,7 @@ export default defineConfig(
   {
     extends: [yml.configs['flat/standard'], yml.configs['flat/prettier']],
     files: ['**/*.{yml,yaml}'],
-    ignores: ['**/dependabot.yml'],
+    ignores: ['**/dependabot.yaml'],
     rules: {
       'yml/file-extension': ['error', { extension: 'yaml' }],
       'yml/sort-keys': [
