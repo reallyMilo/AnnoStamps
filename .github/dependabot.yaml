@@ -1,6 +1,10 @@
 updates:
-  - # See documentation for possible values
-    directory: / # Location of package manifests
+  - package-ecosystem: npm
+    cooldown:
+      default-days: 3
+    directory: /
+    schedule:
+      interval: weekly
     groups:
       auth:
         applies-to: version-updates
@@ -35,7 +39,5 @@ updates:
       - dependency-name: react
       - dependency-name: react-dom
     open-pull-requests-limit: 20
-    package-ecosystem: npm # See documentation for possible values
-    schedule:
-      interval: weekly
+
 version: 2
