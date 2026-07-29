@@ -173,7 +173,9 @@ const SiteLayout = ({ children }: { children: React.ReactNode }) => {
 					<Footer />
 				</div>
 			</body>
-			<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!} />
+			{process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
+				<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+			)}
 		</html>
 	);
 };

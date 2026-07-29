@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import type { Prisma } from '#/client';
+import type { StampWithRelations } from '@/lib/prisma/models';
 
 import { auth } from '@/auth';
 import { parseAndSanitizedMarkdown } from '@/lib/markdown';
@@ -45,10 +46,10 @@ export const updateStamp = async (formData: FormData) => {
 
 	const deleteImages = JSON.parse(imageIdsToRemove) as string[];
 	const addImages = JSON.parse(uploadedImageUrls) as string[];
-	let prevVersion = null;
+	let prevVersion: StampWithRelations['game'];
 	try {
 		const markdownDescription = parseAndSanitizedMarkdown(unsafeDescription);
-		await prisma.$transaction(async (tx) => {
+		prevVersion = await prisma.$transaction(async (tx) => {
 			const userStamp = await tx.user.findUnique({
 				select: {
 					listedStamps: {
@@ -61,10 +62,13 @@ export const updateStamp = async (formData: FormData) => {
 					id: session.userId,
 				},
 			});
-			if (userStamp?.listedStamps.length === 0) {
+			if (!userStamp) {
+				throw new Error('Cannot find user');
+			}
+			if (userStamp.listedStamps.length === 0) {
 				throw new Error('Not stamp owner');
 			}
-			prevVersion = userStamp?.listedStamps[0].game;
+			const previousGame = userStamp.listedStamps[0].game;
 
 			if (deleteImages.length > 0) {
 				await tx.image.deleteMany({
@@ -76,7 +80,7 @@ export const updateStamp = async (formData: FormData) => {
 				});
 			}
 
-			return await tx.stamp.update({
+			await tx.stamp.update({
 				data: {
 					...(addImages.length > 0 && {
 						images: {
@@ -101,6 +105,8 @@ export const updateStamp = async (formData: FormData) => {
 					id: stampId,
 				},
 			});
+
+			return previousGame;
 		});
 	} catch (e) {
 		console.error(e);

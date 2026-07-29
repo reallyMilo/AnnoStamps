@@ -14,7 +14,7 @@ export const likeStamp = async (stampId: StampWithRelations['id']) => {
 	if (!session) {
 		return { error: 'Unauthorized', ok: false, status: 401 };
 	}
-	let updateUserLikes = null;
+	let updateUserLikes;
 	try {
 		updateUserLikes = await prisma.user.update({
 			data: {
@@ -63,7 +63,7 @@ export const addCommentToStamp = async (
 		comment: string;
 	};
 	const targetUrl = `/stamp/${stampId}`;
-	let userPreference = null;
+	let userPreference;
 	try {
 		const [, , preference] = await prisma.$transaction([
 			prisma.comment.create({

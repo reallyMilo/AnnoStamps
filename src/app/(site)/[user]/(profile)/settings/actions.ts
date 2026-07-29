@@ -67,7 +67,7 @@ export const updateUserSettings = async (
 
 	const isEmailNotificationEnabled = emailNotifications ? true : false;
 
-	let updateResponse = null;
+	let updateResponse: Pick<UserWithStamps, 'biography' | 'username'>;
 	try {
 		updateResponse = await prisma.user.update({
 			data: {
