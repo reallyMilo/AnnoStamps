@@ -13,7 +13,7 @@ const errorMap = {
 
 const Wrap = () => {
 	const searchParams = useSearchParams();
-	const error = searchParams?.get('error') as keyof typeof errorMap;
+	const error = searchParams.get('error') as keyof typeof errorMap;
 
 	return <Text>{errorMap[error]}</Text>;
 };

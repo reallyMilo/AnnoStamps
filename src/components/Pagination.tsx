@@ -89,7 +89,7 @@ export const Pagination = ({ count, page }: PaginationProps) => {
 						<PaginationPage
 							current={pageNum === page}
 							href={`${queryWithoutPageNumber}${pageNum}`}
-							key={pageNum + '-pagination'}
+							key={`${pageNum}-pagination`}
 						>
 							{pageNum}
 						</PaginationPage>

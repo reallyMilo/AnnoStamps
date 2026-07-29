@@ -18,9 +18,10 @@ const session = {
 	},
 	userId: '1',
 };
-const mockAction = async () => {
-	return { message: 'Test message', ok: true };
-};
+const mockAction = vi.fn(() =>
+	Promise.resolve({ message: 'Test message', ok: true }),
+);
+
 describe('CommentForm', () => {
 	(useSession as Mock).mockReturnValue({ data: session, isPending: false });
 	describe('Add a comment to stamp', () => {

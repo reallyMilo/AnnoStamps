@@ -16,7 +16,7 @@ export const UpdateStampForm = ({ stamp }: { stamp: StampWithRelations }) => {
 		data: stampZip,
 		error,
 		isLoading: isStampLoading,
-	} = useSWR(stamp.stampFileUrl, async (url: string) => {
+	} = useSWR<JSZip, Error>(stamp.stampFileUrl, async (url: string) => {
 		const res = await fetch(url);
 		const blob = await res.blob();
 		const zip = await JSZip.loadAsync(blob);
@@ -33,7 +33,7 @@ export const UpdateStampForm = ({ stamp }: { stamp: StampWithRelations }) => {
 				<Heading className="text-xl font-bold text-gray-800">
 					Fetching Stamp
 				</Heading>
-				<div className="h-8 w-[75px] animate-pulse rounded-md bg-gray-200" />{' '}
+				<div className="h-8 w-18.75 animate-pulse rounded-md bg-gray-200" />{' '}
 			</>
 		);
 	}

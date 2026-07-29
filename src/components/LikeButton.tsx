@@ -18,11 +18,11 @@ const STALE_TIME = 10 * 60 * 1000;
 const useLikedStamps = (userId: string | undefined) => {
 	const key = userId ? `/api/user/${userId}/likes` : null;
 
-	const { data, error, isLoading, mutate } = useSWR(
+	const { data, error, isLoading, mutate } = useSWR<Set<string>, Error>(
 		key,
-		async (url: string): Promise<Set<string>> => {
+		async (url: string) => {
 			const res = await fetch(url);
-			const { data } = await res.json();
+			const { data } = (await res.json()) as { data: []; ok: boolean };
 			return new Set(data);
 		},
 		{

@@ -85,7 +85,9 @@ describe('StampsFilterLayout', () => {
 		renderFilterLayout();
 
 		await userEvent.type(screen.getByLabelText('Search'), 'harbor');
-		fireEvent.submit(screen.getByLabelText('Search').closest('form')!);
+		fireEvent.submit(
+			screen.getByLabelText('Search').closest('form') as HTMLElement,
+		);
 
 		expect(mockPush).toHaveBeenCalledWith(
 			'/stamps?game=117&search=harbor&page=1',
@@ -101,7 +103,7 @@ describe('StampsFilterLayout', () => {
 
 		const searchInput = screen.getByLabelText('Search');
 		await userEvent.clear(searchInput);
-		fireEvent.submit(searchInput.closest('form')!);
+		fireEvent.submit(searchInput.closest('form') as HTMLElement);
 
 		expect(mockPush).toHaveBeenCalledWith('/stamps?game=117&page=1');
 	});

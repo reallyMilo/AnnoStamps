@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation';
 
 import { getSession } from '@/auth';
-import { Container } from '@/components/ui';
 
 const NewUserPage = async () => {
 	const session = await getSession();
@@ -9,11 +8,7 @@ const NewUserPage = async () => {
 		redirect(`/auth/signin`);
 	}
 
-	if (session) {
-		redirect(`/${session.userId}/settings`);
-	}
-
-	return <Container>redirecting</Container>;
+	redirect(`/${session.userId}/settings`);
 };
 
 export default NewUserPage;

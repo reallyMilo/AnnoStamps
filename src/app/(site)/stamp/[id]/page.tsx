@@ -98,7 +98,7 @@ const Comments = async ({ id: stampId }: Pick<StampWithRelations, 'id'>) => {
 						>
 							<div className="ml-12">
 								<ViewReplyButton
-									numReplies={comment._count.replies ?? 0}
+									numReplies={comment._count.replies}
 									replyThreadPromise={replyThreadPromise}
 								/>
 							</div>
@@ -173,7 +173,7 @@ const StampPage = async (props: { params: Promise<{ id: string }> }) => {
 						<div suppressHydrationWarning>{createdAt}</div>
 					</div>
 
-					<LikeButton initialLikes={likes.likedBy ?? 0} stampId={id} />
+					<LikeButton initialLikes={likes.likedBy} stampId={id} />
 
 					<StampDownloadDisclaimer changedAt={changedAt}>
 						<a
@@ -199,7 +199,7 @@ const StampPage = async (props: { params: Promise<{ id: string }> }) => {
 				)}
 				<div
 					className="stamp-markdown-html-wrapper"
-					dangerouslySetInnerHTML={{ __html: markdownDescription ?? '' }}
+					dangerouslySetInnerHTML={{ __html: markdownDescription }}
 				></div>
 				<Suspense fallback={<Heading level={2}> Comments</Heading>}>
 					<Comments id={id} />

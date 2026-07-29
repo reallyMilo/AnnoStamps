@@ -202,7 +202,7 @@ async function seed() {
 }
 
 seed()
-	.catch((error) => {
+	.catch((error: unknown) => {
 		console.error(error);
 	})
 	.finally(async () => {

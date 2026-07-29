@@ -10,9 +10,8 @@ import { cn } from '@/lib/utils';
 import { useStampFormContext } from './StampForm';
 import { type Asset, useUpload } from './useUpload';
 
-const isImage = (b: Asset | Image): b is Image => {
-	return (b as Image).id !== undefined;
-};
+const isImage = (obj: Asset | Image): obj is Image => 'id' in obj;
+
 //TODO: ordering of images, drag
 export const ImageUpload = () => {
 	const { images, setImages, status } = useStampFormContext();

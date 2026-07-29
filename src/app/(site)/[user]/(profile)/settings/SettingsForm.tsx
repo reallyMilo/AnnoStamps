@@ -8,7 +8,6 @@ import { uploadAsset } from '@/components/StampForm/uploadAsset';
 import { type Asset, useUpload } from '@/components/StampForm/useUpload';
 import {
 	Button,
-	Checkbox,
 	CheckboxField,
 	CheckboxGroup,
 	Description,

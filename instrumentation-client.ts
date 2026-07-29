@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 		debug: false,
 
 		dsn: 'https://a61bb8933f45b2800ce5ffa1c28d9305@o4506508177244160.ingest.sentry.io/4506508178817024',
-		enabled: process.env.NODE_ENV === 'production',
+		enabled: true,
 		// You can remove this option if you're not planning to use the Sentry Session Replay feature:
 		integrations: [
 			Sentry.replayIntegration({

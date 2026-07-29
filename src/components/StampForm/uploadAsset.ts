@@ -11,7 +11,10 @@ export const uploadAsset = async (
 	const presigned = await fetch(
 		`/api/upload/presigned?stampId=${stampId}&filename=${filename}&fileType=${fileType}&directory=${directory}`,
 	);
-	const { path, url }: { path: string; url: string } = await presigned.json();
+	const { path, url } = (await presigned.json()) as {
+		path: string;
+		url: string;
+	};
 
 	try {
 		const putObject = await fetch(url, {
@@ -24,6 +27,6 @@ export const uploadAsset = async (
 		}
 		return `${process.env.NEXT_PUBLIC_CLOUDFRONT_CDN}/${path}`;
 	} catch (e) {
-		return Promise.reject(new Error(`Upload failed: ${e}`));
+		return Promise.reject(new Error(`Upload failed: ${e as string}`));
 	}
 };

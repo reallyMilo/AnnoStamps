@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 	title: 'Create 117 Stamp | AnnoStamps',
 };
 
-const CreateStampPage = async () => {
+const CreateStampPage = () => {
 	return (
 		<CreateStamp>
 			<CreateStampForm />

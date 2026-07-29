@@ -87,9 +87,8 @@ const Header = ({ subTitle, title }: HeaderProps) => {
 	);
 };
 
-const isAsset = (b: Asset | Image | JSZipObjectWithData): b is Asset => {
-	return (b as Asset).rawFile !== undefined;
-};
+const isAsset = (obj: Asset | Image | JSZipObjectWithData): obj is Asset =>
+	'rawFile' in obj;
 
 const UploadModal = () => {
 	const { status } = useStampFormContext();
@@ -126,7 +125,9 @@ const UploadModal = () => {
 	return (
 		<Modal
 			data-testid="upload-modal"
-			onClose={() => {}}
+			onClose={() => {
+				return;
+			}}
 			open={statusMessage.isOpen}
 		>
 			<ModalTitle>{statusMessage.title}</ModalTitle>
@@ -143,7 +144,7 @@ const Form = ({
 }: React.PropsWithChildren<{
 	action: (
 		formData: FormData,
-	) => Promise<void | { error: string; ok: boolean; status: number }>;
+	) => Promise<{ error: string; ok: boolean; status: number }>;
 }>) => {
 	const { files, images, setStatus, stamp } = useStampFormContext();
 
@@ -220,7 +221,7 @@ const Form = ({
 
 		const result = await action(formData);
 
-		if (result && !result.ok) {
+		if (!result.ok) {
 			setStatus('errorAction');
 		}
 	};

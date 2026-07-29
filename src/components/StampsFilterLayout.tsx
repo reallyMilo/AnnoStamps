@@ -64,7 +64,7 @@ const Search = () => {
 				<Input
 					aria-label="Search"
 					autoComplete="off"
-					defaultValue={searchParams?.get('search') ?? undefined}
+					defaultValue={searchParams.get('search') ?? undefined}
 					id="search"
 					name="search"
 					placeholder="Search Stamps"
@@ -97,8 +97,7 @@ const FilterForm = ({ checkboxFilterOptions, className }: FilterFormProps) => {
 									id={option}
 									name={option}
 									onChange={(isChecked) => {
-										const existingParams =
-											searchParams?.getAll(section.id) ?? [];
+										const existingParams = searchParams.getAll(section.id);
 
 										if (isChecked) {
 											existingParams.push(option);

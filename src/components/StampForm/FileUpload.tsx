@@ -16,9 +16,10 @@ import { cn } from '@/lib/utils';
 import { useStampFormContext } from './StampForm';
 import { type Asset, useUpload } from './useUpload';
 
-const isJSZip = (b: Asset | JSZipObjectWithData): b is JSZipObjectWithData => {
-	return (b as JSZipObjectWithData)._data !== undefined;
-};
+const isJSZip = (
+	obj: Asset | JSZipObjectWithData,
+): obj is JSZipObjectWithData => '_data' in obj;
+
 export const FileUpload = () => {
 	const { files, setFiles, status } = useStampFormContext();
 	const { error, handleChange, handleRemove } = useUpload<

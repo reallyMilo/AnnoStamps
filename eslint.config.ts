@@ -1,7 +1,7 @@
 import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import eslint from '@eslint/js';
-import eslintNextPlugin from '@next/eslint-plugin-next';
 import vitest from '@vitest/eslint-plugin';
+import eslintNext from 'eslint-config-next/typescript';
 import pluginCypress from 'eslint-plugin-cypress';
 import jsonc from 'eslint-plugin-jsonc';
 import n from 'eslint-plugin-n';
@@ -28,6 +28,7 @@ export default defineConfig(
 		'.env.*',
 		'prisma/migrations/*',
 		'generated/*',
+		'src/components/ui/**',
 	]),
 	{ linterOptions: { reportUnusedDisableDirectives: 'error' } },
 
@@ -41,6 +42,7 @@ export default defineConfig(
 			tseslint.configs.stylisticTypeChecked,
 			reactHooks.configs.flat.recommended,
 			reactCompiler.configs.recommended,
+			eslintNext,
 		],
 		files: ['**/*.{js,ts,tsx}'],
 		languageOptions: {
@@ -52,6 +54,10 @@ export default defineConfig(
 		},
 		rules: {
 			// These on-by-default rules work well for this repo if configured
+			'@typescript-eslint/no-misused-promises': [
+				'error',
+				{ checksVoidReturn: false },
+			],
 			'@typescript-eslint/prefer-nullish-coalescing': [
 				'error',
 				{ ignorePrimitives: true },
@@ -60,11 +66,11 @@ export default defineConfig(
 				'error',
 				{ allowBoolean: true, allowNullish: true, allowNumber: true },
 			],
+
 			'n/no-unsupported-features/node-builtins': [
 				'error',
 				{ allowExperimental: true, ignores: ['import.meta.dirname'] },
 			],
-
 			// Stylistic concerns that don't interfere with Prettier
 			'logical-assignment-operators': [
 				'error',

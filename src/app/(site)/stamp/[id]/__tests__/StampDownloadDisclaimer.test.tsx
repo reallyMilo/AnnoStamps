@@ -24,7 +24,7 @@ describe('StampDownloadDisclaimer', () => {
 		expect(screen.getByText('Child content')).toBeInTheDocument();
 	});
 
-	it('renders modal warning when changedAt is within the last 7 days', async () => {
+	it('renders modal warning when changedAt is within the last 7 days', () => {
 		const recentDate = new Date('2025-09-15T12:00:00Z');
 		render(
 			<StampDownloadDisclaimer changedAt={recentDate}>

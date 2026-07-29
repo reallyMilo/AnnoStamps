@@ -65,9 +65,7 @@ export const updateUserSettings = async (
 				usernameURL,
 			};
 
-	const isEmailNotificationEnabled = emailNotifications
-		? emailNotifications === 'on'
-		: false;
+	const isEmailNotificationEnabled = emailNotifications ? true : false;
 
 	let updateResponse = null;
 	try {
