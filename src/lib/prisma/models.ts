@@ -78,7 +78,7 @@ const createStampSchema = stampSchema
 		modded: modded === 'true',
 		region: region ?? 'rome',
 		...schema,
-	})) satisfies z.Schema<
+	})) satisfies z.ZodType<
 	Prisma.StampUncheckedCreateInput,
 	Omit<Prisma.StampUncheckedCreateInput, 'modded' | 'region'> & {
 		modded: string;
@@ -93,7 +93,7 @@ const updateStampSchema = stampSchema
 	.transform(({ modded, ...schema }) => ({
 		modded: modded === 'true',
 		...schema,
-	})) satisfies z.Schema<
+	})) satisfies z.ZodType<
 	Prisma.StampUncheckedUpdateInput,
 	Omit<Prisma.StampUncheckedUpdateInput, 'modded'> & {
 		modded?: string;
@@ -191,13 +191,13 @@ const userProfileSchema = z
 		username: z.string().regex(/^[a-zA-Z0-9_\\-]+$/),
 		usernameURL: z.string(),
 	})
-	.partial() satisfies z.Schema<Prisma.UserUncheckedUpdateInput>;
+	.partial() satisfies z.ZodType<Prisma.UserUncheckedUpdateInput>;
 
 export const userExtension = Prisma.defineExtension({
 	query: {
 		user: {
 			update({ args, query }) {
-				args.data = userProfileSchema.passthrough().parse(args.data);
+				args.data = userProfileSchema.loose().parse(args.data);
 				return query(args);
 			},
 		},

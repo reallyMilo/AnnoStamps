@@ -4,7 +4,7 @@ import { createAuthClient } from 'better-auth/react';
 import type { auth } from '@/auth';
 
 export const authClient = createAuthClient({
-	baseURL: process.env.BASE_URL!,
+	baseURL: process.env.BASE_URL,
 	plugins: [customSessionClient<typeof auth>()],
 });
 export type Session = NonNullable<

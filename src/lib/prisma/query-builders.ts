@@ -30,7 +30,7 @@ export const buildFilterWhereClause = (
 		where.title = {
 			search: search.replace(
 				/\s*([^\s]+)\s*/g,
-				(_, word, i) => (i ? '|' : '') + word,
+				(_, word, i) => `${i ? '|' : ''}${word}`,
 			),
 		};
 	}
