@@ -28,7 +28,9 @@ describe('UserDropdownButton', () => {
 		});
 		render(<UserDropdownButton />);
 
-		await act(async () => await userEvent.click(screen.getByRole('button')));
+		await act(async () => {
+			await userEvent.click(screen.getByRole('button'));
+		});
 		expect(screen.getByRole('menuitem', { name: 'My stamps' })).toHaveAttribute(
 			'href',
 			'/stampcreator',
@@ -52,7 +54,9 @@ describe('UserDropdownButton', () => {
 		render(<UserDropdownButton />);
 
 		const button = screen.getByRole('button');
-		await act(async () => await userEvent.click(button));
+		await act(async () => {
+			await userEvent.click(button);
+		});
 		expect(
 			screen.getByRole('menuitem', { name: 'My Account' }),
 		).toHaveAttribute('href', '/stampcreator/settings');

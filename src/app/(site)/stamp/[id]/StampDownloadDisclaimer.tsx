@@ -28,7 +28,13 @@ export const StampDownloadDisclaimer = ({
 	if (changedAtDate > oneWeekAgo) {
 		return (
 			<>
-				<Button color="accent" onClick={() => setIsOpen(true)} type="button">
+				<Button
+					color="accent"
+					onClick={() => {
+						setIsOpen(true);
+					}}
+					type="button"
+				>
 					Download
 				</Button>
 				<Modal className="z-50" onClose={setIsOpen} open={isOpen}>
@@ -48,7 +54,12 @@ export const StampDownloadDisclaimer = ({
 						.
 					</ModalDescription>
 					<ModalActions>
-						<Button onClick={() => setIsOpen(false)} plain>
+						<Button
+							onClick={() => {
+								setIsOpen(false);
+							}}
+							plain
+						>
 							Cancel
 						</Button>{' '}
 						{children}

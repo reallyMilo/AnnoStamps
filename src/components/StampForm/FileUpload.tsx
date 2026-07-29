@@ -82,7 +82,9 @@ export const FileUpload = () => {
 									</TableCell>
 									<TableCell
 										className="text-accent hover:text-accent/75 cursor-pointer"
-										onClick={() => handleRemove(file)}
+										onClick={() => {
+											handleRemove(file);
+										}}
 									>
 										delete
 									</TableCell>

@@ -16,7 +16,7 @@ export const CommentView = ({ parentId, userIdToNotify }: CommentViewProps) => {
 
 	const addCommentAction = addCommentToStamp.bind(
 		null,
-		pathname.split('/').at(-1) as string,
+		pathname.split('/').at(-1)!,
 		parentId ? parentId : null,
 		userIdToNotify,
 	);

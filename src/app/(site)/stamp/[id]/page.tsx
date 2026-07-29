@@ -5,6 +5,7 @@ import { unstable_cache } from 'next/cache';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
+import { getCommentReplyThread } from '#/sql';
 import { LikeButton } from '@/components/LikeButton';
 import { StampCategoryIcon } from '@/components/StampCategoryIcon';
 import { buttonStyles, Container, Heading, Link, Text } from '@/components/ui';
@@ -16,7 +17,6 @@ import {
 } from '@/lib/prisma/models';
 import prisma from '@/lib/prisma/singleton';
 import { cn } from '@/lib/utils';
-import { getCommentReplyThread } from '#/sql';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -92,8 +92,8 @@ const Comments = async ({ id: stampId }: Pick<StampWithRelations, 'id'>) => {
 							{...comment}
 							replyToUser={{
 								id: comment.user.id,
-								username: comment.user.username as string,
-								usernameURL: comment.user.usernameURL as string,
+								username: comment.user.username!,
+								usernameURL: comment.user.usernameURL!,
 							}}
 						>
 							<div className="ml-12">

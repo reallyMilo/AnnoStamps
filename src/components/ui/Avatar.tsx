@@ -8,13 +8,13 @@ import { cn } from '@/lib/utils';
 import { TouchTarget } from './Button';
 import { Link } from './Link';
 
-type AvatarProps = {
+interface AvatarProps {
 	alt?: string;
 	className?: string;
 	initials?: string;
 	square?: boolean;
 	src?: null | string;
-};
+}
 
 export const Avatar = ({
 	alt = '',

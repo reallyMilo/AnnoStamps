@@ -18,9 +18,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 					</main>
 				</div>
 			</body>
-			<GoogleAnalytics
-				gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS as string}
-			/>
+			<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!} />
 		</html>
 	);
 };

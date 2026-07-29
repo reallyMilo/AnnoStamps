@@ -51,10 +51,7 @@ export const CommentItem = ({
 						) : null}
 						<Text>{content}</Text>
 					</div>
-					<CommentView
-						parentId={commentId}
-						userIdToNotify={replyToUser?.id as string}
-					/>
+					<CommentView parentId={commentId} userIdToNotify={replyToUser?.id!} />
 				</div>
 			</div>
 			{children}

@@ -25,11 +25,18 @@ export const MobileNavbar = ({
 			<NavbarItem
 				aria-label="Open navigation"
 				className="md:hidden"
-				onClick={() => setIsOpen(true)}
+				onClick={() => {
+					setIsOpen(true);
+				}}
 			>
 				<OpenMenuIcon />
 			</NavbarItem>
-			<MobileSidebar close={() => setIsOpen(false)} open={isOpen}>
+			<MobileSidebar
+				close={() => {
+					setIsOpen(false);
+				}}
+				open={isOpen}
+			>
 				<Sidebar>
 					<SidebarHeader>
 						<VersionButtons />

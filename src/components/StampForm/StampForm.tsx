@@ -23,7 +23,7 @@ import { ImageUpload } from './ImageUpload';
 import { StampInfoFieldGroup } from './StampInfoFieldGroup';
 import { uploadAsset } from './uploadAsset';
 
-export type StampFormContextValue = {
+export interface StampFormContextValue {
 	files: (Asset | JSZipObjectWithData)[];
 	images: (Asset | Image)[];
 	setFiles: React.Dispatch<
@@ -42,7 +42,7 @@ export type StampFormContextValue = {
 		| 'invalidZip'
 		| 'success'
 		| 'upload';
-};
+}
 type Image = Stamp['images'][0];
 
 type Stamp = UserWithStamps['listedStamps'][0];
@@ -74,10 +74,10 @@ const Submit = ({ children }: { children: React.ReactNode }) => {
 	);
 };
 
-type HeaderProps = {
+interface HeaderProps {
 	subTitle: string;
 	title: string;
-};
+}
 const Header = ({ subTitle, title }: HeaderProps) => {
 	return (
 		<div>
@@ -239,11 +239,11 @@ const Form = ({
 	);
 };
 
-type RootProps = {
+interface RootProps {
 	children: React.ReactNode;
 	stamp?: Stamp;
 	zipFiles?: JSZipObjectWithData[];
-};
+}
 
 const Root = ({ children, stamp, zipFiles }: RootProps) => {
 	const [status, setStatus] =

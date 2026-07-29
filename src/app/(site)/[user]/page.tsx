@@ -14,7 +14,7 @@ export const generateMetadata = async (props: {
 
 const UserPage = async (props: {
 	params: Promise<{ user: string }>;
-	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+	searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) => {
 	const [params, searchParams] = await Promise.all([
 		props.params,

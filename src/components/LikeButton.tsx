@@ -41,10 +41,10 @@ const useLikedStamps = (userId: string | undefined) => {
 	};
 };
 
-type LikeButtonProps = {
+interface LikeButtonProps {
 	initialLikes: number;
 	stampId: StampWithRelations['id'];
-};
+}
 export const LikeButton = ({ initialLikes, stampId }: LikeButtonProps) => {
 	const router = useRouter();
 	const pathname = usePathname();

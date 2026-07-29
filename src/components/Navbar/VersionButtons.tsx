@@ -111,7 +111,9 @@ export const VersionButtons = () => {
 						isInfoOpen && 'bg-amber-100 dark:bg-amber-950/40',
 					)}
 					data-testid="version-info-toggle"
-					onClick={() => setIsInfoOpen((current) => !current)}
+					onClick={() => {
+						setIsInfoOpen((current) => !current);
+					}}
 					plain
 				>
 					<span className="inline-flex size-5 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-white">
@@ -144,10 +146,18 @@ export const VersionButtons = () => {
 						<div
 							className="rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900"
 							data-testid="version-117-info"
-							onBlur={() => setHoveredVersion(null)}
-							onFocus={() => setHoveredVersion('117')}
-							onMouseEnter={() => setHoveredVersion('117')}
-							onMouseLeave={() => setHoveredVersion(null)}
+							onBlur={() => {
+								setHoveredVersion(null);
+							}}
+							onFocus={() => {
+								setHoveredVersion('117');
+							}}
+							onMouseEnter={() => {
+								setHoveredVersion('117');
+							}}
+							onMouseLeave={() => {
+								setHoveredVersion(null);
+							}}
 							tabIndex={0}
 						>
 							<div className="mb-2 flex items-center gap-2">
@@ -167,10 +177,18 @@ export const VersionButtons = () => {
 						<div
 							className="rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900"
 							data-testid="version-1800-info"
-							onBlur={() => setHoveredVersion(null)}
-							onFocus={() => setHoveredVersion('1800')}
-							onMouseEnter={() => setHoveredVersion('1800')}
-							onMouseLeave={() => setHoveredVersion(null)}
+							onBlur={() => {
+								setHoveredVersion(null);
+							}}
+							onFocus={() => {
+								setHoveredVersion('1800');
+							}}
+							onMouseEnter={() => {
+								setHoveredVersion('1800');
+							}}
+							onMouseLeave={() => {
+								setHoveredVersion(null);
+							}}
 							tabIndex={0}
 						>
 							<div className="mb-2 flex items-center gap-2">

@@ -3,10 +3,10 @@ import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
+import { Prisma } from '#/client';
 import { auth } from '@/auth';
 import { parseAndSanitizedMarkdown } from '@/lib/markdown';
 import prisma from '@/lib/prisma/singleton';
-import { Prisma } from '#/client';
 
 type FormDataEntries = Pick<
 	Prisma.StampUncheckedCreateInput,

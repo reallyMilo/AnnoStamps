@@ -71,7 +71,9 @@ export const ImageUpload = () => {
 							<div className="relative" key={url}>
 								<TrashIcon
 									className="absolute top-0 right-0 z-10 mt-2 mr-2 h-6 w-6 cursor-pointer rounded-md bg-white"
-									onClick={() => handleRemove(image)}
+									onClick={() => {
+										handleRemove(image);
+									}}
 								/>
 								<div className="aspect-h-3 aspect-w-4 overflow-hidden border-2 shadow-md">
 									<img

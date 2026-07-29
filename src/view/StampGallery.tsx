@@ -12,7 +12,7 @@ import { CATEGORIES } from '@/lib/constants';
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data';
 import 'server-only';
 
-type StampGalleryProps = {
+interface StampGalleryProps {
 	paginatedStamps:
 		| (Omit<
 				Awaited<
@@ -27,7 +27,7 @@ type StampGalleryProps = {
 				'stamps' | 'user'
 		  > & { stampsLength: number });
 	searchParams: QueryParams;
-};
+}
 
 export const StampGallery = ({
 	children,

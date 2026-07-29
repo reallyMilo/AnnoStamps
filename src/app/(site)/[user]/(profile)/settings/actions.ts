@@ -5,9 +5,9 @@ import { headers } from 'next/headers';
 
 import type { UserWithStamps } from '@/lib/prisma/models';
 
+import { Prisma } from '#/client';
 import { auth } from '@/auth';
 import prisma from '@/lib/prisma/singleton';
-import { Prisma } from '#/client';
 
 const blockedUsernames = new Set<string>([
 	'117',

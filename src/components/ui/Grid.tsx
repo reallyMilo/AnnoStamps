@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils';
 
-type GridProps = {
+interface GridProps {
 	children: React.ReactNode;
 	className?: string;
-};
+}
 export const Grid = ({ children, className }: GridProps) => {
 	return (
 		<div

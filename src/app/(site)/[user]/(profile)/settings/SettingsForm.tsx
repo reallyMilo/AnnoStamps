@@ -111,11 +111,11 @@ export const SettingsForm = ({
 								autoComplete="false"
 								defaultValue={formState.data?.username ?? ''}
 								name="username"
-								onInvalid={(e) =>
+								onInvalid={(e) => {
 									e.currentTarget.setCustomValidity(
 										'Select a username containing only alphanumeric characters, dashes (-), and underscores (_).',
-									)
-								}
+									);
+								}}
 								pattern={`^[a-zA-Z0-9_\\-]+$`}
 								readOnly={!!formState.data?.username}
 								required
@@ -166,7 +166,9 @@ export const SettingsForm = ({
 						</label>
 						<Button
 							className="cursor-pointer border-0 font-light hover:underline"
-							onClick={() => setAvatar([{ url: null }])}
+							onClick={() => {
+								setAvatar([{ url: null }]);
+							}}
 							outline
 							type="button"
 						>

@@ -35,13 +35,7 @@ export const Table = ({
 	striped?: boolean;
 }) => {
 	return (
-		<TableContext.Provider
-			value={
-				{ bleed, dense, grid, striped } as React.ContextType<
-					typeof TableContext
-				>
-			}
-		>
+		<TableContext.Provider value={{ bleed, dense, grid, striped }}>
 			<div className="flow-root">
 				<div
 					{...props}
@@ -106,11 +100,7 @@ export const TableRow = ({
 	const { striped } = useContext(TableContext);
 
 	return (
-		<TableRowContext.Provider
-			value={
-				{ href, target, title } as React.ContextType<typeof TableRowContext>
-			}
-		>
+		<TableRowContext.Provider value={{ href, target, title }}>
 			<tr
 				{...props}
 				className={cn(

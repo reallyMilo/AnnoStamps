@@ -39,7 +39,9 @@ export const buildFilterWhereClause = (
 	const regionFilter = buildFieldMatchFilter('region', region);
 	const capitalFilter = buildFieldMatchFilter('capital', capital);
 
-	type FilterObj = { OR: Record<string, string>[] };
+	interface FilterObj {
+		OR: Record<string, string>[];
+	}
 	const columnArr = [categoryFilter, regionFilter, capitalFilter].filter(
 		(e): e is FilterObj => e !== null && typeof e === 'object' && 'OR' in e,
 	);

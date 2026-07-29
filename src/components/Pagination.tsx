@@ -14,10 +14,10 @@ import { STAMPS_PER_PAGE } from '@/lib/constants';
 
 import { useQueryParams } from './useQueryParams';
 
-type PaginationProps = {
+interface PaginationProps {
 	count: number;
 	page: number;
-};
+}
 
 // max elements for screen size 768 and greater
 const maxPaginationList = 11;

@@ -22,13 +22,13 @@ import { cn } from '@/lib/utils';
 
 import { useQueryParams } from './useQueryParams';
 
-type FilterFormProps = {
+interface FilterFormProps {
 	checkboxFilterOptions: {
 		id: string;
 		options: string[];
 	}[];
 	className?: string;
-};
+}
 const sortOptions = Object.values(SORT_OPTIONS);
 
 const Search = () => {
@@ -144,14 +144,14 @@ const SortOptionsSelect = () => {
 				className="max-w-48"
 				defaultValue={searchParams.get('sort') ?? undefined}
 				name="sort"
-				onChange={(e) =>
+				onChange={(e) => {
 					router.push(
 						stringifyQuery(searchParams, {
 							page: 1,
 							sort: e.target.value,
 						}),
-					)
-				}
+					);
+				}}
 			>
 				{sortOptions.map((option, idx) => (
 					<option
@@ -175,13 +175,20 @@ const MobileFilter = ({ children }: PropsWithChildren) => {
 				className="self-end lg:hidden"
 				color="secondary"
 				data-testid="mobile-filter-button"
-				onClick={() => setIsOpen(true)}
+				onClick={() => {
+					setIsOpen(true);
+				}}
 				type="button"
 			>
 				<FunnelIcon />
 			</Button>
 
-			<MobileSidebar close={() => setIsOpen(false)} open={isOpen}>
+			<MobileSidebar
+				close={() => {
+					setIsOpen(false);
+				}}
+				open={isOpen}
+			>
 				{children}
 			</MobileSidebar>
 		</div>

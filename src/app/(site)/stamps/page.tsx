@@ -22,7 +22,7 @@ const getFilteredStamps = unstable_cache(
 );
 
 const StampsPage = async (props: {
-	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+	searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) => {
 	const searchParams = await props.searchParams;
 

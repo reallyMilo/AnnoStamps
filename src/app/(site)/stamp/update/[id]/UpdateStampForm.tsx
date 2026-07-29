@@ -57,7 +57,9 @@ export const UpdateStampForm = ({ stamp }: { stamp: StampWithRelations }) => {
 						defaultValue={gameVersion}
 						id="game"
 						name="game"
-						onChange={(e) => setGameVersion(e.target.value)}
+						onChange={(e) => {
+							setGameVersion(e.target.value);
+						}}
 						required
 					>
 						<option value="117">117</option>

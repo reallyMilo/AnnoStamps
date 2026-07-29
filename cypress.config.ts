@@ -18,7 +18,7 @@ export default defineConfig({
 		setupNodeEvents(on) {
 			on('task', {
 				async 'db:query'(rawQuery: string) {
-					const data = await prisma.$queryRawUnsafe(`${rawQuery}`);
+					const data = await prisma.$queryRawUnsafe(rawQuery);
 
 					return data;
 				},

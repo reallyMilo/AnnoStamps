@@ -26,7 +26,9 @@ export const StampDeleteModal = ({
 				className="cursor-pointer"
 				color="accent"
 				data-testid="delete-stamp"
-				onClick={() => setIsOpen(true)}
+				onClick={() => {
+					setIsOpen(true);
+				}}
 			>
 				<TrashIcon />
 			</Button>
@@ -36,7 +38,12 @@ export const StampDeleteModal = ({
 				<ModalDescription>This action is not reversible.</ModalDescription>
 
 				<ModalActions>
-					<Button onClick={() => setIsOpen(false)} plain>
+					<Button
+						onClick={() => {
+							setIsOpen(false);
+						}}
+						plain
+					>
 						No, cancel
 					</Button>
 					<Button color="accent" onClick={async () => await deleteStamp(id)}>

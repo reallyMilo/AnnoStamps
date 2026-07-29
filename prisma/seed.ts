@@ -45,7 +45,7 @@ export const generateStampData = (
 	length: number,
 	users: Omit<User, 'emailVerified' | 'image'>[],
 ) =>
-	Array.from({ length: length }, (_, index) => {
+	Array.from({ length }, (_, index) => {
 		const categoryIdx = Math.floor(Math.random() * categories.length);
 		const rndCategory = categories[categoryIdx];
 

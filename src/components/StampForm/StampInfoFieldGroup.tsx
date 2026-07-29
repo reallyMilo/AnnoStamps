@@ -123,7 +123,9 @@ export const StampInfoFieldGroup = ({ game }: { game: string }) => {
 						defaultValue={stamp?.category ?? ''}
 						id="category"
 						name="category"
-						onChange={(e) => setCategory(e.target.value)}
+						onChange={(e) => {
+							setCategory(e.target.value);
+						}}
 						required
 					>
 						<option disabled value="">

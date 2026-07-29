@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils';
 
 import { CommentItem } from './CommentItem';
 
-type CommentContextProps = {
+interface CommentContextProps {
 	content: string;
 	isFormVisible: boolean;
 	isTextareaFocused: boolean;
@@ -26,7 +26,7 @@ type CommentContextProps = {
 	setIsFormVisible: React.Dispatch<React.SetStateAction<boolean>>;
 	setIsTextareaFocused: React.Dispatch<React.SetStateAction<boolean>>;
 	textareaRef: React.RefObject<HTMLTextAreaElement | null>;
-};
+}
 
 const CommentContext = React.createContext<CommentContextProps | null>(null);
 
@@ -108,7 +108,7 @@ const FormActionButtons = ({ children }: React.PropsWithChildren) => {
 
 const UsernameRequiredModal = ({
 	ignoreNextFocusRef,
-	isOpen = false,
+	isOpen,
 	setIsOpen,
 	settingsHref,
 }: {
@@ -225,7 +225,9 @@ const Form = ({
 						])}
 						minRows={1}
 						name="comment"
-						onChange={(e) => setContent(e.target.value)}
+						onChange={(e) => {
+							setContent(e.target.value);
+						}}
 						onFocus={() => {
 							if (isPending) {
 								return;

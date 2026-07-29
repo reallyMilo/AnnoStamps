@@ -8,10 +8,10 @@ import {
 
 import { CATEGORIES } from '@/lib/constants';
 
-type CategoryInfo = {
+interface CategoryInfo {
 	color: string;
 	icon: React.ReactNode;
-};
+}
 
 type CategoryValues = (typeof CATEGORIES)[keyof typeof CATEGORIES];
 
@@ -38,11 +38,7 @@ const categoryMap: Record<CategoryValues, CategoryInfo> = {
 	},
 };
 
-export const StampCategoryIcon = ({
-	category = 'general',
-}: {
-	category: string;
-}) => {
+export const StampCategoryIcon = ({ category }: { category: string }) => {
 	const { color, icon } = categoryMap[category as CategoryValues];
 	return (
 		<span

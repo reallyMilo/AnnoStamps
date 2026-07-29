@@ -101,7 +101,7 @@ export const addCommentToStamp = async (
 	}
 
 	if (process.env.AWS_S3_BUCKET === 'eu-central-1') {
-		if (!userPreference || userPreference.enabled === true) {
+		if (!userPreference || userPreference.enabled) {
 			try {
 				const client = new LambdaClient({ region: 'eu-central-1' });
 				const command = new InvokeCommand({

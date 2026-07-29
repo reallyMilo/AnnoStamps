@@ -3,15 +3,15 @@
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/solid';
 import { Suspense, use, useState } from 'react';
 
-import { Button } from '@/components/ui';
 import { getCommentReplyThread } from '#/sql';
+import { Button } from '@/components/ui';
 
 import { CommentItem } from './CommentItem';
 
-type ViewReplyButtonProps = {
+interface ViewReplyButtonProps {
 	numReplies: number;
 	replyThreadPromise: Promise<getCommentReplyThread.Result[]>;
-};
+}
 
 const ReplyThread = ({
 	replyThreadPromise,
@@ -42,7 +42,9 @@ export const ViewReplyButton = ({
 		return (
 			<Button
 				className="text-xs sm:text-xs"
-				onClick={() => setIsOpenReplies(true)}
+				onClick={() => {
+					setIsOpenReplies(true);
+				}}
 				outline
 			>
 				<ArrowDownIcon /> {numReplies} {replyText}
@@ -54,7 +56,9 @@ export const ViewReplyButton = ({
 		<>
 			<Button
 				className="text-xs sm:text-xs"
-				onClick={() => setIsOpenReplies(false)}
+				onClick={() => {
+					setIsOpenReplies(false);
+				}}
 				outline
 			>
 				<ArrowUpIcon /> {numReplies} {replyText}
