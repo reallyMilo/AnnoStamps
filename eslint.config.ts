@@ -39,7 +39,6 @@ export default defineConfig(
 			perfectionist.configs['recommended-natural'],
 			tseslint.configs.strictTypeChecked,
 			tseslint.configs.stylisticTypeChecked,
-			testingLibrary.configs['flat/react'],
 			reactHooks.configs.flat.recommended,
 			reactCompiler.configs.recommended,
 		],
@@ -81,26 +80,16 @@ export default defineConfig(
 
 			'no-console': ['error', { allow: ['warn', 'time', 'error', 'timeEnd'] }],
 		},
-		settings: {
-			n: {
-				tryExtensions: [
-					'.js',
-					'.jsx',
-					'.ts',
-					'.tsx',
-					'.mjs',
-					'.mts',
-					'.cjs',
-					'.cts',
-					'.json',
-					'.node',
-				],
-			},
-			perfectionist: { partitionByComment: true, type: 'natural' },
+		settings: { perfectionist: { partitionByComment: true, type: 'natural' } },
+	},
+	{
+		files: ['**/*.{ts,tsx,mts,cts}'],
+		rules: {
+			'n/no-missing-import': 'off',
 		},
 	},
 	{
-		extends: [vitest.configs.recommended],
+		extends: [vitest.configs.recommended, testingLibrary.configs['flat/react']],
 		files: ['**/*.test.*'],
 		rules: { '@typescript-eslint/no-unsafe-assignment': 'off' },
 		settings: { vitest: { typecheck: true } },

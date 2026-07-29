@@ -1,6 +1,3 @@
-/*eslint @eslint-community/eslint-comments/disable-enable-pair: [error, {allowWholeFile: true}] */
-/* eslint-disable cypress/unsafe-to-chain-command */
-//FIXME: unsafe chain
 describe('Delete stamp', () => {
 	beforeEach(() => {
 		cy.task('db:testUser', true);

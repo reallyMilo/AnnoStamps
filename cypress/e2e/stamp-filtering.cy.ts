@@ -1,6 +1,3 @@
-/*eslint @eslint-community/eslint-comments/disable-enable-pair: [error, {allowWholeFile: true}] */
-/* eslint-disable cypress/unsafe-to-chain-command */
-//FIXME: unsafe chain
 const expectSearchParams = (assertions: (params: URLSearchParams) => void) => {
 	cy.location('search').should((search) => {
 		assertions(new URLSearchParams(search));
@@ -37,9 +34,9 @@ describe('Filtering 117 Stamps', () => {
 			.first()
 			.invoke('text')
 			.then((text) => {
-				const match = text.match(/Stamp-\d+-(\S*)/);
+				const match = /Stamp-\d+-(\S*)/.exec(text);
 				expect(match).to.not.be.null;
-				const result = match![0]; // e.g. "Stamp-460-" or "Stamp-460-strenuus"
+				const result = match[0]; // e.g. "Stamp-460-" or "Stamp-460-strenuus"
 				cy.findByLabelText('Search').type(`${result}{enter}`);
 				expectSearchParams((params) => {
 					expect(params.get('search')).to.eq(result);
