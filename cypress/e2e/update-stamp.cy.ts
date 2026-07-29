@@ -70,9 +70,8 @@ describe('Updating Stamp', () => {
 			cy.get('#title').should('have.value', 'Test-Seed-User-Stamp');
 			cy.get('#description').should('have.value', 'Test seed user stamp');
 
-			cy.get('#title')
-				.type('-Updated')
-				.should('have.value', 'Test-Seed-User-Stamp-Updated');
+			cy.get('#title').type('-Updated');
+			cy.get('#title').should('have.value', 'Test-Seed-User-Stamp-Updated');
 
 			cy.findByRole('button', { name: 'Update Stamp' }).click();
 			cy.findByText('Creating Stamp...').should('be.visible');

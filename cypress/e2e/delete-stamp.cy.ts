@@ -38,13 +38,9 @@ describe('Delete stamp', () => {
 		cy.intercept('/testseeduser').as('deleteStamp');
 		cy.visit('/testseeduser');
 		//FIXME: Need to revalidate the path for [username]
-		cy.getBySel('delete-stamp')
-			.first()
-			.trigger('mouseover')
-			.then(($link) => {
-				expect($link.css('cursor')).to.equal('pointer');
-			})
-			.click();
+		cy.getBySel('delete-stamp').first().trigger('mouseover');
+		cy.getBySel('delete-stamp').first().should('have.css', 'cursor', 'pointer');
+		cy.getBySel('delete-stamp').first().click();
 		cy.findByRole('button', { name: 'Yes, delete' })
 			.should('be.visible')
 			.click();
@@ -61,13 +57,8 @@ describe('Delete stamp', () => {
 		cy.intercept('/testseeduser/1800').as('deleteStamp');
 		cy.visit('/testseeduser/1800');
 
-		cy.getBySel('delete-stamp')
-			.first()
-			.then((button) => {
-				button.trigger('mouseover').then(($link) => {
-					expect($link.css('cursor')).to.equal('pointer');
-				});
-			});
+		cy.getBySel('delete-stamp').first().trigger('mouseover');
+		cy.getBySel('delete-stamp').first().should('have.css', 'cursor', 'pointer');
 
 		cy.getBySel('delete-stamp').click();
 

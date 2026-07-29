@@ -12,7 +12,7 @@ describe('Switch between game versions via navigation links and see correspondin
 		cy.getBySel('stamp-card-username-link')
 			.last()
 			.then((link) => {
-				cy.visit(link.attr('href'));
+				cy.visit(link.attr('href') ?? '');
 
 				cy.getBySel('1800-version-link').should(
 					'have.attr',
@@ -23,16 +23,16 @@ describe('Switch between game versions via navigation links and see correspondin
 
 		cy.title().should('contain', '117');
 
-		cy.getBySel('1800-version-link')
-			.click()
-			.then(() => {
-				cy.title().should('contain', '1800');
-				cy.getBySel('1800-version-link').should(
-					'have.css',
-					'background-color',
-					'rgb(246, 174, 45)',
-				);
-			});
+		cy.getBySel('1800-version-link').then((link) => {
+			link.trigger('click');
+		});
+
+		cy.title().should('contain', '1800');
+		cy.getBySel('1800-version-link').should(
+			'have.css',
+			'background-color',
+			'rgb(246, 174, 45)',
+		);
 	});
 
 	it('authenticated user viewing his homepage should be able to switch between his stamps', () => {

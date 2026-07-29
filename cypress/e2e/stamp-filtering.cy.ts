@@ -84,10 +84,8 @@ describe('Filtering 1800 stamps', () => {
 		});
 
 		cy.findAllByText('enbesa').should('have.length.greaterThan', 2);
-		cy.findByLabelText('Sort')
-			.select('newest')
-			.invoke('val')
-			.should('eq', 'newest');
+		cy.findByLabelText('Sort').select('newest');
+		cy.findByLabelText('Sort').invoke('val').should('eq', 'newest');
 		expectSearchParams((params) => {
 			expect(params.get('category')).to.eq('production');
 			expect(params.get('region')).to.eq('enbesa');

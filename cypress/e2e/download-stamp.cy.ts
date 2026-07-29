@@ -3,23 +3,17 @@ describe('Download Stamp from stamp page', () => {
 	it('user can download stamp from disclaimer', () => {
 		cy.visit('/stamp/filterSeedUser117StampId_1');
 
-		cy.findByRole('button', { name: 'Download' })
-			.click()
-			.then(() =>
-				cy
-					.getBySel('stamp-downloads')
-					.invoke('text')
-					.then(Number)
-					.then((initDownloads) => {
-						cy.log(String(initDownloads));
-						cy.getBySel('stamp-download')
-							.trigger('mouseover')
-							.then(($link) => {
-								expect($link.css('cursor')).to.equal('pointer');
-							})
-							.click();
-					}),
-			);
+		cy.findByRole('button', { name: 'Download' }).click();
+
+		cy.getBySel('stamp-downloads')
+			.invoke('text')
+			.then(Number)
+			.then((initDownloads) => {
+				cy.log(String(initDownloads));
+				cy.getBySel('stamp-download').trigger('mouseover');
+				cy.getBySel('stamp-download').should('have.css', 'cursor', 'pointer');
+				cy.getBySel('stamp-download').click();
+			});
 
 		const downloadsFolder = Cypress.config('downloadsFolder');
 

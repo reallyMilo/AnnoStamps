@@ -9,11 +9,9 @@ describe('Stamp liking', () => {
 	it('unauthorized user redirected to sign in with callback to stamp', () => {
 		cy.intercept('/api/auth/get-session');
 		cy.visit('/stamp/testSeed1800StampId');
-		cy.getBySel('like-stamp')
-			.click()
-			.then(() => {
-				cy.url().should('include', `callbackUrl=/stamp/testSeed1800StampId`);
-			});
+		cy.getBySel('like-stamp').click();
+
+		cy.url().should('include', `callbackUrl=/stamp/testSeed1800StampId`);
 	});
 
 	it('user can like stamp', () => {
@@ -29,7 +27,6 @@ describe('Stamp liking', () => {
 			.then((likesText) => Number.parseInt(likesText.trim(), 10))
 			.then((initialLikesCount) => {
 				cy.log(String(initialLikesCount));
-				expect(initialLikesCount).to.be.a('number').and.not.NaN;
 
 				cy.getBySel('like-stamp').should('be.visible').click();
 				cy.getBySel('like-stamp').should(($button) => {

@@ -27,11 +27,10 @@ describe('Update user profile', () => {
 			cy.visit('/testSeedUserId/settings');
 
 			cy.database(`SELECT * FROM "User" LIMIT 1;`).then((users) => {
-				const user = users[0];
-				cy.wrap(user)
+				cy.wrap(users[0])
 					.its('username')
 					.then((username) => {
-						cy.findByLabelText('Username').type(username);
+						cy.findByLabelText('Username').type(username as string);
 					});
 			});
 
