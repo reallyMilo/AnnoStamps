@@ -1,18 +1,18 @@
-import type { Metadata } from 'next'
+import type { Metadata } from 'next';
 
-import { CreateStamp } from '@/view/CreateStamp'
+import { CreateStamp } from '@/view/CreateStamp';
 
-import { CreateStampForm } from './CreateStampForm'
+import { CreateStampForm } from './CreateStampForm';
 
 export const metadata: Metadata = {
-  title: 'Create 1800 Stamp | AnnoStamps',
-}
+	title: 'Create 1800 Stamp | AnnoStamps',
+};
 const CreateStampPage = async () => {
-  return (
-    <CreateStamp>
-      <CreateStampForm />
-    </CreateStamp>
-  )
-}
+	return (
+		<CreateStamp>
+			<CreateStampForm />
+		</CreateStamp>
+	);
+};
 
-export default CreateStampPage
+export default CreateStampPage;

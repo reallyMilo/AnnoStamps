@@ -5,7 +5,7 @@ OUTPUT_PATH="../ses_template.tf"
 ENCODED_HTML=$(base64 -w 0 CommentNotificationTemplate.html)
 
 # Generate Terraform file
-cat <<EOF > $OUTPUT_PATH
+cat << EOF > $OUTPUT_PATH
 resource "aws_ses_template" "comment_notification_template" {
   name         = "CommentNotificationTemplate"
   subject = "New comment on your stamp"

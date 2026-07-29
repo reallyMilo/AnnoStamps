@@ -16,11 +16,10 @@ tsc
 cp package*.json temp
 (cd temp && npm install --production)
 
-
 # Ensure credentials.json exists
 if [ ! -f credentials.json ]; then
-  echo "Error: credentials.json not found!" >&2
-  exit 1
+	echo "Error: credentials.json not found!" >&2
+	exit 1
 fi
 
 # Copy credentials.json into temp

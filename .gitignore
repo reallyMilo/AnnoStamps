@@ -43,10 +43,8 @@ cypress.env.json
 # Sentry Config File
 .sentryclirc
 
-
 #localstack
 volume
 
 #prisma.io/docs/orm/prisma-schema/overview/generators - in future can include generated directory
 /generated/prisma
-

@@ -1,34 +1,34 @@
 {
-  "data": {
-    "id": "clll7fyse0000em82dlc6m56j",
-    "username": "user1",
-    "usernameURL": "user1",
-    "image": null,
-    "biography": null,
-    "listedStamps": [
-      {
-        "id": "clll7fyxp002sem82uejwfey5",
-        "userId": "clll7fyse0000em82dlc6m56j",
-        "game": "1800",
-        "title": "Stamp-Agricultural Products-Indigo Dye-0",
-        "unsafeDescription": "Stamp-Agricultural Products-Indigo Dye-0",
-        "markdownDescription": "<p>Stamp-Agricultural Products-Indigo Dye-0</p>\n",
-        "category": "production",
-        "region": "old world",
-        "imageUrl": "/stamp-highlight.jpg",
-        "stampFileUrl": "/api/get-stamp",
-        "goodCategory": "agricultural products",
-        "good": "indigo dye",
-        "population": null,
-        "capital": null,
-        "createdAt": "2023-08-21T18:22:47.189Z",
-        "updatedAt": "2023-08-21T18:22:47.189Z",
-        "modded": false,
-        "downloads": 0,
-        "_count": {
-          "likedBy": 1
-        }
-      }
-    ]
-  }
+	"data": {
+		"id": "clll7fyse0000em82dlc6m56j",
+		"username": "user1",
+		"usernameURL": "user1",
+		"image": null,
+		"biography": null,
+		"listedStamps": [
+			{
+				"id": "clll7fyxp002sem82uejwfey5",
+				"userId": "clll7fyse0000em82dlc6m56j",
+				"game": "1800",
+				"title": "Stamp-Agricultural Products-Indigo Dye-0",
+				"unsafeDescription": "Stamp-Agricultural Products-Indigo Dye-0",
+				"markdownDescription": "<p>Stamp-Agricultural Products-Indigo Dye-0</p>\n",
+				"category": "production",
+				"region": "old world",
+				"imageUrl": "/stamp-highlight.jpg",
+				"stampFileUrl": "/api/get-stamp",
+				"goodCategory": "agricultural products",
+				"good": "indigo dye",
+				"population": null,
+				"capital": null,
+				"createdAt": "2023-08-21T18:22:47.189Z",
+				"updatedAt": "2023-08-21T18:22:47.189Z",
+				"modded": false,
+				"downloads": 0,
+				"_count": {
+					"likedBy": 1
+				}
+			}
+		]
+	}
 }

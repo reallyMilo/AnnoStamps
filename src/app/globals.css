@@ -5,16 +5,16 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
-  --font-*: initial;
-  --font-sans: Poppins, system-ui;
+	--font-*: initial;
+	--font-sans: Poppins, system-ui;
 
-  --background-image-main-background: url('/anno2.jpg');
+	--background-image-main-background: url('/anno2.jpg');
 
-  --color-default: #f0f3f4;
-  --color-midnight: #222939;
-  --color-primary: #6dd3c0;
-  --color-secondary: #f6ae2d;
-  --color-accent: #b11e47;
+	--color-default: #f0f3f4;
+	--color-midnight: #222939;
+	--color-primary: #6dd3c0;
+	--color-secondary: #f6ae2d;
+	--color-accent: #b11e47;
 }
 
 /*
@@ -26,22 +26,22 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentcolor);
+	}
 }
 
 .stamp-markdown-html-wrapper {
-  @apply text-midnight dark:text-white;
+	@apply text-midnight dark:text-white;
 }
 .stamp-markdown-html-wrapper a {
-  @apply underline;
+	@apply underline;
 }
 
 .swiper-wrapper {
-  z-index: auto !important;
+	z-index: auto !important;
 }
