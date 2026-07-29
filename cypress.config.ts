@@ -210,7 +210,7 @@ export default defineConfig({
 				},
 				signedCookie() {
 					const signature = crypto
-						.createHmac('sha256', process.env.BETTER_AUTH_SECRET!)
+						.createHmac('sha256', process.env.BETTER_AUTH_SECRET ?? '')
 						.update(SESSION_TOKEN)
 						.digest('base64');
 					const signedValue = `${SESSION_TOKEN}.${signature}`;

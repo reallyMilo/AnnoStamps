@@ -131,8 +131,7 @@ describe('Stamp creation', () => {
 			cy.database(
 				`SELECT * FROM "Stamp" WHERE title = 'cypress test title';`,
 			).then((stamps) => {
-				const stamp = stamps[0];
-				cy.wrap(stamp)
+				cy.wrap(stamps[0])
 					.should('be.an', 'object')
 					.and('have.keys', [
 						'id',

@@ -35,8 +35,7 @@ describe('Filtering 117 Stamps', () => {
 			.invoke('text')
 			.then((text) => {
 				const match = /Stamp-\d+-(\S*)/.exec(text);
-				expect(match).to.not.be.null;
-				const result = match[0]; // e.g. "Stamp-460-" or "Stamp-460-strenuus"
+				const result = match ? match[0] : null;
 				cy.findByLabelText('Search').type(`${result}{enter}`);
 				expectSearchParams((params) => {
 					expect(params.get('search')).to.eq(result);

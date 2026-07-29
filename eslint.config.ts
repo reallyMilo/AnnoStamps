@@ -123,6 +123,7 @@ export default defineConfig(
 	{
 		extends: [jsonc.configs['flat/recommended-with-json']],
 		files: ['**/*.json'],
+		ignores: ['.vscode/*'],
 	},
 	{
 		extends: [packageJson.configs.recommended, packageJson.configs.stylistic],

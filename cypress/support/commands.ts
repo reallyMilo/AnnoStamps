@@ -18,11 +18,13 @@ Cypress.Commands.add('database', (rawQuery, logTask = false) => {
 		name: 'database',
 	});
 
-	return cy.task(`db:query`, rawQuery, { log: logTask }).then((data) => {
-		log.snapshot();
-		log.end();
-		return data;
-	});
+	return cy
+		.task<Record<string, unknown>[]>(`db:query`, rawQuery, { log: logTask })
+		.then((data) => {
+			log.snapshot();
+			log.end();
+			return data;
+		});
 });
 //FIXME: NEXT_REDIRECT issue with cypress
 Cypress.on('uncaught:exception', (err) => {

@@ -63,11 +63,13 @@ describe('Delete stamp', () => {
 
 		cy.getBySel('delete-stamp')
 			.first()
-			.trigger('mouseover')
-			.then(($link) => {
-				expect($link.css('cursor')).to.equal('pointer');
-			})
-			.click();
+			.then((button) => {
+				button.trigger('mouseover').then(($link) => {
+					expect($link.css('cursor')).to.equal('pointer');
+				});
+			});
+
+		cy.getBySel('delete-stamp').click();
 
 		cy.findByRole('button', { name: 'Yes, delete' })
 			.should('be.visible')

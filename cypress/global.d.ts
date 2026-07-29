@@ -2,7 +2,10 @@
 
 declare namespace Cypress {
 	interface Chainable {
-		database(rawQuery: string, log?: boolean): Chainable<any>;
+		database(
+			rawQuery: string,
+			log?: boolean,
+		): Chainable<Record<string, unknown>[]>;
 		getBySel(
 			dataTestAttribute: string,
 			args?: any,
