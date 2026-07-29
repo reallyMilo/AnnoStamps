@@ -2,161 +2,113 @@ import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import eslint from '@eslint/js';
 import eslintNextPlugin from '@next/eslint-plugin-next';
 import vitest from '@vitest/eslint-plugin';
-import nextVitals from 'eslint-config-next/core-web-vitals';
 import pluginCypress from 'eslint-plugin-cypress';
+import jsonc from 'eslint-plugin-jsonc';
 import n from 'eslint-plugin-n';
 import packageJson from 'eslint-plugin-package-json';
 import perfectionist from 'eslint-plugin-perfectionist';
+import reactCompiler from 'eslint-plugin-react-compiler';
+import reactHooks from 'eslint-plugin-react-hooks';
 import testingLibrary from 'eslint-plugin-testing-library';
 import yml from 'eslint-plugin-yml';
-import { defineConfig } from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
-	{
-		ignores: [
-			'.next/**',
-			'out/**',
-			'build/**',
-			'**/*.d.ts',
-			'node_modules',
-			'pnpm-lock.yaml',
-			'terraform',
-			'volume',
-			'docker-compose.yaml',
-			'.env.*',
-			'prisma/migrations/*',
-			'generated/*',
-		],
-	},
+	globalIgnores([
+		'.next/**',
+		'out/**',
+		'build/**',
+		'**/*.d.ts',
+		'node_modules',
+		'pnpm-lock.yaml',
+		'terraform',
+		'volume',
+		'docker-compose.yaml',
+		'.env.*',
+		'prisma/migrations/*',
+		'generated/*',
+	]),
 	{ linterOptions: { reportUnusedDisableDirectives: 'error' } },
-	{
-		extends: [eslint.configs.recommended],
-		languageOptions: {
-			globals: {
-				React: true,
-			},
-		},
-		rules: {
-			'no-console': ['error', { allow: ['warn', 'time', 'error', 'timeEnd'] }],
-			'no-unused-vars': 'off',
-		},
-	},
-	nextVitals,
-	comments.recommended,
-	n.configs['flat/recommended'],
-	{
-		extends: [packageJson.configs.recommended],
-		rules: {
-			'package-json/valid-devDependencies': 'off',
-		},
-	},
-	perfectionist.configs['recommended-natural'],
-	{
-		rules: {
-			'perfectionist/sort-imports': [
-				'error',
-				{
-					internalPattern: ['^#/.+', '^@/.+'],
-				},
-			],
-		},
-	},
-	testingLibrary.configs['flat/react'],
-	{
-		files: ['**/*.cy.{js,ts,jsx,tsx}'],
-		rules: {
-			'testing-library/await-async-queries': 'off',
-			'testing-library/prefer-screen-queries': 'off',
-		},
-	},
-	{
-		files: ['**/*.{js,jsx,ts,tsx}'],
-		plugins: {
-			next: eslintNextPlugin,
-		},
-		rules: {
-			'@next/next/no-img-element': 'off',
-			'react/function-component-definition': [
-				1,
-				{
-					namedComponents: 'arrow-function',
-					unnamedComponents: 'arrow-function',
-				},
-			],
-		},
-	},
-	{
-		plugins: {
-			'@typescript-eslint': tseslint.plugin,
-			extends: [
-				tseslint.configs.strictTypeChecked,
-				tseslint.configs.stylisticTypeChecked,
-			],
-			languageOptions: {
-				parser: tseslint.parser,
-				parserOptions: {
-					projectService: {
-						allowDefaultProject: ['*.config.*s', 'bin/index.js'],
-					},
-				},
-			},
 
-			rules: {
-				'@typescript-eslint/no-unused-vars': 'error',
-				'@typescript-eslint/prefer-nullish-coalescing': [
-					'error',
-					{ ignorePrimitives: true },
-				],
-				'@typescript-eslint/restrict-template-expressions': [
-					'error',
-					{ allowBoolean: true, allowNullish: true, allowNumber: true },
-				],
-				'logical-assignment-operators': [
-					'error',
-					'always',
-					{ enforceForIfStatements: true },
-				],
-				'n/no-unsupported-features/node-builtins': [
-					'error',
-					{ allowExperimental: true, ignores: ['import.meta.dirname'] },
-				],
-				'no-useless-rename': 'error',
-				'object-shorthand': 'error',
-				'operator-assignment': 'error',
-			},
-			settings: {
-				perfectionist: { partitionByComment: true, type: 'natural' },
-				vitest: { typecheck: true },
+	{
+		extends: [
+			comments.recommended,
+			eslint.configs.recommended,
+			n.configs['flat/recommended'],
+			perfectionist.configs['recommended-natural'],
+			tseslint.configs.strictTypeChecked,
+			tseslint.configs.stylisticTypeChecked,
+			testingLibrary.configs['flat/react'],
+			reactHooks.configs.flat.recommended,
+			reactCompiler.configs.recommended,
+		],
+		files: ['**/*.{js,ts,tsx}'],
+		languageOptions: {
+			parserOptions: {
+				projectService: {
+					allowDefaultProject: ['vitest.config.mts', 'cypress.config.ts'],
+				},
 			},
 		},
-	},
-	{
-		extends: [tseslint.configs.disableTypeChecked],
-		files: ['**/*.t*'],
-		rules: { 'n/no-missing-import': 'off' },
+		rules: {
+			// These on-by-default rules work well for this repo if configured
+			'@typescript-eslint/prefer-nullish-coalescing': [
+				'error',
+				{ ignorePrimitives: true },
+			],
+			'@typescript-eslint/restrict-template-expressions': [
+				'error',
+				{ allowBoolean: true, allowNullish: true, allowNumber: true },
+			],
+			'n/no-unsupported-features/node-builtins': [
+				'error',
+				{ allowExperimental: true, ignores: ['import.meta.dirname'] },
+			],
+
+			// Stylistic concerns that don't interfere with Prettier
+			'logical-assignment-operators': [
+				'error',
+				'always',
+				{ enforceForIfStatements: true },
+			],
+			'no-useless-rename': 'error',
+			'object-shorthand': 'error',
+			'operator-assignment': 'error',
+
+			// https://github.com/eslint-community/eslint-plugin-n/issues/472
+			'n/no-unpublished-bin': 'off',
+
+			'no-console': ['error', { allow: ['warn', 'time', 'error', 'timeEnd'] }],
+		},
+		settings: {
+			n: {
+				tryExtensions: [
+					'.js',
+					'.jsx',
+					'.ts',
+					'.tsx',
+					'.mjs',
+					'.mts',
+					'.cjs',
+					'.cts',
+					'.json',
+					'.node',
+				],
+			},
+			perfectionist: { partitionByComment: true, type: 'natural' },
+		},
 	},
 	{
 		extends: [vitest.configs.recommended],
 		files: ['**/*.test.*'],
-		ignores: ['cypress/**'],
-		languageOptions: {
-			globals: {
-				...vitest.environments.env.globals,
-			},
-		},
-		rules: {
-			'@typescript-eslint/no-unsafe-assignment': 'off',
-		},
+		rules: { '@typescript-eslint/no-unsafe-assignment': 'off' },
+		settings: { vitest: { typecheck: true } },
 	},
 	{
 		extends: [pluginCypress.configs.recommended, pluginCypress.configs.globals],
-		files: ['cypress/**'],
-		rules: {
-			'cypress/no-unnecessary-waiting': 'off',
-		},
+		files: ['**/*.cy.*'],
 	},
-
 	{
 		extends: [yml.configs['flat/standard'], yml.configs['flat/prettier']],
 		files: ['**/*.{yml,yaml}'],
@@ -172,5 +124,13 @@ export default defineConfig(
 				{ order: { type: 'asc' }, pathPattern: '^.*$' },
 			],
 		},
+	},
+	{
+		extends: [jsonc.configs['flat/recommended-with-json']],
+		files: ['**/*.json'],
+	},
+	{
+		extends: [packageJson.configs.recommended, packageJson.configs.stylistic],
+		files: ['package.json'],
 	},
 );
