@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
 import type { Comment } from '@/lib/prisma/models';
 
@@ -12,11 +12,11 @@ type CommentViewProps = Partial<Pick<Comment, 'parentId'>> & {
 };
 
 export const CommentView = ({ parentId, userIdToNotify }: CommentViewProps) => {
-	const pathname = usePathname();
+	const { id: stampId } = useParams<{ id: Comment['stampId'] }>();
 
 	const addCommentAction = addCommentToStamp.bind(
 		null,
-		pathname.split('/').at(-1)!,
+		stampId,
 		parentId ? parentId : null,
 		userIdToNotify,
 	);

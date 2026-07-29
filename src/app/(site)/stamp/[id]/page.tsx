@@ -77,33 +77,36 @@ const Comments = async ({ id: stampId }: Pick<StampWithRelations, 'id'>) => {
 	const stampPromise = getStamp(stampId);
 	const commentsPromise = getCommentThread(stampId);
 	const [stamp, comments] = await Promise.all([stampPromise, commentsPromise]);
-
+	if (!stamp) {
+		return;
+	}
 	return (
 		<>
 			<Heading level={2}>{comments.length} Comments</Heading>
-			<CommentView userIdToNotify={stamp!.user.id} />
+			<CommentView userIdToNotify={stamp.user.id} />
 			<ul className="space-y-3">
 				{comments.map((comment) => {
 					const replyThreadPromise = getReplyThread(comment.id);
-
-					return (
-						<CommentItem
-							key={comment.id}
-							{...comment}
-							replyToUser={{
-								id: comment.user.id,
-								username: comment.user.username!,
-								usernameURL: comment.user.usernameURL!,
-							}}
-						>
-							<div className="ml-12">
-								<ViewReplyButton
-									numReplies={comment._count.replies}
-									replyThreadPromise={replyThreadPromise}
-								/>
-							</div>
-						</CommentItem>
-					);
+					if (comment.user.username && comment.user.usernameURL) {
+						return (
+							<CommentItem
+								key={comment.id}
+								{...comment}
+								replyToUser={{
+									id: comment.user.id,
+									username: comment.user.username,
+									usernameURL: comment.user.usernameURL,
+								}}
+							>
+								<div className="ml-12">
+									<ViewReplyButton
+										numReplies={comment._count.replies}
+										replyThreadPromise={replyThreadPromise}
+									/>
+								</div>
+							</CommentItem>
+						);
+					}
 				})}
 			</ul>
 		</>
