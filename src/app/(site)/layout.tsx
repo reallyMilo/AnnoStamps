@@ -55,15 +55,15 @@ const poppins = Poppins({
 const socials = [
 	{
 		name: 'discord',
-		src: discordWhite,
+		src: discordWhite as StaticImageData,
 		url: 'https://discord.gg/73hfP54qXe',
 	},
 	{
 		name: 'github',
-		src: github,
+		src: github as StaticImageData,
 		url: 'https://github.com/reallyMilo/AnnoStamps',
 	},
-] as { name: string; src: StaticImageData; url: string }[];
+];
 
 const SocialIcons = () => {
 	return (
