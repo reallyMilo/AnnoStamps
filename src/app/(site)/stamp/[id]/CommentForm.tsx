@@ -131,6 +131,7 @@ const UsernameRequiredModal = ({
 			<ModalActions>
 				<Button
 					onClick={() => {
+						/* eslint-disable-next-line react-compiler/react-compiler */
 						ignoreNextFocusRef.current = true;
 						setIsOpen(false);
 					}}

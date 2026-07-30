@@ -20,7 +20,7 @@ const ReplyThread = ({
 	return (
 		<ul className="pt-2" data-testid="reply-list">
 			{replyThreadContent.map((comment) => (
-				//@ts-expect-error JsonValue
+				//@ts-expect-error json value
 				<CommentItem key={comment.id} {...comment} />
 			))}
 		</ul>

@@ -17,7 +17,7 @@ export const CarouselImage = ({
 				<SwiperSlide className="z-auto" key={image.id}>
 					<img
 						alt={`${title} - User uploaded image ${idx + 1}`}
-						className="z-auto max-h-[768px] w-full object-contain object-center"
+						className="z-auto max-h-192 w-full object-contain object-center"
 						height={768}
 						src={image.largeUrl ?? image.originalUrl}
 						width={1024}

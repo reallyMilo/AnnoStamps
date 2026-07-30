@@ -88,7 +88,7 @@ const createStampSchema = stampSchema
 
 const updateStampSchema = stampSchema
 	.omit({ game: true, id: true, userId: true })
-	.extend({ changedAt: z.string().datetime() })
+	.extend({ changedAt: z.iso.datetime() })
 	.partial()
 	.transform(({ modded, ...schema }) => ({
 		modded: modded === 'true',
