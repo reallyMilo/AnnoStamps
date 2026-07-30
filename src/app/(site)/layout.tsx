@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Poppins } from 'next/font/google';
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 
 import '@/app/globals.css';
 import logo from '@/../public/cropped-anno-stamps-logo.png';
@@ -63,7 +63,7 @@ const socials = [
 		src: github,
 		url: 'https://github.com/reallyMilo/AnnoStamps',
 	},
-];
+] as { name: string; src: StaticImageData; url: string }[];
 
 const SocialIcons = () => {
 	return (
