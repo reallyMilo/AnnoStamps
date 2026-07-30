@@ -16,7 +16,7 @@ export const deleteStamp = async (stampId: string) => {
 		return { error: 'Please set username', ok: false, status: 400 };
 	}
 
-	let deletedRecord = null;
+	let deletedRecord;
 	try {
 		deletedRecord = await prisma.$transaction(async (tx) => {
 			const userStamp = await tx.user.findUnique({

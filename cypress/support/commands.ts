@@ -1,7 +1,7 @@
 import '@testing-library/cypress/add-commands';
 
-Cypress.Commands.add('getBySel', (selector, ...args) => {
-	return cy.get(`[data-testid=${selector}]`, ...args);
+Cypress.Commands.add('getBySel', (selector, options) => {
+	return cy.get(`[data-testid=${selector}]`, options);
 });
 
 Cypress.Commands.add('setSessionCookie', () => {

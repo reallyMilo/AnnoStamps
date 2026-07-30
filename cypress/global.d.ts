@@ -8,7 +8,7 @@ declare namespace Cypress {
 		): Chainable<Record<string, unknown>[]>;
 		getBySel(
 			dataTestAttribute: string,
-			args?: any,
+			options?: Partial<Loggable & Timeoutable & Withinable & Shadow>,
 		): Chainable<JQuery<HTMLElement>>;
 		setSessionCookie();
 	}
