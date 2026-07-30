@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useState } from 'react';
 
-import type { StampWithRelations } from '@/lib/prisma/models'
+import type { StampWithRelations } from '@/lib/prisma/models';
 
 import {
   Button,
@@ -11,24 +11,30 @@ import {
   ModalActions,
   ModalDescription,
   ModalTitle,
-} from '@/components/ui'
+} from '@/components/ui';
 
 export const StampDownloadDisclaimer = ({
   changedAt,
   children,
 }: React.PropsWithChildren<{
-  changedAt: StampWithRelations['changedAt']
+  changedAt: StampWithRelations['changedAt'];
 }>) => {
-  const oneWeekAgo = new Date()
-  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-  const changedAtDate = new Date(changedAt)
-  const [isOpen, setIsOpen] = useState(false)
+  const changedAtDate = new Date(changedAt);
+  const [isOpen, setIsOpen] = useState(false);
 
   if (changedAtDate > oneWeekAgo) {
     return (
       <>
-        <Button color="accent" onClick={() => setIsOpen(true)} type="button">
+        <Button
+          color="accent"
+          onClick={() => {
+            setIsOpen(true);
+          }}
+          type="button"
+        >
           Download
         </Button>
         <Modal className="z-50" onClose={setIsOpen} open={isOpen}>
@@ -48,15 +54,20 @@ export const StampDownloadDisclaimer = ({
             .
           </ModalDescription>
           <ModalActions>
-            <Button onClick={() => setIsOpen(false)} plain>
+            <Button
+              onClick={() => {
+                setIsOpen(false);
+              }}
+              plain
+            >
               Cancel
             </Button>{' '}
             {children}
           </ModalActions>
         </Modal>
       </>
-    )
+    );
   }
 
-  return <>{children}</>
-}
+  return <>{children}</>;
+};

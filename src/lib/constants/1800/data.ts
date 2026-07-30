@@ -5,12 +5,12 @@ export const REGIONS_1800 = {
   NewWorld: 'new world',
   Arctic: 'arctic',
   Enbesa: 'enbesa',
-} as const
+} as const;
 
 export const CAPITALS_1800 = {
   Crown: 'crown falls',
   Manola: 'manola',
-} as const
+} as const;
 
 // all chatgpt generated could be errors
 
@@ -22,7 +22,7 @@ const FARMERS = [
   'Schnapps',
   'Wool',
   'Work Clothes',
-]
+];
 
 const WORKERS = [
   'Clay',
@@ -43,7 +43,7 @@ const WORKERS = [
   'Hops',
   'Malt',
   'Beer',
-]
+];
 
 const ARTISANS = [
   'Sand',
@@ -56,7 +56,7 @@ const ARTISANS = [
   'Sewing Machines',
   'Hunting Cabin',
   'Fur Coats',
-]
+];
 
 const ENGINEERS = [
   'Cement',
@@ -74,9 +74,9 @@ const ENGINEERS = [
   'Pocket Watches',
   'Filaments',
   'Light Bulbs',
-]
+];
 
-const TOURISTS = ['Jam', 'Shampoo', 'Lemonade', 'Souvenirs']
+const TOURISTS = ['Jam', 'Shampoo', 'Lemonade', 'Souvenirs'];
 
 const INVESTORS = [
   'Wine',
@@ -86,7 +86,7 @@ const INVESTORS = [
   'Gramophones',
   'Chassis',
   'Steam Carriages',
-]
+];
 const SCHOLARS = [
   'Leather Boots',
   'Tailored Suits',
@@ -94,7 +94,7 @@ const SCHOLARS = [
   'Advanced Coffee',
   'Advanced Rum',
   'Advanced Cotton Fabric',
-]
+];
 const SKYSCRAPERS = [
   'Elevators',
   'Chewing Gum',
@@ -107,7 +107,7 @@ const SKYSCRAPERS = [
   'Billiard Tables',
   'Violins',
   'Toys',
-]
+];
 
 export const OLD_WORLD_GOODS = [
   ...FARMERS,
@@ -118,7 +118,7 @@ export const OLD_WORLD_GOODS = [
   ...TOURISTS,
   ...SCHOLARS,
   ...SKYSCRAPERS,
-] as const
+] as const;
 
 const JORNALEROS = [
   'Plantains',
@@ -132,7 +132,7 @@ const JORNALEROS = [
   'Cotton Fabric',
   'Caoutchouc',
   'Pearls',
-]
+];
 
 const OBREROS = [
   'Corn',
@@ -151,7 +151,7 @@ const OBREROS = [
   'Aluminium Profiles',
   'Dung',
   'Helium',
-]
+];
 
 const ARTISTAS = [
   'Nandu Leather',
@@ -186,8 +186,8 @@ const ARTISTAS = [
   'City Hospital',
   'Scooter',
   'Police Equipment',
-]
-export const NEW_WORLD_GOODS = [...JORNALEROS, ...OBREROS, ...ARTISTAS]
+];
+export const NEW_WORLD_GOODS = [...JORNALEROS, ...OBREROS, ...ARTISTAS];
 
 const EXPLORERS = [
   'Whale Oil',
@@ -197,7 +197,7 @@ const EXPLORERS = [
   'Goose Feathers',
   'Sleeping Bags',
   'Oil Lamps',
-]
+];
 
 const TECHNICIANS = [
   'Bear Fur',
@@ -206,9 +206,9 @@ const TECHNICIANS = [
   'Huskies',
   'Husky Sleds',
   'Arctic Gas',
-]
+];
 
-export const ARCTIC_GOODS = [...EXPLORERS, ...TECHNICIANS]
+export const ARCTIC_GOODS = [...EXPLORERS, ...TECHNICIANS];
 
 const SHEPHERDS = [
   'Wanza Timber',
@@ -219,7 +219,7 @@ const SHEPHERDS = [
   'Sanga Cow',
   'Linseed',
   'Linen',
-]
+];
 
 const ELDERS = [
   'Teff',
@@ -230,6 +230,6 @@ const ELDERS = [
   'Clay Pipes',
   'Illuminated Script',
   'Lanterns',
-]
+];
 
-export const ENBESA_GOODS = [...SHEPHERDS, ...ELDERS]
+export const ENBESA_GOODS = [...SHEPHERDS, ...ELDERS];

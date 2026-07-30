@@ -1,13 +1,13 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 type HeadingProps = React.ComponentPropsWithoutRef<
   'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 > & {
-  level?: 1 | 2 | 3 | 4 | 5 | 6
-}
+  level?: 1 | 2 | 3 | 4 | 5 | 6;
+};
 
 export const Heading = ({ className, level = 1, ...props }: HeadingProps) => {
-  const Element: `h${typeof level}` = `h${level}`
+  const Element: `h${typeof level}` = `h${level}`;
 
   return (
     <Element
@@ -17,15 +17,15 @@ export const Heading = ({ className, level = 1, ...props }: HeadingProps) => {
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const Subheading = ({
   className,
   level = 2,
   ...props
 }: HeadingProps) => {
-  const Element: `h${typeof level}` = `h${level}`
+  const Element: `h${typeof level}` = `h${level}`;
 
   return (
     <Element
@@ -35,5 +35,5 @@ export const Subheading = ({
         className,
       )}
     />
-  )
-}
+  );
+};

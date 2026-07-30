@@ -5,22 +5,22 @@ describe('User onboarding', () => {
         followRedirect: false,
         url: '/auth/new-user',
       }).then((response) => {
-        expect(response.status).to.eq(307)
-        expect(response.redirectedToUrl).to.include('/auth/signin')
-      })
-    })
-  })
+        expect(response.status).to.eq(307);
+        expect(response.redirectedToUrl).to.include('/auth/signin');
+      });
+    });
+  });
   describe('authenticated user', () => {
     beforeEach(() => {
-      cy.task('db:testUser')
-      cy.setSessionCookie()
-    })
+      cy.task('db:testUser');
+      cy.setSessionCookie();
+    });
     it('user redirected to his settings page', () => {
-      cy.visit('/auth/new-user')
-      cy.url().should('include', 'testSeedUserId/settings')
-    })
+      cy.visit('/auth/new-user');
+      cy.url().should('include', 'testSeedUserId/settings');
+    });
     afterEach(() => {
-      cy.task('db:removeTestUser')
-    })
-  })
-})
+      cy.task('db:removeTestUser');
+    });
+  });
+});

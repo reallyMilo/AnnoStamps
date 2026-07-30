@@ -1,10 +1,10 @@
-import type { Metadata } from 'next'
+import type { Metadata } from 'next';
 
-import { Container, Heading, Strong, Subheading, Text } from '@/components/ui'
+import { Container, Heading, Strong, Subheading, Text } from '@/components/ui';
 
 export const metadata: Metadata = {
   title: 'Privacy | AnnoStamps',
-}
+};
 const Privacy = () => {
   return (
     <Container className="prose space-y-2">
@@ -32,7 +32,7 @@ const Privacy = () => {
           We collect Device Information using the following technologies:
         </Strong>
       </Text>
-      <ul className="list-inside list-disc text-midnight dark:text-white">
+      <ul className="text-midnight list-inside list-disc dark:text-white">
         <li>
           “Cookies” are data files that are placed on your device or computer
           and often include an anonymous unique identifier. For more information
@@ -95,7 +95,7 @@ const Privacy = () => {
         http://www.networkadvertising.org/understanding-online-advertising/how-does-it-work.
       </Text>
       <Text>You can opt out of targeted advertising by:</Text>
-      <ul className="list-inside list-disc text-midnight dark:text-white">
+      <ul className="text-midnight list-inside list-disc dark:text-white">
         <li>FACEBOOK – https://www.facebook.com/settings/?tab=ads</li>
         <li>GOOGLE – https://www.google.com/settings/ads/anonymous</li>
         <li>
@@ -143,7 +143,7 @@ const Privacy = () => {
         annostampsite@gmail.com.&nbsp;
       </Text>
     </Container>
-  )
-}
+  );
+};
 
-export default Privacy
+export default Privacy;

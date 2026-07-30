@@ -1,7 +1,7 @@
-import { unstable_cache } from 'next/cache'
+import { unstable_cache } from 'next/cache';
 
-import prisma from '@/lib/prisma/singleton'
-import 'server-only'
+import prisma from '@/lib/prisma/singleton';
+import 'server-only';
 
 export const getUser = unstable_cache(
   async (user: string) =>
@@ -23,7 +23,7 @@ export const getUser = unstable_cache(
     revalidate: 3000,
     tags: ['getUser'],
   },
-)
+);
 
 export const userMetadata = (
   {
@@ -33,14 +33,14 @@ export const userMetadata = (
   }: NonNullable<Awaited<ReturnType<typeof getUser>>>,
   game = '117',
 ) => {
-  const title = `${username} ${game} | AnnoStamps`
-  const description = biography ?? `${username} AnnoStamps page`
+  const title = `${username} ${game} | AnnoStamps`;
+  const description = biography ?? `${username} AnnoStamps page`;
 
   if (listedStamps.length === 0) {
     return {
       description,
       title,
-    }
+    };
   }
   return {
     description,
@@ -51,5 +51,5 @@ export const userMetadata = (
       ],
     },
     title,
-  }
-}
+  };
+};

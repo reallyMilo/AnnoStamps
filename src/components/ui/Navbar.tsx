@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import * as Headless from '@headlessui/react'
-import React from 'react'
+import * as Headless from '@headlessui/react';
+import React from 'react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
-import { TouchTarget } from './Button'
-import { Link } from './Link'
+import { TouchTarget } from './Button';
+import { Link } from './Link';
 
 export const Navbar = ({
   className,
@@ -17,8 +17,8 @@ export const Navbar = ({
       {...props}
       className={cn('flex flex-1 items-center gap-4 py-2.5', className)}
     />
-  )
-}
+  );
+};
 
 export const NavbarDivider = ({
   className,
@@ -30,15 +30,17 @@ export const NavbarDivider = ({
       {...props}
       className={cn('bg-midnight/10 h-6 w-px dark:bg-white/10', className)}
     />
-  )
-}
+  );
+};
 
 export const NavbarSection = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'div'>) => {
-  return <div {...props} className={cn('flex items-center gap-3', className)} />
-}
+  return (
+    <div {...props} className={cn('flex items-center gap-3', className)} />
+  );
+};
 
 export const NavbarSpacer = ({
   className,
@@ -50,8 +52,8 @@ export const NavbarSpacer = ({
       {...props}
       className={cn('-ml-4 flex-1', className)}
     />
-  )
-}
+  );
+};
 
 export const NavbarItem = React.forwardRef(
   (
@@ -65,10 +67,10 @@ export const NavbarItem = React.forwardRef(
       | Omit<Headless.ButtonProps, 'className'>
       | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
     ) & {
-      children: React.ReactNode
-      className?: string
-      current?: boolean
-      htmlLink?: boolean
+      children: React.ReactNode;
+      className?: string;
+      current?: boolean;
+      htmlLink?: boolean;
     },
     ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>,
   ) => {
@@ -89,7 +91,7 @@ export const NavbarItem = React.forwardRef(
       'dark:text-white dark:*:data-[slot=icon]:fill-zinc-400',
       'dark:data-hover:bg-white/5 dark:data-hover:*:data-[slot=icon]:fill-white',
       'dark:data-active:bg-white/5 dark:data-active:*:data-[slot=icon]:fill-white',
-    )
+    );
 
     return (
       <span className={cn('relative', className)}>
@@ -114,14 +116,14 @@ export const NavbarItem = React.forwardRef(
           </Headless.Button>
         )}
       </span>
-    )
+    );
   },
-)
-NavbarItem.displayName = 'NavbarItem'
+);
+NavbarItem.displayName = 'NavbarItem';
 
 export const NavbarLabel = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'span'>) => {
-  return <span {...props} className={cn('truncate', className)} />
-}
+  return <span {...props} className={cn('truncate', className)} />;
+};

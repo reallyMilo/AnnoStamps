@@ -1,60 +1,60 @@
 describe('Comment on stamp', () => {
   it('unauthorized user click on comment form redirects to sign in with callback to stamp', () => {
-    cy.intercept('/api/auth/get-session').as('clientSession')
-    cy.visit('/stamp/filterSeedUser117StampId_1')
-    cy.wait('@clientSession')
-    cy.findByLabelText('Comment').click()
-    cy.url().should('include', `callbackUrl=/stamp/filterSeedUser117StampId_1`)
-  })
+    cy.intercept('/api/auth/get-session').as('clientSession');
+    cy.visit('/stamp/filterSeedUser117StampId_1');
+    cy.wait('@clientSession');
+    cy.findByLabelText('Comment').click();
+    cy.url().should('include', `callbackUrl=/stamp/filterSeedUser117StampId_1`);
+  });
   describe('authorized user without username set', () => {
     beforeEach(() => {
-      cy.task('db:testUser')
-      cy.setSessionCookie()
-      cy.visit('/stamp/filterSeedUser117StampId_1')
-    })
+      cy.task('db:testUser');
+      cy.setSessionCookie();
+      cy.visit('/stamp/filterSeedUser117StampId_1');
+    });
     afterEach(() => {
-      cy.task('db:removeTestUser')
-    })
+      cy.task('db:removeTestUser');
+    });
 
     it('authorized user without username set has username required popup with link redirecting to settings page', () => {
-      cy.intercept('/api/auth/get-session').as('clientSession')
+      cy.intercept('/api/auth/get-session').as('clientSession');
       cy.intercept('/api/user/testSeedUserId/likes', { statusCode: 200 }).as(
         'userLikes',
-      )
-      cy.getBySel('username-require-modal').should('not.exist')
-      cy.wait('@clientSession')
-      cy.findByLabelText('Comment').click()
-      cy.findByText('Set Your Username').should('be.visible')
+      );
+      cy.getBySel('username-require-modal').should('not.exist');
+      cy.wait('@clientSession');
+      cy.findByLabelText('Comment').click();
+      cy.findByText('Set Your Username').should('be.visible');
       cy.findByRole('link', { name: /Set Username/i }).should(
         'have.attr',
         'href',
         '/testSeedUserId/settings',
-      )
-      cy.findByRole('button', { name: /Close/i }).should('be.visible').click()
-      cy.getBySel('username-require-modal').should('not.exist')
-    })
-  })
+      );
+      cy.findByRole('button', { name: /Close/i }).should('be.visible').click();
+      cy.getBySel('username-require-modal').should('not.exist');
+    });
+  });
 
   describe('authorized user with username set', () => {
     beforeEach(() => {
-      cy.task('db:testUser', true)
-      cy.setSessionCookie()
-      cy.intercept('/stamp/testSeed1800StampId').as('addComment')
-      cy.intercept('/api/auth/get-session').as('clientSession')
-      cy.intercept('/api/user/testSeedUserId/likes', { statusCode: 200 })
-      cy.visit('/stamp/testSeed1800StampId')
-      cy.url().should('include', '/stamp/testSeed1800StampId')
-      cy.wait('@clientSession')
-    })
+      cy.task('db:testUser', true);
+      cy.setSessionCookie();
+      cy.intercept('/stamp/testSeed1800StampId').as('addComment');
+      cy.intercept('/api/auth/get-session').as('clientSession');
+      cy.intercept('/api/user/testSeedUserId/likes', { statusCode: 200 });
+      cy.visit('/stamp/testSeed1800StampId');
+      cy.url().should('include', '/stamp/testSeed1800StampId');
+      cy.wait('@clientSession');
+    });
     afterEach(() => {
-      cy.task('db:removeTestUser')
-    })
+      cy.task('db:removeTestUser');
+    });
 
     it('can leave a comment on a stamp', () => {
-      cy.findByLabelText('Comment').should('be.enabled').type('Great stamp!')
-      cy.findByRole('button', { name: 'Comment' }).click()
-      cy.wait('@addComment')
-      cy.findByText('Great stamp!').should('exist')
+      cy.findByLabelText('Comment').should('be.enabled').type('Great stamp!');
+      cy.findByRole('button', { name: 'Comment' }).click();
+      cy.wait('@addComment');
+      cy.findByText('Great stamp!').should('exist');
       cy.database(
         `SELECT * FROM "Comment" WHERE "userId"='testSeedUserId';`,
       ).then((comments) => {
@@ -63,8 +63,8 @@ describe('Comment on stamp', () => {
           parentId: null,
           stampId: 'testSeed1800StampId',
           userId: 'testSeedUserId',
-        })
-      })
+        });
+      });
       cy.database(
         `SELECT * FROM "Notification" WHERE "userId"='testSeedUserId';`,
       ).then((notifications) => {
@@ -79,25 +79,25 @@ describe('Comment on stamp', () => {
             authorOfContent: 'testSeedUser',
             authorOfContentURL: 'testseeduser',
             content: 'Great stamp!',
-          })
-      })
-    })
+          });
+      });
+    });
 
     it('can reply to another comment and then reply to that reply', () => {
-      cy.findAllByRole('button', { name: 'Reply' }).last().click()
+      cy.findAllByRole('button', { name: 'Reply' }).last().click();
 
       cy.findAllByLabelText('Comment')
         .last()
         .should('be.enabled')
-        .type('Thanks for your comment!')
-      cy.getBySel('comment-submit-button').click()
+        .type('Thanks for your comment!');
+      cy.getBySel('comment-submit-button').click();
 
-      cy.wait('@addComment')
-      cy.findByText('Thanks for your comment!').should('not.exist')
-      cy.findByRole('button', { name: '1 Reply' }).click()
+      cy.wait('@addComment');
+      cy.findByText('Thanks for your comment!').should('not.exist');
+      cy.findByRole('button', { name: '1 Reply' }).click();
 
-      cy.findByText('Thanks for your comment!').should('exist')
-      cy.getBySel('reply-list').find('li').should('have.length', 1)
+      cy.findByText('Thanks for your comment!').should('exist');
+      cy.getBySel('reply-list').find('li').should('have.length', 1);
 
       cy.database(
         `SELECT * FROM "Comment" WHERE "userId"='testSeedUserId' AND "parentId"='cypressComment';`,
@@ -105,8 +105,8 @@ describe('Comment on stamp', () => {
         cy.wrap(comments[0]).should('be.an', 'object').and('contain', {
           content: 'Thanks for your comment!',
           stampId: 'testSeed1800StampId',
-        })
-      })
+        });
+      });
       cy.database(
         `SELECT * FROM "Notification" WHERE "userId"='replySeedUserId';`,
       ).then((notifications) => {
@@ -121,19 +121,19 @@ describe('Comment on stamp', () => {
             authorOfContent: 'testSeedUser',
             authorOfContentURL: 'testseeduser',
             content: 'Thanks for your comment!',
-          })
-      })
+          });
+      });
 
-      cy.findAllByRole('button', { name: 'Reply' }).last().click()
+      cy.findAllByRole('button', { name: 'Reply' }).last().click();
 
       cy.findAllByLabelText('Comment')
         .last()
         .should('be.enabled')
-        .type('Nested reply to reply comment')
-      cy.findAllByTestId('comment-submit-button').last().click()
+        .type('Nested reply to reply comment');
+      cy.findAllByTestId('comment-submit-button').last().click();
 
-      cy.findByRole('link', { name: '@testSeedUser' }).should('exist')
-      cy.findByText('Nested reply to reply comment').should('exist')
-    })
-  })
-})
+      cy.findByRole('link', { name: '@testSeedUser' }).should('exist');
+      cy.findByText('Nested reply to reply comment').should('exist');
+    });
+  });
+});

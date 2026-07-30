@@ -1,19 +1,19 @@
-'use client'
+'use client';
 
-import * as Headless from '@headlessui/react'
-import React, { Fragment } from 'react'
+import * as Headless from '@headlessui/react';
+import React, { Fragment } from 'react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
-import { TouchTarget } from './Button'
-import { Link } from './Link'
+import { TouchTarget } from './Button';
+import { Link } from './Link';
 
 export const Sidebar = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'nav'>) => {
-  return <nav {...props} className={cn('flex h-full flex-col', className)} />
-}
+  return <nav {...props} className={cn('flex h-full flex-col', className)} />;
+};
 
 export const SidebarHeader = ({
   className,
@@ -27,8 +27,8 @@ export const SidebarHeader = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const SidebarBody = ({
   className,
@@ -42,8 +42,8 @@ export const SidebarBody = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const SidebarFooter = ({
   className,
@@ -57,8 +57,8 @@ export const SidebarFooter = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const SidebarSection = ({
   className,
@@ -70,8 +70,8 @@ export const SidebarSection = ({
       className={cn('flex flex-col gap-0.5', className)}
       data-slot="section"
     />
-  )
-}
+  );
+};
 
 export const SidebarDivider = ({
   className,
@@ -85,8 +85,8 @@ export const SidebarDivider = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const SidebarSpacer = ({
   className,
@@ -98,8 +98,8 @@ export const SidebarSpacer = ({
       {...props}
       className={cn('mt-8 flex-1', className)}
     />
-  )
-}
+  );
+};
 
 export const SidebarHeading = ({
   className,
@@ -113,8 +113,8 @@ export const SidebarHeading = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const SidebarItem = React.forwardRef(
   (
@@ -149,7 +149,7 @@ export const SidebarItem = React.forwardRef(
       'dark:data-hover:bg-white/5 dark:data-hover:*:data-[slot=icon]:fill-white',
       'dark:data-active:bg-white/5 dark:data-active:*:data-[slot=icon]:fill-white',
       'dark:data-current:*:data-[slot=icon]:fill-white',
-    )
+    );
 
     return (
       <span className={cn('relative', className)}>
@@ -174,14 +174,14 @@ export const SidebarItem = React.forwardRef(
           </Headless.Button>
         )}
       </span>
-    )
+    );
   },
-)
-SidebarItem.displayName = 'SidebarItem'
+);
+SidebarItem.displayName = 'SidebarItem';
 
 export const SidebarLabel = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'span'>) => {
-  return <span {...props} className={cn('truncate', className)} />
-}
+  return <span {...props} className={cn('truncate', className)} />;
+};

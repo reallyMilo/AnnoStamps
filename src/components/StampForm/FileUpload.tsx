@@ -1,5 +1,5 @@
-'use client'
-import type { JSZipObjectWithData } from 'jszip'
+'use client';
+import type { JSZipObjectWithData } from 'jszip';
 
 import {
   buttonStyles,
@@ -10,20 +10,21 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui'
-import { cn } from '@/lib/utils'
+} from '@/components/ui';
+import { cn } from '@/lib/utils';
 
-import { useStampFormContext } from './StampForm'
-import { type Asset, useUpload } from './useUpload'
+import { useStampFormContext } from './StampForm';
+import { type Asset, useUpload } from './useUpload';
 
-const isJSZip = (b: Asset | JSZipObjectWithData): b is JSZipObjectWithData => {
-  return (b as JSZipObjectWithData)._data !== undefined
-}
+const isJSZip = (
+  obj: Asset | JSZipObjectWithData,
+): obj is JSZipObjectWithData => '_data' in obj;
+
 export const FileUpload = () => {
-  const { files, setFiles, status } = useStampFormContext()
+  const { files, setFiles, status } = useStampFormContext();
   const { error, handleChange, handleRemove } = useUpload<
     Asset | JSZipObjectWithData
-  >(files, setFiles)
+  >(files, setFiles);
 
   return (
     <div className="space-y-2">
@@ -82,7 +83,9 @@ export const FileUpload = () => {
                   </TableCell>
                   <TableCell
                     className="text-accent hover:text-accent/75 cursor-pointer"
-                    onClick={() => handleRemove(file)}
+                    onClick={() => {
+                      handleRemove(file);
+                    }}
                   >
                     delete
                   </TableCell>
@@ -102,5 +105,5 @@ export const FileUpload = () => {
         <span className="text-sm text-red-600">Maximum 10 files</span>
       )}
     </div>
-  )
-}
+  );
+};

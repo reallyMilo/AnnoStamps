@@ -4,16 +4,16 @@ import {
   HomeIcon,
   SparklesIcon,
   TagIcon,
-} from '@heroicons/react/24/solid'
+} from '@heroicons/react/24/solid';
 
-import { CATEGORIES } from '@/lib/constants'
+import { CATEGORIES } from '@/lib/constants';
 
-type CategoryInfo = {
-  color: string
-  icon: React.ReactNode
+interface CategoryInfo {
+  color: string;
+  icon: React.ReactNode;
 }
 
-type CategoryValues = (typeof CATEGORIES)[keyof typeof CATEGORIES]
+type CategoryValues = (typeof CATEGORIES)[keyof typeof CATEGORIES];
 
 const categoryMap: Record<CategoryValues, CategoryInfo> = {
   cosmetic: {
@@ -36,20 +36,16 @@ const categoryMap: Record<CategoryValues, CategoryInfo> = {
     color: 'bg-primary text-midnight',
     icon: <CogIcon className="h-5 w-5" />,
   },
-}
+};
 
-export const StampCategoryIcon = ({
-  category = 'general',
-}: {
-  category: string
-}) => {
-  const { color, icon } = categoryMap[category as CategoryValues]
+export const StampCategoryIcon = ({ category }: { category: string }) => {
+  const { color, icon } = categoryMap[category as CategoryValues];
   return (
     <span
-      className={`${color} flex w-fit items-center gap-1 rounded-full py-1 pl-2 pr-3 text-xs capitalize`}
+      className={`${color} flex w-fit items-center gap-1 rounded-full py-1 pr-3 pl-2 text-xs capitalize`}
     >
       {icon}
       {category}
     </span>
-  )
-}
+  );
+};

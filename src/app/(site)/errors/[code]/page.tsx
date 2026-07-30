@@ -1,4 +1,4 @@
-import { Container, Heading, Link, Text } from '@/components/ui'
+import { Container, Heading, Link, Text } from '@/components/ui';
 
 const errorConfigs = {
   '400': {
@@ -36,29 +36,31 @@ const errorConfigs = {
       'The request timed out while reaching the upstream service. Retry in a few seconds.',
     title: 'Gateway Timeout',
   },
-} as const
+} as const;
 
-type ErrorCode = keyof typeof errorConfigs
-
-export const generateStaticParams = async () => {
-  return Object.keys(errorConfigs).map((code) => ({ code }))
-}
+export const generateStaticParams = () => {
+  return Object.keys(errorConfigs).map((code) => ({ code }));
+};
 
 const fallbackConfig = {
   action: 'Back to home',
   description: 'Something went wrong while loading this resource.',
   title: 'Download Error',
-}
+};
+
+const isErrorCode = (code: string): code is keyof typeof errorConfigs => {
+  return Object.hasOwn(errorConfigs, code);
+};
 
 const supportData = {
   contactEmail: 'support@annostamps.com',
   discordInvite: 'https://discord.gg/73hfP54qXe',
-}
+};
 
 const StampErrorPage = async (props: { params: Promise<{ code: string }> }) => {
-  const { code } = await props.params
+  const { code } = await props.params;
 
-  const config = errorConfigs[code as ErrorCode] ?? fallbackConfig
+  const config = isErrorCode(code) ? errorConfigs[code] : fallbackConfig;
 
   return (
     <Container className="flex min-h-[60vh] flex-col items-center justify-center gap-6 py-10">
@@ -80,7 +82,7 @@ const StampErrorPage = async (props: { params: Promise<{ code: string }> }) => {
         </div>
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default StampErrorPage
+export default StampErrorPage;

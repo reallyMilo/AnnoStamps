@@ -1,9 +1,9 @@
-import type sanitize from 'sanitize-html'
+import type sanitize from 'sanitize-html';
 
-import { marked, type RendererObject } from 'marked'
-import sanitizeHtml from 'sanitize-html'
+import { marked, type RendererObject } from 'marked';
+import sanitizeHtml from 'sanitize-html';
 
-import type { StampWithRelations } from '@/lib/prisma/models'
+import type { StampWithRelations } from '@/lib/prisma/models';
 //https://github.com/apostrophecms/sanitize-html?tab=readme-ov-file#default-options
 const sanitizeOptions = {
   allowedAttributes: {
@@ -98,7 +98,7 @@ const sanitizeOptions = {
     'link',
     'meta',
   ],
-} satisfies sanitize.IOptions
+} satisfies sanitize.IOptions;
 
 export const parseAndSanitizedMarkdown = (
   description: StampWithRelations['unsafeDescription'],
@@ -107,18 +107,18 @@ export const parseAndSanitizedMarkdown = (
     link({ href, tokens }) {
       const prependHttps = href.startsWith('https://')
         ? href
-        : href.padStart(href.length + 8, 'https://')
+        : href.padStart(href.length + 8, 'https://');
 
-      const text = this.parser.parseInline(tokens)
+      const text = this.parser.parseInline(tokens);
 
       return `  
             <a target="_blank" href="${prependHttps}">
                     ${text}
                   </a>
-            `
+            `;
     },
-  } satisfies RendererObject
-  marked.use({ renderer })
+  } satisfies RendererObject;
+  marked.use({ renderer });
 
-  return sanitizeHtml(marked.parse(description) as string, sanitizeOptions)
-}
+  return sanitizeHtml(marked.parse(description) as string, sanitizeOptions);
+};

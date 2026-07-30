@@ -1,24 +1,24 @@
-'use client'
+'use client';
 
-import type React from 'react'
+import type React from 'react';
 
-import * as Headless from '@headlessui/react'
+import * as Headless from '@headlessui/react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
-import { Button } from './Button'
-import { Link } from './Link'
+import { Button } from './Button';
+import { Link } from './Link';
 
 export const Dropdown = (props: Headless.MenuProps) => {
-  return <Headless.Menu {...props} />
-}
+  return <Headless.Menu {...props} />;
+};
 
 export const DropdownButton = <T extends React.ElementType = typeof Button>({
   as = Button,
   ...props
 }: Omit<Headless.MenuButtonProps<T>, 'className'> & { className?: string }) => {
-  return <Headless.MenuButton as={as} {...props} />
-}
+  return <Headless.MenuButton as={as} {...props} />;
+};
 
 export const DropdownMenu = ({
   anchor = 'bottom',
@@ -49,8 +49,8 @@ export const DropdownMenu = ({
         )}
       />
     </Headless.Transition>
-  )
-}
+  );
+};
 
 export const DropdownItem = ({
   className,
@@ -78,7 +78,7 @@ export const DropdownItem = ({
     // Avatar
     '*:data-[slot=avatar]:-ml-1 *:data-[slot=avatar]:mr-2.5 *:data-[slot=avatar]:size-6 sm:*:data-[slot=avatar]:mr-2 sm:*:data-[slot=avatar]:size-5',
     className,
-  )
+  );
 
   return 'href' in props ? (
     <Headless.MenuItem as={Link} {...props} className={classes} />
@@ -89,8 +89,8 @@ export const DropdownItem = ({
       {...props}
       className={classes}
     />
-  )
-}
+  );
+};
 
 export const DropdownHeader = ({
   className,
@@ -101,8 +101,8 @@ export const DropdownHeader = ({
       {...props}
       className={cn('col-span-5 px-3.5 pt-2.5 pb-1 sm:px-3', className)}
     />
-  )
-}
+  );
+};
 
 export const DropdownSection = ({
   className,
@@ -117,8 +117,8 @@ export const DropdownSection = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const DropdownHeading = ({
   className,
@@ -132,8 +132,8 @@ export const DropdownHeading = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const DropdownDivider = ({
   className,
@@ -147,8 +147,8 @@ export const DropdownDivider = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const DropdownLabel = ({
   className,
@@ -161,8 +161,8 @@ export const DropdownLabel = ({
       data-slot="label"
       {...props}
     />
-  )
-}
+  );
+};
 
 export const DropdownDescription = ({
   className,
@@ -177,16 +177,16 @@ export const DropdownDescription = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const DropdownShortcut = ({
   className,
   keys,
   ...props
 }: Omit<Headless.DescriptionProps<'kbd'>, 'className'> & {
-  className?: string
-  keys: string | string[]
+  className?: string;
+  keys: string | string[];
 }) => {
   return (
     <Headless.Description
@@ -207,5 +207,5 @@ export const DropdownShortcut = ({
         </kbd>
       ))}
     </Headless.Description>
-  )
-}
+  );
+};

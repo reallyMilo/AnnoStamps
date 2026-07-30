@@ -1,11 +1,11 @@
-import { betterAuth } from 'better-auth'
-import { prismaAdapter } from 'better-auth/adapters/prisma'
-import { nextCookies } from 'better-auth/next-js'
-import { customSession } from 'better-auth/plugins'
-import { headers } from 'next/headers'
-import { cache } from 'react'
+import { betterAuth } from 'better-auth';
+import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { nextCookies } from 'better-auth/next-js';
+import { customSession } from 'better-auth/plugins';
+import { headers } from 'next/headers';
+import { cache } from 'react';
 
-import prisma from '@/lib/prisma/singleton'
+import prisma from '@/lib/prisma/singleton';
 
 export const auth = betterAuth({
   account: {
@@ -44,7 +44,7 @@ export const auth = betterAuth({
           },
         },
         where: { sessionToken: session.token },
-      })
+      });
 
       return {
         ...session,
@@ -55,7 +55,7 @@ export const auth = betterAuth({
           username: dbSession?.user.username ?? null,
           usernameURL: dbSession?.user.usernameURL ?? null,
         },
-      }
+      };
     }),
   ],
   session: {
@@ -66,18 +66,18 @@ export const auth = betterAuth({
   },
   socialProviders: {
     discord: {
-      clientId: process.env.AUTH_DISCORD_ID as string,
-      clientSecret: process.env.AUTH_DISCORD_SECRET as string,
+      clientId: process.env.AUTH_DISCORD_ID ?? '',
+      clientSecret: process.env.AUTH_DISCORD_SECRET,
     },
     google: {
-      clientId: process.env.AUTH_GOOGLE_ID as string,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
+      clientId: process.env.AUTH_GOOGLE_ID ?? '',
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
     },
   },
-})
+});
 
 export const getSession = cache(async () => {
   return await auth.api.getSession({
     headers: await headers(),
-  })
-})
+  });
+});

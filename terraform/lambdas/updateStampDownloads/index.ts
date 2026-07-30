@@ -1,14 +1,14 @@
-import { BetaAnalyticsDataClient } from '@google-analytics/data'
-import { createClient } from '@supabase/supabase-js'
-import { Handler } from 'aws-lambda'
-const analyticsDataClient = new BetaAnalyticsDataClient()
+import { BetaAnalyticsDataClient } from '@google-analytics/data';
+import { createClient } from '@supabase/supabase-js';
+import { Handler } from 'aws-lambda';
+const analyticsDataClient = new BetaAnalyticsDataClient();
 
 export const handler: Handler = async () => {
-  const supabaseURL = process.env.SUPABASE_DB_URL
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
+  const supabaseURL = process.env.SUPABASE_DB_URL;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 
   if (!supabaseURL || !supabaseServiceKey) {
-    throw new Error('Missing supabase env')
+    throw new Error('Missing supabase env');
   }
   const [response] = await analyticsDataClient.runReport({
     dateRanges: [
@@ -32,12 +32,12 @@ export const handler: Handler = async () => {
       },
     ],
     property: `properties/365198329`,
-  })
+  });
 
   if (!response.rows) {
-    throw new Error('Response rows are null')
+    throw new Error('Response rows are null');
   }
-  const supabase = createClient(supabaseURL, supabaseServiceKey)
+  const supabase = createClient(supabaseURL, supabaseServiceKey);
 
   const collection = response.rows.map((row) => {
     if (
@@ -46,21 +46,21 @@ export const handler: Handler = async () => {
       !row.dimensionValues[0].value ||
       !row.metricValues
     ) {
-      console.error('Missing download count or stampId on row', row)
+      console.error('Missing download count or stampId on row', row);
       return {
         increment: 0,
         stampId: '',
-      }
+      };
     }
 
     return {
       increment: Number(row.metricValues[0].value),
       stampId: row.dimensionValues[0].value.split('/')[2],
-    }
-  })
+    };
+  });
 
   const { error } = await supabase.rpc('loopdownloads', {
     jsonb_collection: collection,
-  })
-  console.error(error)
-}
+  });
+  console.error(error);
+};

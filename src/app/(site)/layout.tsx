@@ -1,19 +1,19 @@
-import type { Metadata } from 'next'
+import type { Metadata } from 'next';
 
-import { GoogleAnalytics } from '@next/third-parties/google'
-import { Poppins } from 'next/font/google'
-import Image from 'next/image'
+import { GoogleAnalytics } from '@next/third-parties/google';
+import { Poppins } from 'next/font/google';
+import Image, { type StaticImageData } from 'next/image';
 
-import '@/app/globals.css'
-import logo from '@/../public/cropped-anno-stamps-logo.png'
-import discordWhite from '@/../public/discord-white-icon.svg'
-import github from '@/../public/github-mark.svg'
+import '@/app/globals.css';
+import logo from '@/../public/cropped-anno-stamps-logo.png';
+import discordWhite from '@/../public/discord-white-icon.svg';
+import github from '@/../public/github-mark.svg';
 import {
   AuthSection,
   MobileNavbar,
   NavItems,
   VersionButtons,
-} from '@/components/Navbar'
+} from '@/components/Navbar';
 import {
   Container,
   Link,
@@ -22,7 +22,7 @@ import {
   Navbar as NavbarRoot,
   NavbarSection,
   NavbarSpacer,
-} from '@/components/ui'
+} from '@/components/ui';
 
 export const metadata: Metadata = {
   description: 'A community site for uploading and sharing stamps for Anno',
@@ -44,26 +44,26 @@ export const metadata: Metadata = {
     url: 'https://annostamps.com',
   },
   title: 'AnnoStamps | Stamp Sharing',
-}
+};
 
 const poppins = Poppins({
   display: 'swap',
   subsets: ['latin'],
   weight: ['400', '700'],
-})
+});
 
 const socials = [
   {
     name: 'discord',
-    src: discordWhite,
+    src: discordWhite as StaticImageData,
     url: 'https://discord.gg/73hfP54qXe',
   },
   {
     name: 'github',
-    src: github,
+    src: github as StaticImageData,
     url: 'https://github.com/reallyMilo/AnnoStamps',
   },
-]
+];
 
 const SocialIcons = () => {
   return (
@@ -89,8 +89,8 @@ const SocialIcons = () => {
         </NavbarItem>
       ))}
     </>
-  )
-}
+  );
+};
 
 const Navbar = () => {
   return (
@@ -124,8 +124,8 @@ const Navbar = () => {
         </NavbarRoot>
       </Container>
     </header>
-  )
-}
+  );
+};
 const Footer = () => {
   return (
     <footer>
@@ -158,8 +158,8 @@ const Footer = () => {
         </NavbarRoot>
       </Container>
     </footer>
-  )
-}
+  );
+};
 
 const SiteLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -173,11 +173,11 @@ const SiteLayout = ({ children }: { children: React.ReactNode }) => {
           <Footer />
         </div>
       </body>
-      <GoogleAnalytics
-        gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS as string}
-      />
+      {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+      )}
     </html>
-  )
-}
+  );
+};
 
-export default SiteLayout
+export default SiteLayout;

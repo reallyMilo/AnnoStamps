@@ -1,12 +1,12 @@
-import '@/app/globals.css'
-import { GoogleAnalytics } from '@next/third-parties/google'
-import { Poppins } from 'next/font/google'
+import '@/app/globals.css';
+import { GoogleAnalytics } from '@next/third-parties/google';
+import { Poppins } from 'next/font/google';
 
 const poppins = Poppins({
   display: 'swap',
   subsets: ['latin'],
   weight: ['400', '700'],
-})
+});
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -18,11 +18,11 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
           </main>
         </div>
       </body>
-      <GoogleAnalytics
-        gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS as string}
-      />
+      {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+      )}
     </html>
-  )
-}
+  );
+};
 
-export default AuthLayout
+export default AuthLayout;

@@ -72,14 +72,14 @@
    3. Run docker compose with local stack profile
 
       ```bash
-        docker compose --profile localstack up
+      docker compose --profile localstack up
       ```
 
    4. Install [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) then run the following commands.
 
       ```bash
-        terraform -chdir=./terraform/dev init
-        terraform -chdir=./terraform/dev apply -auto-approve
+      terraform -chdir=./terraform/dev init
+      terraform -chdir=./terraform/dev apply -auto-approve
       ```
 
 ## Contributing

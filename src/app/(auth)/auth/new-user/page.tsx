@@ -1,19 +1,14 @@
-import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation';
 
-import { getSession } from '@/auth'
-import { Container } from '@/components/ui'
+import { getSession } from '@/auth';
 
 const NewUserPage = async () => {
-  const session = await getSession()
+  const session = await getSession();
   if (!session) {
-    redirect(`/auth/signin`)
+    redirect(`/auth/signin`);
   }
 
-  if (session) {
-    redirect(`/${session.userId}/settings`)
-  }
+  redirect(`/${session.userId}/settings`);
+};
 
-  return <Container>redirecting</Container>
-}
-
-export default NewUserPage
+export default NewUserPage;

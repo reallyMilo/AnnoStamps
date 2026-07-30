@@ -1,14 +1,14 @@
-import type { JSZipObject } from 'jszip'
+import type { JSZipObject } from 'jszip';
 
 declare module 'jszip' {
   interface JSZipObjectWithData extends JSZipObject {
     _data: {
-      compressedSize: number
+      compressedSize: number;
       compression: {
-        magic: string
-      }
-      crc32: number
-      uncompressedSize: number
-    }
+        magic: string;
+      };
+      crc32: number;
+      uncompressedSize: number;
+    };
   }
 }

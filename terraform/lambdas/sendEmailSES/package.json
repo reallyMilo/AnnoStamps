@@ -1,6 +1,6 @@
 {
-  "engines": {
-    "node": "20"
+  "scripts": {
+    "build": "bash ./build.sh"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.666.0",
@@ -12,7 +12,7 @@
     "check-node-version": "^4.2.1",
     "typescript": "^5.7.3"
   },
-  "scripts": {
-    "build": "bash ./build.sh"
+  "engines": {
+    "node": "20"
   }
 }

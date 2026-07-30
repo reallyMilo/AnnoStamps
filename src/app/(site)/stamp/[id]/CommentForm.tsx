@@ -1,10 +1,10 @@
-'use client'
-import { usePathname, useRouter } from 'next/navigation'
-import React from 'react'
-import { useFormStatus } from 'react-dom'
-import TextareaAutosize from 'react-textarea-autosize'
+'use client';
+import { usePathname, useRouter } from 'next/navigation';
+import React from 'react';
+import { useFormStatus } from 'react-dom';
+import TextareaAutosize from 'react-textarea-autosize';
 
-import type { Comment } from '@/lib/prisma/models'
+import type { Comment } from '@/lib/prisma/models';
 
 import {
   Button,
@@ -12,51 +12,51 @@ import {
   ModalActions,
   ModalDescription,
   ModalTitle,
-} from '@/components/ui'
-import { useSession } from '@/lib/auth-client'
-import { cn } from '@/lib/utils'
+} from '@/components/ui';
+import { useSession } from '@/lib/auth-client';
+import { cn } from '@/lib/utils';
 
-import { CommentItem } from './CommentItem'
+import { CommentItem } from './CommentItem';
 
-type CommentContextProps = {
-  content: string
-  isFormVisible: boolean
-  isTextareaFocused: boolean
-  setContent: React.Dispatch<React.SetStateAction<string>>
-  setIsFormVisible: React.Dispatch<React.SetStateAction<boolean>>
-  setIsTextareaFocused: React.Dispatch<React.SetStateAction<boolean>>
-  textareaRef: React.RefObject<HTMLTextAreaElement | null>
+interface CommentContextProps {
+  content: string;
+  isFormVisible: boolean;
+  isTextareaFocused: boolean;
+  setContent: React.Dispatch<React.SetStateAction<string>>;
+  setIsFormVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsTextareaFocused: React.Dispatch<React.SetStateAction<boolean>>;
+  textareaRef: React.RefObject<HTMLTextAreaElement | null>;
 }
 
-const CommentContext = React.createContext<CommentContextProps | null>(null)
+const CommentContext = React.createContext<CommentContextProps | null>(null);
 
 const useCommentContext = () => {
-  const context = React.useContext(CommentContext)
+  const context = React.useContext(CommentContext);
   if (!context) {
-    throw new Error('needs to be used within AddComment Provider')
+    throw new Error('needs to be used within AddComment Provider');
   }
-  return context
-}
+  return context;
+};
 
 const ShowFormButton = ({ children }: React.PropsWithChildren) => {
   const { isFormVisible, setIsFormVisible, setIsTextareaFocused, textareaRef } =
-    useCommentContext()
+    useCommentContext();
 
   React.useEffect(() => {
     if (textareaRef.current) {
-      textareaRef.current.focus()
+      textareaRef.current.focus();
     }
-  })
+  });
   return (
     <div className="space-y-2">
       <Button
         className="max-w-fit text-xs sm:text-xs"
         data-testid="comment-reply-button"
         onClick={() => {
-          setIsTextareaFocused(true)
-          setIsFormVisible(true)
+          setIsTextareaFocused(true);
+          setIsFormVisible(true);
           if (textareaRef.current) {
-            textareaRef.current.focus()
+            textareaRef.current.focus();
           }
         }}
         plain
@@ -65,8 +65,8 @@ const ShowFormButton = ({ children }: React.PropsWithChildren) => {
       </Button>
       {isFormVisible && <>{children}</>}
     </div>
-  )
-}
+  );
+};
 const FormActionButtons = ({ children }: React.PropsWithChildren) => {
   const {
     content,
@@ -74,20 +74,20 @@ const FormActionButtons = ({ children }: React.PropsWithChildren) => {
     setContent,
     setIsFormVisible,
     setIsTextareaFocused,
-  } = useCommentContext()
-  const { pending } = useFormStatus()
+  } = useCommentContext();
+  const { pending } = useFormStatus();
 
   if (!isTextareaFocused) {
-    return null
+    return null;
   }
   return (
     <div className="flex justify-end space-x-2">
       <Button
         className="cursor-pointer"
         onClick={() => {
-          setIsFormVisible(false)
-          setIsTextareaFocused(false)
-          setContent('')
+          setIsFormVisible(false);
+          setIsTextareaFocused(false);
+          setContent('');
         }}
         plain
       >
@@ -103,19 +103,19 @@ const FormActionButtons = ({ children }: React.PropsWithChildren) => {
         {children}
       </Button>
     </div>
-  )
-}
+  );
+};
 
 const UsernameRequiredModal = ({
   ignoreNextFocusRef,
-  isOpen = false,
+  isOpen,
   setIsOpen,
   settingsHref,
 }: {
-  ignoreNextFocusRef: React.RefObject<boolean>
-  isOpen: boolean
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  settingsHref: string
+  ignoreNextFocusRef: React.RefObject<boolean>;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  settingsHref: string;
 }) => {
   return (
     <Modal
@@ -131,8 +131,9 @@ const UsernameRequiredModal = ({
       <ModalActions>
         <Button
           onClick={() => {
-            ignoreNextFocusRef.current = true
-            setIsOpen(false)
+            /* eslint-disable-next-line react-compiler/react-compiler */
+            ignoreNextFocusRef.current = true;
+            setIsOpen(false);
           }}
           plain
         >
@@ -141,26 +142,26 @@ const UsernameRequiredModal = ({
         <Button href={settingsHref}>Set Username</Button>
       </ModalActions>
     </Modal>
-  )
-}
+  );
+};
 
 const Form = ({
   action,
   children,
 }: React.PropsWithChildren<{
   action: (formData: FormData) => Promise<{
-    error?: string
-    message?: string
-    ok: boolean
-  }>
+    error?: string;
+    message?: string;
+    ok: boolean;
+  }>;
 }>) => {
   const { content, setContent, setIsTextareaFocused, textareaRef } =
-    useCommentContext()
-  const pathname = usePathname()
-  const router = useRouter()
-  const { data: session, isPending } = useSession()
-  const [isModalOpen, setIsModalOpen] = React.useState(false)
-  const ignoreNextFocusRef = React.useRef(false)
+    useCommentContext();
+  const pathname = usePathname();
+  const router = useRouter();
+  const { data: session, isPending } = useSession();
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const ignoreNextFocusRef = React.useRef(false);
   const [optimisticComments, addOptimisticComment] = React.useOptimistic<
     Omit<Comment, '_count'>[],
     string
@@ -181,23 +182,23 @@ const Form = ({
       userId: 'optimistic',
     },
     ...state,
-  ])
+  ]);
 
   return (
     <>
       <form
         action={async (formData) => {
-          addOptimisticComment(formData.get('comment') as string)
-          const res = await action(formData)
+          addOptimisticComment(formData.get('comment') as string);
+          const res = await action(formData);
           if (!res.ok) {
             //TODO: comment action error handling
 
-            return
+            return;
           }
 
-          setContent('')
+          setContent('');
 
-          setIsTextareaFocused(false)
+          setIsTextareaFocused(false);
         }}
         className="flex flex-col space-y-2"
       >
@@ -225,24 +226,26 @@ const Form = ({
             ])}
             minRows={1}
             name="comment"
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
             onFocus={() => {
               if (isPending) {
-                return
+                return;
               }
               if (!session) {
-                router.push(`/auth/signin?callbackUrl=${pathname}`)
-                return
+                router.push(`/auth/signin?callbackUrl=${pathname}`);
+                return;
               }
               if (!session.user.username) {
                 if (ignoreNextFocusRef.current) {
-                  ignoreNextFocusRef.current = false
-                  return
+                  ignoreNextFocusRef.current = false;
+                  return;
                 }
-                setIsModalOpen(true)
-                return
+                setIsModalOpen(true);
+                return;
               }
-              setIsTextareaFocused(true)
+              setIsTextareaFocused(true);
             }}
             placeholder="Add a comment..."
             ref={textareaRef}
@@ -267,17 +270,17 @@ const Form = ({
         ))}
       </ul>
     </>
-  )
-}
+  );
+};
 
 const Root = ({
   children,
   isVisible = true,
 }: React.PropsWithChildren<{ isVisible?: boolean }>) => {
-  const [isFormVisible, setIsFormVisible] = React.useState(isVisible)
-  const [isTextareaFocused, setIsTextareaFocused] = React.useState(false)
-  const [content, setContent] = React.useState('')
-  const textareaRef = React.useRef<HTMLTextAreaElement>(null)
+  const [isFormVisible, setIsFormVisible] = React.useState(isVisible);
+  const [isTextareaFocused, setIsTextareaFocused] = React.useState(false);
+  const [content, setContent] = React.useState('');
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const context = React.useMemo(
     () => ({
       content,
@@ -297,19 +300,19 @@ const Root = ({
       setContent,
       textareaRef,
     ],
-  )
+  );
   return (
     <CommentContext.Provider value={context}>
       {children}
     </CommentContext.Provider>
-  )
-}
+  );
+};
 
 const CommentForm = {
   Form,
   FormActionButtons,
   Root,
   ShowFormButton,
-}
+};
 
-export { CommentForm, useCommentContext }
+export { CommentForm, useCommentContext };

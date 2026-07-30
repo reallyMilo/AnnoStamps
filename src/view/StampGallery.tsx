@@ -1,18 +1,18 @@
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
-import { Suspense } from 'react'
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { Suspense } from 'react';
 
-import type { PrismaClientSingleton } from '@/lib/prisma/singleton'
+import type { PrismaClientSingleton } from '@/lib/prisma/singleton';
 
-import { Pagination } from '@/components/Pagination'
-import { StampCardSkeleton } from '@/components/StampCard'
-import { StampsFilterLayout } from '@/components/StampsFilterLayout'
-import { Grid, Heading, Subheading, Text } from '@/components/ui'
-import { type QueryParams, STAMPS_PER_PAGE } from '@/lib/constants'
-import { CATEGORIES } from '@/lib/constants'
-import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
-import 'server-only'
+import { Pagination } from '@/components/Pagination';
+import { StampCardSkeleton } from '@/components/StampCard';
+import { StampsFilterLayout } from '@/components/StampsFilterLayout';
+import { Grid, Heading, Subheading, Text } from '@/components/ui';
+import { type QueryParams, STAMPS_PER_PAGE } from '@/lib/constants';
+import { CATEGORIES } from '@/lib/constants';
+import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data';
+import 'server-only';
 
-type StampGalleryProps = {
+interface StampGalleryProps {
   paginatedStamps:
     | (Omit<
         Awaited<
@@ -25,8 +25,8 @@ type StampGalleryProps = {
           ReturnType<PrismaClientSingleton['user']['filterFindManyWithCount']>
         >,
         'stamps' | 'user'
-      > & { stampsLength: number })
-  searchParams: QueryParams
+      > & { stampsLength: number });
+  searchParams: QueryParams;
 }
 
 export const StampGallery = ({
@@ -47,7 +47,7 @@ export const StampGallery = ({
             options: Object.values(CAPITALS_1800),
           },
         ]
-      : []
+      : [];
 
   const checkboxFilterOptions = [
     {
@@ -55,11 +55,11 @@ export const StampGallery = ({
       options: Object.values(CATEGORIES),
     },
     ...additionalFilters,
-  ]
+  ];
 
-  const { count, pageNumber, stampsLength } = paginatedStamps
-  const starting = (pageNumber - 1) * STAMPS_PER_PAGE + 1
-  const ending = Math.min(starting + STAMPS_PER_PAGE - 1, count)
+  const { count, pageNumber, stampsLength } = paginatedStamps;
+  const starting = (pageNumber - 1) * STAMPS_PER_PAGE + 1;
+  const ending = Math.min(starting + STAMPS_PER_PAGE - 1, count);
 
   return (
     <>
@@ -94,5 +94,5 @@ export const StampGallery = ({
         </Suspense>
       </StampsFilterLayout>
     </>
-  )
-}
+  );
+};

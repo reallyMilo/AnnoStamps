@@ -1,15 +1,15 @@
-import { PrismaPg } from '@prisma/adapter-pg'
-import { defineConfig } from 'cypress'
-import crypto from 'node:crypto'
+import { PrismaPg } from '@prisma/adapter-pg';
+import { defineConfig } from 'cypress';
+import crypto from 'node:crypto';
 
-import { PrismaClient } from './generated/prisma/client'
-import 'dotenv/config'
+import { PrismaClient } from './generated/prisma/client';
+import 'dotenv/config';
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({
   adapter,
-})
-const SESSION_TOKEN = '00000000000000000000000000000000'
+});
+const SESSION_TOKEN = '00000000000000000000000000000000';
 export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:3000',
@@ -18,9 +18,9 @@ export default defineConfig({
     setupNodeEvents(on) {
       on('task', {
         async 'db:query'(rawQuery: string) {
-          const data = await prisma.$queryRawUnsafe(`${rawQuery}`)
+          const data = await prisma.$queryRawUnsafe(rawQuery);
 
-          return data
+          return data;
         },
         async 'db:removeTestUser'() {
           return await prisma.$transaction([
@@ -89,7 +89,7 @@ export default defineConfig({
                 ],
               },
             }),
-          ])
+          ]);
         },
         async 'db:testUser'(setUsername = false) {
           const username = {
@@ -97,7 +97,7 @@ export default defineConfig({
             image: '/anno-stamps-logo.png',
             username: 'testSeedUser',
             usernameURL: 'testseeduser',
-          }
+          };
           const testSeedUser = {
             biography: null,
             email: `testSeedUser@example.com`,
@@ -106,7 +106,7 @@ export default defineConfig({
             username: null,
             usernameURL: null,
             ...(setUsername ? username : null),
-          }
+          };
           return await prisma.$transaction([
             prisma.user.createMany({
               data: [
@@ -206,18 +206,18 @@ export default defineConfig({
                 userId: 'testSeedUserId',
               },
             }),
-          ])
+          ]);
         },
         signedCookie() {
           const signature = crypto
-            .createHmac('sha256', process.env.BETTER_AUTH_SECRET!)
+            .createHmac('sha256', process.env.BETTER_AUTH_SECRET ?? '')
             .update(SESSION_TOKEN)
-            .digest('base64')
-          const signedValue = `${SESSION_TOKEN}.${signature}`
-          return signedValue
+            .digest('base64');
+          const signedValue = `${SESSION_TOKEN}.${signature}`;
+          return signedValue;
         },
-      })
+      });
     },
     video: false,
   },
-})
+});

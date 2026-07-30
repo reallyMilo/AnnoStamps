@@ -5,7 +5,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "eslint.rules.customizations": [{ "rule": "*", "severity": "warn" }],
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
   "workbench.editor.customLabels.patterns": {
     "**/**.ts": "${dirname}/${filename}", // route.ts
     "**/**.tsx": "${dirname}/${filename}" // layout.tsx, page.tsx, template.tsx

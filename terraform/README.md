@@ -4,7 +4,8 @@
 
 2. [AWS CLI Install Guide](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
-3. Create secrets.tfvars and populate with correct values. These can be found in the state file for terraform in s3 or going to the resource that will have them.
+3. Create secrets.tfvars and populate with correct values.
+   These can be found in the state file for terraform in s3 or going to the resource that will have them.
 
 4. Run the following commands
 

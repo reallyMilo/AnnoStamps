@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
 import {
   ArrowLeftIcon,
   HomeIcon,
   PlusIcon,
   UserIcon,
-} from '@heroicons/react/24/outline'
-import { usePathname } from 'next/navigation'
+} from '@heroicons/react/24/outline';
+import { usePathname } from 'next/navigation';
 
 import {
   AvatarButton,
@@ -17,24 +17,26 @@ import {
   DropdownItem,
   DropdownLabel,
   DropdownMenu,
-} from '@/components/ui'
-import { signOut, useSession } from '@/lib/auth-client'
+} from '@/components/ui';
+import { signOut, useSession } from '@/lib/auth-client';
 
 export const UserDropdownButton = () => {
-  const { data: session, isPending } = useSession()
-  const pathname = usePathname()
+  const { data: session, isPending } = useSession();
+  const pathname = usePathname();
 
-  if (isPending) return <Button href="/auth/signin">Add Stamp</Button>
-  if (!session) {
-    return <Button href="/auth/signin">Add Stamp</Button>
+  if (isPending) {
+    return <Button href="/auth/signin">Add Stamp</Button>;
   }
-  const isVersionRoute = pathname.includes('1800')
+  if (!session) {
+    return <Button href="/auth/signin">Add Stamp</Button>;
+  }
+  const isVersionRoute = pathname.includes('1800');
 
-  const gameVersion = isVersionRoute ? '/1800' : ''
+  const gameVersion = isVersionRoute ? '/1800' : '';
 
-  const { id, image, usernameURL } = session.user
+  const { id, image, usernameURL } = session.user;
 
-  const userPath = usernameURL ? `/${usernameURL}` : `/${id}`
+  const userPath = usernameURL ? `/${usernameURL}` : `/${id}`;
 
   const menuItems = [
     {
@@ -52,7 +54,7 @@ export const UserDropdownButton = () => {
       icon: PlusIcon,
       label: 'Add new stamp',
     },
-  ]
+  ];
   return (
     <Dropdown>
       <DropdownButton
@@ -75,5 +77,5 @@ export const UserDropdownButton = () => {
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
-  )
-}
+  );
+};

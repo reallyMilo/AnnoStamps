@@ -1,4 +1,4 @@
-import { Container, Subheading } from '@/components/ui'
+import { Container, Subheading } from '@/components/ui';
 
 const SettingsPageLoading = () => {
   return (
@@ -7,7 +7,7 @@ const SettingsPageLoading = () => {
         <Subheading>Profile</Subheading>
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default SettingsPageLoading
+export default SettingsPageLoading;

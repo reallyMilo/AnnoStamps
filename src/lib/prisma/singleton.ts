@@ -1,8 +1,8 @@
-import { PrismaPg } from '@prisma/adapter-pg'
+import { PrismaPg } from '@prisma/adapter-pg';
 
-import { PrismaClient } from '#/client'
+import { PrismaClient } from '#/client';
 
-import { type QueryParams, STAMPS_PER_PAGE } from '../constants'
+import { type QueryParams, STAMPS_PER_PAGE } from '../constants';
 import {
   commentExtension,
   imageExtension,
@@ -13,13 +13,13 @@ import {
   type StampWithRelations,
   userExtension,
   type UserWithStamps,
-} from './models'
-import { buildFilterWhereClause, buildOrderByClause } from './query-builders'
+} from './models';
+import { buildFilterWhereClause, buildOrderByClause } from './query-builders';
 
-import 'server-only'
+import 'server-only';
 
 const prismaClientSingleton = () => {
-  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
   return new PrismaClient({
     adapter,
     omit: {
@@ -40,24 +40,24 @@ const prismaClientSingleton = () => {
       model: {
         stamp: {
           async filterFindManyWithCount(query: QueryParams): Promise<{
-            count: number
-            pageNumber: number
-            stamps: StampWithRelations[]
+            count: number;
+            pageNumber: number;
+            stamps: StampWithRelations[];
           }> {
-            const { page, sort, ...filter } = query
-            let pageNumber = parseInt(page ?? '1', 10)
+            const { page, sort, ...filter } = query;
+            let pageNumber = parseInt(page ?? '1', 10);
 
             return prisma.$transaction(async (q) => {
               const count = await q.stamp.count({
                 where: buildFilterWhereClause(filter),
-              })
+              });
               if (count === 0) {
-                return { count: 0, pageNumber: 1, stamps: [] }
+                return { count: 0, pageNumber: 1, stamps: [] };
               }
-              let skip = (pageNumber - 1) * STAMPS_PER_PAGE
+              let skip = (pageNumber - 1) * STAMPS_PER_PAGE;
               if (skip >= count) {
-                skip = 0
-                pageNumber = 1
+                skip = 0;
+                pageNumber = 1;
               }
               const stamps = await q.stamp.findMany({
                 include: stampIncludeStatement,
@@ -65,23 +65,23 @@ const prismaClientSingleton = () => {
                 skip,
                 take: STAMPS_PER_PAGE,
                 where: buildFilterWhereClause(filter),
-              })
+              });
 
-              return { count, pageNumber, stamps }
-            })
+              return { count, pageNumber, stamps };
+            });
           },
         },
         user: {
           async filterFindManyWithCount(
             query: QueryParams & { user: string },
           ): Promise<{
-            count: number
-            pageNumber: number
-            stamps: UserWithStamps['listedStamps']
-            user: null | Omit<UserWithStamps, 'likedStamps' | 'listedStamps'>
+            count: number;
+            pageNumber: number;
+            stamps: UserWithStamps['listedStamps'];
+            user: null | Omit<UserWithStamps, 'likedStamps' | 'listedStamps'>;
           }> {
-            const { page, sort, user, ...filter } = query
-            let pageNumber = parseInt(page ?? '1', 10)
+            const { page, sort, user, ...filter } = query;
+            let pageNumber = parseInt(page ?? '1', 10);
             return prisma.$transaction(async (q) => {
               const userStampsCount = await q.user.findFirst({
                 include: {
@@ -96,9 +96,9 @@ const prismaClientSingleton = () => {
                 where: {
                   OR: [{ usernameURL: user.toLowerCase() }, { id: user }],
                 },
-              })
+              });
               if (!userStampsCount) {
-                return { count: 0, pageNumber: 1, stamps: [], user: null }
+                return { count: 0, pageNumber: 1, stamps: [], user: null };
               }
 
               if (userStampsCount._count.listedStamps === 0) {
@@ -107,14 +107,14 @@ const prismaClientSingleton = () => {
                   pageNumber: 1,
                   stamps: [],
                   user: userStampsCount,
-                }
+                };
               }
 
-              let skip = (pageNumber - 1) * STAMPS_PER_PAGE
-              const count = userStampsCount._count.listedStamps
+              let skip = (pageNumber - 1) * STAMPS_PER_PAGE;
+              const count = userStampsCount._count.listedStamps;
               if (skip >= count) {
-                skip = 0
-                pageNumber = 1
+                skip = 0;
+                pageNumber = 1;
               }
 
               const userStamps = await q.user.findFirstOrThrow({
@@ -137,30 +137,32 @@ const prismaClientSingleton = () => {
                 where: {
                   OR: [{ usernameURL: user.toLowerCase() }, { id: user }],
                 },
-              })
+              });
 
-              const { listedStamps, ...rest } = userStamps
+              const { listedStamps, ...rest } = userStamps;
               return {
                 count,
                 pageNumber,
                 stamps: listedStamps,
                 user: rest,
-              }
-            })
+              };
+            });
           },
         },
       },
-    })
-}
+    });
+};
 
-export type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>
+export type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
 
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClientSingleton | undefined
+  prisma: PrismaClientSingleton | undefined;
+};
+
+const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
+
+export default prisma;
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma;
 }
-
-const prisma = globalForPrisma.prisma ?? prismaClientSingleton()
-
-export default prisma
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma

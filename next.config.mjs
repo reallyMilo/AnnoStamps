@@ -1,10 +1,10 @@
 // @ts-check
-import NextBundleAnalyzer from '@next/bundle-analyzer'
-import { withSentryConfig } from '@sentry/nextjs'
+import NextBundleAnalyzer from '@next/bundle-analyzer';
+import { withSentryConfig } from '@sentry/nextjs';
 
 const withBundleAnalyzer = NextBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
-})
+});
 /**
  * @type {import('next').NextConfig}
  */
@@ -38,7 +38,7 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
-}
+};
 
 export default withBundleAnalyzer(
   withSentryConfig(nextConfig, {
@@ -50,4 +50,4 @@ export default withBundleAnalyzer(
 
     silent: true, // Can be used to suppress logs
   }),
-)
+);

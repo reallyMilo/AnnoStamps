@@ -1,6 +1,6 @@
-import type { UserWithStamps } from '@/lib/prisma/models'
+import type { UserWithStamps } from '@/lib/prisma/models';
 
-import { Container, Heading, Text } from '@/components/ui'
+import { Container, Heading, Text } from '@/components/ui';
 
 export const UserPublicPage = ({
   biography,
@@ -17,5 +17,5 @@ export const UserPublicPage = ({
       </div>
       {children}
     </Container>
-  )
-}
+  );
+};

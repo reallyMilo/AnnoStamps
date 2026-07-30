@@ -1,32 +1,32 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
+import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 
-import { Button } from '@/components/ui'
-import { signIn } from '@/lib/auth-client'
+import { Button } from '@/components/ui';
+import { signIn } from '@/lib/auth-client';
 
 const signInDiscord = async (callbackURL: string) => {
   const data = await signIn.social({
     callbackURL,
     provider: 'discord',
-  })
-  return data
-}
+  });
+  return data;
+};
 
 const signInGoogle = async (callbackURL: string) => {
   const data = await signIn.social({
     callbackURL,
     provider: 'google',
-  })
-  return data
-}
+  });
+  return data;
+};
 export const Login = () => {
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
   const callbackURL = searchParams.get('callbackUrl')?.startsWith('/stamp/')
     ? (searchParams.get('callbackUrl') ?? '/')
-    : '/'
+    : '/';
 
   return (
     <>
@@ -57,5 +57,5 @@ export const Login = () => {
         <span>Sign in with Google</span>
       </Button>
     </>
-  )
-}
+  );
+};

@@ -1,23 +1,23 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
-import anno117 from '@/../public/anno117-icon.jpg'
-import anno1800 from '@/../public/anno1800-icon.webp'
-import { Button, Heading, Strong, Text } from '@/components/ui'
-import { cn } from '@/lib/utils'
+import anno117 from '@/../public/anno117-icon.jpg';
+import anno1800 from '@/../public/anno1800-icon.webp';
+import { Button, Heading, Strong, Text } from '@/components/ui';
+import { cn } from '@/lib/utils';
 
-const versions = new Set(['1800'])
-const duplicatePaths = new Set(['how-to', 'stamp', 'stamps'])
+const versions = new Set(['1800']);
+const duplicatePaths = new Set(['how-to', 'stamp', 'stamps']);
 
 export const VersionButtons = () => {
-  const pathname = usePathname()
-  const [isInfoOpen, setIsInfoOpen] = useState(false)
+  const pathname = usePathname();
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [hoveredVersion, setHoveredVersion] = useState<'117' | '1800' | null>(
     null,
-  )
+  );
 
   const buildEquivalentPath = () => {
     if (pathname === '/') {
@@ -25,44 +25,44 @@ export const VersionButtons = () => {
         117: pathname,
         1800: `/1800/`,
         active: '117',
-      }
+      };
     }
-    const splitPathname = pathname.split('/')
-    const isDuplicateRoute = duplicatePaths.has(splitPathname[1])
+    const splitPathname = pathname.split('/');
+    const isDuplicateRoute = duplicatePaths.has(splitPathname[1]);
 
     if (isDuplicateRoute) {
       return {
         117: pathname,
         1800: `/1800${pathname}`,
         active: '117',
-      }
+      };
     }
 
-    const isVersionRoute = versions.has(splitPathname[1])
+    const isVersionRoute = versions.has(splitPathname[1]);
     if (isVersionRoute) {
-      const path = splitPathname.toSpliced(0, 2)
+      const path = splitPathname.toSpliced(0, 2);
       return {
         117: `/${path.join('/')}`,
         1800: pathname,
         active: '1800',
-      }
+      };
     }
 
-    const is1800 = pathname.includes('1800')
+    const is1800 = pathname.includes('1800');
     return {
       117: `/${splitPathname[1]}`,
       1800: `/${splitPathname[1]}/1800`,
       active: is1800 ? '1800' : '117',
-    }
-  }
+    };
+  };
 
   const activeStyle =
-    'bg-secondary dark:bg-secondary dark:data-active:bg-secondary dark:text-midnight dark:data-hover:bg-secondary data-hover:bg-secondary'
+    'bg-secondary dark:bg-secondary dark:data-active:bg-secondary dark:text-midnight dark:data-hover:bg-secondary data-hover:bg-secondary';
 
   const buttonStyle =
-    'data-hover:bg-transparent data-hover:text-midnight/75 dark:hover:text-default dark:active:text-midnight dark:data-hover:bg-transparent dark:data-hover:text-default/75'
+    'data-hover:bg-transparent data-hover:text-midnight/75 dark:hover:text-default dark:active:text-midnight dark:data-hover:bg-transparent dark:data-hover:text-default/75';
 
-  const equivalentPath = buildEquivalentPath()
+  const equivalentPath = buildEquivalentPath();
 
   return (
     <div className="space-y-2 py-1">
@@ -111,7 +111,9 @@ export const VersionButtons = () => {
             isInfoOpen && 'bg-amber-100 dark:bg-amber-950/40',
           )}
           data-testid="version-info-toggle"
-          onClick={() => setIsInfoOpen((current) => !current)}
+          onClick={() => {
+            setIsInfoOpen((current) => !current);
+          }}
           plain
         >
           <span className="inline-flex size-5 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-white">
@@ -144,10 +146,18 @@ export const VersionButtons = () => {
             <div
               className="rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900"
               data-testid="version-117-info"
-              onBlur={() => setHoveredVersion(null)}
-              onFocus={() => setHoveredVersion('117')}
-              onMouseEnter={() => setHoveredVersion('117')}
-              onMouseLeave={() => setHoveredVersion(null)}
+              onBlur={() => {
+                setHoveredVersion(null);
+              }}
+              onFocus={() => {
+                setHoveredVersion('117');
+              }}
+              onMouseEnter={() => {
+                setHoveredVersion('117');
+              }}
+              onMouseLeave={() => {
+                setHoveredVersion(null);
+              }}
               tabIndex={0}
             >
               <div className="mb-2 flex items-center gap-2">
@@ -167,10 +177,18 @@ export const VersionButtons = () => {
             <div
               className="rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900"
               data-testid="version-1800-info"
-              onBlur={() => setHoveredVersion(null)}
-              onFocus={() => setHoveredVersion('1800')}
-              onMouseEnter={() => setHoveredVersion('1800')}
-              onMouseLeave={() => setHoveredVersion(null)}
+              onBlur={() => {
+                setHoveredVersion(null);
+              }}
+              onFocus={() => {
+                setHoveredVersion('1800');
+              }}
+              onMouseEnter={() => {
+                setHoveredVersion('1800');
+              }}
+              onMouseLeave={() => {
+                setHoveredVersion(null);
+              }}
               tabIndex={0}
             >
               <div className="mb-2 flex items-center gap-2">
@@ -201,5 +219,5 @@ export const VersionButtons = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

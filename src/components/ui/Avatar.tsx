@@ -1,19 +1,19 @@
-import * as Headless from '@headlessui/react'
-import Image from 'next/image'
-import React from 'react'
+import * as Headless from '@headlessui/react';
+import Image from 'next/image';
+import React from 'react';
 
-import defaultAvatar from '@/../public/anno-stamps-stamp.png'
-import { cn } from '@/lib/utils'
+import defaultAvatar from '@/../public/anno-stamps-stamp.png';
+import { cn } from '@/lib/utils';
 
-import { TouchTarget } from './Button'
-import { Link } from './Link'
+import { TouchTarget } from './Button';
+import { Link } from './Link';
 
-type AvatarProps = {
-  alt?: string
-  className?: string
-  initials?: string
-  square?: boolean
-  src?: null | string
+interface AvatarProps {
+  alt?: string;
+  className?: string;
+  initials?: string;
+  square?: boolean;
+  src?: null | string;
 }
 
 export const Avatar = ({
@@ -68,8 +68,8 @@ export const Avatar = ({
         />
       )}
     </span>
-  )
-}
+  );
+};
 
 export const AvatarButton = React.forwardRef(
   (
@@ -91,7 +91,7 @@ export const AvatarButton = React.forwardRef(
       square ? 'rounded-[20%]' : 'rounded-full',
       'relative focus:outline-hidden data-focus:outline data-focus:outline-2 data-focus:outline-offset-2 data-focus:outline-blue-500',
       className,
-    )
+    );
 
     return 'href' in props ? (
       <Link
@@ -109,8 +109,8 @@ export const AvatarButton = React.forwardRef(
           <Avatar alt={alt} initials={initials} square={square} src={src} />
         </TouchTarget>
       </Headless.Button>
-    )
+    );
   },
-)
+);
 
-AvatarButton.displayName = 'AvatarButton'
+AvatarButton.displayName = 'AvatarButton';

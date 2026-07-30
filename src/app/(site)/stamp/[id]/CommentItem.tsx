@@ -1,23 +1,23 @@
-import type { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react';
 
-import type { Comment } from '@/lib/prisma/models'
+import type { Comment } from '@/lib/prisma/models';
 
-import { AvatarButton, Link, Text } from '@/components/ui'
-import { distanceUnixTimeToNow } from '@/lib/prisma/utils'
+import { AvatarButton, Link, Text } from '@/components/ui';
+import { distanceUnixTimeToNow } from '@/lib/prisma/utils';
 
-import { CommentView } from './CommentView'
+import { CommentView } from './CommentView';
 
 type CommentItemProps = Pick<
   Comment,
   'content' | 'createdAt' | 'id' | 'parentId' | 'user'
 > & {
-  level?: number
+  level?: number;
   replyToUser?: {
-    id: string
-    username: string
-    usernameURL: string
-  }
-}
+    id: string;
+    username: string;
+    usernameURL: string;
+  };
+};
 
 export const CommentItem = ({
   children,
@@ -53,11 +53,11 @@ export const CommentItem = ({
           </div>
           <CommentView
             parentId={commentId}
-            userIdToNotify={replyToUser?.id as string}
+            userIdToNotify={replyToUser ? replyToUser.id : ''}
           />
         </div>
       </div>
       {children}
     </li>
-  )
-}
+  );
+};

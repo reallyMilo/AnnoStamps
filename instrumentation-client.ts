@@ -2,7 +2,7 @@
 // The config you add here will be used whenever a users loads a page in their browser.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-import * as Sentry from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs';
 
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({
@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
     debug: false,
 
     dsn: 'https://a61bb8933f45b2800ce5ffa1c28d9305@o4506508177244160.ingest.sentry.io/4506508178817024',
-    enabled: process.env.NODE_ENV === 'production',
+    enabled: true,
     // You can remove this option if you're not planning to use the Sentry Session Replay feature:
     integrations: [
       Sentry.replayIntegration({
@@ -29,6 +29,6 @@ if (process.env.NODE_ENV === 'production') {
     sendDefaultPii: true,
     // Adjust this value in production, or use tracesSampler for greater control
     tracesSampleRate: 1,
-  })
+  });
 }
-export const onRouterTransitionStart = Sentry.captureRouterTransitionStart
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

@@ -1,7 +1,7 @@
-import * as Headless from '@headlessui/react'
-import { forwardRef } from 'react'
+import * as Headless from '@headlessui/react';
+import { forwardRef } from 'react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 export const InputGroup = ({
   children,
@@ -26,11 +26,11 @@ export const InputGroup = ({
     >
       {children}
     </span>
-  )
-}
+  );
+};
 
-const dateTypes = ['date', 'datetime-local', 'month', 'time', 'week']
-type DateType = (typeof dateTypes)[number]
+const dateTypes = ['date', 'datetime-local', 'month', 'time', 'week'];
+type DateType = (typeof dateTypes)[number];
 
 export const Input = forwardRef(
   (
@@ -38,7 +38,7 @@ export const Input = forwardRef(
       className,
       ...props
     }: Omit<Headless.InputProps, 'className'> & {
-      className?: string
+      className?: string;
       type?:
         | 'email'
         | 'number'
@@ -47,7 +47,7 @@ export const Input = forwardRef(
         | 'tel'
         | 'text'
         | 'url'
-        | DateType
+        | DateType;
     },
     ref: React.ForwardedRef<HTMLInputElement>,
   ) => {
@@ -107,8 +107,8 @@ export const Input = forwardRef(
           ])}
         />
       </span>
-    )
+    );
   },
-)
+);
 
-Input.displayName = 'Input'
+Input.displayName = 'Input';

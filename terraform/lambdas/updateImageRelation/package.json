@@ -1,6 +1,6 @@
 {
-  "engines": {
-    "node": "20"
+  "scripts": {
+    "build": "bash ./build.sh"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.43.5"
@@ -11,7 +11,7 @@
     "check-node-version": "^4.2.1",
     "typescript": "^5.7.3"
   },
-  "scripts": {
-    "build": "bash ./build.sh"
+  "engines": {
+    "node": "20"
   }
 }

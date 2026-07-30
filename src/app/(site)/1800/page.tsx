@@ -1,17 +1,17 @@
-import { unstable_cache } from 'next/cache'
-import Image, { type StaticImageData } from 'next/image'
-import anno1800Header from 'public/Anno1800Header.webp'
-import arctic from 'public/Arctic.webp'
-import enbesa from 'public/Enbesa.webp'
-import newWorld from 'public/NewWorld.webp'
-import oldWorld from 'public/OldWorld.webp'
-import qs from 'qs'
+import { unstable_cache } from 'next/cache';
+import Image, { type StaticImageData } from 'next/image';
+import anno1800Header from 'public/Anno1800Header.webp';
+import arctic from 'public/Arctic.webp';
+import enbesa from 'public/Enbesa.webp';
+import newWorld from 'public/NewWorld.webp';
+import oldWorld from 'public/OldWorld.webp';
+import qs from 'qs';
 
-import { StampCard } from '@/components/StampCard'
-import { Container, Grid, Heading, Link } from '@/components/ui'
-import { REGIONS_1800 } from '@/lib/constants/1800/data'
-import { stampIncludeStatement } from '@/lib/prisma/models'
-import prisma from '@/lib/prisma/singleton'
+import { StampCard } from '@/components/StampCard';
+import { Container, Grid, Heading, Link } from '@/components/ui';
+import { REGIONS_1800 } from '@/lib/constants/1800/data';
+import { stampIncludeStatement } from '@/lib/prisma/models';
+import prisma from '@/lib/prisma/singleton';
 
 const regionLinks = [
   {
@@ -31,9 +31,9 @@ const regionLinks = [
     imgSrc: enbesa,
   },
 ] satisfies {
-  href: (typeof REGIONS_1800)[keyof typeof REGIONS_1800]
-  imgSrc: StaticImageData
-}[]
+  href: (typeof REGIONS_1800)[keyof typeof REGIONS_1800];
+  imgSrc: StaticImageData;
+}[];
 
 const getLatestStamps = unstable_cache(
   async () =>
@@ -49,10 +49,10 @@ const getLatestStamps = unstable_cache(
   {
     revalidate: 3600,
   },
-)
+);
 
 const Version1800Page = async () => {
-  const newestStamps = await getLatestStamps()
+  const newestStamps = await getLatestStamps();
 
   return (
     <Container className="pt-2">
@@ -93,7 +93,7 @@ const Version1800Page = async () => {
         </Grid>
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default Version1800Page
+export default Version1800Page;

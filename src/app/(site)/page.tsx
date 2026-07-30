@@ -1,9 +1,9 @@
-import { unstable_cache } from 'next/cache'
+import { unstable_cache } from 'next/cache';
 
-import { StampCard } from '@/components/StampCard'
-import { Container, Grid, Heading, Link } from '@/components/ui'
-import { stampIncludeStatement } from '@/lib/prisma/models'
-import prisma from '@/lib/prisma/singleton'
+import { StampCard } from '@/components/StampCard';
+import { Container, Grid, Heading, Link } from '@/components/ui';
+import { stampIncludeStatement } from '@/lib/prisma/models';
+import prisma from '@/lib/prisma/singleton';
 
 const getHomePageStamps = unstable_cache(
   async () =>
@@ -19,10 +19,10 @@ const getHomePageStamps = unstable_cache(
   {
     revalidate: 3600,
   },
-)
+);
 
 const HomePage = async () => {
-  const newestStamps = await getHomePageStamps()
+  const newestStamps = await getHomePageStamps();
 
   return (
     <Container className="pt-10">
@@ -41,7 +41,7 @@ const HomePage = async () => {
         </Grid>
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

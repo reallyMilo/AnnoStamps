@@ -1,14 +1,13 @@
-'use client'
+'use client';
 
-import { CheckBadgeIcon } from '@heroicons/react/20/solid'
-import { CloudArrowUpIcon } from '@heroicons/react/24/outline'
-import { useActionState, useState } from 'react'
+import { CheckBadgeIcon } from '@heroicons/react/20/solid';
+import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
+import { useActionState, useState } from 'react';
 
-import { uploadAsset } from '@/components/StampForm/uploadAsset'
-import { type Asset, useUpload } from '@/components/StampForm/useUpload'
+import { uploadAsset } from '@/components/StampForm/uploadAsset';
+import { type Asset, useUpload } from '@/components/StampForm/useUpload';
 import {
   Button,
-  Checkbox,
   CheckboxField,
   CheckboxGroup,
   Description,
@@ -22,14 +21,14 @@ import {
   Legend,
   Text,
   Textarea,
-} from '@/components/ui'
-import { type Session } from '@/lib/auth-client'
+} from '@/components/ui';
+import { type Session } from '@/lib/auth-client';
 
-import { updateUserSettings } from './actions'
+import { updateUserSettings } from './actions';
 
 const isAsset = (b: Asset | null | object | string | undefined): b is Asset => {
-  return !!b && typeof b === 'object' && 'rawFile' in b
-}
+  return !!b && typeof b === 'object' && 'rawFile' in b;
+};
 
 export const SettingsForm = ({
   biography,
@@ -40,16 +39,16 @@ export const SettingsForm = ({
   Session['user'],
   'biography' | 'image' | 'isEmailEnabled' | 'username'
 >) => {
-  const currentAvatar = image ? { url: image } : { url: null }
+  const currentAvatar = image ? { url: image } : { url: null };
   const [avatar, setAvatar] = useState<(Asset | typeof currentAvatar)[]>([
     currentAvatar,
-  ])
+  ]);
 
   const { error, handleChange } = useUpload<(typeof avatar)[0]>(
     avatar,
     setAvatar,
     1,
-  )
+  );
   const [formState, formAction, isPending] = useActionState<
     Awaited<ReturnType<typeof updateUserSettings>>,
     FormData
@@ -62,32 +61,32 @@ export const SettingsForm = ({
             avatar[0].rawFile.type,
             avatar[0].name,
             'avatar',
-          )
-          formData.set('image', uploadAvatarUrl)
+          );
+          formData.set('image', uploadAvatarUrl);
         } catch {
           return {
             data: prevState.data,
             error: 'Upload failed',
             ok: false,
             state: 'error',
-          }
+          };
         }
       } else if (avatar[0].url === null) {
-        formData.set('image', 'remove')
+        formData.set('image', 'remove');
       }
 
-      const res = await updateUserSettings(formData)
+      const res = await updateUserSettings(formData);
       if (!res.ok) {
-        return { ...res, data: prevState.data }
+        return { ...res, data: prevState.data };
       }
-      return res
+      return res;
     },
     {
       data: { biography, isEmailEnabled, username },
       ok: false,
       state: 'idle',
     },
-  )
+  );
 
   return (
     <form
@@ -111,11 +110,11 @@ export const SettingsForm = ({
                 autoComplete="false"
                 defaultValue={formState.data?.username ?? ''}
                 name="username"
-                onInvalid={(e) =>
+                onInvalid={(e) => {
                   e.currentTarget.setCustomValidity(
                     'Select a username containing only alphanumeric characters, dashes (-), and underscores (_).',
-                  )
-                }
+                  );
+                }}
                 pattern={`^[a-zA-Z0-9_\\-]+$`}
                 readOnly={!!formState.data?.username}
                 required
@@ -166,7 +165,9 @@ export const SettingsForm = ({
             </label>
             <Button
               className="cursor-pointer border-0 font-light hover:underline"
-              onClick={() => setAvatar([{ url: null }])}
+              onClick={() => {
+                setAvatar([{ url: null }]);
+              }}
               outline
               type="button"
             >
@@ -215,5 +216,5 @@ export const SettingsForm = ({
         Save
       </Button>
     </form>
-  )
-}
+  );
+};
