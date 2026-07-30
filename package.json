@@ -11,6 +11,7 @@
 		"db-seed": "prisma db seed",
 		"dev": "next dev --webpack",
 		"lint": "eslint .",
+		"lint-ci": "next typegen && eslint . ",
 		"migrate": "prisma migrate dev && prisma generate --sql",
 		"prepare": "husky",
 		"reset-db": "prisma migrate reset",
