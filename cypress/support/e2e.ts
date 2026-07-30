@@ -20,8 +20,8 @@ import './commands';
 // require('./commands')
 
 beforeEach(() => {
-	//sentry
-	cy.intercept('https://*.ingest.sentry.io/api/**', { statusCode: 200 });
-	// google analytics
-	cy.intercept('https://www.google-analytics.com/**', { statusCode: 200 });
+  //sentry
+  cy.intercept('https://*.ingest.sentry.io/api/**', { statusCode: 200 });
+  // google analytics
+  cy.intercept('https://www.google-analytics.com/**', { statusCode: 200 });
 });

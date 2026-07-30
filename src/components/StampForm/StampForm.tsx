@@ -8,12 +8,12 @@ import { useFormStatus } from 'react-dom';
 import type { UserWithStamps } from '@/lib/prisma/models';
 
 import {
-	Button,
-	Heading,
-	Modal,
-	ModalBody,
-	ModalTitle,
-	Text,
+  Button,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalTitle,
+  Text,
 } from '@/components/ui';
 
 import type { Asset } from './useUpload';
@@ -24,269 +24,269 @@ import { StampInfoFieldGroup } from './StampInfoFieldGroup';
 import { uploadAsset } from './uploadAsset';
 
 export interface StampFormContextValue {
-	files: (Asset | JSZipObjectWithData)[];
-	images: (Asset | Image)[];
-	setFiles: React.Dispatch<
-		React.SetStateAction<(Asset | JSZipObjectWithData)[]>
-	>;
-	setImages: React.Dispatch<React.SetStateAction<(Asset | Image)[]>>;
-	setStatus: React.Dispatch<
-		React.SetStateAction<StampFormContextValue['status']>
-	>;
-	stamp?: Stamp;
-	status:
-		| 'errorAction'
-		| 'errorAWS'
-		| 'idle'
-		| 'invalidImages'
-		| 'invalidZip'
-		| 'success'
-		| 'upload';
+  files: (Asset | JSZipObjectWithData)[];
+  images: (Asset | Image)[];
+  setFiles: React.Dispatch<
+    React.SetStateAction<(Asset | JSZipObjectWithData)[]>
+  >;
+  setImages: React.Dispatch<React.SetStateAction<(Asset | Image)[]>>;
+  setStatus: React.Dispatch<
+    React.SetStateAction<StampFormContextValue['status']>
+  >;
+  stamp?: Stamp;
+  status:
+    | 'errorAction'
+    | 'errorAWS'
+    | 'idle'
+    | 'invalidImages'
+    | 'invalidZip'
+    | 'success'
+    | 'upload';
 }
 type Image = Stamp['images'][0];
 
 type Stamp = UserWithStamps['listedStamps'][0];
 
 const StampFormContext = React.createContext<null | StampFormContextValue>(
-	null,
+  null,
 );
 
 const useStampFormContext = () => {
-	const context = React.useContext(StampFormContext);
-	if (!context) {
-		throw new Error('needs to be used within StampForm Provider');
-	}
-	return context;
+  const context = React.useContext(StampFormContext);
+  if (!context) {
+    throw new Error('needs to be used within StampForm Provider');
+  }
+  return context;
 };
 
 const Submit = ({ children }: { children: React.ReactNode }) => {
-	const { pending } = useFormStatus();
+  const { pending } = useFormStatus();
 
-	return (
-		<Button
-			className="ml-auto font-normal"
-			color="secondary"
-			disabled={pending}
-			type="submit"
-		>
-			{pending ? 'Loading...' : children}
-		</Button>
-	);
+  return (
+    <Button
+      className="ml-auto font-normal"
+      color="secondary"
+      disabled={pending}
+      type="submit"
+    >
+      {pending ? 'Loading...' : children}
+    </Button>
+  );
 };
 
 interface HeaderProps {
-	subTitle: string;
-	title: string;
+  subTitle: string;
+  title: string;
 }
 const Header = ({ subTitle, title }: HeaderProps) => {
-	return (
-		<div>
-			<Heading>{title}</Heading>
-			<Text>{subTitle}</Text>
-		</div>
-	);
+  return (
+    <div>
+      <Heading>{title}</Heading>
+      <Text>{subTitle}</Text>
+    </div>
+  );
 };
 
 const isAsset = (obj: Asset | Image | JSZipObjectWithData): obj is Asset =>
-	'rawFile' in obj;
+  'rawFile' in obj;
 
 const UploadModal = () => {
-	const { status } = useStampFormContext();
+  const { status } = useStampFormContext();
 
-	const statusMessage = (() => {
-		switch (status) {
-			case 'errorAction':
-				return {
-					isOpen: true,
-					message: 'An error occurred while creating the stamp.',
-					title: 'Action Error',
-				};
-			case 'errorAWS':
-				return {
-					isOpen: true,
-					message: 'An error occurred while uploading to AWS.',
-					title: 'AWS Error',
-				};
-			case 'upload':
-				return {
-					isOpen: true,
-					message: 'You will be redirected if stamp creation is successful.',
-					title: 'Creating Stamp...',
-				};
-			default:
-				return {
-					isOpen: false,
-					message: 'The status provided is not recognized.',
-					title: 'Unknown Status',
-				};
-		}
-	})();
+  const statusMessage = (() => {
+    switch (status) {
+      case 'errorAction':
+        return {
+          isOpen: true,
+          message: 'An error occurred while creating the stamp.',
+          title: 'Action Error',
+        };
+      case 'errorAWS':
+        return {
+          isOpen: true,
+          message: 'An error occurred while uploading to AWS.',
+          title: 'AWS Error',
+        };
+      case 'upload':
+        return {
+          isOpen: true,
+          message: 'You will be redirected if stamp creation is successful.',
+          title: 'Creating Stamp...',
+        };
+      default:
+        return {
+          isOpen: false,
+          message: 'The status provided is not recognized.',
+          title: 'Unknown Status',
+        };
+    }
+  })();
 
-	return (
-		<Modal
-			data-testid="upload-modal"
-			onClose={() => {
-				return;
-			}}
-			open={statusMessage.isOpen}
-		>
-			<ModalTitle>{statusMessage.title}</ModalTitle>
-			<ModalBody className="space-y-2">
-				<Text>{statusMessage.message}</Text>
-			</ModalBody>
-		</Modal>
-	);
+  return (
+    <Modal
+      data-testid="upload-modal"
+      onClose={() => {
+        return;
+      }}
+      open={statusMessage.isOpen}
+    >
+      <ModalTitle>{statusMessage.title}</ModalTitle>
+      <ModalBody className="space-y-2">
+        <Text>{statusMessage.message}</Text>
+      </ModalBody>
+    </Modal>
+  );
 };
 
 const Form = ({
-	action,
-	children,
+  action,
+  children,
 }: React.PropsWithChildren<{
-	action: (
-		formData: FormData,
-	) => Promise<{ error: string; ok: boolean; status: number }>;
+  action: (
+    formData: FormData,
+  ) => Promise<{ error: string; ok: boolean; status: number }>;
 }>) => {
-	const { files, images, setStatus, stamp } = useStampFormContext();
+  const { files, images, setStatus, stamp } = useStampFormContext();
 
-	const handleOnSubmit = async (formData: FormData) => {
-		if (images.length === 0) {
-			setStatus('invalidImages');
-			return;
-		}
-		if (files.length === 0) {
-			setStatus('invalidZip');
-			return;
-		}
+  const handleOnSubmit = async (formData: FormData) => {
+    if (images.length === 0) {
+      setStatus('invalidImages');
+      return;
+    }
+    if (files.length === 0) {
+      setStatus('invalidZip');
+      return;
+    }
 
-		formData.delete('images');
-		formData.delete('stamps');
-		const stampId = stamp?.id ?? createId();
-		formData.set('stampId', stampId);
+    formData.delete('images');
+    formData.delete('stamps');
+    const stampId = stamp?.id ?? createId();
+    formData.set('stampId', stampId);
 
-		const imagesToUpload: Asset[] = [];
-		const imageIdsToRemove: Set<Image['id']> = stamp?.images
-			? new Set(stamp.images.map((image) => image.id))
-			: new Set([]);
+    const imagesToUpload: Asset[] = [];
+    const imageIdsToRemove: Set<Image['id']> = stamp?.images
+      ? new Set(stamp.images.map((image) => image.id))
+      : new Set([]);
 
-		for (const image of images) {
-			if (isAsset(image)) {
-				imagesToUpload.push(image);
-				continue;
-			}
-			if (imageIdsToRemove.has(image.id)) {
-				imageIdsToRemove.delete(image.id);
-			}
-		}
-		const zip = new JSZip();
-		for (const file of files) {
-			if (isAsset(file)) {
-				zip.file(file.name, file.rawFile);
-				continue;
-			}
-			zip.file(file.name, file.async('blob'));
-		}
-		const zipped = await zip.generateAsync({ type: 'blob' });
+    for (const image of images) {
+      if (isAsset(image)) {
+        imagesToUpload.push(image);
+        continue;
+      }
+      if (imageIdsToRemove.has(image.id)) {
+        imageIdsToRemove.delete(image.id);
+      }
+    }
+    const zip = new JSZip();
+    for (const file of files) {
+      if (isAsset(file)) {
+        zip.file(file.name, file.rawFile);
+        continue;
+      }
+      zip.file(file.name, file.async('blob'));
+    }
+    const zipped = await zip.generateAsync({ type: 'blob' });
 
-		try {
-			const [uploadedImageUrls, uploadedStampZipUrl] = await Promise.all([
-				Promise.all(
-					imagesToUpload.map(async (image) => {
-						const imagePath = await uploadAsset(
-							image.rawFile,
-							image.rawFile.type,
-							image.name,
-							'images',
-							stampId,
-						);
-						return imagePath;
-					}),
-				),
-				uploadAsset(
-					zipped,
-					'zip',
-					formData.get('title') as string,
-					'stamps',
-					stampId,
-				),
-			]);
+    try {
+      const [uploadedImageUrls, uploadedStampZipUrl] = await Promise.all([
+        Promise.all(
+          imagesToUpload.map(async (image) => {
+            const imagePath = await uploadAsset(
+              image.rawFile,
+              image.rawFile.type,
+              image.name,
+              'images',
+              stampId,
+            );
+            return imagePath;
+          }),
+        ),
+        uploadAsset(
+          zipped,
+          'zip',
+          formData.get('title') as string,
+          'stamps',
+          stampId,
+        ),
+      ]);
 
-			formData.set('stampFileUrl', uploadedStampZipUrl);
-			formData.set('uploadedImageUrls', JSON.stringify(uploadedImageUrls));
-		} catch (e) {
-			setStatus('errorAWS');
-			console.error(e);
-			return;
-		}
-		formData.set('imageIdsToRemove', JSON.stringify([...imageIdsToRemove]));
+      formData.set('stampFileUrl', uploadedStampZipUrl);
+      formData.set('uploadedImageUrls', JSON.stringify(uploadedImageUrls));
+    } catch (e) {
+      setStatus('errorAWS');
+      console.error(e);
+      return;
+    }
+    formData.set('imageIdsToRemove', JSON.stringify([...imageIdsToRemove]));
 
-		const result = await action(formData);
+    const result = await action(formData);
 
-		if (!result.ok) {
-			setStatus('errorAction');
-		}
-	};
+    if (!result.ok) {
+      setStatus('errorAction');
+    }
+  };
 
-	return (
-		<form
-			action={(formData) => {
-				setStatus('upload');
-				void handleOnSubmit(formData);
-			}}
-			className="mt-8 flex flex-col space-y-8"
-			data-testid="stamp-form"
-		>
-			{children}
-		</form>
-	);
+  return (
+    <form
+      action={(formData) => {
+        setStatus('upload');
+        void handleOnSubmit(formData);
+      }}
+      className="mt-8 flex flex-col space-y-8"
+      data-testid="stamp-form"
+    >
+      {children}
+    </form>
+  );
 };
 
 interface RootProps {
-	children: React.ReactNode;
-	stamp?: Stamp;
-	zipFiles?: JSZipObjectWithData[];
+  children: React.ReactNode;
+  stamp?: Stamp;
+  zipFiles?: JSZipObjectWithData[];
 }
 
 const Root = ({ children, stamp, zipFiles }: RootProps) => {
-	const [status, setStatus] =
-		React.useState<StampFormContextValue['status']>('idle');
+  const [status, setStatus] =
+    React.useState<StampFormContextValue['status']>('idle');
 
-	const [images, setImages] = React.useState<StampFormContextValue['images']>(
-		stamp?.images ?? [],
-	);
+  const [images, setImages] = React.useState<StampFormContextValue['images']>(
+    stamp?.images ?? [],
+  );
 
-	const [files, setFiles] = React.useState<StampFormContextValue['files']>(
-		zipFiles ?? [],
-	);
+  const [files, setFiles] = React.useState<StampFormContextValue['files']>(
+    zipFiles ?? [],
+  );
 
-	const context = React.useMemo(
-		() => ({
-			files,
-			images,
-			setFiles,
-			setImages,
-			setStatus,
-			stamp,
-			status,
-		}),
-		[status, setStatus, files, setFiles, images, setImages, stamp],
-	);
+  const context = React.useMemo(
+    () => ({
+      files,
+      images,
+      setFiles,
+      setImages,
+      setStatus,
+      stamp,
+      status,
+    }),
+    [status, setStatus, files, setFiles, images, setImages, stamp],
+  );
 
-	return (
-		<StampFormContext.Provider value={context}>
-			{children}
-			<UploadModal />
-		</StampFormContext.Provider>
-	);
+  return (
+    <StampFormContext.Provider value={context}>
+      {children}
+      <UploadModal />
+    </StampFormContext.Provider>
+  );
 };
 
 const StampForm = {
-	FileUpload,
-	Form,
-	Header,
-	ImageUpload,
-	Root,
-	StampInfoFieldGroup,
-	Submit,
+  FileUpload,
+  Form,
+  Header,
+  ImageUpload,
+  Root,
+  StampInfoFieldGroup,
+  Submit,
 };
 
 export { StampForm, useStampFormContext };

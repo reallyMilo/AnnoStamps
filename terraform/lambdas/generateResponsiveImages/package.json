@@ -1,17 +1,17 @@
 {
-	"scripts": {
-		"build": "bash ./build.sh"
-	},
-	"dependencies": {
-		"sharp": "0.32.6"
-	},
-	"devDependencies": {
-		"@types/aws-lambda": "^8.10.23",
-		"@types/node": "^22.10.7",
-		"check-node-version": "^4.2.1",
-		"typescript": "^5.7.3"
-	},
-	"engines": {
-		"node": "18"
-	}
+  "scripts": {
+    "build": "bash ./build.sh"
+  },
+  "dependencies": {
+    "sharp": "0.32.6"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.23",
+    "@types/node": "^22.10.7",
+    "check-node-version": "^4.2.1",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": "18"
+  }
 }

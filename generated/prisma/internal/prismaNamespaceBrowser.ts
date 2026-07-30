@@ -22,15 +22,15 @@ export type * from './prismaNamespace';
 export const Decimal = runtime.Decimal;
 
 export const NullTypes = {
-	DbNull: runtime.NullTypes.DbNull as new (
-		secret: never,
-	) => typeof runtime.DbNull,
-	JsonNull: runtime.NullTypes.JsonNull as new (
-		secret: never,
-	) => typeof runtime.JsonNull,
-	AnyNull: runtime.NullTypes.AnyNull as new (
-		secret: never,
-	) => typeof runtime.AnyNull,
+  DbNull: runtime.NullTypes.DbNull as new (
+    secret: never,
+  ) => typeof runtime.DbNull,
+  JsonNull: runtime.NullTypes.JsonNull as new (
+    secret: never,
+  ) => typeof runtime.JsonNull,
+  AnyNull: runtime.NullTypes.AnyNull as new (
+    secret: never,
+  ) => typeof runtime.AnyNull,
 };
 /**
  * Helper for filtering JSON entries that have `null` on the database (empty on the db)
@@ -54,15 +54,15 @@ export const JsonNull = runtime.JsonNull;
 export const AnyNull = runtime.AnyNull;
 
 export const ModelName = {
-	Image: 'Image',
-	Notification: 'Notification',
-	Comment: 'Comment',
-	Stamp: 'Stamp',
-	Preference: 'Preference',
-	User: 'User',
-	Session: 'Session',
-	Account: 'Account',
-	Verification: 'Verification',
+  Image: 'Image',
+  Notification: 'Notification',
+  Comment: 'Comment',
+  Stamp: 'Stamp',
+  Preference: 'Preference',
+  User: 'User',
+  Session: 'Session',
+  Account: 'Account',
+  Verification: 'Verification',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -72,290 +72,290 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName];
  */
 
 export const TransactionIsolationLevel = runtime.makeStrictEnum({
-	ReadUncommitted: 'ReadUncommitted',
-	ReadCommitted: 'ReadCommitted',
-	RepeatableRead: 'RepeatableRead',
-	Serializable: 'Serializable',
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
+  Serializable: 'Serializable',
 } as const);
 
 export type TransactionIsolationLevel =
-	(typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
+  (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
 
 export const ImageScalarFieldEnum = {
-	id: 'id',
-	originalUrl: 'originalUrl',
-	thumbnailUrl: 'thumbnailUrl',
-	smallUrl: 'smallUrl',
-	mediumUrl: 'mediumUrl',
-	largeUrl: 'largeUrl',
-	createdAt: 'createdAt',
-	updatedAt: 'updatedAt',
-	stampId: 'stampId',
+  id: 'id',
+  originalUrl: 'originalUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  smallUrl: 'smallUrl',
+  mediumUrl: 'mediumUrl',
+  largeUrl: 'largeUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  stampId: 'stampId',
 } as const;
 
 export type ImageScalarFieldEnum =
-	(typeof ImageScalarFieldEnum)[keyof typeof ImageScalarFieldEnum];
+  (typeof ImageScalarFieldEnum)[keyof typeof ImageScalarFieldEnum];
 
 export const NotificationScalarFieldEnum = {
-	id: 'id',
-	userId: 'userId',
-	channel: 'channel',
-	body: 'body',
-	targetUrl: 'targetUrl',
-	isRead: 'isRead',
-	createdAt: 'createdAt',
-	updatedAt: 'updatedAt',
+  id: 'id',
+  userId: 'userId',
+  channel: 'channel',
+  body: 'body',
+  targetUrl: 'targetUrl',
+  isRead: 'isRead',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
 } as const;
 
 export type NotificationScalarFieldEnum =
-	(typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum];
+  (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum];
 
 export const CommentScalarFieldEnum = {
-	id: 'id',
-	content: 'content',
-	userId: 'userId',
-	stampId: 'stampId',
-	parentId: 'parentId',
-	createdAt: 'createdAt',
-	updatedAt: 'updatedAt',
+  id: 'id',
+  content: 'content',
+  userId: 'userId',
+  stampId: 'stampId',
+  parentId: 'parentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
 } as const;
 
 export type CommentScalarFieldEnum =
-	(typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum];
+  (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum];
 
 export const StampScalarFieldEnum = {
-	id: 'id',
-	userId: 'userId',
-	game: 'game',
-	title: 'title',
-	unsafeDescription: 'unsafeDescription',
-	markdownDescription: 'markdownDescription',
-	category: 'category',
-	region: 'region',
-	stampFileUrl: 'stampFileUrl',
-	good: 'good',
-	capital: 'capital',
-	createdAt: 'createdAt',
-	changedAt: 'changedAt',
-	updatedAt: 'updatedAt',
-	modded: 'modded',
-	downloads: 'downloads',
+  id: 'id',
+  userId: 'userId',
+  game: 'game',
+  title: 'title',
+  unsafeDescription: 'unsafeDescription',
+  markdownDescription: 'markdownDescription',
+  category: 'category',
+  region: 'region',
+  stampFileUrl: 'stampFileUrl',
+  good: 'good',
+  capital: 'capital',
+  createdAt: 'createdAt',
+  changedAt: 'changedAt',
+  updatedAt: 'updatedAt',
+  modded: 'modded',
+  downloads: 'downloads',
 } as const;
 
 export type StampScalarFieldEnum =
-	(typeof StampScalarFieldEnum)[keyof typeof StampScalarFieldEnum];
+  (typeof StampScalarFieldEnum)[keyof typeof StampScalarFieldEnum];
 
 export const PreferenceScalarFieldEnum = {
-	id: 'id',
-	channel: 'channel',
-	enabled: 'enabled',
-	userId: 'userId',
-	createdAt: 'createdAt',
-	updatedAt: 'updatedAt',
+  id: 'id',
+  channel: 'channel',
+  enabled: 'enabled',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
 } as const;
 
 export type PreferenceScalarFieldEnum =
-	(typeof PreferenceScalarFieldEnum)[keyof typeof PreferenceScalarFieldEnum];
+  (typeof PreferenceScalarFieldEnum)[keyof typeof PreferenceScalarFieldEnum];
 
 export const UserScalarFieldEnum = {
-	id: 'id',
-	name: 'name',
-	email: 'email',
-	emailVerified: 'emailVerified',
-	image: 'image',
-	username: 'username',
-	usernameURL: 'usernameURL',
-	biography: 'biography',
-	createdAt: 'createdAt',
-	updatedAt: 'updatedAt',
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  emailVerified: 'emailVerified',
+  image: 'image',
+  username: 'username',
+  usernameURL: 'usernameURL',
+  biography: 'biography',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
 } as const;
 
 export type UserScalarFieldEnum =
-	(typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
+  (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
 
 export const SessionScalarFieldEnum = {
-	id: 'id',
-	sessionToken: 'sessionToken',
-	ipAddress: 'ipAddress',
-	userAgent: 'userAgent',
-	userId: 'userId',
-	expires: 'expires',
-	createdAt: 'createdAt',
-	updatedAt: 'updatedAt',
+  id: 'id',
+  sessionToken: 'sessionToken',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  userId: 'userId',
+  expires: 'expires',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
 } as const;
 
 export type SessionScalarFieldEnum =
-	(typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum];
+  (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum];
 
 export const AccountScalarFieldEnum = {
-	id: 'id',
-	userId: 'userId',
-	provider: 'provider',
-	providerAccountId: 'providerAccountId',
-	refresh_token: 'refresh_token',
-	access_token: 'access_token',
-	expires_at: 'expires_at',
-	scope: 'scope',
-	id_token: 'id_token',
-	createdAt: 'createdAt',
-	updatedAt: 'updatedAt',
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  expires_at: 'expires_at',
+  scope: 'scope',
+  id_token: 'id_token',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
 } as const;
 
 export type AccountScalarFieldEnum =
-	(typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum];
+  (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum];
 
 export const VerificationScalarFieldEnum = {
-	id: 'id',
-	identifier: 'identifier',
-	value: 'value',
-	expiresAt: 'expiresAt',
-	createdAt: 'createdAt',
-	updatedAt: 'updatedAt',
+  id: 'id',
+  identifier: 'identifier',
+  value: 'value',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
 } as const;
 
 export type VerificationScalarFieldEnum =
-	(typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum];
+  (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum];
 
 export const SortOrder = {
-	asc: 'asc',
-	desc: 'desc',
+  asc: 'asc',
+  desc: 'desc',
 } as const;
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
 
 export const JsonNullValueInput = {
-	JsonNull: JsonNull,
+  JsonNull: JsonNull,
 } as const;
 
 export type JsonNullValueInput =
-	(typeof JsonNullValueInput)[keyof typeof JsonNullValueInput];
+  (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput];
 
 export const QueryMode = {
-	default: 'default',
-	insensitive: 'insensitive',
+  default: 'default',
+  insensitive: 'insensitive',
 } as const;
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
 
 export const NullsOrder = {
-	first: 'first',
-	last: 'last',
+  first: 'first',
+  last: 'last',
 } as const;
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
 
 export const ImageOrderByRelevanceFieldEnum = {
-	id: 'id',
-	originalUrl: 'originalUrl',
-	thumbnailUrl: 'thumbnailUrl',
-	smallUrl: 'smallUrl',
-	mediumUrl: 'mediumUrl',
-	largeUrl: 'largeUrl',
-	stampId: 'stampId',
+  id: 'id',
+  originalUrl: 'originalUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  smallUrl: 'smallUrl',
+  mediumUrl: 'mediumUrl',
+  largeUrl: 'largeUrl',
+  stampId: 'stampId',
 } as const;
 
 export type ImageOrderByRelevanceFieldEnum =
-	(typeof ImageOrderByRelevanceFieldEnum)[keyof typeof ImageOrderByRelevanceFieldEnum];
+  (typeof ImageOrderByRelevanceFieldEnum)[keyof typeof ImageOrderByRelevanceFieldEnum];
 
 export const JsonNullValueFilter = {
-	DbNull: DbNull,
-	JsonNull: JsonNull,
-	AnyNull: AnyNull,
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull,
 } as const;
 
 export type JsonNullValueFilter =
-	(typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter];
+  (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter];
 
 export const NotificationOrderByRelevanceFieldEnum = {
-	id: 'id',
-	userId: 'userId',
-	channel: 'channel',
-	targetUrl: 'targetUrl',
+  id: 'id',
+  userId: 'userId',
+  channel: 'channel',
+  targetUrl: 'targetUrl',
 } as const;
 
 export type NotificationOrderByRelevanceFieldEnum =
-	(typeof NotificationOrderByRelevanceFieldEnum)[keyof typeof NotificationOrderByRelevanceFieldEnum];
+  (typeof NotificationOrderByRelevanceFieldEnum)[keyof typeof NotificationOrderByRelevanceFieldEnum];
 
 export const CommentOrderByRelevanceFieldEnum = {
-	id: 'id',
-	content: 'content',
-	userId: 'userId',
-	stampId: 'stampId',
-	parentId: 'parentId',
+  id: 'id',
+  content: 'content',
+  userId: 'userId',
+  stampId: 'stampId',
+  parentId: 'parentId',
 } as const;
 
 export type CommentOrderByRelevanceFieldEnum =
-	(typeof CommentOrderByRelevanceFieldEnum)[keyof typeof CommentOrderByRelevanceFieldEnum];
+  (typeof CommentOrderByRelevanceFieldEnum)[keyof typeof CommentOrderByRelevanceFieldEnum];
 
 export const StampOrderByRelevanceFieldEnum = {
-	id: 'id',
-	userId: 'userId',
-	game: 'game',
-	title: 'title',
-	unsafeDescription: 'unsafeDescription',
-	markdownDescription: 'markdownDescription',
-	category: 'category',
-	region: 'region',
-	stampFileUrl: 'stampFileUrl',
-	good: 'good',
-	capital: 'capital',
+  id: 'id',
+  userId: 'userId',
+  game: 'game',
+  title: 'title',
+  unsafeDescription: 'unsafeDescription',
+  markdownDescription: 'markdownDescription',
+  category: 'category',
+  region: 'region',
+  stampFileUrl: 'stampFileUrl',
+  good: 'good',
+  capital: 'capital',
 } as const;
 
 export type StampOrderByRelevanceFieldEnum =
-	(typeof StampOrderByRelevanceFieldEnum)[keyof typeof StampOrderByRelevanceFieldEnum];
+  (typeof StampOrderByRelevanceFieldEnum)[keyof typeof StampOrderByRelevanceFieldEnum];
 
 export const PreferenceOrderByRelevanceFieldEnum = {
-	id: 'id',
-	channel: 'channel',
-	userId: 'userId',
+  id: 'id',
+  channel: 'channel',
+  userId: 'userId',
 } as const;
 
 export type PreferenceOrderByRelevanceFieldEnum =
-	(typeof PreferenceOrderByRelevanceFieldEnum)[keyof typeof PreferenceOrderByRelevanceFieldEnum];
+  (typeof PreferenceOrderByRelevanceFieldEnum)[keyof typeof PreferenceOrderByRelevanceFieldEnum];
 
 export const UserOrderByRelevanceFieldEnum = {
-	id: 'id',
-	name: 'name',
-	email: 'email',
-	image: 'image',
-	username: 'username',
-	usernameURL: 'usernameURL',
-	biography: 'biography',
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  image: 'image',
+  username: 'username',
+  usernameURL: 'usernameURL',
+  biography: 'biography',
 } as const;
 
 export type UserOrderByRelevanceFieldEnum =
-	(typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum];
+  (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum];
 
 export const SessionOrderByRelevanceFieldEnum = {
-	id: 'id',
-	sessionToken: 'sessionToken',
-	ipAddress: 'ipAddress',
-	userAgent: 'userAgent',
-	userId: 'userId',
+  id: 'id',
+  sessionToken: 'sessionToken',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  userId: 'userId',
 } as const;
 
 export type SessionOrderByRelevanceFieldEnum =
-	(typeof SessionOrderByRelevanceFieldEnum)[keyof typeof SessionOrderByRelevanceFieldEnum];
+  (typeof SessionOrderByRelevanceFieldEnum)[keyof typeof SessionOrderByRelevanceFieldEnum];
 
 export const AccountOrderByRelevanceFieldEnum = {
-	id: 'id',
-	userId: 'userId',
-	provider: 'provider',
-	providerAccountId: 'providerAccountId',
-	refresh_token: 'refresh_token',
-	access_token: 'access_token',
-	scope: 'scope',
-	id_token: 'id_token',
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  scope: 'scope',
+  id_token: 'id_token',
 } as const;
 
 export type AccountOrderByRelevanceFieldEnum =
-	(typeof AccountOrderByRelevanceFieldEnum)[keyof typeof AccountOrderByRelevanceFieldEnum];
+  (typeof AccountOrderByRelevanceFieldEnum)[keyof typeof AccountOrderByRelevanceFieldEnum];
 
 export const VerificationOrderByRelevanceFieldEnum = {
-	id: 'id',
-	identifier: 'identifier',
-	value: 'value',
+  id: 'id',
+  identifier: 'identifier',
+  value: 'value',
 } as const;
 
 export type VerificationOrderByRelevanceFieldEnum =
-	(typeof VerificationOrderByRelevanceFieldEnum)[keyof typeof VerificationOrderByRelevanceFieldEnum];
+  (typeof VerificationOrderByRelevanceFieldEnum)[keyof typeof VerificationOrderByRelevanceFieldEnum];

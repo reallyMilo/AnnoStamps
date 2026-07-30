@@ -8,35 +8,35 @@ import { addCommentToStamp } from './actions';
 import { CommentForm } from './CommentForm';
 
 type CommentViewProps = Partial<Pick<Comment, 'parentId'>> & {
-	userIdToNotify: Comment['user']['id'];
+  userIdToNotify: Comment['user']['id'];
 };
 
 export const CommentView = ({ parentId, userIdToNotify }: CommentViewProps) => {
-	const { id: stampId } = useParams<{ id: Comment['stampId'] }>();
+  const { id: stampId } = useParams<{ id: Comment['stampId'] }>();
 
-	const addCommentAction = addCommentToStamp.bind(
-		null,
-		stampId,
-		parentId ? parentId : null,
-		userIdToNotify,
-	);
+  const addCommentAction = addCommentToStamp.bind(
+    null,
+    stampId,
+    parentId ? parentId : null,
+    userIdToNotify,
+  );
 
-	if (parentId) {
-		return (
-			<CommentForm.Root isVisible={false}>
-				<CommentForm.ShowFormButton>
-					<CommentForm.Form action={addCommentAction}>
-						<CommentForm.FormActionButtons>Reply</CommentForm.FormActionButtons>
-					</CommentForm.Form>
-				</CommentForm.ShowFormButton>
-			</CommentForm.Root>
-		);
-	}
-	return (
-		<CommentForm.Root>
-			<CommentForm.Form action={addCommentAction}>
-				<CommentForm.FormActionButtons>Comment</CommentForm.FormActionButtons>
-			</CommentForm.Form>
-		</CommentForm.Root>
-	);
+  if (parentId) {
+    return (
+      <CommentForm.Root isVisible={false}>
+        <CommentForm.ShowFormButton>
+          <CommentForm.Form action={addCommentAction}>
+            <CommentForm.FormActionButtons>Reply</CommentForm.FormActionButtons>
+          </CommentForm.Form>
+        </CommentForm.ShowFormButton>
+      </CommentForm.Root>
+    );
+  }
+  return (
+    <CommentForm.Root>
+      <CommentForm.Form action={addCommentAction}>
+        <CommentForm.FormActionButtons>Comment</CommentForm.FormActionButtons>
+      </CommentForm.Form>
+    </CommentForm.Root>
+  );
 };

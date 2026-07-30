@@ -1,15 +1,15 @@
 {
-	"compilerOptions": {
-		"target": "es2022",
-		"strict": true,
-		"preserveConstEnums": true,
-		"sourceMap": false,
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"isolatedModules": true
-	},
-	"include": ["**/*.ts"],
-	"exclude": ["node_modules"]
+  "compilerOptions": {
+    "target": "es2022",
+    "strict": true,
+    "preserveConstEnums": true,
+    "sourceMap": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
 }

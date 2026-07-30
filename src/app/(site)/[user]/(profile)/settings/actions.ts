@@ -10,117 +10,117 @@ import { auth } from '@/auth';
 import prisma from '@/lib/prisma/singleton';
 
 const blockedUsernames = new Set<string>([
-	'117',
-	'1800',
-	'privacy',
-	'stamp',
-	'stamps',
+  '117',
+  '1800',
+  'privacy',
+  'stamp',
+  'stamps',
 ]);
 
 export const updateUserSettings = async (
-	formData: FormData,
+  formData: FormData,
 ): Promise<{
-	data?: Pick<UserWithStamps, 'biography' | 'username'> & {
-		isEmailEnabled: boolean;
-	};
-	error?: string;
-	message?: string;
-	ok: boolean;
-	state: 'error' | 'idle' | 'success';
+  data?: Pick<UserWithStamps, 'biography' | 'username'> & {
+    isEmailEnabled: boolean;
+  };
+  error?: string;
+  message?: string;
+  ok: boolean;
+  state: 'error' | 'idle' | 'success';
 }> => {
-	const session = await auth.api.getSession({ headers: await headers() });
-	if (!session) {
-		return { error: 'Unauthorized', ok: false, state: 'error' };
-	}
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) {
+    return { error: 'Unauthorized', ok: false, state: 'error' };
+  }
 
-	const {
-		biography,
-		emailNotifications,
-		image: avatar,
-		username,
-	} = Object.fromEntries(formData) as {
-		biography: string;
-		emailNotifications?: 'on';
-		image: string | undefined;
-		username: string;
-	};
+  const {
+    biography,
+    emailNotifications,
+    image: avatar,
+    username,
+  } = Object.fromEntries(formData) as {
+    biography: string;
+    emailNotifications?: 'on';
+    image: string | undefined;
+    username: string;
+  };
 
-	const usernameURL = username.toLowerCase();
+  const usernameURL = username.toLowerCase();
 
-	if (blockedUsernames.has(usernameURL)) {
-		return {
-			error: 'Not allowed to use as username',
-			ok: false,
-			state: 'error',
-		};
-	}
+  if (blockedUsernames.has(usernameURL)) {
+    return {
+      error: 'Not allowed to use as username',
+      ok: false,
+      state: 'error',
+    };
+  }
 
-	const image = avatar === 'remove' ? null : avatar;
-	const updateData: Prisma.UserUncheckedUpdateInput = session.user.username
-		? { biography, image }
-		: {
-				biography,
-				image,
-				username,
-				usernameURL,
-			};
+  const image = avatar === 'remove' ? null : avatar;
+  const updateData: Prisma.UserUncheckedUpdateInput = session.user.username
+    ? { biography, image }
+    : {
+        biography,
+        image,
+        username,
+        usernameURL,
+      };
 
-	const isEmailNotificationEnabled = emailNotifications ? true : false;
+  const isEmailNotificationEnabled = emailNotifications ? true : false;
 
-	let updateResponse: Pick<UserWithStamps, 'biography' | 'username'>;
-	try {
-		updateResponse = await prisma.user.update({
-			data: {
-				...updateData,
-				preferences: {
-					upsert: {
-						create: {
-							channel: 'email',
-							enabled: isEmailNotificationEnabled,
-						},
-						update: {
-							channel: 'email',
-							enabled: isEmailNotificationEnabled,
-						},
-						where: {
-							userId_channel: {
-								channel: 'email',
-								userId: session.userId,
-							},
-						},
-					},
-				},
-			},
-			where: { id: session.userId },
-		});
-	} catch (e) {
-		if (e instanceof Prisma.PrismaClientKnownRequestError) {
-			if (e.code === 'P2002') {
-				return {
-					error: 'Username already taken',
-					ok: false,
-					state: 'error',
-				};
-			}
-		}
-		console.error(e);
-		return {
-			error: 'Server error, contact discord',
-			ok: false,
-			state: 'error',
-		};
-	}
+  let updateResponse: Pick<UserWithStamps, 'biography' | 'username'>;
+  try {
+    updateResponse = await prisma.user.update({
+      data: {
+        ...updateData,
+        preferences: {
+          upsert: {
+            create: {
+              channel: 'email',
+              enabled: isEmailNotificationEnabled,
+            },
+            update: {
+              channel: 'email',
+              enabled: isEmailNotificationEnabled,
+            },
+            where: {
+              userId_channel: {
+                channel: 'email',
+                userId: session.userId,
+              },
+            },
+          },
+        },
+      },
+      where: { id: session.userId },
+    });
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === 'P2002') {
+        return {
+          error: 'Username already taken',
+          ok: false,
+          state: 'error',
+        };
+      }
+    }
+    console.error(e);
+    return {
+      error: 'Server error, contact discord',
+      ok: false,
+      state: 'error',
+    };
+  }
 
-	revalidatePath(`${session.userId}/settings`);
-	revalidatePath(`${session.user.usernameURL}/settings`);
-	return {
-		data: {
-			biography: updateResponse.biography,
-			isEmailEnabled: isEmailNotificationEnabled,
-			username: updateResponse.username,
-		},
-		message: 'Updated user info',
-		ok: true,
-		state: 'success',
-	};
+  revalidatePath(`${session.userId}/settings`);
+  revalidatePath(`${session.user.usernameURL}/settings`);
+  return {
+    data: {
+      biography: updateResponse.biography,
+      isEmailEnabled: isEmailNotificationEnabled,
+      username: updateResponse.username,
+    },
+    message: 'Updated user info',
+    ok: true,
+    state: 'success',
+  };
 };

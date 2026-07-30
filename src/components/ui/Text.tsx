@@ -3,44 +3,44 @@ import { cn } from '@/lib/utils';
 import { Link } from './Link';
 
 export const Text = ({
-	className,
-	...props
+  className,
+  ...props
 }: React.ComponentPropsWithoutRef<'p'>) => {
-	return (
-		<p
-			data-slot="text"
-			{...props}
-			className={cn(
-				'text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400',
-				className,
-			)}
-		/>
-	);
+  return (
+    <p
+      data-slot="text"
+      {...props}
+      className={cn(
+        'text-base/6 text-zinc-500 sm:text-sm/6 dark:text-zinc-400',
+        className,
+      )}
+    />
+  );
 };
 
 export const TextLink = ({
-	className,
-	...props
+  className,
+  ...props
 }: React.ComponentPropsWithoutRef<typeof Link>) => {
-	return (
-		<Link
-			{...props}
-			className={cn(
-				'text-midnight decoration-midnight/50 data-hover:decoration-midnight underline dark:text-white dark:decoration-white/50 dark:data-hover:decoration-white',
-				className,
-			)}
-		/>
-	);
+  return (
+    <Link
+      {...props}
+      className={cn(
+        'text-midnight decoration-midnight/50 data-hover:decoration-midnight underline dark:text-white dark:decoration-white/50 dark:data-hover:decoration-white',
+        className,
+      )}
+    />
+  );
 };
 
 export const Strong = ({
-	className,
-	...props
+  className,
+  ...props
 }: React.ComponentPropsWithoutRef<'strong'>) => {
-	return (
-		<strong
-			{...props}
-			className={cn('text-midnight font-medium dark:text-white', className)}
-		/>
-	);
+  return (
+    <strong
+      {...props}
+      className={cn('text-midnight font-medium dark:text-white', className)}
+    />
+  );
 };

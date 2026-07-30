@@ -8,56 +8,56 @@ import { distanceUnixTimeToNow } from '@/lib/prisma/utils';
 import { CommentView } from './CommentView';
 
 type CommentItemProps = Pick<
-	Comment,
-	'content' | 'createdAt' | 'id' | 'parentId' | 'user'
+  Comment,
+  'content' | 'createdAt' | 'id' | 'parentId' | 'user'
 > & {
-	level?: number;
-	replyToUser?: {
-		id: string;
-		username: string;
-		usernameURL: string;
-	};
+  level?: number;
+  replyToUser?: {
+    id: string;
+    username: string;
+    usernameURL: string;
+  };
 };
 
 export const CommentItem = ({
-	children,
-	content,
-	createdAt,
-	id: commentId,
-	level,
-	parentId,
-	replyToUser,
-	user,
+  children,
+  content,
+  createdAt,
+  id: commentId,
+  level,
+  parentId,
+  replyToUser,
+  user,
 }: PropsWithChildren<CommentItemProps>) => {
-	return (
-		<li id={commentId}>
-			<div className="flex space-x-5 pb-2">
-				<AvatarButton className="self-start" src={user.image} />
-				<div className="flex grow flex-col">
-					<div className="flex space-x-5">
-						<Link
-							className="text-midnight hover:text-primary dark:text-white"
-							href={`/${user.usernameURL}`}
-						>
-							{user.username}
-						</Link>
-						<Text suppressHydrationWarning>
-							{distanceUnixTimeToNow(createdAt)}
-						</Text>
-					</div>
-					<div className="flex space-x-4">
-						{parentId && level && level > 0 && replyToUser ? (
-							<a href={`#${parentId}`}>@{replyToUser.username}</a>
-						) : null}
-						<Text>{content}</Text>
-					</div>
-					<CommentView
-						parentId={commentId}
-						userIdToNotify={replyToUser ? replyToUser.id : ''}
-					/>
-				</div>
-			</div>
-			{children}
-		</li>
-	);
+  return (
+    <li id={commentId}>
+      <div className="flex space-x-5 pb-2">
+        <AvatarButton className="self-start" src={user.image} />
+        <div className="flex grow flex-col">
+          <div className="flex space-x-5">
+            <Link
+              className="text-midnight hover:text-primary dark:text-white"
+              href={`/${user.usernameURL}`}
+            >
+              {user.username}
+            </Link>
+            <Text suppressHydrationWarning>
+              {distanceUnixTimeToNow(createdAt)}
+            </Text>
+          </div>
+          <div className="flex space-x-4">
+            {parentId && level && level > 0 && replyToUser ? (
+              <a href={`#${parentId}`}>@{replyToUser.username}</a>
+            ) : null}
+            <Text>{content}</Text>
+          </div>
+          <CommentView
+            parentId={commentId}
+            userIdToNotify={replyToUser ? replyToUser.id : ''}
+          />
+        </div>
+      </div>
+      {children}
+    </li>
+  );
 };
