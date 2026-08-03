@@ -86,7 +86,7 @@
     "eslint-plugin-cypress": "^6.4.3",
     "eslint-plugin-jsonc": "^3.3.0",
     "eslint-plugin-n": "^18.2.2",
-    "eslint-plugin-package-json": "^0.91.2",
+    "eslint-plugin-package-json": "^1.6.2",
     "eslint-plugin-perfectionist": "^5.10.0",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "eslint-plugin-react-hooks": "^7.1.1",
