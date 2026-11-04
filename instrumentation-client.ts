@@ -25,8 +25,8 @@ if (process.env.NODE_ENV === 'production') {
 
     // This sets the sample rate to be 10%. You may want this to be 100% while
     // in development and sample at a lower rate in production
+    dataCollection: {},
     replaysSessionSampleRate: 0.1,
-    sendDefaultPii: true,
     // Adjust this value in production, or use tracesSampler for greater control
     tracesSampleRate: 1,
   });

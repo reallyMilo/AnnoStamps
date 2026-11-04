@@ -21,7 +21,6 @@ export default defineConfig(
     'build/**',
     '**/*.d.ts',
     'node_modules',
-    'pnpm-lock.yaml',
     'terraform',
     'volume',
     'docker-compose.yaml',
@@ -29,6 +28,8 @@ export default defineConfig(
     'prisma/migrations/*',
     'generated/*',
     'src/components/ui/**',
+    'pnpm-lock.yaml',
+    'pnpm-workspace.yaml',
   ]),
   { linterOptions: { reportUnusedDisableDirectives: 'error' } },
 
