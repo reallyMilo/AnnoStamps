@@ -1,12 +1,12 @@
 generator client {
   provider        = "prisma-client"
   previewFeatures = ["fullTextSearchPostgres", "typedSql"]
-  engineType = "client"
-  output = "../generated/prisma"
+  engineType      = "client"
+  output          = "../generated/prisma"
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
 }
 
 model Image {
@@ -72,15 +72,17 @@ model Stamp {
 }
 
 model Preference {
-  id      String  @id @default(cuid(2))
-  channel String
-  enabled Boolean @default(true)
-  userId  String
-  user    User    @relation(fields: [userId], references: [id], onDelete: NoAction)
+  id        String   @id @default(cuid(2))
+  channel   String
+  enabled   Boolean  @default(true)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: NoAction)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   @@unique([userId, channel])
 }
+
 model User {
   id            String         @id @default(cuid(2))
   name          String?
@@ -112,19 +114,23 @@ model Session {
   updatedAt    DateTime @default(now())
   user         User     @relation(fields: [userId], references: [id], onDelete: NoAction)
 }
+
 model Account {
-  id                String  @id @default(cuid(2))
-  userId            String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        DateTime?
-  scope             String?
-  id_token          String?
-  createdAt         DateTime?
-  updatedAt         DateTime?
-  user              User    @relation(fields: [userId], references: [id], onDelete: NoAction)
+  id                    String    @id @default(cuid(2))
+  userId                String
+  provider              String
+  providerAccountId     String
+  refresh_token         String?
+  access_token          String?
+  expires_at            DateTime?
+  accessTokenExpiresAt  DateTime? @db.Timestamptz(3)
+  refreshTokenExpiresAt DateTime? @db.Timestamptz(3)
+  scope                 String?
+  id_token              String?
+  password              String?
+  createdAt             DateTime?
+  updatedAt             DateTime?
+  user                  User      @relation(fields: [userId], references: [id], onDelete: NoAction)
 
   @@unique([provider, providerAccountId])
 }
@@ -137,5 +143,4 @@ model Verification {
 
   createdAt DateTime?
   updatedAt DateTime?
-
 }
