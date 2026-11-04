@@ -60,7 +60,7 @@ describe('Delete stamp', () => {
     cy.getBySel('delete-stamp').first().trigger('mouseover');
     cy.getBySel('delete-stamp').first().should('have.css', 'cursor', 'pointer');
 
-    cy.getBySel('delete-stamp').click();
+    cy.getBySel('delete-stamp').first().click();
 
     cy.findByRole('button', { name: 'Yes, delete' })
       .should('be.visible')
