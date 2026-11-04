@@ -26,7 +26,6 @@ export const auth = betterAuth({
     provider: 'postgresql',
   }),
   plugins: [
-    nextCookies(),
     customSession(async ({ session, user }) => {
       const dbSession = await prisma.session.findUnique({
         include: {
@@ -57,6 +56,7 @@ export const auth = betterAuth({
         },
       };
     }),
+    nextCookies(),
   ],
   session: {
     fields: {
