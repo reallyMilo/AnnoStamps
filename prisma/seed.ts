@@ -71,7 +71,7 @@ export const generateStampData = (
         id: createId(),
         markdownDescription: `<h2> Stamp-${index} </h2>`,
         modded: index % 20 === 0 ? true : false,
-        region: 'rome',
+        region: Math.random() < 0.5 ? 'latium' : 'albion',
         stampFileUrl: 'http://localhost:3000/test-stamp.zip',
         title: `Stamp-${index}-${faker.lorem.words({ max: 12, min: 0 })}`,
         unsafeDescription: `## Stamp-${index}`,

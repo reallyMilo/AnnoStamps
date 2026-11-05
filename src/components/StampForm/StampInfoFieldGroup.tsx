@@ -17,86 +17,132 @@ import {
   TextLink,
 } from '@/components/ui';
 import { CATEGORIES } from '@/lib/constants';
+import { CAPITALS_117, REGIONS_117 } from '@/lib/constants/117/data';
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data';
 import { parseAndSanitizedMarkdown } from '@/lib/markdown';
 
 import { useStampFormContext } from './StampForm';
 
 const presetCategories = Object.values(CATEGORIES);
-const presetRegions = Object.values(REGIONS_1800);
-const presetCapitals = Object.values(CAPITALS_1800);
+const presetRegions1800 = Object.values(REGIONS_1800);
+const presetCapitals1800 = Object.values(CAPITALS_1800);
 
+const presetRegions117 = Object.values(REGIONS_117);
+const presetCapitals117 = Object.values(CAPITALS_117);
+
+const RegionField = ({
+  presetRegions,
+  region,
+}: {
+  presetRegions: string[];
+  region: string | undefined;
+}) => {
+  return (
+    <Field>
+      <Label>Region</Label>
+      <Select defaultValue={region} id="region" name="region" required>
+        <option disabled value="">
+          Select a region&hellip;
+        </option>
+        {presetRegions.map((region, idx) => (
+          <option
+            className="capitalize"
+            key={`${region}-${idx}`}
+            value={region}
+          >
+            {' '}
+            {region}
+          </option>
+        ))}
+      </Select>
+    </Field>
+  );
+};
+
+const CategoryField = ({ good }: { good: string | undefined }) => {
+  return (
+    <Field>
+      <Label>Enter Good</Label>
+      <Input
+        defaultValue={good}
+        id="good"
+        name="good"
+        placeholder="Enter final good in chain"
+        required
+        type="text"
+      />
+    </Field>
+  );
+};
+
+const IslandField = ({
+  capital,
+  presetCapitals,
+}: {
+  capital: string | undefined;
+  presetCapitals: string[];
+}) => {
+  return (
+    <Field>
+      <Label>Capital</Label>
+      <Select defaultValue={capital} id="capital" name="capital">
+        <option value="">Not capital</option>
+        {presetCapitals.map((capital, idx) => (
+          <option
+            className="capitalize"
+            key={`${capital}-${idx}`}
+            value={capital}
+          >
+            {' '}
+            {capital}
+          </option>
+        ))}
+      </Select>
+    </Field>
+  );
+};
 const VersionSpecificFields = ({ category = '', game = '117' }) => {
   const { stamp } = useStampFormContext();
 
   if (game === '1800') {
     return (
       <div className="flex space-x-6">
-        <Field>
-          <Label>Region</Label>
-          <Select
-            defaultValue={stamp?.region ?? ''}
-            id="region"
-            name="region"
-            required
-          >
-            <option disabled value="">
-              Select a region&hellip;
-            </option>
-            {presetRegions.map((region, idx) => (
-              <option
-                className="capitalize"
-                key={`${region}-${idx}`}
-                value={region}
-              >
-                {' '}
-                {region}
-              </option>
-            ))}
-          </Select>
-        </Field>
+        <RegionField
+          presetRegions={presetRegions1800}
+          region={stamp?.region ?? ''}
+        />
         {category === 'production' && (
-          <Field>
-            <Label>Enter Good</Label>
-            <Input
-              defaultValue={stamp?.good ?? undefined}
-              id="good"
-              name="good"
-              placeholder="Enter final good in chain"
-              required
-              type="text"
-            />
-          </Field>
+          <CategoryField good={stamp?.good ?? undefined} />
         )}
 
         {category === 'island' && (
-          <Field>
-            <Label>Capital</Label>
-            <Select
-              defaultValue={stamp?.capital ?? undefined}
-              id="capital"
-              name="capital"
-            >
-              <option value="">Not capital</option>
-              {presetCapitals.map((capital, idx) => (
-                <option
-                  className="capitalize"
-                  key={`${capital}-${idx}`}
-                  value={capital}
-                >
-                  {' '}
-                  {capital}
-                </option>
-              ))}
-            </Select>
-          </Field>
+          <IslandField
+            capital={stamp?.capital ?? undefined}
+            presetCapitals={presetCapitals1800}
+          />
         )}
       </div>
     );
   }
 
-  //default game
-  return null;
+  return (
+    <div className="flex space-x-6">
+      <RegionField
+        presetRegions={presetRegions117}
+        region={stamp?.region ?? ''}
+      />
+      {category === 'production' && (
+        <CategoryField good={stamp?.good ?? undefined} />
+      )}
+
+      {category === 'island' && (
+        <IslandField
+          capital={stamp?.capital ?? undefined}
+          presetCapitals={presetCapitals117}
+        />
+      )}
+    </div>
+  );
 };
 
 export const StampInfoFieldGroup = ({ game }: { game: string }) => {
