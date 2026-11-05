@@ -21,7 +21,7 @@ import { CAPITALS_117, REGIONS_117 } from '@/lib/constants/117/data';
 import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data';
 import { parseAndSanitizedMarkdown } from '@/lib/markdown';
 
-import { type StampFormContextValue, useStampFormContext } from './StampForm';
+import { useStampFormContext } from './StampForm';
 
 const presetCategories = Object.values(CATEGORIES);
 const presetRegions1800 = Object.values(REGIONS_1800);
@@ -30,14 +30,12 @@ const presetCapitals1800 = Object.values(CAPITALS_1800);
 const presetRegions117 = Object.values(REGIONS_117);
 const presetCapitals117 = Object.values(CAPITALS_117);
 
-type Stamp = NonNullable<StampFormContextValue['stamp']>;
-
 const RegionField = ({
   presetRegions,
   region,
 }: {
   presetRegions: string[];
-  region: Stamp['region'];
+  region: string | undefined;
 }) => {
   return (
     <Field>
@@ -61,12 +59,12 @@ const RegionField = ({
   );
 };
 
-const CategoryField = ({ good }: Pick<Stamp, 'good'>) => {
+const CategoryField = ({ good }: { good: string | undefined }) => {
   return (
     <Field>
       <Label>Enter Good</Label>
       <Input
-        defaultValue={good ?? undefined}
+        defaultValue={good}
         id="good"
         name="good"
         placeholder="Enter final good in chain"
@@ -81,13 +79,13 @@ const IslandField = ({
   capital,
   presetCapitals,
 }: {
-  capital: Stamp['capital'];
+  capital: string | undefined;
   presetCapitals: string[];
 }) => {
   return (
     <Field>
       <Label>Capital</Label>
-      <Select defaultValue={capital ?? undefined} id="capital" name="capital">
+      <Select defaultValue={capital} id="capital" name="capital">
         <option value="">Not capital</option>
         {presetCapitals.map((capital, idx) => (
           <option
@@ -114,12 +112,12 @@ const VersionSpecificFields = ({ category = '', game = '117' }) => {
           region={stamp?.region ?? ''}
         />
         {category === 'production' && (
-          <CategoryField good={stamp?.good ?? null} />
+          <CategoryField good={stamp?.good ?? undefined} />
         )}
 
         {category === 'island' && (
           <IslandField
-            capital={stamp?.capital ?? null}
+            capital={stamp?.capital ?? undefined}
             presetCapitals={presetCapitals1800}
           />
         )}
@@ -134,12 +132,12 @@ const VersionSpecificFields = ({ category = '', game = '117' }) => {
         region={stamp?.region ?? ''}
       />
       {category === 'production' && (
-        <CategoryField good={stamp?.good ?? null} />
+        <CategoryField good={stamp?.good ?? undefined} />
       )}
 
       {category === 'island' && (
         <IslandField
-          capital={stamp?.capital ?? null}
+          capital={stamp?.capital ?? undefined}
           presetCapitals={presetCapitals117}
         />
       )}
