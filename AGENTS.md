@@ -4,7 +4,7 @@
 
 AnnoStamps is a Next.js 16 (App Router) app for sharing Anno game stamps.
 The stack uses React 19, TypeScript, Tailwind CSS, Prisma, and Postgres (via Docker).
-Auth and storage integrations include Better Auth, Discord/Google, Supabase, and AWS S3/LocalStack.
+Auth and storage integrations include Better Auth, Discord/Google, Supabase, and AWS S3/LocalStack
 
 ## Setup
 
