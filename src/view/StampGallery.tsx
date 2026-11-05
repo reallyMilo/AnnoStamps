@@ -9,8 +9,10 @@ import { StampsFilterLayout } from '@/components/StampsFilterLayout';
 import { Grid, Heading, Subheading, Text } from '@/components/ui';
 import { type QueryParams, STAMPS_PER_PAGE } from '@/lib/constants';
 import { CATEGORIES } from '@/lib/constants';
-import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data';
+import { CAPITALS_117, REGIONS_117 } from '@/lib/constants/117/data';
 import 'server-only';
+
+import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data';
 
 interface StampGalleryProps {
   paginatedStamps:
@@ -34,7 +36,6 @@ export const StampGallery = ({
   paginatedStamps,
   searchParams,
 }: React.PropsWithChildren<StampGalleryProps>) => {
-  // TODO: when we know 117 game data
   const additionalFilters =
     searchParams.game === '1800'
       ? [
@@ -47,7 +48,16 @@ export const StampGallery = ({
             options: Object.values(CAPITALS_1800),
           },
         ]
-      : [];
+      : [
+          {
+            id: 'region',
+            options: Object.values(REGIONS_117),
+          },
+          {
+            id: 'capital',
+            options: Object.values(CAPITALS_117),
+          },
+        ];
 
   const checkboxFilterOptions = [
     {
