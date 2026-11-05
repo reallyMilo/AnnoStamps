@@ -126,7 +126,7 @@ describe('Stamp creation', () => {
         expect(url.searchParams.get('directory')).to.eq('stamps');
       });
 
-      cy.wait('@createStamp').its('response.statusCode').should('eq', 303);
+      cy.wait('@createStamp').its('response.statusCode').should('eq', 200);
 
       cy.database(
         `SELECT * FROM "Stamp" WHERE title = 'cypress test title';`,
