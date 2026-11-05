@@ -1,3 +1,5 @@
+'use client';
+
 import * as Headless from '@headlessui/react';
 import NextLink, { type LinkProps } from 'next/link';
 import React from 'react';
