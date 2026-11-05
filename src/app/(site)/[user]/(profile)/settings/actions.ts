@@ -1,13 +1,13 @@
-'use server'
+'use server';
 
-import { revalidatePath } from 'next/cache'
-import { headers } from 'next/headers'
+import { revalidatePath } from 'next/cache';
+import { headers } from 'next/headers';
 
-import type { UserWithStamps } from '@/lib/prisma/models'
+import type { UserWithStamps } from '@/lib/prisma/models';
 
-import { auth } from '@/auth'
-import prisma from '@/lib/prisma/singleton'
-import { Prisma } from '#/client'
+import { Prisma } from '#/client';
+import { auth } from '@/auth';
+import prisma from '@/lib/prisma/singleton';
 
 const blockedUsernames = new Set<string>([
   '117',
@@ -15,22 +15,22 @@ const blockedUsernames = new Set<string>([
   'privacy',
   'stamp',
   'stamps',
-])
+]);
 
 export const updateUserSettings = async (
   formData: FormData,
 ): Promise<{
   data?: Pick<UserWithStamps, 'biography' | 'username'> & {
-    isEmailEnabled: boolean
-  }
-  error?: string
-  message?: string
-  ok: boolean
-  state: 'error' | 'idle' | 'success'
+    isEmailEnabled: boolean;
+  };
+  error?: string;
+  message?: string;
+  ok: boolean;
+  state: 'error' | 'idle' | 'success';
 }> => {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
-    return { error: 'Unauthorized', ok: false, state: 'error' }
+    return { error: 'Unauthorized', ok: false, state: 'error' };
   }
 
   const {
@@ -39,23 +39,23 @@ export const updateUserSettings = async (
     image: avatar,
     username,
   } = Object.fromEntries(formData) as {
-    biography: string
-    emailNotifications?: 'on'
-    image: string | undefined
-    username: string
-  }
+    biography: string;
+    emailNotifications?: 'on';
+    image: string | undefined;
+    username: string;
+  };
 
-  const usernameURL = username.toLowerCase()
+  const usernameURL = username.toLowerCase();
 
   if (blockedUsernames.has(usernameURL)) {
     return {
       error: 'Not allowed to use as username',
       ok: false,
       state: 'error',
-    }
+    };
   }
 
-  const image = avatar === 'remove' ? null : avatar
+  const image = avatar === 'remove' ? null : avatar;
   const updateData: Prisma.UserUncheckedUpdateInput = session.user.username
     ? { biography, image }
     : {
@@ -63,13 +63,11 @@ export const updateUserSettings = async (
         image,
         username,
         usernameURL,
-      }
+      };
 
-  const isEmailNotificationEnabled = emailNotifications
-    ? emailNotifications === 'on'
-    : false
+  const isEmailNotificationEnabled = emailNotifications ? true : false;
 
-  let updateResponse = null
+  let updateResponse: Pick<UserWithStamps, 'biography' | 'username'>;
   try {
     updateResponse = await prisma.user.update({
       data: {
@@ -94,7 +92,7 @@ export const updateUserSettings = async (
         },
       },
       where: { id: session.userId },
-    })
+    });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2002') {
@@ -102,19 +100,19 @@ export const updateUserSettings = async (
           error: 'Username already taken',
           ok: false,
           state: 'error',
-        }
+        };
       }
     }
-    console.error(e)
+    console.error(e);
     return {
       error: 'Server error, contact discord',
       ok: false,
       state: 'error',
-    }
+    };
   }
 
-  revalidatePath(`${session.userId}/settings`)
-  revalidatePath(`${session.user.usernameURL}/settings`)
+  revalidatePath(`${session.userId}/settings`);
+  revalidatePath(`${session.user.usernameURL}/settings`);
   return {
     data: {
       biography: updateResponse.biography,
@@ -124,5 +122,5 @@ export const updateUserSettings = async (
     message: 'Updated user info',
     ok: true,
     state: 'success',
-  }
-}
+  };
+};

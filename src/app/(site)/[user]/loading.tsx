@@ -1,5 +1,5 @@
-import { StampCardSkeleton } from '@/components/StampCard'
-import { Container, Grid } from '@/components/ui'
+import { StampCardSkeleton } from '@/components/StampCard';
+import { Container, Grid } from '@/components/ui';
 const UserPageLoading = () => {
   return (
     <Container>
@@ -13,6 +13,6 @@ const UserPageLoading = () => {
         ))}
       </Grid>
     </Container>
-  )
-}
-export default UserPageLoading
+  );
+};
+export default UserPageLoading;

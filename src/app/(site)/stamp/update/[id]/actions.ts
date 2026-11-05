@@ -1,13 +1,14 @@
-'use server'
-import { revalidatePath } from 'next/cache'
-import { headers } from 'next/headers'
-import { redirect } from 'next/navigation'
+'use server';
+import { revalidatePath } from 'next/cache';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-import type { Prisma } from '#/client'
+import type { Prisma } from '#/client';
+import type { StampWithRelations } from '@/lib/prisma/models';
 
-import { auth } from '@/auth'
-import { parseAndSanitizedMarkdown } from '@/lib/markdown'
-import prisma from '@/lib/prisma/singleton'
+import { auth } from '@/auth';
+import { parseAndSanitizedMarkdown } from '@/lib/markdown';
+import prisma from '@/lib/prisma/singleton';
 
 type FormDataEntries = Pick<
   Prisma.StampUncheckedCreateInput,
@@ -19,19 +20,19 @@ type FormDataEntries = Pick<
   | 'title'
   | 'unsafeDescription'
 > & {
-  imageIdsToRemove: string
-  stampId: string
-  uploadedImageUrls: string
-}
+  imageIdsToRemove: string;
+  stampId: string;
+  uploadedImageUrls: string;
+};
 
 export const updateStamp = async (formData: FormData) => {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
-    return { error: 'Unauthorized', ok: false, status: 401 }
+    return { error: 'Unauthorized', ok: false, status: 401 };
   }
 
   if (!session.user.username) {
-    return { error: 'Please set username', ok: false, status: 400 }
+    return { error: 'Please set username', ok: false, status: 400 };
   }
 
   const {
@@ -41,14 +42,14 @@ export const updateStamp = async (formData: FormData) => {
     unsafeDescription,
     uploadedImageUrls,
     ...fields
-  } = Object.fromEntries(formData) as unknown as FormDataEntries
+  } = Object.fromEntries(formData) as unknown as FormDataEntries;
 
-  const deleteImages = JSON.parse(imageIdsToRemove) as string[]
-  const addImages = JSON.parse(uploadedImageUrls) as string[]
-  let prevVersion = null
+  const deleteImages = JSON.parse(imageIdsToRemove) as string[];
+  const addImages = JSON.parse(uploadedImageUrls) as string[];
+  let prevVersion: StampWithRelations['game'];
   try {
-    const markdownDescription = parseAndSanitizedMarkdown(unsafeDescription)
-    await prisma.$transaction(async (tx) => {
+    const markdownDescription = parseAndSanitizedMarkdown(unsafeDescription);
+    prevVersion = await prisma.$transaction(async (tx) => {
       const userStamp = await tx.user.findUnique({
         select: {
           listedStamps: {
@@ -60,11 +61,14 @@ export const updateStamp = async (formData: FormData) => {
         where: {
           id: session.userId,
         },
-      })
-      if (userStamp?.listedStamps.length === 0) {
-        throw new Error('Not stamp owner')
+      });
+      if (!userStamp) {
+        throw new Error('Cannot find user');
       }
-      prevVersion = userStamp?.listedStamps[0].game
+      if (userStamp.listedStamps.length === 0) {
+        throw new Error('Not stamp owner');
+      }
+      const previousGame = userStamp.listedStamps[0].game;
 
       if (deleteImages.length > 0) {
         await tx.image.deleteMany({
@@ -73,21 +77,21 @@ export const updateStamp = async (formData: FormData) => {
               in: deleteImages,
             },
           },
-        })
+        });
       }
 
-      return await tx.stamp.update({
+      await tx.stamp.update({
         data: {
           ...(addImages.length > 0 && {
             images: {
               create: addImages.map((image) => {
-                const start = image.lastIndexOf('/')
-                const end = image.lastIndexOf('.')
-                const id = image.slice(start + 1, end)
+                const start = image.lastIndexOf('/');
+                const end = image.lastIndexOf('.');
+                const id = image.slice(start + 1, end);
                 return {
                   id,
                   originalUrl: image,
-                }
+                };
               }),
             },
           }),
@@ -100,23 +104,25 @@ export const updateStamp = async (formData: FormData) => {
         where: {
           id: stampId,
         },
-      })
-    })
+      });
+
+      return previousGame;
+    });
   } catch (e) {
-    console.error(e)
-    return { error: 'Server error in updating stamp', ok: false, status: 500 }
+    console.error(e);
+    return { error: 'Server error in updating stamp', ok: false, status: 500 };
   }
 
-  revalidatePath(`/stamp/${stampId}`)
+  revalidatePath(`/stamp/${stampId}`);
 
-  const appendGameRoute = game === '117' ? '' : `/${game}`
-  const oldRoute = prevVersion === '117' ? '' : `/${prevVersion}`
+  const appendGameRoute = game === '117' ? '' : `/${game}`;
+  const oldRoute = prevVersion === '117' ? '' : `/${prevVersion}`;
   if (prevVersion !== game) {
-    revalidatePath(`/${session.user.usernameURL}${oldRoute}`)
-    revalidatePath(`/${session.userId}${oldRoute}`)
+    revalidatePath(`/${session.user.usernameURL}${oldRoute}`);
+    revalidatePath(`/${session.userId}${oldRoute}`);
   }
 
-  revalidatePath(`/${session.user.usernameURL}${appendGameRoute}`)
-  revalidatePath(`/${session.userId}${appendGameRoute}`)
-  redirect(`/${session.user.usernameURL}${appendGameRoute}`)
-}
+  revalidatePath(`/${session.user.usernameURL}${appendGameRoute}`);
+  revalidatePath(`/${session.userId}${appendGameRoute}`);
+  redirect(`/${session.user.usernameURL}${appendGameRoute}`);
+};

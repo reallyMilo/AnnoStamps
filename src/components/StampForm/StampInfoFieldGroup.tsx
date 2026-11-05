@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useState } from 'react';
 
 import {
   Button,
@@ -15,19 +15,19 @@ import {
   Text,
   Textarea,
   TextLink,
-} from '@/components/ui'
-import { CATEGORIES } from '@/lib/constants'
-import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data'
-import { parseAndSanitizedMarkdown } from '@/lib/markdown'
+} from '@/components/ui';
+import { CATEGORIES } from '@/lib/constants';
+import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data';
+import { parseAndSanitizedMarkdown } from '@/lib/markdown';
 
-import { useStampFormContext } from './StampForm'
+import { useStampFormContext } from './StampForm';
 
-const presetCategories = Object.values(CATEGORIES)
-const presetRegions = Object.values(REGIONS_1800)
-const presetCapitals = Object.values(CAPITALS_1800)
+const presetCategories = Object.values(CATEGORIES);
+const presetRegions = Object.values(REGIONS_1800);
+const presetCapitals = Object.values(CAPITALS_1800);
 
 const VersionSpecificFields = ({ category = '', game = '117' }) => {
-  const { stamp } = useStampFormContext()
+  const { stamp } = useStampFormContext();
 
   if (game === '1800') {
     return (
@@ -92,17 +92,17 @@ const VersionSpecificFields = ({ category = '', game = '117' }) => {
           </Field>
         )}
       </div>
-    )
+    );
   }
 
   //default game
-  return null
-}
+  return null;
+};
 
 export const StampInfoFieldGroup = ({ game }: { game: string }) => {
-  const { stamp } = useStampFormContext()
+  const { stamp } = useStampFormContext();
 
-  const [category, setCategory] = useState(stamp?.category)
+  const [category, setCategory] = useState(stamp?.category);
 
   const [previewMarkdown, setPreviewMarkdown] = useState(
     stamp?.markdownDescription ??
@@ -113,7 +113,7 @@ export const StampInfoFieldGroup = ({ game }: { game: string }) => {
       </a>
     </p>
     `,
-  )
+  );
   return (
     <FieldGroup>
       <div className="flex space-x-6">
@@ -123,7 +123,9 @@ export const StampInfoFieldGroup = ({ game }: { game: string }) => {
             defaultValue={stamp?.category ?? ''}
             id="category"
             name="category"
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={(e) => {
+              setCategory(e.target.value);
+            }}
             required
           >
             <option disabled value="">
@@ -201,9 +203,9 @@ export const StampInfoFieldGroup = ({ game }: { game: string }) => {
             onClick={() => {
               const textarea = document.getElementById(
                 'description',
-              ) as HTMLTextAreaElement
+              ) as HTMLTextAreaElement;
 
-              setPreviewMarkdown(parseAndSanitizedMarkdown(textarea.value))
+              setPreviewMarkdown(parseAndSanitizedMarkdown(textarea.value));
             }}
           >
             Preview Markdown
@@ -215,5 +217,5 @@ export const StampInfoFieldGroup = ({ game }: { game: string }) => {
         ></div>
       </div>
     </FieldGroup>
-  )
-}
+  );
+};

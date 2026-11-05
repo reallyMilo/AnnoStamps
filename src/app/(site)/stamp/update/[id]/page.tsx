@@ -1,30 +1,30 @@
-import type { Metadata } from 'next'
+import type { Metadata } from 'next';
 
-import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
-import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-import { getSession } from '@/auth'
-import { Container, Text } from '@/components/ui'
-import { stampIncludeStatement } from '@/lib/prisma/models'
-import prisma from '@/lib/prisma/singleton'
+import { getSession } from '@/auth';
+import { Container, Text } from '@/components/ui';
+import { stampIncludeStatement } from '@/lib/prisma/models';
+import prisma from '@/lib/prisma/singleton';
 
-import { UpdateStampForm } from './UpdateStampForm'
+import { UpdateStampForm } from './UpdateStampForm';
 
 export const generateMetadata = async (props: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> => {
-  const params = await props.params
+  const params = await props.params;
   return {
     title: `Update:${params.id} | AnnoStamps`,
-  }
-}
+  };
+};
 const EditStampPage = async (props: { params: Promise<{ id: string }> }) => {
-  const params = await props.params
-  const session = await getSession()
+  const params = await props.params;
+  const session = await getSession();
 
   if (!session) {
-    redirect('/auth/signin')
+    redirect('/auth/signin');
   }
 
   if (!session.user.username) {
@@ -50,7 +50,7 @@ const EditStampPage = async (props: { params: Promise<{ id: string }> }) => {
           </div>
         </div>
       </Container>
-    )
+    );
   }
 
   const userStamp = await prisma.stamp.findUnique({
@@ -59,17 +59,17 @@ const EditStampPage = async (props: { params: Promise<{ id: string }> }) => {
       id: params.id,
       userId: session.userId,
     },
-  })
+  });
 
   if (!userStamp) {
-    throw new Error('Not your stamp')
+    throw new Error('Not your stamp');
   }
 
   return (
     <Container className="md:max-w-5xl">
       <UpdateStampForm stamp={userStamp} />
     </Container>
-  )
-}
+  );
+};
 
-export default EditStampPage
+export default EditStampPage;

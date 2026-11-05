@@ -1,8 +1,8 @@
-import { PlusIcon } from '@heroicons/react/20/solid'
+import { PlusIcon } from '@heroicons/react/20/solid';
 
-import type { UserWithStamps } from '@/lib/prisma/models'
+import type { UserWithStamps } from '@/lib/prisma/models';
 
-import { Button, Container, Heading, Subheading, Text } from '@/components/ui'
+import { Button, Container, Heading, Subheading, Text } from '@/components/ui';
 
 /**
  * TODO: home-view additions
@@ -25,8 +25,8 @@ export const UserHomeBanner = ({
         New Stamp
       </Button>
     </div>
-  )
-}
+  );
+};
 
 export const UserHomePage = ({
   biography,
@@ -39,7 +39,7 @@ export const UserHomePage = ({
   const userBannerProps = {
     biography,
     username,
-  }
+  };
 
   if (stampsLength === 0) {
     return (
@@ -71,7 +71,7 @@ export const UserHomePage = ({
           </div>
         </div>
       </Container>
-    )
+    );
   }
 
   return (
@@ -79,5 +79,5 @@ export const UserHomePage = ({
       <UserHomeBanner {...userBannerProps} />
       {children}
     </Container>
-  )
-}
+  );
+};

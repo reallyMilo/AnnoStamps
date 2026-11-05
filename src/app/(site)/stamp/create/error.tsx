@@ -1,18 +1,18 @@
-'use client'
+'use client';
 
-import * as Sentry from '@sentry/nextjs'
-import { useEffect } from 'react'
+import * as Sentry from '@sentry/nextjs';
+import { useEffect } from 'react';
 
-import { Heading, Text } from '@/components/ui'
+import { Heading, Text } from '@/components/ui';
 
 const CreateStampErrorPage = ({
   error,
 }: {
-  error: Error & { digest?: string }
+  error: Error & { digest?: string };
 }) => {
   useEffect(() => {
-    Sentry.captureException(error)
-  }, [error])
+    Sentry.captureException(error);
+  }, [error]);
 
   return (
     <div className="mt-20 flex flex-col items-center justify-center">
@@ -22,7 +22,7 @@ const CreateStampErrorPage = ({
         post this to the discord {JSON.stringify(error.message, undefined, 2)}
       </Text>
     </div>
-  )
-}
+  );
+};
 
-export default CreateStampErrorPage
+export default CreateStampErrorPage;

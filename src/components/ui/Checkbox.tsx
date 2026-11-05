@@ -1,8 +1,8 @@
-import type React from 'react'
+import type React from 'react';
 
-import * as Headless from '@headlessui/react'
+import * as Headless from '@headlessui/react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 export const CheckboxGroup = ({
   className,
@@ -20,8 +20,8 @@ export const CheckboxGroup = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const CheckboxField = ({
   className,
@@ -45,8 +45,8 @@ export const CheckboxField = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 const base = [
   // Basic layout
@@ -74,7 +74,7 @@ const base = [
   // Forced colors mode
   'forced-colors:[--checkbox-check:HighlightText] forced-colors:[--checkbox-checked-bg:Highlight] forced-colors:group-data-disabled:[--checkbox-check:Highlight]',
   'dark:forced-colors:[--checkbox-check:HighlightText] dark:forced-colors:[--checkbox-checked-bg:Highlight] dark:forced-colors:group-data-disabled:[--checkbox-check:Highlight]',
-]
+];
 
 const colors = {
   accent:
@@ -83,17 +83,17 @@ const colors = {
     '[--checkbox-check:var(--color-white)] [--checkbox-checked-bg:var(--color-primary)] [--checkbox-checked-border:var(--color-primary)]/90',
   secondary:
     '[--checkbox-check:var(--color-secondary)] [--checkbox-checked-bg:var(--color-secondary)] [--checkbox-checked-border:var(--color-secondary)]/80',
-}
+};
 
-type Color = keyof typeof colors
+type Color = keyof typeof colors;
 
 export const Checkbox = ({
   className,
   color = 'primary',
   ...props
 }: Omit<Headless.CheckboxProps, 'className'> & {
-  className?: string
-  color?: Color
+  className?: string;
+  color?: Color;
 }) => {
   return (
     <Headless.Checkbox
@@ -126,5 +126,5 @@ export const Checkbox = ({
         </svg>
       </span>
     </Headless.Checkbox>
-  )
-}
+  );
+};

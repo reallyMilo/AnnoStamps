@@ -1,8 +1,8 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
-type GridProps = {
-  children: React.ReactNode
-  className?: string
+interface GridProps {
+  children: React.ReactNode;
+  className?: string;
 }
 export const Grid = ({ children, className }: GridProps) => {
   return (
@@ -14,5 +14,5 @@ export const Grid = ({ children, className }: GridProps) => {
     >
       {children}
     </div>
-  )
-}
+  );
+};

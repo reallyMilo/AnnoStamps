@@ -1,7 +1,7 @@
-import type { PrismaConfig } from 'prisma'
+import type { PrismaConfig } from 'prisma';
 
-import 'dotenv/config'
-import { env } from 'prisma/config'
+import 'dotenv/config';
+import { env } from 'prisma/config';
 
 export default {
   datasource: {
@@ -12,4 +12,4 @@ export default {
     seed: 'tsx ./prisma/seed.ts',
   },
   schema: './prisma/schema.prisma',
-} satisfies PrismaConfig
+} satisfies PrismaConfig;

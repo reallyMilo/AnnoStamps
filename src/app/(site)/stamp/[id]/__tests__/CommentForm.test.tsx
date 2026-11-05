@@ -1,13 +1,13 @@
-import type { Mock } from 'vitest'
+import type { Mock } from 'vitest';
 
-import { render as renderRTL, screen, userEvent } from '@/__tests__/test-utils'
-import { useSession } from '@/lib/auth-client'
+import { render as renderRTL, screen, userEvent } from '@/__tests__/test-utils';
+import { useSession } from '@/lib/auth-client';
 
-import { CommentForm } from '../CommentForm'
+import { CommentForm } from '../CommentForm';
 
 vi.mock('@/app/(site)/stamp/[id]/actions', () => ({
   addCommentToStamp: vi.fn(),
-}))
+}));
 
 const session = {
   user: {
@@ -17,12 +17,13 @@ const session = {
     usernameURL: 'test123',
   },
   userId: '1',
-}
-const mockAction = async () => {
-  return { message: 'Test message', ok: true }
-}
+};
+const mockAction = vi.fn(() =>
+  Promise.resolve({ message: 'Test message', ok: true }),
+);
+
 describe('CommentForm', () => {
-  ;(useSession as Mock).mockReturnValue({ data: session, isPending: false })
+  (useSession as Mock).mockReturnValue({ data: session, isPending: false });
   describe('Add a comment to stamp', () => {
     const render = () => ({
       ...renderRTL(
@@ -35,39 +36,39 @@ describe('CommentForm', () => {
         </CommentForm.Root>,
       ),
       user: userEvent.setup(),
-    })
+    });
 
     it('renders textarea with hidden buttons initially, and shows buttons on focus', async () => {
-      render()
-      const textarea = screen.getByLabelText('Comment')
+      render();
+      const textarea = screen.getByLabelText('Comment');
 
       expect(
         screen.getByPlaceholderText('Add a comment...'),
-      ).toBeInTheDocument()
+      ).toBeInTheDocument();
       expect(
         screen.queryByRole('button', { name: 'Comment' }),
-      ).not.toBeInTheDocument()
+      ).not.toBeInTheDocument();
       expect(
         screen.queryByRole('button', { name: 'Cancel' }),
-      ).not.toBeInTheDocument()
+      ).not.toBeInTheDocument();
 
-      await userEvent.click(textarea)
-      expect(screen.getByRole('button', { name: 'Comment' })).toBeVisible()
-      expect(screen.getByRole('button', { name: 'Comment' })).toBeDisabled()
-      expect(screen.getByRole('button', { name: 'Cancel' })).toBeVisible()
-      expect(screen.getByRole('button', { name: 'Cancel' })).toBeEnabled()
-    })
+      await userEvent.click(textarea);
+      expect(screen.getByRole('button', { name: 'Comment' })).toBeVisible();
+      expect(screen.getByRole('button', { name: 'Comment' })).toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Cancel' })).toBeVisible();
+      expect(screen.getByRole('button', { name: 'Cancel' })).toBeEnabled();
+    });
 
     it('enables submit button when text is entered and clears form on cancel', async () => {
-      render()
-      const textarea = screen.getByLabelText('Comment')
-      await userEvent.type(textarea, 'testing')
-      expect(textarea).toHaveValue('testing')
-      expect(screen.getByRole('button', { name: 'Comment' })).toBeVisible()
-      expect(screen.getByRole('button', { name: 'Comment' })).toBeEnabled()
-      await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
-    })
-  })
+      render();
+      const textarea = screen.getByLabelText('Comment');
+      await userEvent.type(textarea, 'testing');
+      expect(textarea).toHaveValue('testing');
+      expect(screen.getByRole('button', { name: 'Comment' })).toBeVisible();
+      expect(screen.getByRole('button', { name: 'Comment' })).toBeEnabled();
+      await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    });
+  });
   describe('Add a reply to a comment', () => {
     const render = () => ({
       ...renderRTL(
@@ -82,35 +83,35 @@ describe('CommentForm', () => {
         </CommentForm.Root>,
       ),
       user: userEvent.setup(),
-    })
+    });
     it('displays only the Reply button when the form is initially hidden', () => {
-      render()
+      render();
 
-      expect(screen.getByRole('button', { name: 'Reply' })).toBeVisible()
-      expect(screen.getByRole('button', { name: 'Reply' })).toBeEnabled()
-      expect(screen.queryByLabelText('Comment')).not.toBeInTheDocument()
-    })
+      expect(screen.getByRole('button', { name: 'Reply' })).toBeVisible();
+      expect(screen.getByRole('button', { name: 'Reply' })).toBeEnabled();
+      expect(screen.queryByLabelText('Comment')).not.toBeInTheDocument();
+    });
     it('expands the form and focuses on textarea when Reply button is clicked', async () => {
-      render()
-      await userEvent.click(screen.getByRole('button', { name: 'Reply' }))
+      render();
+      await userEvent.click(screen.getByRole('button', { name: 'Reply' }));
 
       expect(
         screen.getByPlaceholderText('Add a comment...'),
-      ).toBeInTheDocument()
-      expect(screen.getByLabelText('Comment')).toHaveFocus()
-      expect(screen.getByTestId('comment-submit-button')).toBeVisible()
-      expect(screen.getByRole('button', { name: 'Cancel' })).toBeVisible()
+      ).toBeInTheDocument();
+      expect(screen.getByLabelText('Comment')).toHaveFocus();
+      expect(screen.getByTestId('comment-submit-button')).toBeVisible();
+      expect(screen.getByRole('button', { name: 'Cancel' })).toBeVisible();
 
-      await userEvent.click(screen.getByTestId('comment-reply-button'))
-      expect(screen.getByLabelText('Comment')).toHaveFocus()
-    })
+      await userEvent.click(screen.getByTestId('comment-reply-button'));
+      expect(screen.getByLabelText('Comment')).toHaveFocus();
+    });
     it('hides the expanded form when Cancel button is clicked', async () => {
-      render()
+      render();
 
-      await userEvent.click(screen.getByRole('button', { name: 'Reply' }))
-      await userEvent.type(screen.getByLabelText('Comment'), 'testing')
-      await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
-      expect(screen.queryByLabelText('Comment')).not.toBeInTheDocument()
-    })
-  })
-})
+      await userEvent.click(screen.getByRole('button', { name: 'Reply' }));
+      await userEvent.type(screen.getByLabelText('Comment'), 'testing');
+      await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+      expect(screen.queryByLabelText('Comment')).not.toBeInTheDocument();
+    });
+  });
+});

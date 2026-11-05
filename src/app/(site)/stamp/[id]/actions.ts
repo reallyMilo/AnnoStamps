@@ -1,20 +1,20 @@
-'use server'
+'use server';
 
-import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
-import { revalidatePath } from 'next/cache'
-import { headers } from 'next/headers'
+import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import { revalidatePath } from 'next/cache';
+import { headers } from 'next/headers';
 
-import type { Comment, StampWithRelations } from '@/lib/prisma/models'
+import type { Comment, StampWithRelations } from '@/lib/prisma/models';
 
-import { auth } from '@/auth'
-import prisma from '@/lib/prisma/singleton'
+import { auth } from '@/auth';
+import prisma from '@/lib/prisma/singleton';
 
 export const likeStamp = async (stampId: StampWithRelations['id']) => {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
-    return { error: 'Unauthorized', ok: false, status: 401 }
+    return { error: 'Unauthorized', ok: false, status: 401 };
   }
-  let updateUserLikes = null
+  let updateUserLikes;
   try {
     updateUserLikes = await prisma.user.update({
       data: {
@@ -30,20 +30,20 @@ export const likeStamp = async (stampId: StampWithRelations['id']) => {
         },
       },
       where: { id: session.userId },
-    })
+    });
   } catch (e) {
-    console.error(e)
-    return { error: 'Server error', ok: false, status: 500 }
+    console.error(e);
+    return { error: 'Server error', ok: false, status: 500 };
   }
 
-  revalidatePath(`/stamp/${stampId}`)
+  revalidatePath(`/stamp/${stampId}`);
   return {
     data: updateUserLikes.likedStamps.map((i) => i.id),
     message: 'Successfully liked stamp.',
     ok: true,
     status: 200,
-  }
-}
+  };
+};
 
 export const addCommentToStamp = async (
   stampId: StampWithRelations['id'],
@@ -51,19 +51,19 @@ export const addCommentToStamp = async (
   userIdToNotify: Comment['user']['id'],
   formData: FormData,
 ) => {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
-    return { error: 'Unauthorized', ok: false, status: 401 }
+    return { error: 'Unauthorized', ok: false, status: 401 };
   }
 
   if (!session.user.username) {
-    return { error: 'Please set username', ok: false, status: 400 }
+    return { error: 'Please set username', ok: false, status: 400 };
   }
   const { comment } = Object.fromEntries(formData) as {
-    comment: string
-  }
-  const targetUrl = `/stamp/${stampId}`
-  let userPreference = null
+    comment: string;
+  };
+  const targetUrl = `/stamp/${stampId}`;
+  let userPreference;
   try {
     const [, , preference] = await prisma.$transaction([
       prisma.comment.create({
@@ -92,18 +92,18 @@ export const addCommentToStamp = async (
           userId: userIdToNotify,
         },
       }),
-    ])
+    ]);
 
-    userPreference = preference
+    userPreference = preference;
   } catch (e) {
-    console.error(e)
-    return { error: 'Prisma error', ok: false, status: 500 }
+    console.error(e);
+    return { error: 'Prisma error', ok: false, status: 500 };
   }
 
   if (process.env.AWS_S3_BUCKET === 'eu-central-1') {
-    if (!userPreference || userPreference.enabled === true) {
+    if (!userPreference || userPreference.enabled) {
       try {
-        const client = new LambdaClient({ region: 'eu-central-1' })
+        const client = new LambdaClient({ region: 'eu-central-1' });
         const command = new InvokeCommand({
           FunctionName: 'sendEmailSES',
           InvocationType: 'Event',
@@ -117,17 +117,17 @@ export const addCommentToStamp = async (
             targetUrl,
             userIdToNotify,
           }),
-        })
-        const response = await client.send(command)
+        });
+        const response = await client.send(command);
         if (response.StatusCode !== 202) {
-          console.error(response)
+          console.error(response);
         }
       } catch (e) {
-        console.error(e)
+        console.error(e);
       }
     }
   }
 
-  revalidatePath(`/stamp/${stampId}`)
-  return { message: 'Added comment to stamp.', ok: true, status: 200 }
-}
+  revalidatePath(`/stamp/${stampId}`);
+  return { message: 'Added comment to stamp.', ok: true, status: 200 };
+};

@@ -10,6 +10,17 @@
   <p align="center">
     <a href="https://discord.gg/73hfP54qXe"><strong>Join the Discord »</strong></a>
   </p>
+  <p align="center">
+    Supported by&nbsp;
+    <a href="https://www.localstack.cloud/">
+      <img
+        src="https://cdn.brandfetch.io/id3tnxsAfl/theme/light/logo.svg?c=1bxid64Mup7aczewSAYMX"
+        width="180"
+        align="absmiddle"
+        alt="Supported by LocalStack"
+      >
+    </a>
+  </p>
 </div>
 
 ## Getting Started
@@ -53,17 +64,22 @@
       AUTH_DISCORD_SECRET=
       ```
 
-   4. Run docker compose with local stack profile
+5. (Optional) To test stamp uploads you will need to sign in to Localstack.
+   1. [Grab personal auth token](https://app.localstack.cloud/settings/auth-tokens)
+
+   2. Add to env LOCALSTACK_AUTH_TOKEN.
+
+   3. Run docker compose with local stack profile
 
       ```bash
-        docker compose --profile localstack up
+      docker compose --profile localstack up
       ```
 
-   5. Install [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) then run the following commands.
+   4. Install [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) then run the following commands.
 
       ```bash
-        terraform -chdir=./terraform/dev init
-        terraform -chdir=./terraform/dev apply -auto-approve
+      terraform -chdir=./terraform/dev init
+      terraform -chdir=./terraform/dev apply -auto-approve
       ```
 
 ## Contributing

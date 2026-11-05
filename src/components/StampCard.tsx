@@ -1,10 +1,10 @@
-import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
-import Link from 'next/link'
+import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid';
+import Link from 'next/link';
 
-import type { StampWithRelations } from '@/lib/prisma/models'
+import type { StampWithRelations } from '@/lib/prisma/models';
 
-import { StampCategoryIcon } from '@/components/StampCategoryIcon'
-import { Avatar, Heading, Text } from '@/components/ui'
+import { StampCategoryIcon } from '@/components/StampCategoryIcon';
+import { Avatar, Heading, Text } from '@/components/ui';
 
 export const StampCard = ({
   category,
@@ -28,13 +28,13 @@ export const StampCard = ({
   | 'title'
   | 'user'
 >) => {
-  const srcUrl = images[0]?.smallUrl ?? images[0].originalUrl
+  const srcUrl = images[0]?.smallUrl ?? images[0].originalUrl;
 
   return (
     <div className="group relative flex flex-col rounded-lg bg-white shadow-md dark:bg-zinc-800">
       <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200 group-hover:opacity-75">
         <img
-          alt={title ?? 'image alt'}
+          alt={title}
           className="transition hover:opacity-80"
           sizes="(max-width: 320px) 700px
                 (max-width: 768px) 390px,
@@ -52,7 +52,7 @@ export const StampCard = ({
         )}
       </div>
 
-      <div className="flex h-full min-h-[200px] flex-col gap-y-2 px-3 py-2">
+      <div className="flex h-full min-h-50 flex-col gap-y-2 px-3 py-2">
         <div className="flex items-baseline justify-between">
           <Text
             className="text-accent font-semibold capitalize dark:text-rose-400"
@@ -101,15 +101,15 @@ export const StampCard = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const StampCardSkeleton = () => {
   return (
     <div className="group relative flex animate-pulse flex-col rounded-lg bg-white shadow-md dark:bg-zinc-800">
       <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-200 group-hover:opacity-75"></div>
 
-      <div className="flex h-full min-h-[200px] flex-col gap-y-2 px-3 py-2">
+      <div className="flex h-full min-h-50 flex-col gap-y-2 px-3 py-2">
         <div className="flex items-baseline justify-between"></div>
         <div className="line-clamp-2 w-full grow overflow-hidden text-ellipsis"></div>
 
@@ -118,5 +118,5 @@ export const StampCardSkeleton = () => {
         <div className="mt-auto flex justify-between"></div>
       </div>
     </div>
-  )
-}
+  );
+};

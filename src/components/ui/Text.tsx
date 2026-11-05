@@ -1,6 +1,6 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
-import { Link } from './Link'
+import { Link } from './Link';
 
 export const Text = ({
   className,
@@ -15,8 +15,8 @@ export const Text = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const TextLink = ({
   className,
@@ -30,8 +30,8 @@ export const TextLink = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const Strong = ({
   className,
@@ -42,5 +42,5 @@ export const Strong = ({
       {...props}
       className={cn('text-midnight font-medium dark:text-white', className)}
     />
-  )
-}
+  );
+};

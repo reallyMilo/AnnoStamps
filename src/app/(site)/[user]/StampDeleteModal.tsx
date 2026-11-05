@@ -1,8 +1,8 @@
-'use client'
-import { TrashIcon } from '@heroicons/react/20/solid'
-import { useState } from 'react'
+'use client';
+import { TrashIcon } from '@heroicons/react/20/solid';
+import { useState } from 'react';
 
-import type { UserWithStamps } from '@/lib/prisma/models'
+import type { UserWithStamps } from '@/lib/prisma/models';
 
 import {
   Button,
@@ -10,15 +10,15 @@ import {
   ModalActions,
   ModalDescription,
   ModalTitle,
-} from '@/components/ui'
+} from '@/components/ui';
 
-import { deleteStamp } from './actions'
+import { deleteStamp } from './actions';
 
 export const StampDeleteModal = ({
   id,
   title,
 }: Pick<UserWithStamps['listedStamps'][0], 'id' | 'title'>) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -26,7 +26,9 @@ export const StampDeleteModal = ({
         className="cursor-pointer"
         color="accent"
         data-testid="delete-stamp"
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          setIsOpen(true);
+        }}
       >
         <TrashIcon />
       </Button>
@@ -36,7 +38,12 @@ export const StampDeleteModal = ({
         <ModalDescription>This action is not reversible.</ModalDescription>
 
         <ModalActions>
-          <Button onClick={() => setIsOpen(false)} plain>
+          <Button
+            onClick={() => {
+              setIsOpen(false);
+            }}
+            plain
+          >
             No, cancel
           </Button>
           <Button color="accent" onClick={async () => await deleteStamp(id)}>
@@ -45,5 +52,5 @@ export const StampDeleteModal = ({
         </ModalActions>
       </Modal>
     </>
-  )
-}
+  );
+};

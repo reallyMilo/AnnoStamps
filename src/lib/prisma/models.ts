@@ -1,10 +1,10 @@
-import { formatDistanceToNowStrict, getUnixTime } from 'date-fns'
-import z from 'zod'
+import { formatDistanceToNowStrict, getUnixTime } from 'date-fns';
+import z from 'zod';
 
-import { Prisma } from '#/client'
+import { Prisma } from '#/client';
 
-import { CATEGORIES } from '../constants'
-import { formatIntegerWithSuffix } from './utils'
+import { CATEGORIES } from '../constants';
+import { formatIntegerWithSuffix } from './utils';
 
 export const stampIncludeStatement = {
   _count: {
@@ -22,19 +22,18 @@ export const stampIncludeStatement = {
       usernameURL: true,
     },
   },
-} satisfies Prisma.StampInclude
+} satisfies Prisma.StampInclude;
 
-export interface StampWithRelations
-  extends Omit<
-    Prisma.StampGetPayload<{
-      include: typeof stampIncludeStatement
-    }>,
-    'comments' | 'createdAt' | 'images' | 'updatedAt'
-  > {
-  createdAt: string
-  images: Image[]
-  suffixDownloads: string
-  updatedAt: string
+export interface StampWithRelations extends Omit<
+  Prisma.StampGetPayload<{
+    include: typeof stampIncludeStatement;
+  }>,
+  'comments' | 'createdAt' | 'images' | 'updatedAt'
+> {
+  createdAt: string;
+  images: Image[];
+  suffixDownloads: string;
+  updatedAt: string;
 }
 
 const stampSchema = z.object({
@@ -71,7 +70,7 @@ const stampSchema = z.object({
   title: z.string(),
   unsafeDescription: z.string(),
   userId: z.string(),
-})
+});
 
 const createStampSchema = stampSchema
   .omit({ downloads: true, likedBy: true })
@@ -79,38 +78,38 @@ const createStampSchema = stampSchema
     modded: modded === 'true',
     region: region ?? 'rome',
     ...schema,
-  })) satisfies z.Schema<
+  })) satisfies z.ZodType<
   Prisma.StampUncheckedCreateInput,
   Omit<Prisma.StampUncheckedCreateInput, 'modded' | 'region'> & {
-    modded: string
-    region?: string
+    modded: string;
+    region?: string;
   }
->
+>;
 
 const updateStampSchema = stampSchema
   .omit({ game: true, id: true, userId: true })
-  .extend({ changedAt: z.string().datetime() })
+  .extend({ changedAt: z.iso.datetime() })
   .partial()
   .transform(({ modded, ...schema }) => ({
     modded: modded === 'true',
     ...schema,
-  })) satisfies z.Schema<
+  })) satisfies z.ZodType<
   Prisma.StampUncheckedUpdateInput,
   Omit<Prisma.StampUncheckedUpdateInput, 'modded'> & {
-    modded?: string
+    modded?: string;
   }
->
+>;
 
 export const stampExtensions = Prisma.defineExtension({
   query: {
     stamp: {
       create({ args, query }) {
-        args.data = createStampSchema.parse(args.data)
-        return query(args)
+        args.data = createStampSchema.parse(args.data);
+        return query(args);
       },
       update({ args, query }) {
-        args.data = updateStampSchema.parse(args.data)
-        return query(args)
+        args.data = updateStampSchema.parse(args.data);
+        return query(args);
       },
     },
   },
@@ -118,28 +117,28 @@ export const stampExtensions = Prisma.defineExtension({
     stamp: {
       changedAtReadable: {
         compute({ changedAt }) {
-          return formatDistanceToNowStrict(changedAt)
+          return formatDistanceToNowStrict(changedAt);
         },
       },
       createdAt: {
         compute({ createdAt }) {
-          return formatDistanceToNowStrict(createdAt)
+          return formatDistanceToNowStrict(createdAt);
         },
       },
       suffixDownloads: {
         compute({ downloads }) {
-          return formatIntegerWithSuffix(downloads)
+          return formatIntegerWithSuffix(downloads);
         },
         needs: { downloads: true },
       },
       updatedAt: {
         compute({ updatedAt }) {
-          return formatDistanceToNowStrict(updatedAt)
+          return formatDistanceToNowStrict(updatedAt);
         },
       },
     },
   },
-})
+});
 
 /* -------------------------------------------------------------------------------------------------
  * User
@@ -167,24 +166,23 @@ export const userIncludeStatement = (game = '117') => {
         game,
       },
     },
-  } satisfies Prisma.UserInclude
-}
+  } satisfies Prisma.UserInclude;
+};
 
-export interface UserWithStamps
-  extends Omit<
-    Prisma.UserGetPayload<{
-      include: ReturnType<typeof userIncludeStatement>
-      omit: {
-        email: true
-        emailVerified: true
-        name: true
-      }
-    }>,
-    'listedStamps'
-  > {
+export interface UserWithStamps extends Omit<
+  Prisma.UserGetPayload<{
+    include: ReturnType<typeof userIncludeStatement>;
+    omit: {
+      email: true;
+      emailVerified: true;
+      name: true;
+    };
+  }>,
+  'listedStamps'
+> {
   listedStamps: (Omit<StampWithRelations, 'likedBy' | 'user'> & {
-    _count: { likedBy: number }
-  })[]
+    _count: { likedBy: number };
+  })[];
 }
 
 const userProfileSchema = z
@@ -193,18 +191,18 @@ const userProfileSchema = z
     username: z.string().regex(/^[a-zA-Z0-9_\\-]+$/),
     usernameURL: z.string(),
   })
-  .partial() satisfies z.Schema<Prisma.UserUncheckedUpdateInput>
+  .partial() satisfies z.ZodType<Prisma.UserUncheckedUpdateInput>;
 
 export const userExtension = Prisma.defineExtension({
   query: {
     user: {
       update({ args, query }) {
-        args.data = userProfileSchema.passthrough().parse(args.data)
-        return query(args)
+        args.data = userProfileSchema.loose().parse(args.data);
+        return query(args);
       },
     },
   },
-})
+});
 
 /* -------------------------------------------------------------------------------------------------
  * Comments
@@ -224,32 +222,32 @@ export const commentIncludeStatement = {
       usernameURL: true,
     },
   },
-} satisfies Prisma.CommentInclude
+} satisfies Prisma.CommentInclude;
 
 export type Comment = Omit<
   Prisma.CommentGetPayload<{ include: typeof commentIncludeStatement }>,
   'createdAt' | 'updatedAt'
 > & {
-  createdAt: number
-  updatedAt: number
-}
+  createdAt: number;
+  updatedAt: number;
+};
 
 export const commentExtension = Prisma.defineExtension({
   result: {
     comment: {
       createdAt: {
         compute({ createdAt }) {
-          return getUnixTime(createdAt)
+          return getUnixTime(createdAt);
         },
       },
       updatedAt: {
         compute({ updatedAt }) {
-          return getUnixTime(updatedAt)
+          return getUnixTime(updatedAt);
         },
       },
     },
   },
-})
+});
 
 /* -------------------------------------------------------------------------------------------------
  * Notifications
@@ -259,30 +257,30 @@ export type Notification = Omit<
   'body' | 'createdAt' | 'updatedAt'
 > & {
   body: {
-    authorOfContent: string
-    authorOfContentURL: string
-    content: string
-  }
-  createdAt: string
-  updatedAt: string
-}
+    authorOfContent: string;
+    authorOfContentURL: string;
+    content: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+};
 
 export const notificationExtension = Prisma.defineExtension({
   result: {
     notification: {
       createdAt: {
         compute({ createdAt }) {
-          return formatDistanceToNowStrict(createdAt)
+          return formatDistanceToNowStrict(createdAt);
         },
       },
       updatedAt: {
         compute({ updatedAt }) {
-          return formatDistanceToNowStrict(updatedAt)
+          return formatDistanceToNowStrict(updatedAt);
         },
       },
     },
   },
-})
+});
 
 /* -------------------------------------------------------------------------------------------------
  * Preference
@@ -292,26 +290,26 @@ export type Preference = Omit<
   Prisma.PreferenceGetPayload<Prisma.PreferenceDefaultArgs>,
   'createdAt' | 'updatedAt'
 > & {
-  createdAt: string
-  updatedAt: string
-}
+  createdAt: string;
+  updatedAt: string;
+};
 
 export const preferenceExtension = Prisma.defineExtension({
   result: {
     preference: {
       createdAt: {
         compute({ createdAt }) {
-          return formatDistanceToNowStrict(createdAt)
+          return formatDistanceToNowStrict(createdAt);
         },
       },
       updatedAt: {
         compute({ updatedAt }) {
-          return formatDistanceToNowStrict(updatedAt)
+          return formatDistanceToNowStrict(updatedAt);
         },
       },
     },
   },
-})
+});
 
 /* -------------------------------------------------------------------------------------------------
  * Image
@@ -321,22 +319,22 @@ export type Image = Omit<
   Prisma.ImageGetPayload<Prisma.ImageDefaultArgs>,
   'createdAt' | 'updatedAt'
 > & {
-  createdAt: number
-  updatedAt: number
-}
+  createdAt: number;
+  updatedAt: number;
+};
 export const imageExtension = Prisma.defineExtension({
   result: {
     image: {
       createdAt: {
         compute({ createdAt }) {
-          return getUnixTime(createdAt)
+          return getUnixTime(createdAt);
         },
       },
       updatedAt: {
         compute({ updatedAt }) {
-          return getUnixTime(updatedAt)
+          return getUnixTime(updatedAt);
         },
       },
     },
   },
-})
+});

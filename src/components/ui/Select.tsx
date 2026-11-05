@@ -1,7 +1,7 @@
-import * as Headless from '@headlessui/react'
-import { forwardRef } from 'react'
+import * as Headless from '@headlessui/react';
+import { forwardRef } from 'react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 export const Select = forwardRef(
   (
@@ -57,8 +57,8 @@ export const Select = forwardRef(
           ])}
         />
       </span>
-    )
+    );
   },
-)
+);
 
-Select.displayName = 'Select'
+Select.displayName = 'Select';

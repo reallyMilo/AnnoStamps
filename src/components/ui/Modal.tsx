@@ -1,10 +1,10 @@
-import type React from 'react'
+import type React from 'react';
 
-import * as Headless from '@headlessui/react'
+import * as Headless from '@headlessui/react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
-import { Text } from './Text'
+import { Text } from './Text';
 
 const sizes = {
   '2xl': 'sm:max-w-2xl',
@@ -16,7 +16,7 @@ const sizes = {
   sm: 'sm:max-w-sm',
   xl: 'sm:max-w-xl',
   xs: 'sm:max-w-xs',
-}
+};
 
 export const Modal = ({
   children,
@@ -24,9 +24,9 @@ export const Modal = ({
   size = 'lg',
   ...props
 }: Omit<Headless.DialogProps, 'className'> & {
-  children: React.ReactNode
-  className?: string
-  size?: keyof typeof sizes
+  children: React.ReactNode;
+  className?: string;
+  size?: keyof typeof sizes;
 }) => {
   return (
     <Headless.Dialog {...props}>
@@ -50,8 +50,8 @@ export const Modal = ({
         </div>
       </div>
     </Headless.Dialog>
-  )
-}
+  );
+};
 
 export const ModalTitle = ({
   className,
@@ -65,14 +65,14 @@ export const ModalTitle = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const ModalDescription = ({
   className,
   ...props
 }: Omit<Headless.DescriptionProps<typeof Text>, 'className'> & {
-  className?: string
+  className?: string;
 }) => {
   return (
     <Headless.Description
@@ -80,15 +80,15 @@ export const ModalDescription = ({
       {...props}
       className={cn('mt-2 text-pretty', className)}
     />
-  )
-}
+  );
+};
 
 export const ModalBody = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'div'>) => {
-  return <div {...props} className={cn('mt-6', className)} />
-}
+  return <div {...props} className={cn('mt-6', className)} />;
+};
 
 export const ModalActions = ({
   className,
@@ -102,5 +102,5 @@ export const ModalActions = ({
         className,
       )}
     />
-  )
-}
+  );
+};

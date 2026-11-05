@@ -1,8 +1,8 @@
-import type React from 'react'
+import type React from 'react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
-import { Button } from './Button'
+import { Button } from './Button';
 
 export const Pagination = ({
   'aria-label': ariaLabel = 'Page navigation',
@@ -15,8 +15,8 @@ export const Pagination = ({
       {...props}
       className={cn('flex gap-x-2', className)}
     />
-  )
-}
+  );
+};
 
 export const PaginationPrevious = ({
   children = '',
@@ -47,8 +47,8 @@ export const PaginationPrevious = ({
         {children}
       </Button>
     </span>
-  )
-}
+  );
+};
 
 export const PaginationNext = ({
   children = '',
@@ -79,8 +79,8 @@ export const PaginationNext = ({
         </svg>
       </Button>
     </span>
-  )
-}
+  );
+};
 
 export const PaginationList = ({
   className,
@@ -91,8 +91,8 @@ export const PaginationList = ({
       {...props}
       className={cn('hidden items-baseline gap-x-2 sm:flex', className)}
     />
-  )
-}
+  );
+};
 
 export const PaginationPage = ({
   children,
@@ -100,9 +100,9 @@ export const PaginationPage = ({
   current = false,
   href,
 }: React.PropsWithChildren<{
-  className?: string
-  current?: boolean
-  href: string
+  className?: string;
+  current?: boolean;
+  href: string;
 }>) => {
   return (
     <Button
@@ -118,8 +118,8 @@ export const PaginationPage = ({
     >
       <span className="-mx-0.5">{children}</span>
     </Button>
-  )
-}
+  );
+};
 
 export const PaginationGap = ({
   children = <>&hellip;</>,
@@ -132,11 +132,11 @@ export const PaginationGap = ({
       data-testid="pagination-gap"
       {...props}
       className={cn(
-        'w-[2.25rem] select-none text-center text-sm/6 font-semibold text-midnight dark:text-white',
+        'text-midnight w-[2.25rem] text-center text-sm/6 font-semibold select-none dark:text-white',
         className,
       )}
     >
       {children}
     </span>
-  )
-}
+  );
+};

@@ -1,8 +1,8 @@
-import type React from 'react'
+import type React from 'react';
 
-import * as Headless from '@headlessui/react'
+import * as Headless from '@headlessui/react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 export const Fieldset = ({
   className,
@@ -16,8 +16,8 @@ export const Fieldset = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const Legend = ({
   className,
@@ -32,8 +32,8 @@ export const Legend = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const FieldGroup = ({
   className,
@@ -45,8 +45,8 @@ export const FieldGroup = ({
       {...props}
       className={cn('space-y-8', className)}
     />
-  )
-}
+  );
+};
 
 export const Field = ({
   className,
@@ -65,8 +65,8 @@ export const Field = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const Label = ({
   className,
@@ -81,8 +81,8 @@ export const Label = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const Description = ({
   className,
@@ -97,8 +97,8 @@ export const Description = ({
         className,
       )}
     />
-  )
-}
+  );
+};
 
 export const ErrorMessage = ({
   className,
@@ -113,5 +113,5 @@ export const ErrorMessage = ({
         className,
       )}
     />
-  )
-}
+  );
+};

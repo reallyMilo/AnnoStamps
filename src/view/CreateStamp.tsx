@@ -1,16 +1,16 @@
-import { ExclamationTriangleIcon } from '@heroicons/react/20/solid'
-import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-import { getSession } from '@/auth'
-import { Container, Text } from '@/components/ui'
-import 'server-only'
+import { getSession } from '@/auth';
+import { Container, Text } from '@/components/ui';
+import 'server-only';
 
 export const CreateStamp = async ({ children }: React.PropsWithChildren) => {
-  const session = await getSession()
+  const session = await getSession();
 
   if (!session) {
-    redirect('/auth/signin')
+    redirect('/auth/signin');
   }
 
   if (!session.user.username) {
@@ -36,8 +36,8 @@ export const CreateStamp = async ({ children }: React.PropsWithChildren) => {
           </div>
         </div>
       </Container>
-    )
+    );
   }
 
-  return <Container className="md:max-w-5xl">{children}</Container>
-}
+  return <Container className="md:max-w-5xl">{children}</Container>;
+};

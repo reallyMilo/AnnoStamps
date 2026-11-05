@@ -1,7 +1,7 @@
-'use client'
-import { StampForm } from '@/components/StampForm/StampForm'
+'use client';
+import { StampForm } from '@/components/StampForm/StampForm';
 
-import { createStamp } from './actions'
+import { createStamp } from './actions';
 
 export const CreateStampForm = () => {
   return (
@@ -18,5 +18,5 @@ export const CreateStampForm = () => {
         <StampForm.Submit>Submit Stamp</StampForm.Submit>
       </StampForm.Form>
     </StampForm.Root>
-  )
-}
+  );
+};

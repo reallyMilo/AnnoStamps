@@ -1,11 +1,11 @@
-import type { StampWithRelations } from '@/lib/prisma/models'
+import type { StampWithRelations } from '@/lib/prisma/models';
 
 import {
   render as renderRTL,
   screen,
   userEvent,
-} from '../../__tests__/test-utils'
-import { StampCard } from '../StampCard'
+} from '../../__tests__/test-utils';
+import { StampCard } from '../StampCard';
 
 const render = (props?: Partial<StampWithRelations>) => ({
   ...renderRTL(
@@ -43,27 +43,27 @@ const render = (props?: Partial<StampWithRelations>) => ({
     />,
   ),
   user: userEvent.setup(),
-})
+});
 
 describe('Stamp Card', () => {
   it('renders with all provided props', () => {
-    render()
+    render();
 
     expect(screen.getByTestId('stamp-card-link')).toHaveAttribute(
       'href',
       '/stamp/urlID',
-    )
-    expect(screen.getByAltText('Stamp Title')).toBeInTheDocument()
-    expect(screen.getByText('mods')).toBeInTheDocument()
-    expect(screen.getByText('123')).toBeInTheDocument()
-    expect(screen.getByText('production')).toBeInTheDocument()
-    expect(screen.getByText('old world')).toBeInTheDocument()
-    expect(screen.getByText('stampCreator')).toBeInTheDocument()
-    expect(screen.getByText('ago', { exact: false })).toBeInTheDocument()
-  })
+    );
+    expect(screen.getByAltText('Stamp Title')).toBeInTheDocument();
+    expect(screen.getByText('mods')).toBeInTheDocument();
+    expect(screen.getByText('123')).toBeInTheDocument();
+    expect(screen.getByText('production')).toBeInTheDocument();
+    expect(screen.getByText('old world')).toBeInTheDocument();
+    expect(screen.getByText('stampCreator')).toBeInTheDocument();
+    expect(screen.getByText('ago', { exact: false })).toBeInTheDocument();
+  });
 
   it('hidden mod when false', () => {
-    render({ modded: false })
-    expect(screen.queryByText('mods')).not.toBeInTheDocument()
-  })
-})
+    render({ modded: false });
+    expect(screen.queryByText('mods')).not.toBeInTheDocument();
+  });
+});

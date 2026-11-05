@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useState } from 'react';
 
 import {
   MobileSidebar,
@@ -11,25 +11,32 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarSection,
-} from '@/components/ui'
+} from '@/components/ui';
 
-import { VersionButtons } from './VersionButtons'
+import { VersionButtons } from './VersionButtons';
 
 export const MobileNavbar = ({
   children,
   socials,
 }: React.PropsWithChildren<{ socials: React.ReactNode }>) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <NavbarItem
         aria-label="Open navigation"
         className="md:hidden"
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          setIsOpen(true);
+        }}
       >
         <OpenMenuIcon />
       </NavbarItem>
-      <MobileSidebar close={() => setIsOpen(false)} open={isOpen}>
+      <MobileSidebar
+        close={() => {
+          setIsOpen(false);
+        }}
+        open={isOpen}
+      >
         <Sidebar>
           <SidebarHeader>
             <VersionButtons />
@@ -41,5 +48,5 @@ export const MobileNavbar = ({
         </Sidebar>
       </MobileSidebar>
     </>
-  )
-}
+  );
+};

@@ -1,30 +1,30 @@
-import type { Metadata } from 'next'
+import type { Metadata } from 'next';
 
-import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid'
-import { unstable_cache } from 'next/cache'
-import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
+import { ArrowDownTrayIcon, WrenchIcon } from '@heroicons/react/24/solid';
+import { unstable_cache } from 'next/cache';
+import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
-import { LikeButton } from '@/components/LikeButton'
-import { StampCategoryIcon } from '@/components/StampCategoryIcon'
-import { buttonStyles, Container, Heading, Link, Text } from '@/components/ui'
+import { getCommentReplyThread } from '#/sql';
+import { LikeButton } from '@/components/LikeButton';
+import { StampCategoryIcon } from '@/components/StampCategoryIcon';
+import { buttonStyles, Container, Heading, Link, Text } from '@/components/ui';
 import {
   type Comment,
   commentIncludeStatement,
   stampIncludeStatement,
   type StampWithRelations,
-} from '@/lib/prisma/models'
-import prisma from '@/lib/prisma/singleton'
-import { cn } from '@/lib/utils'
-import { getCommentReplyThread } from '#/sql'
-import 'swiper/css'
-import 'swiper/css/navigation'
+} from '@/lib/prisma/models';
+import prisma from '@/lib/prisma/singleton';
+import { cn } from '@/lib/utils';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
-import { CarouselImage } from './CarouselImage'
-import { CommentItem } from './CommentItem'
-import { CommentView } from './CommentView'
-import { StampDownloadDisclaimer } from './StampDownloadDisclaimer'
-import { ViewReplyButton } from './ViewReplyButton'
+import { CarouselImage } from './CarouselImage';
+import { CommentItem } from './CommentItem';
+import { CommentView } from './CommentView';
+import { StampDownloadDisclaimer } from './StampDownloadDisclaimer';
+import { ViewReplyButton } from './ViewReplyButton';
 
 const getStamp = unstable_cache(
   async (id: StampWithRelations['id']) =>
@@ -34,14 +34,14 @@ const getStamp = unstable_cache(
     }),
   ['getStamp'],
   { revalidate: 3600 },
-)
+);
 
 const getReplyThread = unstable_cache(
   async (parentId: NonNullable<Comment['parentId']>) =>
     prisma.$queryRawTyped(getCommentReplyThread(parentId)),
   ['getReplyThread'],
   { revalidate: 3600 },
-)
+);
 const getCommentThread = unstable_cache(
   async (id: StampWithRelations['id']) =>
     prisma.comment.findMany({
@@ -56,13 +56,13 @@ const getCommentThread = unstable_cache(
     }),
   ['getCommentThread'],
   { revalidate: 3600 },
-)
+);
 
 export const generateMetadata = async (props: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> => {
-  const params = await props.params
-  const stamp = await getStamp(params.id)
+  const params = await props.params;
+  const stamp = await getStamp(params.id);
 
   return {
     description: `${stamp?.unsafeDescription}`,
@@ -70,51 +70,54 @@ export const generateMetadata = async (props: {
       images: [`${stamp?.images[0].smallUrl ?? stamp?.images[0].originalUrl}`],
     },
     title: `${stamp?.title} | AnnoStamps`,
-  }
-}
+  };
+};
 
 const Comments = async ({ id: stampId }: Pick<StampWithRelations, 'id'>) => {
-  const stampPromise = getStamp(stampId)
-  const commentsPromise = getCommentThread(stampId)
-  const [stamp, comments] = await Promise.all([stampPromise, commentsPromise])
-
+  const stampPromise = getStamp(stampId);
+  const commentsPromise = getCommentThread(stampId);
+  const [stamp, comments] = await Promise.all([stampPromise, commentsPromise]);
+  if (!stamp) {
+    return;
+  }
   return (
     <>
       <Heading level={2}>{comments.length} Comments</Heading>
-      <CommentView userIdToNotify={stamp!.user.id} />
+      <CommentView userIdToNotify={stamp.user.id} />
       <ul className="space-y-3">
         {comments.map((comment) => {
-          const replyThreadPromise = getReplyThread(comment.id)
-
-          return (
-            <CommentItem
-              key={comment.id}
-              {...comment}
-              replyToUser={{
-                id: comment.user.id,
-                username: comment.user.username as string,
-                usernameURL: comment.user.usernameURL as string,
-              }}
-            >
-              <div className="ml-12">
-                <ViewReplyButton
-                  numReplies={comment._count.replies ?? 0}
-                  replyThreadPromise={replyThreadPromise}
-                />
-              </div>
-            </CommentItem>
-          )
+          const replyThreadPromise = getReplyThread(comment.id);
+          if (comment.user.username && comment.user.usernameURL) {
+            return (
+              <CommentItem
+                key={comment.id}
+                {...comment}
+                replyToUser={{
+                  id: comment.user.id,
+                  username: comment.user.username,
+                  usernameURL: comment.user.usernameURL,
+                }}
+              >
+                <div className="ml-12">
+                  <ViewReplyButton
+                    numReplies={comment._count.replies}
+                    replyThreadPromise={replyThreadPromise}
+                  />
+                </div>
+              </CommentItem>
+            );
+          }
         })}
       </ul>
     </>
-  )
-}
+  );
+};
 
 const StampPage = async (props: { params: Promise<{ id: string }> }) => {
-  const params = await props.params
-  const stamp = await getStamp(params.id)
+  const params = await props.params;
+  const stamp = await getStamp(params.id);
   if (!stamp) {
-    notFound()
+    notFound();
   }
 
   const {
@@ -133,7 +136,7 @@ const StampPage = async (props: { params: Promise<{ id: string }> }) => {
     suffixDownloads,
     title,
     user,
-  } = stamp
+  } = stamp;
 
   return (
     <Container className="max-w-5xl space-y-6 px-0 pb-24">
@@ -173,7 +176,7 @@ const StampPage = async (props: { params: Promise<{ id: string }> }) => {
             <div suppressHydrationWarning>{createdAt}</div>
           </div>
 
-          <LikeButton initialLikes={likes.likedBy ?? 0} stampId={id} />
+          <LikeButton initialLikes={likes.likedBy} stampId={id} />
 
           <StampDownloadDisclaimer changedAt={changedAt}>
             <a
@@ -199,14 +202,14 @@ const StampPage = async (props: { params: Promise<{ id: string }> }) => {
         )}
         <div
           className="stamp-markdown-html-wrapper"
-          dangerouslySetInnerHTML={{ __html: markdownDescription ?? '' }}
+          dangerouslySetInnerHTML={{ __html: markdownDescription }}
         ></div>
         <Suspense fallback={<Heading level={2}> Comments</Heading>}>
           <Comments id={id} />
         </Suspense>
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default StampPage
+export default StampPage;

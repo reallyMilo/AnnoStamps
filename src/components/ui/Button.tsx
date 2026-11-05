@@ -1,9 +1,9 @@
-import * as Headless from '@headlessui/react'
-import React from 'react'
+import * as Headless from '@headlessui/react';
+import React from 'react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
-import { Link } from './Link'
+import { Link } from './Link';
 
 export const styles = {
   base: [
@@ -72,17 +72,16 @@ export const styles = {
     // Disabled
     'data-disabled:before:shadow-none data-disabled:after:shadow-none',
   ],
-}
+};
 
-type ButtonProps = { children: React.ReactNode; className?: string } & (
+type ButtonProps = (
   | Omit<Headless.ButtonProps, 'className'>
   | Omit<React.ComponentPropsWithoutRef<typeof Link>, 'className'>
-) &
-  (
+) & { children: React.ReactNode; className?: string } & (
     | { color?: keyof typeof styles.colors; outline?: never; plain?: never }
     | { color?: never; outline: true; plain?: never }
     | { color?: never; outline?: never; plain: true }
-  )
+  );
 
 export const Button = React.forwardRef(
   (
@@ -97,7 +96,7 @@ export const Button = React.forwardRef(
           ? styles.plain
           : cn(styles.solid, styles.colors[color ?? 'primary']),
       className,
-    )
+    );
 
     return 'href' in props ? (
       <Link
@@ -115,10 +114,10 @@ export const Button = React.forwardRef(
       >
         <TouchTarget>{children}</TouchTarget>
       </Headless.Button>
-    )
+    );
   },
-)
-Button.displayName = 'Button'
+);
+Button.displayName = 'Button';
 /* Expand the hit area to at least 44×44px on touch devices */
 export const TouchTarget = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -129,5 +128,5 @@ export const TouchTarget = ({ children }: { children: React.ReactNode }) => {
       />
       {children}
     </>
-  )
-}
+  );
+};

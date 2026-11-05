@@ -1,19 +1,19 @@
-import { headers } from 'next/headers'
-import Image from 'next/image'
-import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import { headers } from 'next/headers';
+import Image from 'next/image';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-import { auth } from '@/auth'
-import { Container, Heading, Text } from '@/components/ui'
+import { auth } from '@/auth';
+import { Container, Heading, Text } from '@/components/ui';
 
-import { Login } from './Login'
+import { Login } from './Login';
 
 const SignInPage = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
-  })
+  });
   if (session?.user) {
-    return redirect('/')
+    return redirect('/');
   }
 
   return (
@@ -42,7 +42,7 @@ const SignInPage = async () => {
         login.
       </Text>
     </Container>
-  )
-}
+  );
+};
 
-export default SignInPage
+export default SignInPage;
