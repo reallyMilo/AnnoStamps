@@ -144,7 +144,7 @@ export default defineConfig({
                   game: '117',
                   id: 'testSeed117StampId',
                   markdownDescription: `<h1>117 test stamp</h1>`,
-                  region: 'rome',
+                  region: Math.random() < 0.5 ? 'latium' : 'albion',
                   stampFileUrl: '/stamp.zip',
                   title: '117 Test stamp',
                   unsafeDescription: `117 test stamp`,
