@@ -23,9 +23,7 @@ describe('Switch between game versions via navigation links and see correspondin
 
     cy.title().should('contain', '117');
 
-    cy.getBySel('1800-version-link').then((link) => {
-      link.trigger('click');
-    });
+    cy.getBySel('1800-version-link').click();
 
     cy.title().should('contain', '1800');
     cy.getBySel('1800-version-link').should(
