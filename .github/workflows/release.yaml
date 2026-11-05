@@ -6,7 +6,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: ./.github/actions/build
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+          version: 11.4.0
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.16.0
+      - run: pnpm install -P --frozen-lockfile
+        shell: bash
       - name: Install Vercel CLI
         run: pnpm add --global vercel@latest
       - name: Pull Vercel Environment Information
