@@ -5,8 +5,8 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient, type User } from '#/client';
 
 import { CATEGORIES } from '../src/lib/constants';
+import { REGIONS_117 } from '../src/lib/constants/117/data';
 import { REGIONS_1800 } from '../src/lib/constants/1800/data';
-import { REGIONS_117 } from '@/lib/constants/117/data';
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
