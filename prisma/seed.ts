@@ -5,6 +5,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient, type User } from '#/client';
 
 import { CATEGORIES } from '../src/lib/constants';
+import { REGIONS_117 } from '../src/lib/constants/117/data';
 import { REGIONS_1800 } from '../src/lib/constants/1800/data';
 
 const adapter = new PrismaPg({
@@ -14,6 +15,7 @@ const prisma = new PrismaClient({ adapter });
 
 const categories = Object.values(CATEGORIES);
 const region = Object.values(REGIONS_1800);
+const region117 = Object.values(REGIONS_117);
 
 export const generateUserData = (
   length: number,
@@ -51,6 +53,8 @@ export const generateStampData = (
 
     const regionIdx = Math.floor(Math.random() * region.length);
     const rndRegion = region[regionIdx];
+    const regionIdx117 = Math.floor(Math.random() * region117.length);
+    const rndRegion117 = region117[regionIdx117];
 
     const getCapital = () => {
       if (rndCategory === 'island' && rndRegion === 'new world') {
@@ -71,7 +75,7 @@ export const generateStampData = (
         id: createId(),
         markdownDescription: `<h2> Stamp-${index} </h2>`,
         modded: index % 20 === 0 ? true : false,
-        region: Math.random() < 0.5 ? 'latium' : 'albion',
+        region: rndRegion117,
         stampFileUrl: 'http://localhost:3000/test-stamp.zip',
         title: `Stamp-${index}-${faker.lorem.words({ max: 12, min: 0 })}`,
         unsafeDescription: `## Stamp-${index}`,

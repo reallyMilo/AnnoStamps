@@ -1,4 +1,6 @@
 import { render, screen, userEvent, within } from '@/__tests__/test-utils';
+import { CAPITALS_117, REGIONS_117 } from '@/lib/constants/117/data';
+import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data';
 
 import { type StampFormContextValue, useStampFormContext } from '../StampForm';
 import { StampInfoFieldGroup } from '../StampInfoFieldGroup';
@@ -55,14 +57,14 @@ const renderStampInfo = (game: string, stamp?: Stamp) => {
 
 describe.each([
   {
-    capitals: ['cinis'],
+    capitals: Object.values(CAPITALS_117),
     game: '117',
-    regions: ['latium', 'albion'],
+    regions: Object.values(REGIONS_117),
   },
   {
-    capitals: ['crown falls', 'manola'],
+    capitals: Object.values(CAPITALS_1800),
     game: '1800',
-    regions: ['old world', 'new world', 'arctic', 'enbesa'],
+    regions: Object.values(REGIONS_1800),
   },
 ])('StampInfoFieldGroup for Anno $game', ({ capitals, game, regions }) => {
   it('requires a region and offers only regions for the selected game', () => {

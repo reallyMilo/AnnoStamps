@@ -3,6 +3,7 @@
 export const REGIONS_117 = {
   Latium: 'latium',
   Albion: 'albion',
+  Aegyptus: 'aegyptus',
 } as const;
 
 export const CAPITALS_117 = {
