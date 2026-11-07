@@ -1,9 +1,9 @@
 import { render, screen, userEvent, within } from '@/__tests__/test-utils';
+import { CAPITALS_117, REGIONS_117 } from '@/lib/constants/117/data';
+import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data';
 
 import { type StampFormContextValue, useStampFormContext } from '../StampForm';
 import { StampInfoFieldGroup } from '../StampInfoFieldGroup';
-import { CAPITALS_117, REGIONS_117 } from '@/lib/constants/117/data';
-import { CAPITALS_1800, REGIONS_1800 } from '@/lib/constants/1800/data';
 
 vi.mock('../StampForm', () => ({
   useStampFormContext: vi.fn(),
