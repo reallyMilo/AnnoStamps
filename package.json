@@ -82,7 +82,7 @@
     "cuid2": "link:@types/parralleldrive/cuid2",
     "cypress": "^15.20.0",
     "dom": "link:@​testing-library/dom",
-    "eslint": "^10.8.0",
+    "eslint": "^10.14.0",
     "eslint-config-next": "16.4.5",
     "eslint-plugin-cypress": "^6.4.3",
     "eslint-plugin-jsonc": "^3.4.2",
