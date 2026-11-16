@@ -2,15 +2,10 @@ description: Set up
 name: Build
 runs:
   steps:
-    - name: Install pnpm
-      uses: pnpm/action-setup@v6
+    - uses: actions/checkout@v6
+    - name: Install pnpm and Node.js
+      uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
       with:
-        run_install: false
-        version: 11.4.0
-    - name: Install Node.js
-      uses: actions/setup-node@v6
-      with:
-        node-version: 24.16.0
-    - run: pnpm install --frozen-lockfile
-      shell: bash
+        cache: true
+        runtime: node@26.13.1
   using: composite

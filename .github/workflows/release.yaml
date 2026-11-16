@@ -6,17 +6,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
+      - name: Install pnpm and Node.js
+        uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e
         with:
-          run_install: false
-          version: 11.4.0
-      - name: Install Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24.16.0
-      - run: pnpm install --frozen-lockfile
-        shell: bash
+          cache: true
+          install: false
+          run: pnpm install --prod --frozen-lockfile
+          runtime: node@${{ matrix.node-version }}
       - name: Install Vercel CLI
         run: pnpm add --global vercel@latest
       - name: Pull Vercel Environment Information
@@ -24,8 +20,11 @@ jobs:
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
 
+    strategy:
+      matrix:
+        node-version: [26.13.1]
 name: Production Tag Deployment
 on:
   push:
