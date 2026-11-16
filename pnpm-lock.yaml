@@ -354,8 +354,8 @@ importers:
         specifier: ^18.5.0
         version: 18.5.0(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(typescript@5.9.3)
       eslint-plugin-package-json:
-        specifier: ^1.6.3
-        version: 1.6.3(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))
+        specifier: ^1.14.0
+        version: 1.14.0(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))
       eslint-plugin-perfectionist:
         specifier: ^5.13.0
         version: 5.13.0(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
@@ -2807,11 +2807,6 @@ packages:
     resolution: {integrity: sha512-HEHNfbars9v4pgpW6SO1KSPkfoS0xVOM/9UzkJltjlsHZmJasxg8aXkuZa7SMf8vKGIBhpUsPluQSqhJFCqebw==}
     engines: {node: '>=0.4.0'}
 
-  acorn@8.18.0:
-    resolution: {integrity: sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
-
   acorn@8.19.0:
     resolution: {integrity: sha512-oJlA3XiRm7Cyk6qFD2Jn8ak9B7jSy0qy00ADO3+8dpT0LSjFihQYv4C02LFCSYJV3Q37xYwwRy5m+IpIiUzqWw==}
     engines: {node: '>=0.4.0'}
@@ -3788,8 +3783,8 @@ packages:
       typescript:
         optional: true
 
-  eslint-plugin-package-json@1.6.3:
-    resolution: {integrity: sha512-32ZHJFzEtsWeZfFr/YMQzq7amG/9jewUuNIKmnkl7QoT7gwclxUwurqRMrjWK2S9lh4prZkNbymROQ6aDpb06Q==}
+  eslint-plugin-package-json@1.14.0:
+    resolution: {integrity: sha512-EF4oCRtyhJz+SQCKOiCfdbButYIraXd19W7/pEVrDCGzRDWv91Kgd7eTbWywhbPd4zOsThbDLOQHe9B1oSjOZA==}
     engines: {node: ^22.22.2 || >=24.15.0}
     peerDependencies:
       '@eslint/json': '>=1.0.0'
@@ -4508,10 +4503,6 @@ packages:
     resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
     engines: {node: '>=6'}
     hasBin: true
-
-  jsonc-eslint-parser@3.2.0:
-    resolution: {integrity: sha512-fjACeZ2chy9tiBakt5nU5SZhzk385pkSSfmhVvS13o4gqGiHVCNJXTNve8kqMeKv7A0L50mdaNUb7T8s+Egrnw==}
-    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
   jsonc-eslint-parser@3.3.0:
     resolution: {integrity: sha512-hYTGkHGNRZnXOFZ1urhINADoqDrGfpy53cjw+dxk84QE0pUDujQzeUeamNs6Mz44/TKD49z2x6/GVSu4ZrtA+Q==}
@@ -8625,8 +8616,6 @@ snapshots:
     dependencies:
       acorn: 8.19.0
 
-  acorn@8.18.0: {}
-
   acorn@8.19.0: {}
 
   agent-base@6.0.2(supports-color@8.1.1):
@@ -9572,11 +9561,11 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
 
-  eslint-fix-utils@0.4.3(@types/estree@1.0.9)(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1)):
+  eslint-fix-utils@0.4.3(@types/estree@1.0.10)(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1)):
     dependencies:
       eslint: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
     optionalDependencies:
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
 
   eslint-import-resolver-node@0.3.10(supports-color@8.1.1):
     dependencies:
@@ -9600,12 +9589,6 @@ snapshots:
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.72.1(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
-
-  eslint-json-compat-utils@0.2.3(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(jsonc-eslint-parser@3.2.0):
-    dependencies:
-      eslint: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
-      esquery: 1.7.0
-      jsonc-eslint-parser: 3.2.0
 
   eslint-json-compat-utils@0.2.3(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(jsonc-eslint-parser@3.3.0):
     dependencies:
@@ -9716,17 +9699,17 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  eslint-plugin-package-json@1.6.3(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1)):
+  eslint-plugin-package-json@1.14.0(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1)):
     dependencies:
       '@altano/repository-tools': 2.0.5
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
       change-case: 5.4.4
       detect-indent: 7.0.2
       detect-newline: 4.0.1
       eslint: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)
-      eslint-fix-utils: 0.4.3(@types/estree@1.0.9)(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))
-      eslint-json-compat-utils: 0.2.3(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(jsonc-eslint-parser@3.2.0)
-      jsonc-eslint-parser: 3.2.0
+      eslint-fix-utils: 0.4.3(@types/estree@1.0.10)(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))
+      eslint-json-compat-utils: 0.2.3(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(jsonc-eslint-parser@3.3.0)
+      jsonc-eslint-parser: 3.3.0
       package-json-validator: 1.6.0
       semver: 7.8.5
       sort-object-keys: 2.1.0
@@ -10487,12 +10470,6 @@ snapshots:
       minimist: 1.2.8
 
   json5@2.2.3: {}
-
-  jsonc-eslint-parser@3.2.0:
-    dependencies:
-      acorn: 8.18.0
-      eslint-visitor-keys: 5.0.1
-      verkit: 0.3.2
 
   jsonc-eslint-parser@3.3.0:
     dependencies:
