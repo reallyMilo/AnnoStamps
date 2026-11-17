@@ -31,17 +31,17 @@ export const UserHomeBanner = ({
 export const UserHomePage = ({
   biography,
   children,
-  stampsLength,
+  totalStamps,
   username,
 }: React.PropsWithChildren<
-  Pick<UserWithStamps, 'biography' | 'username'> & { stampsLength: number }
+  Pick<UserWithStamps, 'biography' | 'username'> & { totalStamps: number }
 >) => {
   const userBannerProps = {
     biography,
     username,
   };
 
-  if (stampsLength === 0) {
+  if (totalStamps === 0) {
     return (
       <Container>
         <UserHomeBanner {...userBannerProps} />
