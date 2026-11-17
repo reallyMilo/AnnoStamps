@@ -10,7 +10,7 @@ import { Button, Heading, Strong, Text } from '@/components/ui';
 import { cn } from '@/lib/utils';
 
 const versions = new Set(['1800']);
-const duplicatePaths = new Set(['how-to', 'stamp', 'stamps']);
+const duplicatePaths = new Set(['how-to', 'stamps']);
 
 export const VersionButtons = () => {
   const pathname = usePathname();
@@ -29,7 +29,13 @@ export const VersionButtons = () => {
     }
     const splitPathname = pathname.split('/');
     const isDuplicateRoute = duplicatePaths.has(splitPathname[1]);
-
+    if (splitPathname[1] === 'stamp') {
+      return {
+        117: `/stamps`,
+        1800: `/1800/stamps`,
+        active: null,
+      };
+    }
     if (isDuplicateRoute) {
       return {
         117: pathname,
