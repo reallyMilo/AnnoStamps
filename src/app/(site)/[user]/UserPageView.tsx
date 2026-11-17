@@ -35,10 +35,11 @@ export const UserPageView = async ({
 }) => {
   const parseResult = queryParamsSchema.safeParse(searchParams);
   const sessionPromise = getSession();
-  const { count, pageNumber, stamps, user } = await getUserWithStamps(
-    params.user,
-    parseResult.success ? parseResult.data : { game: searchParams.game },
-  );
+  const { count, pageNumber, stamps, totalStamps, user } =
+    await getUserWithStamps(
+      params.user,
+      parseResult.success ? parseResult.data : { game: searchParams.game },
+    );
 
   if (!user) {
     notFound();
@@ -48,7 +49,7 @@ export const UserPageView = async ({
   const paginatedStamps = { count, pageNumber, stampsLength: stamps.length };
 
   return user.id === session?.userId ? (
-    <UserHomePage stampsLength={stamps.length} {...user}>
+    <UserHomePage totalStamps={totalStamps} {...user}>
       <StampGallery
         paginatedStamps={paginatedStamps}
         searchParams={searchParams}

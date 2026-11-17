@@ -78,6 +78,7 @@ const prismaClientSingleton = () => {
             count: number;
             pageNumber: number;
             stamps: UserWithStamps['listedStamps'];
+            totalStamps: number;
             user: null | Omit<UserWithStamps, 'likedStamps' | 'listedStamps'>;
           }> {
             const { page, sort, user, ...filter } = query;
@@ -87,9 +88,7 @@ const prismaClientSingleton = () => {
                 include: {
                   _count: {
                     select: {
-                      listedStamps: {
-                        where: buildFilterWhereClause(filter),
-                      },
+                      listedStamps: true,
                     },
                   },
                 },
@@ -98,7 +97,13 @@ const prismaClientSingleton = () => {
                 },
               });
               if (!userStampsCount) {
-                return { count: 0, pageNumber: 1, stamps: [], user: null };
+                return {
+                  count: 0,
+                  pageNumber: 1,
+                  stamps: [],
+                  totalStamps: 0,
+                  user: null,
+                };
               }
 
               if (userStampsCount._count.listedStamps === 0) {
@@ -106,6 +111,7 @@ const prismaClientSingleton = () => {
                   count: 0,
                   pageNumber: 1,
                   stamps: [],
+                  totalStamps: 0,
                   user: userStampsCount,
                 };
               }
@@ -144,6 +150,7 @@ const prismaClientSingleton = () => {
                 count,
                 pageNumber,
                 stamps: listedStamps,
+                totalStamps: userStampsCount._count.listedStamps,
                 user: rest,
               };
             });
