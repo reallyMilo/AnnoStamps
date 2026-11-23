@@ -384,23 +384,23 @@ importers:
         specifier: ^8.5.32
         version: 8.5.32
       prettier:
-        specifier: ^3.9.10
-        version: 3.9.10
+        specifier: ^3.10.1
+        version: 3.10.1
       prettier-plugin-curly:
         specifier: ^0.4.1
-        version: 0.4.1(prettier@3.9.10)
+        version: 0.4.1(prettier@3.10.1)
       prettier-plugin-packagejson:
         specifier: ^3.1.0
-        version: 3.1.0(prettier@3.9.10)
+        version: 3.1.0(prettier@3.10.1)
       prettier-plugin-sentences-per-line:
         specifier: ^0.2.4
-        version: 0.2.4(prettier@3.9.10)
+        version: 0.2.4(prettier@3.10.1)
       prettier-plugin-sh:
         specifier: ^0.19.0
-        version: 0.19.0(prettier@3.9.10)
+        version: 0.19.0(prettier@3.10.1)
       prettier-plugin-tailwindcss:
         specifier: ^0.8.1
-        version: 0.8.1(prettier@3.9.10)
+        version: 0.8.1(prettier@3.10.1)
       prisma:
         specifier: ^7.10.1
         version: 7.10.1(@types/node@20.19.43)(@types/react-dom@19.2.3(@types/react@19.2.5))(@types/react@19.2.5)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
@@ -5114,8 +5114,8 @@ packages:
       prettier-plugin-svelte:
         optional: true
 
-  prettier@3.9.10:
-    resolution: {integrity: sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA==}
+  prettier@3.10.1:
+    resolution: {integrity: sha512-70vp3ZUYoPlFbF9uiTdXHUUCGEIp7d4+6p+8DYbkm2jP7x/3i/paXVF6dopSI3zd/CEitrZN1rc4i85xWmmXlg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -10933,32 +10933,32 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-curly@0.4.1(prettier@3.9.10):
+  prettier-plugin-curly@0.4.1(prettier@3.10.1):
     dependencies:
-      prettier: 3.9.10
+      prettier: 3.10.1
 
-  prettier-plugin-packagejson@3.1.0(prettier@3.9.10):
+  prettier-plugin-packagejson@3.1.0(prettier@3.10.1):
     dependencies:
       sort-package-json: 4.0.0
     optionalDependencies:
-      prettier: 3.9.10
+      prettier: 3.10.1
 
-  prettier-plugin-sentences-per-line@0.2.4(prettier@3.9.10):
+  prettier-plugin-sentences-per-line@0.2.4(prettier@3.10.1):
     dependencies:
-      prettier: 3.9.10
+      prettier: 3.10.1
       sentences-per-line: 0.5.3
 
-  prettier-plugin-sh@0.19.0(prettier@3.9.10):
+  prettier-plugin-sh@0.19.0(prettier@3.10.1):
     dependencies:
       '@reteps/dockerfmt': 0.5.4
-      prettier: 3.9.10
+      prettier: 3.10.1
       sh-syntax: 0.6.0
 
-  prettier-plugin-tailwindcss@0.8.1(prettier@3.9.10):
+  prettier-plugin-tailwindcss@0.8.1(prettier@3.10.1):
     dependencies:
-      prettier: 3.9.10
+      prettier: 3.10.1
 
-  prettier@3.9.10: {}
+  prettier@3.10.1: {}
 
   pretty-bytes@5.6.0: {}
 
