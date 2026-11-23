@@ -50,7 +50,7 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-textarea-autosize": "^8.5.9",
-    "sanitize-html": "^2.18.1",
+    "sanitize-html": "^2.18.2",
     "server-only": "^0.0.1",
     "sharp": "0.32.6",
     "swiper": "14.4.0",
